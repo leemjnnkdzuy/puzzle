@@ -1,0 +1,214 @@
+{
+	"nav": {
+		"product": "Sản phẩm",
+		"customers": "Khách hàng",
+		"resources": "Tài nguyên",
+		"pricing": "Giá cả",
+		"company": "Công ty",
+		"signIn": "Đăng nhập",
+		"signUp": "Đăng ký"
+	},
+	"hero": {
+		"title": "Nền tảng tóm tắt video bằng AI",
+		"titlePlatform": "",
+		"subtitle": "Chuyển đổi video dài thành tóm tắt ngắn gọn tự động.",
+		"subtitle2": "Tiết kiệm thời gian với bản ghi và thông tin chính được tạo bởi AI.",
+		"emailPlaceholder": "Nhập Email",
+		"cta": "Xem Puzzle"
+	},
+	"platforms": {
+		"trusted": "Được tin tưởng bởi các nhà sáng tạo trên toàn thế giới",
+		"support": "Hỗ trợ tất cả các nền tảng video lớn"
+	},
+	"features": {
+		"title": "Nền tảng tất cả trong một cho tóm tắt phim & anime",
+		"movieRecap": {
+			"title": "Tóm tắt Phim & Series",
+			"description": "Nén các bộ phim dài và các cung nhiều tập thành các bản tóm tắt ngắn gọn với các nhịp điệu, chương và dòng thời gian mà người hâm mộ có thể xem ngay lập tức."
+		},
+		"autoSubs": {
+			"title": "Phụ đề & Tóm tắt Tự động",
+			"description": "Tạo phụ đề cùng với tóm tắt ngắn gọn cho anime, K-drama, phim Hollywood hoặc phim địa phương - sẵn sàng chia sẻ hoặc nhúng vào wiki và diễn đàn."
+		},
+		"highlightScenes": {
+			"title": "Cảnh Nổi bật",
+			"description": "Tự động phát hiện các cảnh nổi bật - trận chiến, bước ngoặt cốt truyện, nhạc nền - sau đó cắt và thêm phụ đề cho shorts và reels."
+		},
+		"multiPlatform": {
+			"title": "Xuất Đa Nền tảng",
+			"description": "Xuất một lần cho YouTube, TikTok, Instagram và Facebook với phụ đề được đốt cháy và tỷ lệ khung hình được điều chỉnh cho trailer, teaser và tóm tắt theo tập."
+		}
+	},
+	"demo": {
+		"watchFull": "Xem toàn bộ tóm tắt",
+		"goToFullVideo": "Đi đến video đầy đủ",
+		"recapRuntime": "Thời lượng tóm tắt:",
+		"cost": "Chi phí",
+		"context": "Ngữ cảnh",
+		"captions": "Phụ đề",
+		"exports": "Xuất",
+		"roughTotal": "Tổng ước tính cho TTS + render",
+		"scriptScene": "Kịch bản + OCR cảnh",
+		"autoAligned": "Phụ đề kép tự động căn chỉnh",
+		"masterReels": "Master + reels",
+		"replay": "Phát lại"
+	},
+	"packages": {
+		"title": "Gói dịch vụ",
+		"subtitle": "Chọn gói dịch vụ phù hợp với nhu cầu của bạn",
+		"popular": "Phổ biến",
+		"choose": "Chọn gói này",
+		"scriptGeneration": {
+			"title": "Tạo Kịch bản",
+			"description": "Tạo ra kịch bản cho toàn bộ video recap, tóm tắt từ nguồn user tải lên.",
+			"features": [
+				"Tự động phân tích và tóm tắt nội dung",
+				"Tạo kịch bản chi tiết cho video recap",
+				"Hỗ trợ đa ngôn ngữ"
+			]
+		},
+		"scriptVoice": {
+			"title": "Script + Voice",
+			"description": "Tạo ra kịch bản cho toàn bộ video recap, tóm tắt từ nguồn user tải lên, giọng đọc đa dạng tùy chỉnh theo ý muốn.",
+			"features": [
+				"Tất cả tính năng của gói Script Generation",
+				"Giọng đọc tự nhiên, đa dạng",
+				"Tùy chỉnh giọng đọc theo ý muốn",
+				"Hỗ trợ nhiều ngôn ngữ và accent"
+			]
+		},
+		"fullService": {
+			"title": "Full Service",
+			"description": "Hoàn thiện toàn bộ quy trình recap video từ đầu đến cuối. User chỉ cần tải lên input và chờ (có thể tùy chỉnh một vài phần) và nhận sản phẩm.",
+			"features": [
+				"Tất cả tính năng của gói Script + Voice",
+				"Xử lý video hoàn chỉnh từ đầu đến cuối",
+				"Tự động tạo video recap chất lượng cao",
+				"Tùy chỉnh một số phần theo nhu cầu",
+				"Xuất video sẵn sàng sử dụng"
+			]
+		}
+	},
+	"workflow": {
+		"label": "Workflow",
+		"title": "Mọi bộ phim. Mọi tập phim. Tóm tắt ở khắp mọi nơi.",
+		"description": "Đưa mọi bộ phim, tập anime và phim truyền hình vào một chế độ xem. Puzzle tự động chuyển văn bản, xây dựng các chương cốt truyện, gắn thẻ các khoảnh khắc nhân vật và gửi các clip sẵn sàng cho feed mạng xã hội và cộng đồng người hâm mộ của bạn.",
+		"cta": "Tìm hiểu về tóm tắt phim",
+		"workspace": "Workspace",
+		"cinemaAnime": "Cinema & Anime Recaps",
+		"autoSaved": "Auto-saved",
+		"clips": "Clips",
+		"drafts": "Drafts",
+		"export": "Export",
+		"features": [
+			"Đồng bộ upload từ Netflix rips, Blu-ray dumps hoặc studio screeners và tìm kiếm trong phụ đề ngay lập tức.",
+			"Các chương, điểm nổi bật và reels được tạo với phụ đề - không cần cắt thủ công hoặc mã thời gian cho phim dài.",
+			"Xuất một lần cho YouTube, TikTok, Instagram và Facebook với tỷ lệ khung hình được điều chỉnh cho teaser, trailer và tóm tắt theo tập."
+		]
+	},
+	"models": {
+		"label": "Models",
+		"title": "Làm việc nhanh hơn với các mô hình được điều chỉnh cho phim, anime và phim truyền hình.",
+		"description": "Puzzle kết hợp LLM nhận biết cốt truyện, ASR đa ngôn ngữ và mô hình thị giác để phát hiện cảnh, hiểu cung nhân vật và hiển thị các nhịp điệu mà người hâm mộ quan tâm. Xuất các clip sẵn sàng chia sẻ với phụ đề và ngữ cảnh được tích hợp sẵn.",
+		"cta": "Tìm hiểu về mô hình Puzzle",
+		"stack": "Puzzle Model Stack",
+		"editTimeline": "Edit timeline",
+		"appliedDirectly": "Applied directly to timeline.",
+		"llm": "LLM",
+		"plotAware": "Plot-aware recap",
+		"asr": "ASR",
+		"dualSubs": "JP/EN dual subs",
+		"features": [
+			"Mô hình thị giác gắn thẻ các trận chiến, nụ hôn, tiết lộ và nhạc nền như các cảnh cho reels tức thì.",
+			"ASR đa ngôn ngữ giữ phụ đề JP/EN/VI/KR được căn chỉnh cho khán giả toàn cầu.",
+			"LLM nhận biết cốt truyện viết tóm tắt, cung tập phim và nhịp điệu nhân vật mà bạn có thể thả vào wiki."
+		]
+	},
+	"voice": {
+		"label": "Voice",
+		"title": "Lồng tiếng đa ngôn ngữ. Tự nhiên, chất lượng studio.",
+		"description": "Puzzle sử dụng các mô hình TTS hàng đầu cho EN, JP, VI, KR và nhiều hơn nữa, vì vậy mọi bản tóm tắt đều có nhịp điệu tự nhiên, cảm xúc và thời gian thân thiện với đồng bộ môi. Hoán đổi giọng nói mà không cần chỉnh sửa lại timeline.",
+		"cta": "Khám phá mô hình giọng nói",
+		"voiceTrack": "Voice Track",
+		"autoSynced": "Auto-synced",
+		"play": "Play",
+		"swap": "Swap",
+		"naturalPacing": "Natural pacing",
+		"breathPauses": "Breath & pauses auto-matched",
+		"tonePreset": "Tone preset",
+		"speedPitch": "Speed & pitch",
+		"cinematic": "Cinematic",
+		"narration": "Narration",
+		"drama": "Drama",
+		"speed": "Speed:",
+		"pitch": "Pitch:",
+		"features": [
+			"Chọn từ các ngăn xếp TTS hàng đầu (Neural, diffusion, crossover) được điều chỉnh cho anime, phim truyền hình và trailer.",
+			"Chuyển đổi ngôn ngữ tức thì cho EN/JP/VI/KR/ES với điều khiển giọng và SSML để nhấn mạnh.",
+			"Tự động căn chỉnh lồng tiếng với các cắt timeline của bạn - không cần điều chỉnh thủ công hoặc render lại."
+		]
+	},
+	"quality": {
+		"label": "Quality",
+		"title": "Đầu ra hoàn hảo. Độ phân giải gốc được bảo toàn.",
+		"description": "Các bản tóm tắt giữ độ sắc nét của nguồn với các cắt chính xác theo khung hình. Đặt preset xuất cho trailer, reels hoặc tóm tắt đầy đủ mà không hy sinh bitrate hoặc độ trung thực tỷ lệ khung hình.",
+		"exportSettings": "Export settings",
+		"preset": "Preset:",
+		"trailer": "Trailer",
+		"resolution": "Resolution",
+		"aspect": "Aspect",
+		"bitrate": "Bitrate",
+		"captions": "Captions",
+		"cleanMaster": "Clean master",
+		"burnInOff": "Burn-in off",
+		"altAspect": "Alt aspect render",
+		"alsoRender": "Also render 9:16 for reels",
+		"enabled": "Enabled",
+		"auto": "Auto",
+		"keepsSource": "Keeps source quality",
+		"cinematicSafe": "Cinematic safe area",
+		"features": [
+			"Xuất lên đến 4K với bitrate gốc hoặc khóa vào mục tiêu tùy chỉnh.",
+			"Chọn tỷ lệ khung hình (16:9, 9:16, 1:1, 4:5) và lề an toàn mà không cần chỉnh sửa lại.",
+			"Phụ đề đốt cháy tùy chọn; giữ master sạch để lưu trữ và render lại."
+		]
+	},
+	"engine": {
+		"title": "Build a recap engine"
+	},
+	"notFound": {
+		"title": "404 - Trang không tìm thấy",
+		"message": "Ồ! Trang bạn đang tìm kiếm không tồn tại.",
+		"description": "Trang có thể đã được di chuyển, xóa hoặc bạn đã nhập sai URL.",
+		"goHome": "Về trang chủ",
+		"goBack": "Quay lại"
+	},
+	"footer": {
+		"description": "Nền tảng tóm tắt video bằng AI. Chuyển đổi video dài thành tóm tắt ngắn gọn tự động.",
+		"product": "Sản phẩm",
+		"productFeatures": "Tính năng",
+		"productPricing": "Giá cả",
+		"productDocumentation": "Tài liệu",
+		"productApi": "API",
+		"company": "Công ty",
+		"companyAbout": "Về chúng tôi",
+		"companyBlog": "Blog",
+		"companyCareers": "Tuyển dụng",
+		"companyContact": "Liên hệ",
+		"resources": "Tài nguyên",
+		"resourcesHelp": "Trung tâm trợ giúp",
+		"resourcesCommunity": "Cộng đồng",
+		"resourcesPrivacy": "Chính sách bảo mật",
+		"resourcesTerms": "Điều khoản dịch vụ",
+		"copyright": "Bảo lưu mọi quyền.",
+		"privacy": "Bảo mật",
+		"terms": "Điều khoản",
+		"cookies": "Cookies",
+		"cta": {
+			"title": "Sẵn sàng bắt đầu?",
+			"description": "Tham gia cùng hàng nghìn nhà sáng tạo đang sử dụng Puzzle để chuyển đổi nội dung video của họ.",
+			"signIn": "Đăng nhập",
+			"signUp": "Đăng ký miễn phí"
+		}
+	}
+}

@@ -1,0 +1,214 @@
+{
+	"nav": {
+		"product": "Product",
+		"customers": "Customers",
+		"resources": "Resources",
+		"pricing": "Pricing",
+		"company": "Company",
+		"signIn": "Sign in",
+		"signUp": "Sign up"
+	},
+	"hero": {
+		"title": "AI-powered video recap",
+		"titlePlatform": "platform",
+		"subtitle": "Transform long videos into concise summaries automatically.",
+		"subtitle2": "Save time with AI-generated transcripts and key insights.",
+		"emailPlaceholder": "Enter Email",
+		"cta": "See Puzzle"
+	},
+	"platforms": {
+		"trusted": "Trusted by creators worldwide",
+		"support": "Support all major video platforms"
+	},
+	"features": {
+		"title": "All-in-one platform for film & anime recaps",
+		"movieRecap": {
+			"title": "Movie & Series Recap",
+			"description": "Compress full-length movies and multi-episode arcs into tight recaps with beats, chapters, and timelines the fandom can jump through instantly."
+		},
+		"autoSubs": {
+			"title": "Auto Subs & Summaries",
+			"description": "Generate subtitles plus concise summaries for anime, K-drama, Hollywood, or local films - ready to share or embed in wikis and threads."
+		},
+		"highlightScenes": {
+			"title": "Highlight Scenes",
+			"description": "Detect standout scenes automatically - battles, plot twists, OST drops - then clip and caption them for shorts and reels."
+		},
+		"multiPlatform": {
+			"title": "Multi-platform Exports",
+			"description": "Export once for YouTube, TikTok, Instagram, and Facebook with subs burned in and aspect ratios tuned for trailers, teasers, and episodic recaps."
+		}
+	},
+	"demo": {
+		"watchFull": "Watch the full recap",
+		"goToFullVideo": "Go to full video",
+		"recapRuntime": "Recap runtime:",
+		"cost": "Cost",
+		"context": "Context",
+		"captions": "Captions",
+		"exports": "Exports",
+		"roughTotal": "Rough total for TTS + render",
+		"scriptScene": "Script + scene OCR",
+		"autoAligned": "Auto-aligned dual subs",
+		"masterReels": "Master + reels",
+		"replay": "Replay"
+	},
+	"packages": {
+		"title": "Service Packages",
+		"subtitle": "Choose the service package that fits your needs",
+		"popular": "Popular",
+		"choose": "Choose this package",
+		"scriptGeneration": {
+			"title": "Script Generation",
+			"description": "Generate scripts for entire video recaps and summaries from user-uploaded sources.",
+			"features": [
+				"Automatic content analysis and summarization",
+				"Detailed script creation for video recaps",
+				"Multi-language support"
+			]
+		},
+		"scriptVoice": {
+			"title": "Script + Voice",
+			"description": "Generate scripts for entire video recaps and summaries from user-uploaded sources, with diverse customizable voices as desired.",
+			"features": [
+				"All features of Script Generation package",
+				"Natural, diverse voice reading",
+				"Customize voice reading as desired",
+				"Support for multiple languages and accents"
+			]
+		},
+		"fullService": {
+			"title": "Full Service",
+			"description": "Complete the entire video recap process from start to finish. Users only need to upload input and wait (with some customization options) and receive the product.",
+			"features": [
+				"All features of Script + Voice package",
+				"Complete video processing from start to finish",
+				"Automatic high-quality video recap creation",
+				"Customize some parts according to needs",
+				"Export ready-to-use videos"
+			]
+		}
+	},
+	"workflow": {
+		"label": "Workflow",
+		"title": "Every film. Every episode. Recaps everywhere.",
+		"description": "Bring every movie, anime episode, and drama into one view. Puzzle auto-transcribes, builds plot chapters, tags character moments, and ships clips ready for your social feeds and fan communities.",
+		"cta": "Learn about film recaps",
+		"workspace": "Workspace",
+		"cinemaAnime": "Cinema & Anime Recaps",
+		"autoSaved": "Auto-saved",
+		"clips": "Clips",
+		"drafts": "Drafts",
+		"export": "Export",
+		"features": [
+			"Sync uploads from Netflix rips, Blu-ray dumps, or studio screeners and search across subtitles instantly.",
+			"Chapters, highlights, and reels generated with captions - no manual trimming or timecodes for long-form films.",
+			"Export once for YouTube, TikTok, Instagram, and Facebook with aspect ratios tuned for teasers, trailers, and episodic recaps."
+		]
+	},
+	"models": {
+		"label": "Models",
+		"title": "Work faster with models tuned for film, anime, and drama.",
+		"description": "Puzzle blends a plot-aware LLM, multilingual ASR, and vision models to detect scenes, understand character arcs, and surface the beats fans care about. Export ready-to-share clips with subs and context baked in.",
+		"cta": "Learn about Puzzle models",
+		"stack": "Puzzle Model Stack",
+		"editTimeline": "Edit timeline",
+		"appliedDirectly": "Applied directly to timeline.",
+		"llm": "LLM",
+		"plotAware": "Plot-aware recap",
+		"asr": "ASR",
+		"dualSubs": "JP/EN dual subs",
+		"features": [
+			"Vision models tag fights, kisses, reveals, and OST drops as scenes for instant reels.",
+			"Multilingual ASR keeps JP/EN/VI/KR subs aligned for global audiences.",
+			"Plot-aware LLM writes synopses, episode arcs, and character beats you can drop into wikis."
+		]
+	},
+	"voice": {
+		"label": "Voice",
+		"title": "Multilingual voiceovers. Natural, studio-grade.",
+		"description": "Puzzle layers top-tier TTS models for EN, JP, VI, KR, and more, so every recap ships with natural pacing, emotion, and lip-sync-friendly timing. Swap voices without re-editing the timeline.",
+		"cta": "Explore voice models",
+		"voiceTrack": "Voice Track",
+		"autoSynced": "Auto-synced",
+		"play": "Play",
+		"swap": "Swap",
+		"naturalPacing": "Natural pacing",
+		"breathPauses": "Breath & pauses auto-matched",
+		"tonePreset": "Tone preset",
+		"speedPitch": "Speed & pitch",
+		"cinematic": "Cinematic",
+		"narration": "Narration",
+		"drama": "Drama",
+		"speed": "Speed:",
+		"pitch": "Pitch:",
+		"features": [
+			"Pick from leading TTS stacks (Neural, diffusion, crossover) tuned for anime, drama, and trailers.",
+			"Instant language switch for EN/JP/VI/KR/ES with accent controls and SSML for emphasis.",
+			"Auto-align voiceovers to your timeline cuts - no manual nudge or re-render."
+		]
+	},
+	"quality": {
+		"label": "Quality",
+		"title": "Pristine output. Original resolution preserved.",
+		"description": "Recaps keep the source sharpness with frame-accurate trims. Set export presets for trailers, reels, or full recaps without sacrificing bitrate or aspect fidelity.",
+		"exportSettings": "Export settings",
+		"preset": "Preset:",
+		"trailer": "Trailer",
+		"resolution": "Resolution",
+		"aspect": "Aspect",
+		"bitrate": "Bitrate",
+		"captions": "Captions",
+		"cleanMaster": "Clean master",
+		"burnInOff": "Burn-in off",
+		"altAspect": "Alt aspect render",
+		"alsoRender": "Also render 9:16 for reels",
+		"enabled": "Enabled",
+		"auto": "Auto",
+		"keepsSource": "Keeps source quality",
+		"cinematicSafe": "Cinematic safe area",
+		"features": [
+			"Export up to 4K with original bitrate or lock to custom targets.",
+			"Pick aspect ratios (16:9, 9:16, 1:1, 4:5) and safe margins without re-editing.",
+			"Burn-in captions optional; keep clean masters for archival and re-renders."
+		]
+	},
+	"engine": {
+		"title": "Build a recap engine"
+	},
+	"notFound": {
+		"title": "404 - Page Not Found",
+		"message": "Oops! The page you're looking for doesn't exist.",
+		"description": "The page might have been moved, deleted, or you entered the wrong URL.",
+		"goHome": "Go to Homepage",
+		"goBack": "Go Back"
+	},
+	"footer": {
+		"description": "AI-powered video recap platform. Transform long videos into concise summaries automatically.",
+		"product": "Product",
+		"productFeatures": "Features",
+		"productPricing": "Pricing",
+		"productDocumentation": "Documentation",
+		"productApi": "API",
+		"company": "Company",
+		"companyAbout": "About",
+		"companyBlog": "Blog",
+		"companyCareers": "Careers",
+		"companyContact": "Contact",
+		"resources": "Resources",
+		"resourcesHelp": "Help Center",
+		"resourcesCommunity": "Community",
+		"resourcesPrivacy": "Privacy Policy",
+		"resourcesTerms": "Terms of Service",
+		"copyright": "All rights reserved.",
+		"privacy": "Privacy",
+		"terms": "Terms",
+		"cookies": "Cookies",
+		"cta": {
+			"title": "Ready to get started?",
+			"description": "Join thousands of creators using Puzzle to transform their video content.",
+			"signIn": "Sign in",
+			"signUp": "Sign up for free"
+		}
+	}
+}
