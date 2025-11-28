@@ -7,10 +7,15 @@ import type {RouteTypes} from "@/types/RouteTypes";
 // layouts
 import NotThingLayout from "@/components/layout/NotThingLayout";
 
+// Components
+import AppLoader, {PublicRoute} from "@/components/common/AppLoader";
+
 // Pages
 import LandingPage from "@/pages/LandingPage";
+import HomePage from "@/pages/HomePage";
 import SignInPage from "@/pages/SignInPage";
 import SignUpPage from "@/pages/SignUpPage";
+import FogotPasswordPage from "@/pages/FogotPasswordPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 
 const publicRoutes: RouteTypes[] = [
@@ -29,22 +34,11 @@ const publicRoutes: RouteTypes[] = [
 		component: SignUpPage,
 		layout: NotThingLayout,
 	},
-	// TODO: Create pages for forgot-password, verification, reset-password
-	// {
-	// 	path: "/forgot-password",
-	// 	component: ForgotPasswordPage,
-	// 	layout: NotThingLayout,
-	// },
-	// {
-	// 	path: "/verification",
-	// 	component: VerificationPage,
-	// 	layout: NotThingLayout,
-	// },
-	// {
-	// 	path: "/reset-password",
-	// 	component: ResetPasswordPage,
-	// 	layout: NotThingLayout,
-	// },
+	{
+		path: "/forgot-password",
+		component: FogotPasswordPage,
+		layout: NotThingLayout,
+	},
 	{
 		path: "*",
 		component: NotFoundPage,
@@ -52,10 +46,40 @@ const publicRoutes: RouteTypes[] = [
 	},
 ];
 
-const privateRoutes: RouteTypes[] = [];
+const guestOnlyRoutes: RouteTypes[] = [
+	{
+		path: "/login",
+		component: SignInPage,
+		layout: NotThingLayout,
+	},
+	{
+		path: "/register",
+		component: SignUpPage,
+		layout: NotThingLayout,
+	},
+	{
+		path: "/forgot-password",
+		component: FogotPasswordPage,
+		layout: NotThingLayout,
+	},
+];
+
+const privateRoutes: RouteTypes[] = [
+	{
+		path: "/home",
+		component: HomePage,
+		layout: NotThingLayout,
+	},
+];
 
 const router = createBrowserRouter(
 	publicRoutes
+		.filter(
+			(route) =>
+				!guestOnlyRoutes.some(
+					(guestRoute) => guestRoute.path === route.path
+				)
+		)
 		.map((route) => {
 			const Page = route.component;
 			const Layout = route.layout;
@@ -69,15 +93,33 @@ const router = createBrowserRouter(
 			} as RouteObject;
 		})
 		.concat(
+			guestOnlyRoutes.map((route) => {
+				const Page = route.component;
+				const Layout = route.layout;
+				return {
+					path: route.path,
+					element: (
+						<PublicRoute>
+							<Layout>
+								<Page />
+							</Layout>
+						</PublicRoute>
+					),
+				} as RouteObject;
+			})
+		)
+		.concat(
 			privateRoutes.map((route) => {
 				const Page = route.component;
 				const Layout = route.layout;
 				return {
 					path: route.path,
 					element: (
-						<Layout>
-							<Page />
-						</Layout>
+						<AppLoader>
+							<Layout>
+								<Page />
+							</Layout>
+						</AppLoader>
 					),
 				} as RouteObject;
 			})

@@ -2,7 +2,7 @@ const DEFAULT_FPS = 30;
 const DEFAULT_MEDIA_DURATION = 5;
 const DEFAULT_TEXT_DURATION = 3;
 
-const DEFAULT_API_URL = "http://localhost:3000";
+const DEFAULT_API_URL = "http://localhost:5000";
 
 const DEFAULT_LANGUAGE = "en";
 const SUPPORTED_LANGUAGES = ["en", "vi"];

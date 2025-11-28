@@ -7,9 +7,10 @@ const Loading = React.forwardRef<HTMLDivElement, LoadingProps>(
 		const style: React.CSSProperties = {};
 
 		if (typeof size === "number" || typeof size === "string") {
-			style.width = `${size}`;
-			style.height = `${size}`;
-			style.minHeight = `${size}`;
+			const sizeValue = typeof size === "number" ? `${size}px` : size;
+			style.width = sizeValue;
+			style.height = sizeValue;
+			style.minHeight = sizeValue;
 		}
 
 		const isSmall = typeof size === "boolean" && size;

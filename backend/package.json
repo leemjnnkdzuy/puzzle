@@ -1,0 +1,37 @@
+{
+	"name": "puzzle-backend",
+	"version": "1.0.0",
+	"description": "Backend API for Puzzle application",
+	"main": "index.js",
+	"scripts": {
+		"start": "node -r tsconfig-paths/register index.js",
+		"dev": "nodemon --exec ts-node -r tsconfig-paths/register index.ts",
+		"build": "tsc",
+		"type-check": "tsc --noEmit"
+	},
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"cors": "^2.8.5",
+		"dotenv": "^17.2.3",
+		"express": "^5.1.0",
+		"express-validator": "^7.2.0",
+		"jsonwebtoken": "^9.0.2",
+		"mongoose": "^9.0.0",
+		"nodemailer": "^6.9.16",
+		"cookie-parser": "^1.4.6"
+	},
+	"devDependencies": {
+		"@types/bcryptjs": "^2.4.6",
+		"@types/cors": "^2.8.17",
+		"@types/express": "^5.0.0",
+		"@types/jsonwebtoken": "^9.0.7",
+		"@types/node": "^22.10.5",
+		"@types/nodemailer": "^6.4.14",
+		"@types/cookie-parser": "^1.4.7",
+		"nodemon": "^3.1.11",
+		"ts-node": "^10.9.2",
+		"tsconfig-paths": "^4.2.0",
+		"typescript": "^5.7.2",
+		"module-alias": "^2.2.3"
+	}
+}

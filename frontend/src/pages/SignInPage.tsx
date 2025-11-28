@@ -12,7 +12,7 @@ import type {LoginData} from "@/types/AuthTypes";
 
 const SignInPage: React.FC = () => {
 	const navigate = useNavigate();
-	const {login, isAuthenticated} = useAuth();
+	const {login, isAuthenticated} = useAuth({skipInitialCheck: true});
 	const {showError, showSuccess} = useGlobalNotificationPopup();
 	const {handleSocialLogin} = useSocialLogin();
 	const {getNested} = useLanguage();
@@ -22,10 +22,11 @@ const SignInPage: React.FC = () => {
 	});
 	const [showPassword, setShowPassword] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [rememberMe, setRememberMe] = useState(false);
 
 	useEffect(() => {
 		if (isAuthenticated) {
-			navigate("/");
+			navigate("/home");
 		}
 	}, [isAuthenticated, navigate]);
 
@@ -44,13 +45,6 @@ const SignInPage: React.FC = () => {
 			return passwordRequired;
 		}
 		return null;
-	};
-
-	const handleBlur = (field: keyof LoginData) => {
-		const errorMsg = validateLogin(loginData);
-		if (errorMsg && loginData[field]) {
-			showError(errorMsg);
-		}
 	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -76,7 +70,7 @@ const SignInPage: React.FC = () => {
 			if (result && result.success) {
 				showSuccess(loginSuccess);
 				setTimeout(() => {
-					navigate("/");
+					navigate("/home");
 				}, 500);
 			} else {
 				showError(result?.message || loginFailed);
@@ -101,6 +95,7 @@ const SignInPage: React.FC = () => {
 		"signIn.passwordPlaceholder"
 	) as string;
 	const forgotPassword = getNested?.("signIn.forgotPassword") as string;
+	const rememberMeText = getNested?.("signIn.rememberMe") as string;
 	const submit = getNested?.("signIn.submit") as string;
 	const noAccount = getNested?.("signIn.noAccount") as string;
 	const signUp = getNested?.("signIn.signUp") as string;
@@ -120,7 +115,7 @@ const SignInPage: React.FC = () => {
 				{backToHome}
 			</Button>
 
-			<div className='w-full max-w-md bg-white rounded-2xl shadow-lg p-8'>
+			<div className='w-full max-w-md rounded-2xl p-8'>
 				<h1 className='text-3xl font-bold text-center mb-2 text-gray-900'>
 					{title}
 				</h1>
@@ -138,7 +133,6 @@ const SignInPage: React.FC = () => {
 									username: e.target.value,
 								})
 							}
-							onBlur={() => handleBlur("username")}
 							required
 							className='w-full'
 						/>
@@ -155,7 +149,6 @@ const SignInPage: React.FC = () => {
 									password: e.target.value,
 								})
 							}
-							onBlur={() => handleBlur("password")}
 							required
 							className='w-full'
 							showPassword={showPassword}
@@ -164,6 +157,19 @@ const SignInPage: React.FC = () => {
 					</div>
 
 					<div className='flex items-center justify-between'>
+						<label className='flex items-center gap-2 cursor-pointer'>
+							<input
+								type='checkbox'
+								checked={rememberMe}
+								onChange={(e) =>
+									setRememberMe(e.target.checked)
+								}
+								className='w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500'
+							/>
+							<span className='text-sm text-gray-700'>
+								{rememberMeText}
+							</span>
+						</label>
 						<Link
 							to='/forgot-password'
 							className='text-sm text-blue-600 hover:text-blue-800 hover:underline'
@@ -178,7 +184,7 @@ const SignInPage: React.FC = () => {
 						className='w-full bg-black text-white hover:bg-gray-800'
 						size='lg'
 					>
-						{isLoading ? <Loading size='20px' /> : submit}
+						{isLoading ? <Loading size={20} /> : submit}
 					</Button>
 				</form>
 

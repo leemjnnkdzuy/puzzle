@@ -192,6 +192,7 @@
 		"password": "Password",
 		"passwordPlaceholder": "Enter password",
 		"forgotPassword": "Forgot password?",
+		"rememberMe": "Remember me",
 		"submit": "Sign in",
 		"noAccount": "Don't have an account?",
 		"signUp": "Sign up",
@@ -242,7 +243,54 @@
 			"passwordRule": "Password: {rule}",
 			"passwordMismatch": "Passwords do not match!",
 			"registerSuccess": "Registration successful! Please verify your email.",
-			"registerFailed": "Registration failed!"
+			"registerFailed": "Registration failed!",
+			"accountCreated": "Account created successfully! Redirecting to login..."
+		}
+	},
+	"forgotPassword": {
+		"title": "Forgot Password",
+		"subtitle": "Enter your email address and we'll send you a reset code",
+		"backToHome": "Back to Home",
+		"email": "Email",
+		"emailPlaceholder": "Enter your email",
+		"submit": "Send Reset Code",
+		"rememberPassword": "Remember your password?",
+		"signIn": "Sign in",
+		"errors": {
+			"emailRequired": "Please enter your email address.",
+			"emailInvalid": "Invalid email. Please enter a valid email format.",
+			"sendSuccess": "Reset code has been sent to your email. Please check your inbox.",
+			"sendFailed": "Failed to send reset code. Please try again."
+		}
+	},
+	"verification": {
+		"title": "Verify Email",
+		"subtitle": "Enter the verification code sent to your email",
+		"codePlaceholder": "Enter verification code",
+		"submit": "Verify",
+		"resend": "Resend Code",
+		"back": "Back",
+		"errors": {
+			"codeRequired": "Please enter the verification code.",
+			"codeInvalid": "Invalid verification code.",
+			"verifySuccess": "Email verified successfully!",
+			"verifyFailed": "Verification failed. Please try again.",
+			"resendSuccess": "Verification code has been resent to your email.",
+			"resendFailed": "Failed to resend code. Please try again."
+		}
+	},
+	"resetPassword": {
+		"title": "Reset Password",
+		"subtitle": "Enter your new password",
+		"passwordPlaceholder": "New password",
+		"confirmPasswordPlaceholder": "Confirm new password",
+		"submit": "Reset Password",
+		"errors": {
+			"passwordRequired": "Please enter your new password.",
+			"confirmPasswordRequired": "Please confirm your new password.",
+			"passwordMismatch": "Passwords do not match!",
+			"resetSuccess": "Password reset successfully!",
+			"resetFailed": "Password reset failed. Please try again."
 		}
 	},
 	"footer": {

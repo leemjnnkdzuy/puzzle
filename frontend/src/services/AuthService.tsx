@@ -16,14 +16,11 @@ const createApiClient = (): AxiosInstance => {
 		headers: {
 			"Content-Type": "application/json",
 		},
+		withCredentials: true,
 	});
 
 	api.interceptors.request.use(
 		(config) => {
-			const token = localStorage.getItem("token");
-			if (token) {
-				config.headers.Authorization = `Bearer ${token}`;
-			}
 			return config;
 		},
 		(error) => {
@@ -49,13 +46,11 @@ const api = createApiClient();
 
 class AuthService {
 	async register(data: RegisterData): Promise<RegisterResponse> {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const {confirmPassword, ...registerData} = data;
+		void confirmPassword;
 		const response = await api.post<RegisterResponse>(
 			"/api/auth/register",
-			{
-				...registerData,
-			}
+			registerData
 		);
 		return response.data;
 	}
@@ -73,8 +68,8 @@ class AuthService {
 	async resetPassword(
 		data: ResetPasswordRequest
 	): Promise<{success: boolean; message?: string}> {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const {confirmPassword, ...resetData} = data;
+		void confirmPassword;
 		const response = await api.post<{success: boolean; message?: string}>(
 			"/api/auth/reset-password",
 			resetData
@@ -97,6 +92,39 @@ class AuthService {
 			"/api/auth/verify-reset-pin",
 			data
 		);
+		return response.data;
+	}
+
+	async refreshToken(): Promise<{
+		success: boolean;
+		data?: {accessToken: string};
+		message?: string;
+	}> {
+		const response = await api.post<{
+			success: boolean;
+			data?: {accessToken: string};
+			message?: string;
+		}>("/api/auth/refresh-token", {});
+		return response.data;
+	}
+
+	async logout(): Promise<{success: boolean; message?: string}> {
+		const response = await api.post<{success: boolean; message?: string}>(
+			"/api/auth/logout"
+		);
+		return response.data;
+	}
+
+	async getCurrentUser(): Promise<{
+		success: boolean;
+		data?: {user: unknown};
+		message?: string;
+	}> {
+		const response = await api.get<{
+			success: boolean;
+			data?: {user: unknown};
+			message?: string;
+		}>("/api/auth/me");
 		return response.data;
 	}
 }

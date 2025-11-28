@@ -192,6 +192,7 @@
 		"password": "Mật khẩu",
 		"passwordPlaceholder": "Mật khẩu",
 		"forgotPassword": "Quên mật khẩu?",
+		"rememberMe": "Lưu đăng nhập",
 		"submit": "Đăng nhập",
 		"noAccount": "Chưa có tài khoản?",
 		"signUp": "Đăng ký",
@@ -242,7 +243,54 @@
 			"passwordRule": "Mật khẩu: {rule}",
 			"passwordMismatch": "Mật khẩu không khớp!",
 			"registerSuccess": "Đăng ký thành công! Vui lòng xác minh email của bạn.",
-			"registerFailed": "Đăng ký thất bại!"
+			"registerFailed": "Đăng ký thất bại!",
+			"accountCreated": "Tạo tài khoản thành công! Đang chuyển đến trang đăng nhập..."
+		}
+	},
+	"forgotPassword": {
+		"title": "Quên mật khẩu",
+		"subtitle": "Nhập địa chỉ email của bạn và chúng tôi sẽ gửi mã đặt lại cho bạn",
+		"backToHome": "Trở về trang chủ",
+		"email": "Email",
+		"emailPlaceholder": "Nhập email của bạn",
+		"submit": "Gửi mã đặt lại",
+		"rememberPassword": "Nhớ mật khẩu?",
+		"signIn": "Đăng nhập",
+		"errors": {
+			"emailRequired": "Vui lòng nhập địa chỉ email của bạn.",
+			"emailInvalid": "Email không hợp lệ. Vui lòng nhập đúng định dạng email.",
+			"sendSuccess": "Mã đặt lại đã được gửi đến email của bạn. Vui lòng kiểm tra hộp thư đến.",
+			"sendFailed": "Gửi mã đặt lại thất bại. Vui lòng thử lại."
+		}
+	},
+	"verification": {
+		"title": "Xác minh Email",
+		"subtitle": "Nhập mã xác minh đã được gửi đến email của bạn",
+		"codePlaceholder": "Nhập mã xác minh",
+		"submit": "Xác minh",
+		"resend": "Gửi lại mã",
+		"back": "Quay lại",
+		"errors": {
+			"codeRequired": "Vui lòng nhập mã xác minh.",
+			"codeInvalid": "Mã xác minh không hợp lệ.",
+			"verifySuccess": "Xác minh email thành công!",
+			"verifyFailed": "Xác minh thất bại. Vui lòng thử lại.",
+			"resendSuccess": "Mã xác minh đã được gửi lại đến email của bạn.",
+			"resendFailed": "Gửi lại mã thất bại. Vui lòng thử lại."
+		}
+	},
+	"resetPassword": {
+		"title": "Đặt lại mật khẩu",
+		"subtitle": "Nhập mật khẩu mới của bạn",
+		"passwordPlaceholder": "Mật khẩu mới",
+		"confirmPasswordPlaceholder": "Xác nhận mật khẩu mới",
+		"submit": "Đặt lại mật khẩu",
+		"errors": {
+			"passwordRequired": "Vui lòng nhập mật khẩu mới của bạn.",
+			"confirmPasswordRequired": "Vui lòng xác nhận mật khẩu mới của bạn.",
+			"passwordMismatch": "Mật khẩu không khớp!",
+			"resetSuccess": "Đặt lại mật khẩu thành công!",
+			"resetFailed": "Đặt lại mật khẩu thất bại. Vui lòng thử lại."
 		}
 	},
 	"footer": {

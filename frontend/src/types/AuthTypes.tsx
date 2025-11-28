@@ -36,6 +36,11 @@ export interface LoginResponse {
 	success: boolean;
 	message?: string;
 	token?: string;
+	data?: {
+		accessToken: string;
+		refreshToken: string;
+		user: unknown;
+	};
 	user?: unknown;
 }
 

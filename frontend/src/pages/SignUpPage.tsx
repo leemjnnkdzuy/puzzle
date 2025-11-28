@@ -17,10 +17,13 @@ import {
 } from "@/utils/utils";
 import type {RegisterData} from "@/types/AuthTypes";
 
+type SignUpPhase = "register" | "verification";
+
 const SignUpPage: React.FC = () => {
 	const navigate = useNavigate();
 	const {showError, showSuccess} = useGlobalNotificationPopup();
 	const {getNested, t} = useLanguage();
+	const [phase, setPhase] = useState<SignUpPhase>("register");
 	const [registerData, setRegisterData] = useState<RegisterData>({
 		first_name: "",
 		last_name: "",
@@ -29,6 +32,7 @@ const SignUpPage: React.FC = () => {
 		password: "",
 		confirmPassword: "",
 	});
+	const [verificationCode, setVerificationCode] = useState("");
 	const [passwordFocused, setPasswordFocused] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -83,9 +87,7 @@ const SignUpPage: React.FC = () => {
 				"signUp.errors.registerSuccess"
 			) as string;
 			showSuccess(registerSuccess);
-			setTimeout(() => {
-				navigate("/verification");
-			}, 1000);
+			setPhase("verification");
 		} catch (error) {
 			const registerFailed = getNested?.(
 				"signUp.errors.registerFailed"
@@ -119,6 +121,55 @@ const SignUpPage: React.FC = () => {
 	const hasAccount = getNested?.("signUp.hasAccount") as string;
 	const signIn = getNested?.("signUp.signIn") as string;
 
+	// Verification phase translations
+	const verificationTitle = getNested?.("verification.title") as string;
+	const verificationSubtitle = getNested?.("verification.subtitle") as string;
+	const codePlaceholder = getNested?.(
+		"verification.codePlaceholder"
+	) as string;
+	const verifySubmit = getNested?.("verification.submit") as string;
+	const verifyBack = getNested?.("verification.back") as string;
+
+	const handleVerify = async (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!verificationCode.trim()) {
+			const codeRequired = getNested?.(
+				"verification.errors.codeRequired"
+			) as string;
+			showError(codeRequired);
+			return;
+		}
+
+		setIsLoading(true);
+		try {
+			const result = await authService.verify(verificationCode);
+			if (result.success) {
+				const verifySuccess = getNested?.(
+					"verification.errors.verifySuccess"
+				) as string;
+				const accountCreated = getNested?.(
+					"signUp.errors.accountCreated"
+				) as string;
+				showSuccess(accountCreated || verifySuccess);
+				setTimeout(() => {
+					navigate("/login");
+				}, 1500);
+			} else {
+				const verifyFailed = getNested?.(
+					"verification.errors.verifyFailed"
+				) as string;
+				showError(result.message || verifyFailed);
+			}
+		} catch (error) {
+			const verifyFailed = getNested?.(
+				"verification.errors.verifyFailed"
+			) as string;
+			showError(error instanceof Error ? error.message : verifyFailed);
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
 	return (
 		<div className='relative flex flex-col justify-center items-center min-h-screen bg-gray-50 px-4 py-8'>
 			<Button
@@ -131,136 +182,181 @@ const SignUpPage: React.FC = () => {
 				{backToHome}
 			</Button>
 
-			<div className='w-full max-w-md bg-white rounded-2xl shadow-lg p-8'>
+			<div className='w-full max-w-md rounded-2xl p-8'>
 				<h1 className='text-3xl font-bold text-center mb-2 text-gray-900'>
-					{title}
+					{phase === "register" ? title : verificationTitle}
 				</h1>
-				<p className='text-center text-gray-600 mb-8'>{subtitle}</p>
+				<p className='text-center text-gray-600 mb-8'>
+					{phase === "register" ? subtitle : verificationSubtitle}
+				</p>
 
-				<form onSubmit={handleSubmit} className='space-y-4' noValidate>
-					<div className='flex gap-4'>
+				{phase === "register" ? (
+					<form
+						onSubmit={handleSubmit}
+						className='space-y-4'
+						noValidate
+					>
+						<div className='flex gap-4'>
+							<Input
+								type='text'
+								placeholder={lastNamePlaceholder}
+								value={registerData.last_name}
+								onChange={(e) =>
+									setRegisterData({
+										...registerData,
+										last_name: e.target.value,
+									})
+								}
+								required
+								className='flex-1'
+							/>
+							<Input
+								type='text'
+								placeholder={firstNamePlaceholder}
+								value={registerData.first_name}
+								onChange={(e) =>
+									setRegisterData({
+										...registerData,
+										first_name: e.target.value,
+									})
+								}
+								required
+								className='flex-1'
+							/>
+						</div>
+
 						<Input
 							type='text'
-							placeholder={lastNamePlaceholder}
-							value={registerData.last_name}
+							placeholder={usernamePlaceholder}
+							value={registerData.username}
 							onChange={(e) =>
 								setRegisterData({
 									...registerData,
-									last_name: e.target.value,
-								})
-							}
-							required
-							className='flex-1'
-						/>
-						<Input
-							type='text'
-							placeholder={firstNamePlaceholder}
-							value={registerData.first_name}
-							onChange={(e) =>
-								setRegisterData({
-									...registerData,
-									first_name: e.target.value,
-								})
-							}
-							required
-							className='flex-1'
-						/>
-					</div>
-
-					<Input
-						type='text'
-						placeholder={usernamePlaceholder}
-						value={registerData.username}
-						onChange={(e) =>
-							setRegisterData({
-								...registerData,
-								username: e.target.value.toLowerCase(),
-							})
-						}
-						required
-						className='w-full'
-					/>
-
-					<Input
-						type='email'
-						placeholder={emailPlaceholder}
-						value={registerData.email}
-						onChange={(e) =>
-							setRegisterData({
-								...registerData,
-								email: e.target.value,
-							})
-						}
-						required
-						className='w-full'
-					/>
-
-					<div className='relative'>
-						<Input
-							type='password'
-							placeholder={passwordPlaceholder}
-							value={registerData.password}
-							onFocus={() => setPasswordFocused(true)}
-							onBlur={() => setPasswordFocused(false)}
-							onChange={(e) =>
-								setRegisterData({
-									...registerData,
-									password: e.target.value,
+									username: e.target.value.toLowerCase(),
 								})
 							}
 							required
 							className='w-full'
 						/>
-						{(passwordFocused || password.length > 0) && (
-							<Tooltip
-								content={renderPasswordRequirements()}
-								placement='right'
-							>
-								<span
-									className='absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full transition-colors'
-									style={{
-										background: dotColor,
-									}}
-								/>
-							</Tooltip>
-						)}
-					</div>
 
-					<Input
-						type='password'
-						placeholder={confirmPasswordPlaceholder}
-						value={registerData.confirmPassword}
-						onChange={(e) =>
-							setRegisterData({
-								...registerData,
-								confirmPassword: e.target.value,
-							})
-						}
-						required
-						className='w-full'
-					/>
+						<Input
+							type='email'
+							placeholder={emailPlaceholder}
+							value={registerData.email}
+							onChange={(e) =>
+								setRegisterData({
+									...registerData,
+									email: e.target.value,
+								})
+							}
+							required
+							className='w-full'
+						/>
 
-					<Button
-						type='submit'
-						disabled={isLoading || score < 3}
-						className='w-full bg-black text-white hover:bg-gray-800'
-						size='lg'
-					>
-						{isLoading ? <Loading size='20px' /> : submit}
-					</Button>
-				</form>
+						<div className='relative'>
+							<Input
+								type='password'
+								placeholder={passwordPlaceholder}
+								value={registerData.password}
+								onFocus={() => setPasswordFocused(true)}
+								onBlur={() => setPasswordFocused(false)}
+								onChange={(e) =>
+									setRegisterData({
+										...registerData,
+										password: e.target.value,
+									})
+								}
+								required
+								className='w-full'
+							/>
+							{(passwordFocused || password.length > 0) && (
+								<Tooltip
+									content={renderPasswordRequirements()}
+									placement='right'
+								>
+									<span
+										className='absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full transition-colors'
+										style={{
+											background: dotColor,
+										}}
+									/>
+								</Tooltip>
+							)}
+						</div>
 
-				<div className='mt-6 text-center'>
-					<p className='text-sm text-gray-600'>
-						{hasAccount}{" "}
-						<Link
-							to='/login'
-							className='text-blue-600 hover:text-blue-800 font-semibold hover:underline'
+						<Input
+							type='password'
+							placeholder={confirmPasswordPlaceholder}
+							value={registerData.confirmPassword}
+							onChange={(e) =>
+								setRegisterData({
+									...registerData,
+									confirmPassword: e.target.value,
+								})
+							}
+							required
+							className='w-full'
+						/>
+
+						<Button
+							type='submit'
+							disabled={isLoading || score < 3}
+							className='w-full bg-black text-white hover:bg-gray-800'
+							size='lg'
 						>
-							{signIn}
-						</Link>
-					</p>
-				</div>
+							{isLoading ? <Loading size={20} /> : submit}
+						</Button>
+					</form>
+				) : (
+					<form
+						onSubmit={handleVerify}
+						className='space-y-6'
+						noValidate
+					>
+						<Input
+							type='text'
+							placeholder={codePlaceholder}
+							value={verificationCode}
+							onChange={(e) =>
+								setVerificationCode(e.target.value)
+							}
+							required
+							className='w-full text-center text-2xl tracking-widest'
+							maxLength={6}
+						/>
+						<Button
+							type='submit'
+							disabled={isLoading}
+							className='w-full bg-black text-white hover:bg-gray-800'
+							size='lg'
+						>
+							{isLoading ? <Loading size={20} /> : verifySubmit}
+						</Button>
+						<Button
+							type='button'
+							onClick={() => setPhase("register")}
+							variant='outline'
+							className='w-full'
+							disabled={isLoading}
+						>
+							{verifyBack}
+						</Button>
+					</form>
+				)}
+
+				{phase === "register" && (
+					<div className='mt-6 text-center'>
+						<p className='text-sm text-gray-600'>
+							{hasAccount}{" "}
+							<Link
+								to='/login'
+								className='text-blue-600 hover:text-blue-800 font-semibold hover:underline'
+							>
+								{signIn}
+							</Link>
+						</p>
+					</div>
+				)}
 			</div>
 		</div>
 	);
