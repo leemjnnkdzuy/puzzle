@@ -17,7 +17,7 @@ const AppLoader: React.FC<AppLoaderProps> = ({children}) => {
 	if (loading) {
 		return (
 			<div className='flex items-center justify-center min-h-screen'>
-				<Loading size={40} />
+				<Loading size={40} color='rgb(17, 24, 39)' />
 			</div>
 		);
 	}

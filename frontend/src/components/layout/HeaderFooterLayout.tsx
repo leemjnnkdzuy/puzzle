@@ -1,6 +1,7 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
 import {FaTwitter, FaDiscord, FaGithub, FaEnvelope} from "react-icons/fa";
+import {FileText, Mic, Sparkles} from "lucide-react";
 import Button from "@/components/ui/Button";
 import Assets from "@/configs/AssetsConfig";
 import {
@@ -16,6 +17,12 @@ import {useAuth} from "@/hooks/useAuth";
 interface HeaderFooterLayoutProps {
 	children: React.ReactNode;
 }
+
+const servicePackages = [
+	{key: "scriptGeneration", Icon: FileText},
+	{key: "scriptVoice", Icon: Mic},
+	{key: "fullService", Icon: Sparkles},
+];
 
 const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 	const navigate = useNavigate();
@@ -42,24 +49,73 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 						</div>
 
 						<nav className='hidden md:flex items-center gap-8'>
-							<div className='flex items-center gap-1 cursor-pointer'>
-								<span className='text-gray-700 hover:text-gray-900'>
-									{t("nav.product")}
-								</span>
-								<svg
-									className='w-4 h-4 text-gray-500'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild>
+									<div className='flex items-center gap-1 cursor-pointer'>
+										<span className='text-gray-700 hover:text-gray-900'>
+											{t("nav.product")}
+										</span>
+										<svg
+											className='w-4 h-4 text-gray-500'
+											fill='none'
+											stroke='currentColor'
+											viewBox='0 0 24 24'
+										>
+											<path
+												strokeLinecap='round'
+												strokeLinejoin='round'
+												strokeWidth={2}
+												d='M19 9l-7 7-7-7'
+											/>
+										</svg>
+									</div>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent
+									align='start'
+									className='w-[400px] p-4 bg-white border border-gray-200 shadow-lg'
 								>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth={2}
-										d='M19 9l-7 7-7-7'
-									/>
-								</svg>
-							</div>
+									<div className='space-y-3'>
+										{servicePackages.map((pkg) => {
+											const Icon = pkg.Icon;
+											return (
+												<DropdownMenuItem
+													key={pkg.key}
+													className='flex items-start gap-4 p-4 rounded-lg hover:bg-gray-50 cursor-pointer focus:bg-gray-50'
+													onClick={() =>
+														navigate("/register")
+													}
+												>
+													<div className='flex-shrink-0 w-12 h-12 rounded-lg border border-gray-300 bg-gray-50 flex items-center justify-center'>
+														<Icon
+															className='w-6 h-6 text-gray-800'
+															strokeWidth={2}
+														/>
+													</div>
+													<div className='flex-1 min-w-0'>
+														<div className='flex items-center gap-2 mb-1'>
+															<h3 className='text-base font-semibold text-gray-900'>
+																{t(
+																	`packages.${pkg.key}.title`
+																)}
+															</h3>
+															<span className='text-sm text-gray-500'>
+																{t(
+																	`packages.${pkg.key}.subtitle`
+																)}
+															</span>
+														</div>
+														<p className='text-sm text-gray-600 leading-relaxed'>
+															{t(
+																`packages.${pkg.key}.description`
+															)}
+														</p>
+													</div>
+												</DropdownMenuItem>
+											);
+										})}
+									</div>
+								</DropdownMenuContent>
+							</DropdownMenu>
 							<button
 								onClick={() => navigate("/customers")}
 								className='text-gray-700 hover:text-gray-900 cursor-pointer bg-transparent border-none p-0'

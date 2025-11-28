@@ -3,7 +3,6 @@ import {useNavigate, Link} from "react-router-dom";
 import {FaArrowLeft, FaGoogle, FaFacebook} from "react-icons/fa";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import Loading from "@/components/ui/Loading";
 import {useAuth} from "@/hooks/useAuth";
 import {useGlobalNotificationPopup} from "@/hooks/useGlobalNotificationPopup";
 import {useSocialLogin} from "@/hooks/useSocialLogin";
@@ -180,11 +179,11 @@ const SignInPage: React.FC = () => {
 
 					<Button
 						type='submit'
-						disabled={isLoading}
+						loading={isLoading}
 						className='w-full bg-black text-white hover:bg-gray-800'
 						size='lg'
 					>
-						{isLoading ? <Loading size={20} /> : submit}
+						{submit}
 					</Button>
 				</form>
 

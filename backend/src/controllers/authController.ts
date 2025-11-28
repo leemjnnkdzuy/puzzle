@@ -14,6 +14,7 @@ import {
 	sendResetCodeEmail,
 } from "@/helpers/sendMailHelper";
 import {getDeviceInfo, getIpAddress} from "@/helpers/deviceHelper";
+import defaultAvatar from "@/data/defualtAvatar.json";
 
 export const register = async (req: Request, res: Response): Promise<void> => {
 	try {
@@ -43,12 +44,15 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 			verificationCodeExpires.getHours() + 24
 		);
 
+		const defaultAvatarBase64 = `data:${defaultAvatar.image.mime};base64,${defaultAvatar.image.data}`;
+
 		const user = new User({
 			username: normalizedUsername,
 			email: normalizedEmail,
 			password,
 			first_name,
 			last_name,
+			avatar: defaultAvatarBase64,
 			verificationCode,
 			verificationCodeExpires,
 		});

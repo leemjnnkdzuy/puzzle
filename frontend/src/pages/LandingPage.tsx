@@ -274,7 +274,7 @@ const LandingPage = () => {
 					}
 				}
 			},
-			{threshold: 0.5, rootMargin: "0px"}
+			{threshold: 0.5, rootMargin: "-100px"}
 		);
 
 		observer.observe(featuresSectionRef.current);
@@ -290,17 +290,14 @@ const LandingPage = () => {
 					if (!packagesAnimatingRef.current) {
 						packagesAnimatingRef.current = true;
 						setPackagesAnimated(true);
+
 						setTimeout(() => {
 							packagesAnimatingRef.current = false;
 						}, 1000);
 					}
-				} else {
-					if (!packagesAnimatingRef.current) {
-						setPackagesAnimated(false);
-					}
 				}
 			},
-			{threshold: 0.5, rootMargin: "0px"}
+			{threshold: 0.3, rootMargin: "-100px"}
 		);
 
 		observer.observe(packagesSectionRef.current);
@@ -860,6 +857,9 @@ const LandingPage = () => {
 										transitionDuration: "600ms",
 										transitionTimingFunction:
 											"cubic-bezier(0.4, 0, 0.2, 1)",
+										willChange: packagesAnimated
+											? "transform, opacity"
+											: "auto",
 										boxShadow: isPopular
 											? "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 40px -10px rgba(0, 0, 0, 0.15)"
 											: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",

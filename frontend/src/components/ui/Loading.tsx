@@ -1,41 +1,52 @@
 import React from "react";
-import classNames from "classnames";
-import type {LoadingProps} from "@/types/LoadingPropsType";
+
+interface LoadingProps {
+	size?: number | string | boolean;
+	color?: string;
+}
 
 const Loading = React.forwardRef<HTMLDivElement, LoadingProps>(
-	({size}, ref) => {
-		const style: React.CSSProperties = {};
+	({size, color}, ref) => {
+		let width = "40px";
+		let height = "40px";
+		let borderWidth = "3px";
 
-		if (typeof size === "number" || typeof size === "string") {
-			const sizeValue = typeof size === "number" ? `${size}px` : size;
-			style.width = sizeValue;
-			style.height = sizeValue;
-			style.minHeight = sizeValue;
+		if (typeof size === "number") {
+			width = `${size}px`;
+			height = `${size}px`;
+			borderWidth = size < 30 ? "2px" : "3px";
+		} else if (typeof size === "string") {
+			width = size;
+			height = size;
+			borderWidth = "3px";
+		} else if (size === true) {
+			width = "20px";
+			height = "20px";
+			borderWidth = "2px";
 		}
 
-		const isSmall = typeof size === "boolean" && size;
+		const borderColor = color || "rgb(17, 24, 39)";
 
 		return (
 			<div
 				ref={ref}
-				className={classNames(
-					"relative text-transparent pointer-events-none",
-					!isSmall && "min-h-[30px]"
-				)}
-				style={style}
+				style={{
+					display: "inline-block",
+					width: width,
+					height: height,
+					minWidth: width,
+					minHeight: height,
+				}}
 			>
 				<div
-					className={classNames(
-						"absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-solid animate-spin-loading",
-						"border-t-transparent border-l-transparent",
-						isSmall
-							? "w-5 h-5 border-2"
-							: "w-full h-full border-[3px]"
-					)}
 					style={{
-						borderColor: "var(--text-primary)",
-						width: "inherit",
-						height: "inherit",
+						width: "100%",
+						height: "100%",
+						border: `${borderWidth} solid transparent`,
+						borderTopColor: borderColor,
+						borderRightColor: borderColor,
+						borderRadius: "50%",
+						animation: "spin 0.8s linear infinite",
 					}}
 				/>
 			</div>

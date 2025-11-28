@@ -13,4 +13,5 @@ export interface ButtonProps
 		| "link";
 	size?: "default" | "sm" | "lg" | "icon";
 	asChild?: boolean;
+	loading?: boolean;
 }

@@ -7,6 +7,7 @@ export interface IUser extends Document {
 	password: string;
 	first_name: string;
 	last_name: string;
+	avatar?: string;
 	isEmailVerified: boolean;
 	verificationCode?: string;
 	verificationCodeExpires?: Date;
@@ -58,6 +59,9 @@ const UserSchema: Schema = new Schema(
 			required: [true, "Last name is required"],
 			trim: true,
 			minlength: [2, "Last name must be at least 2 characters"],
+		},
+		avatar: {
+			type: String,
 		},
 		isEmailVerified: {
 			type: Boolean,

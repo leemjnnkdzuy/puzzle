@@ -3,7 +3,6 @@ import {useNavigate, Link} from "react-router-dom";
 import {FaArrowLeft} from "react-icons/fa";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import Loading from "@/components/ui/Loading";
 import authService from "@/services/AuthService";
 import {useGlobalNotificationPopup} from "@/hooks/useGlobalNotificationPopup";
 import {useLanguage} from "@/hooks/useLanguage";
@@ -246,11 +245,11 @@ const FogotPasswordPage: React.FC = () => {
 
 						<Button
 							type='submit'
-							disabled={isLoading}
+							loading={isLoading}
 							className='w-full bg-black text-white hover:bg-gray-800'
 							size='lg'
 						>
-							{isLoading ? <Loading size={20} /> : submit}
+							{submit}
 						</Button>
 					</form>
 				)}
@@ -274,11 +273,11 @@ const FogotPasswordPage: React.FC = () => {
 						/>
 						<Button
 							type='submit'
-							disabled={isLoading}
+							loading={isLoading}
 							className='w-full bg-black text-white hover:bg-gray-800'
 							size='lg'
 						>
-							{isLoading ? <Loading size={20} /> : verifySubmit}
+							{verifySubmit}
 						</Button>
 						<Button
 							type='button'
@@ -326,11 +325,11 @@ const FogotPasswordPage: React.FC = () => {
 						/>
 						<Button
 							type='submit'
-							disabled={isLoading}
+							loading={isLoading}
 							className='w-full bg-black text-white hover:bg-gray-800'
 							size='lg'
 						>
-							{isLoading ? <Loading size={20} /> : resetSubmit}
+							{resetSubmit}
 						</Button>
 					</form>
 				)}

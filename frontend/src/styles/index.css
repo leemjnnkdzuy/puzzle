@@ -6,6 +6,7 @@
 	:root {
 		--background: 255 255 255;
 		--foreground: 0 0 0;
+		--text-primary: 17 24 39;
 		--primary: 59 130 246;
 		--primary-foreground: 255 255 255;
 		--destructive: 239 68 68;
@@ -81,18 +82,12 @@
 	}
 }
 
-@layer utilities {
-	@keyframes spin-loading {
-		from {
-			transform: translate(-50%, -50%) rotate(0deg);
-		}
-		to {
-			transform: translate(-50%, -50%) rotate(360deg);
-		}
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
 	}
-
-	.animate-spin-loading {
-		animation: spin-loading 0.8s ease infinite;
+	to {
+		transform: rotate(360deg);
 	}
 }
 

@@ -175,7 +175,7 @@ const HomePage: React.FC = () => {
 	if (loading) {
 		return (
 			<div className='flex items-center justify-center min-h-screen'>
-				<Loading size={40} />
+				<Loading size={40} color='rgb(17, 24, 39)' />
 			</div>
 		);
 	}
@@ -187,7 +187,6 @@ const HomePage: React.FC = () => {
 					Test Authentication
 				</h1>
 
-				{/* User Info */}
 				<div className='bg-white rounded-lg shadow-md p-6 mb-6'>
 					<h2 className='text-xl font-semibold mb-4'>User Info</h2>
 					{isAuthenticated && user ? (
@@ -201,7 +200,6 @@ const HomePage: React.FC = () => {
 					)}
 				</div>
 
-				{/* Action Buttons */}
 				<div className='bg-white rounded-lg shadow-md p-6 mb-6'>
 					<h2 className='text-xl font-semibold mb-4'>Actions</h2>
 					<div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
@@ -330,14 +328,10 @@ const HomePage: React.FC = () => {
 								<div className='flex gap-4'>
 									<Button
 										onClick={handleRegister}
-										disabled={isLoading}
+										loading={isLoading}
 										className='flex-1'
 									>
-										{isLoading ? (
-											<Loading size='20px' />
-										) : (
-											"Register"
-										)}
+										Register
 									</Button>
 									<Button
 										onClick={() => setActiveForm(null)}
@@ -379,14 +373,10 @@ const HomePage: React.FC = () => {
 								<div className='flex gap-4'>
 									<Button
 										onClick={handleLogin}
-										disabled={isLoading}
+										loading={isLoading}
 										className='flex-1'
 									>
-										{isLoading ? (
-											<Loading size='20px' />
-										) : (
-											"Login"
-										)}
+										Login
 									</Button>
 									<Button
 										onClick={() => setActiveForm(null)}
@@ -417,14 +407,10 @@ const HomePage: React.FC = () => {
 								<div className='flex gap-4'>
 									<Button
 										onClick={handleForgotPassword}
-										disabled={isLoading}
+										loading={isLoading}
 										className='flex-1'
 									>
-										{isLoading ? (
-											<Loading size='20px' />
-										) : (
-											"Send Reset Code"
-										)}
+										Send Reset Code
 									</Button>
 									<Button
 										onClick={() => setActiveForm(null)}
@@ -439,7 +425,6 @@ const HomePage: React.FC = () => {
 					</div>
 				)}
 
-				{/* Navigation Links */}
 				<div className='mt-6 text-center'>
 					<Button
 						onClick={() => navigate("/login")}
