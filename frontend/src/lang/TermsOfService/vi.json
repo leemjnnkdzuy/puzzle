@@ -1,0 +1,153 @@
+{
+	"title": "Điều khoản Dịch vụ",
+	"lastUpdated": "Cập nhật lần cuối:",
+	"intro": {
+		"p1": "Các Điều khoản Dịch vụ này (\"<strong>Điều khoản</strong>\") tạo thành một thỏa thuận điều chỉnh việc sử dụng Dịch vụ (được định nghĩa bên dưới) do Puzzle Labs, Inc. (\"<strong>Puzzle</strong>\") cung cấp cho tổ chức được xác định trong Biểu mẫu Đặt hàng có liên quan hoặc tổ chức khác truy cập Dịch vụ (\"<strong>Khách hàng</strong>\"). Thỏa thuận này có hiệu lực kể từ ngày ký Biểu mẫu Đặt hàng có liên quan hoặc, nếu sớm hơn, ngày Khách hàng lần đầu truy cập Dịch vụ (nếu có, \"<strong>Ngày có hiệu lực</strong>\").",
+		"p2": "Bằng cách nhấp vào hộp hoặc bằng cách khác cho biết bạn chấp nhận các Điều khoản này, bằng cách thực hiện Biểu mẫu Đặt hàng hoặc hợp đồng khác tham chiếu đến các Điều khoản này, bằng cách mua Dịch vụ hoặc bằng cách khác tham gia vào Biểu mẫu Đặt hàng hoặc hợp đồng khác với Puzzle để mua Dịch vụ hoặc theo đó Dịch vụ được cung cấp cho bạn, hoặc bằng cách khác truy cập và/hoặc sử dụng Dịch vụ, tùy theo cách nào sớm hơn, bạn chấp nhận và đồng ý bị ràng buộc bởi các Điều khoản này. Nếu bạn không đồng ý với các Điều khoản này hoặc bạn không được phép truy cập và/hoặc sử dụng Dịch vụ, bạn không được truy cập hoặc sử dụng Dịch vụ.",
+		"p3": "Nếu bạn đang truy cập và/hoặc sử dụng Dịch vụ thay mặt cho một công ty (chẳng hạn như người sử dụng lao động của bạn) hoặc pháp nhân pháp lý khác, bạn đồng ý với các Điều khoản này thay mặt cho công ty hoặc pháp nhân pháp lý đó, và bạn đại diện và đảm bảo rằng bạn có thẩm quyền ràng buộc công ty hoặc pháp nhân pháp lý đó với các Điều khoản này."
+	},
+	"sections": {
+		"1": {
+			"title": "DỊCH VỤ VÀ HỖ TRỢ",
+			"1.1": {
+				"title": "1.1 Dịch vụ",
+				"content": "Khách hàng có thể nhận từ Puzzle quyền truy cập và sử dụng phần mềm, nền tảng và công nghệ khác do Puzzle cung cấp để mua hoặc sử dụng bởi khách hàng của mình (\"<strong>Dịch vụ</strong>\") theo các điều khoản của Thỏa thuận này. Dịch vụ bao gồm, nhưng không giới hạn ở, tóm tắt video được hỗ trợ bởi AI, tạo phụ đề tự động, khả năng xuất đa nền tảng và các tính năng liên quan."
+			},
+			"1.2": {
+				"title": "1.2 Quyền",
+				"content": "Theo các điều khoản của Thỏa thuận này, Puzzle cấp cho Khách hàng trong thời hạn Đăng ký có liên quan (như được định nghĩa bên dưới) quyền không độc quyền, không thể cấp phép lại, không thể chuyển nhượng để truy cập và sử dụng Dịch vụ phù hợp với Thỏa thuận này và tài liệu sản phẩm được công bố của Puzzle (\"<strong>Tài liệu</strong>\")."
+			},
+			"1.3": {
+				"title": "1.3 Hỗ trợ; SLA",
+				"content": "Trong khi có giấy phép hợp lệ, Puzzle sẽ cung cấp cho Khách hàng (i) dịch vụ hỗ trợ kỹ thuật phù hợp với các điều khoản được nêu trong Phụ lục A; và (ii) các cam kết trong Thỏa thuận Mức độ Dịch vụ trong Phụ lục B."
+			},
+			"1.4": {
+				"title": "1.4 Người dùng được ủy quyền",
+				"content": "Khách hàng sẽ không cho phép bất kỳ người nào khác ngoài Người dùng được ủy quyền truy cập hoặc sử dụng Dịch vụ. Khách hàng có thể ủy quyền cho bất kỳ nhân viên hoặc nhà thầu nào của Khách hàng truy cập hoặc sử dụng Dịch vụ (mỗi người là \"<strong>Người dùng được ủy quyền</strong>\") thay mặt cho Khách hàng, với điều kiện (i) việc sử dụng như vậy, bao gồm số lượng Người dùng được ủy quyền, không vượt quá bất kỳ hạn chế hoặc giới hạn nào trong Biểu mẫu Đặt hàng, nếu có; và (ii) Khách hàng chịu trách nhiệm về các hành vi hoặc thiếu sót của Người dùng được ủy quyền liên quan đến việc sử dụng Dịch vụ của họ như thể do chính Khách hàng thực hiện. Mỗi tài khoản cho Dịch vụ chỉ có thể được truy cập và sử dụng bởi Người dùng được ủy quyền cụ thể mà tài khoản đó được tạo."
+			},
+			"1.5": {
+				"title": "1.5 Dịch vụ của Bên thứ ba",
+				"content": "Một số tính năng và chức năng trong Dịch vụ có thể cho phép Khách hàng và Người dùng được ủy quyền của họ giao diện hoặc tương tác với, truy cập và/hoặc sử dụng các dịch vụ, sản phẩm, công nghệ và nội dung của bên thứ ba tương thích (gọi chung là \"<strong>Dịch vụ của Bên thứ ba</strong>\") thông qua Dịch vụ. Puzzle không đưa ra bất kỳ tuyên bố hoặc bảo đảm nào liên quan đến Dịch vụ của Bên thứ ba. Khách hàng hoàn toàn chịu trách nhiệm về (i) duy trì Dịch vụ của Bên thứ ba; (ii) có được bất kỳ giấy phép và sự đồng ý liên quan nào cần thiết để sử dụng Dịch vụ của Bên thứ ba kết hợp với Dịch vụ; và (iii) hoạt động tương tác và cấu hình của bất kỳ Dịch vụ của Bên thứ ba nào với việc sử dụng Dịch vụ của Khách hàng."
+			},
+			"1.6": {
+				"title": "1.6 Dịch vụ Đánh giá; Dịch vụ Beta",
+				"content": "Puzzle có thể cấp cho Khách hàng quyền truy cập Dịch vụ trên cơ sở dùng thử, chứng minh khái niệm hoặc đánh giá (\"<strong>Dịch vụ Đánh giá</strong>\") hoặc trên cơ sở alpha, xem trước, truy cập sớm hoặc beta (\"<strong>Dịch vụ Beta</strong>\"). Khách hàng chỉ có thể sử dụng Dịch vụ Đánh giá cho mục đích đánh giá nội bộ của Khách hàng. Bất chấp bất kỳ quy định nào khác của Thỏa thuận này, DỊCH VỤ ĐÁNH GIÁ VÀ DỊCH VỤ BETA ĐƯỢC CUNG CẤP BỞI PUZZLE \"NHƯ HIỆN CÓ\" VÀ KHÔNG CÓ BẤT KỲ TƯYÊN BỐ, BẢO ĐẢM, HIỆU SUẤT, ĐẢM BẢO BẢO MẬT DỮ LIỆU, HOẶC NGHĨA VỤ HỖ TRỢ HOẶC BỒI THƯỜNG NÀO."
+			}
+		},
+		"2": {
+			"title": "HẠN CHẾ VÀ TRÁCH NHIỆM",
+			"2.1": {
+				"title": "2.1 Hạn chế",
+				"intro": "Khách hàng sẽ không, trực tiếp hoặc gián tiếp:",
+				"items": [
+					"đảo ngược kỹ thuật, giải mã, tháo rời hoặc bằng cách khác cố gắng khám phá mã nguồn, mã đối tượng hoặc cấu trúc cơ bản, ý tưởng, bí quyết hoặc thuật toán liên quan đến Dịch vụ hoặc bất kỳ phần mềm, tài liệu hoặc dữ liệu nào liên quan đến Dịch vụ (\"<strong>Phần mềm</strong>\");",
+					"sửa đổi, dịch hoặc tạo các tác phẩm phái sinh dựa trên Dịch vụ hoặc bất kỳ Phần mềm nào (trừ khi được Puzzle cho phép rõ ràng bằng văn bản);",
+					"bán, chuyển nhượng, cho thuê cấp phép lại, hoặc bằng cách khác chuyển Dịch vụ hoặc Phần mềm, toàn bộ hoặc một phần, cho bất kỳ bên thứ ba nào mà không có sự đồng ý trước bằng văn bản của Puzzle;",
+					"sử dụng Dịch vụ hoặc bất kỳ Phần mềm nào cho mục đích chia sẻ thời gian hoặc văn phòng dịch vụ hoặc bằng cách khác vì lợi ích của bên thứ ba;",
+					"xóa bất kỳ thông báo hoặc nhãn độc quyền nào;",
+					"can thiệp hoặc làm gián đoạn tính toàn vẹn hoặc hiệu suất của Dịch vụ, Phần mềm hoặc dữ liệu chứa trong đó;",
+					"cố gắng truy cập trái phép vào Dịch vụ, Phần mềm hoặc hệ thống hoặc mạng liên quan của nó; hoặc",
+					"sử dụng Dịch vụ hoặc Dữ liệu Khách hàng theo cách vi phạm, chiếm đoạt hoặc bằng cách khác vi phạm quyền của bất kỳ bên thứ ba nào hoặc vi phạm luật pháp và quy định."
+				]
+			},
+			"2.2": {
+				"title": "2.2 Thiết bị của Khách hàng",
+				"content": "Khách hàng sẽ chịu trách nhiệm về việc có được và duy trì bất kỳ thiết bị và dịch vụ phụ trợ nào cần thiết để kết nối, truy cập hoặc bằng cách khác sử dụng Dịch vụ, bao gồm, không giới hạn, modem, phần cứng, máy chủ, phần mềm, hệ điều hành, mạng, máy chủ web và tương tự (gọi chung là \"<strong>Thiết bị</strong>\"). Khách hàng cũng sẽ chịu trách nhiệm về việc duy trì bảo mật của Thiết bị, tài khoản Khách hàng, thông tin đăng nhập truy cập của Khách hàng và tệp, và cho tất cả việc sử dụng tài khoản Khách hàng hoặc Thiết bị có hoặc không có kiến thức hoặc sự đồng ý của Khách hàng."
+			}
+		},
+		"3": {
+			"title": "PHÍ VÀ THANH TOÁN",
+			"3.1": {
+				"title": "3.1 Phí",
+				"content": "Khách hàng sẽ trả cho Puzzle các khoản phí được nêu trong Biểu mẫu Đặt hàng có liên quan (\"<strong>Phí</strong>\"). Tất cả Phí đều không hoàn lại trừ khi được quy định rõ ràng khác trong Thỏa thuận này. Tất cả Phí đều không bao gồm thuế, phí, thuế suất, thuế quan và các khoản phí chính phủ khác có liên quan (gọi chung là \"<strong>Thuế</strong>\"). Khách hàng chịu trách nhiệm thanh toán tất cả Thuế, loại trừ Thuế dựa trên thu nhập, tài sản hoặc nhân viên của Puzzle."
+			},
+			"3.2": {
+				"title": "3.2 Điều khoản Thanh toán",
+				"content": "Trừ khi được quy định khác trong Biểu mẫu Đặt hàng có liên quan, tất cả Phí đều đến hạn và phải thanh toán trong vòng ba mươi (30) ngày kể từ ngày hóa đơn. Nếu Khách hàng không thanh toán bất kỳ Phí nào khi đến hạn, Puzzle có thể tạm ngừng quyền truy cập Dịch vụ của Khách hàng cho đến khi các Phí đó được thanh toán đầy đủ."
+			}
+		},
+		"4": {
+			"title": "BẢO MẬT",
+			"content": [
+				"Mỗi bên (\"<strong>Bên Nhận</strong>\") hiểu rằng bên kia (\"<strong>Bên Tiết lộ</strong>\") đã tiết lộ hoặc có thể tiết lộ thông tin kinh doanh, kỹ thuật hoặc tài chính liên quan đến kinh doanh của Bên Tiết lộ (sau đây được gọi là \"<strong>Thông tin Độc quyền</strong>\" của Bên Tiết lộ). Thông tin Độc quyền của Puzzle bao gồm thông tin không công khai về tính năng, chức năng và hiệu suất của Dịch vụ. Thông tin Độc quyền của Khách hàng bao gồm dữ liệu không công khai do Khách hàng cung cấp cho Puzzle để cho phép cung cấp Dịch vụ (\"<strong>Dữ liệu Khách hàng</strong>\"). Bên Nhận đồng ý: (i) thực hiện các biện pháp phòng ngừa hợp lý để bảo vệ Thông tin Độc quyền như vậy, và (ii) không sử dụng (trừ khi thực hiện Dịch vụ hoặc như được phép ở đây) hoặc tiết lộ cho bất kỳ người thứ ba nào bất kỳ Thông tin Độc quyền như vậy.",
+				"Bên Tiết lộ đồng ý rằng điều trên sẽ không áp dụng đối với bất kỳ thông tin nào sau năm (5) năm kể từ ngày tiết lộ hoặc bất kỳ thông tin nào mà Bên Nhận có thể chứng minh (a) là hoặc trở nên có sẵn cho công chúng, hoặc (b) đã có trong sở hữu hoặc được biết bởi nó trước khi nhận từ Bên Tiết lộ, hoặc (c) đã được tiết lộ một cách hợp pháp cho nó mà không có hạn chế bởi bên thứ ba, hoặc (d) đã được phát triển độc lập mà không sử dụng bất kỳ Thông tin Độc quyền nào của Bên Tiết lộ hoặc (e) được yêu cầu tiết lộ theo luật."
+			]
+		},
+		"5": {
+			"title": "QUYỀN SỞ HỮU TRÍ TUỆ",
+			"content": [
+				"Trừ khi được quy định rõ ràng ở đây, chỉ riêng Puzzle (và các bên cấp phép của nó, nếu có) sẽ giữ tất cả quyền sở hữu trí tuệ liên quan đến Dịch vụ hoặc bất kỳ đề xuất, ý tưởng, yêu cầu cải tiến, phản hồi, khuyến nghị hoặc thông tin khác do Khách hàng, bất kỳ Người dùng được ủy quyền nào, hoặc bất kỳ bên thứ ba nào liên quan đến Dịch vụ, được chuyển nhượng cho Puzzle. Khách hàng sẽ không sao chép, sửa đổi, phân phối, bán hoặc cho thuê bất kỳ phần nào của Dịch vụ hoặc phần mềm bao gồm của chúng tôi, cũng như Khách hàng sẽ không đảo ngược kỹ thuật hoặc cố gắng trích xuất mã nguồn của phần mềm đó.",
+				"Khách hàng và Người dùng được ủy quyền của họ sẽ giữ tất cả quyền, quyền sở hữu và lợi ích đối với Dữ liệu Khách hàng. Khách hàng bằng đây cấp cho Puzzle quyền và giấy phép không độc quyền, trên toàn thế giới, miễn phí bản quyền, đã thanh toán đầy đủ để sử dụng, sao chép, thực hiện, hiển thị và phân phối Dữ liệu Khách hàng chỉ nhằm mục đích cung cấp Dịch vụ cho Khách hàng."
+			]
+		},
+		"6": {
+			"title": "BỒI THƯỜNG",
+			"content": [
+				"Puzzle sẽ bảo vệ, bồi thường và giữ cho Khách hàng không bị tổn hại khỏi và chống lại bất kỳ và tất cả các khiếu nại, thiệt hại, nghĩa vụ, tổn thất, trách nhiệm, chi phí hoặc nợ, và chi phí (bao gồm nhưng không giới hạn ở phí luật sư) phát sinh từ: (i) khiếu nại của bên thứ ba rằng Dịch vụ, khi được sử dụng phù hợp với Thỏa thuận này, vi phạm hoặc chiếm đoạt quyền sở hữu trí tuệ của bên thứ ba đó; hoặc (ii) vi phạm nghĩa vụ bảo mật của Puzzle theo đây.",
+				"Khách hàng sẽ bảo vệ, bồi thường và giữ cho Puzzle không bị tổn hại khỏi và chống lại bất kỳ và tất cả các khiếu nại, thiệt hại, nghĩa vụ, tổn thất, trách nhiệm, chi phí hoặc nợ, và chi phí (bao gồm nhưng không giới hạn ở phí luật sư) phát sinh từ: (i) việc sử dụng Dịch vụ của Khách hàng hoặc bất kỳ Người dùng được ủy quyền nào vi phạm Thỏa thuận này; (ii) Dữ liệu Khách hàng hoặc việc kết hợp Dịch vụ của Khách hàng với bất kỳ phần cứng, phần mềm, sản phẩm, dữ liệu hoặc vật liệu khác không được cung cấp bởi Puzzle; hoặc (iii) bất kỳ khiếu nại nào rằng Dữ liệu Khách hàng hoặc việc sử dụng Dịch vụ của Khách hàng vi phạm hoặc chiếm đoạt quyền sở hữu trí tuệ của bất kỳ bên thứ ba nào."
+			]
+		},
+		"7": {
+			"title": "TỪ CHỐI BẢO ĐẢM",
+			"content": "DỊCH VỤ VÀ PHẦN MỀM ĐƯỢC CUNG CẤP \"NHƯ HIỆN CÓ\" VÀ \"NHƯ CÓ SẴN\" MÀ KHÔNG CÓ BẢO ĐẢM BẤT KỲ LOẠI NÀO, RÕ RÀNG HOẶC NGỤ Ý, BAO GỒM, NHƯNG KHÔNG GIỚI HẠN Ở, CÁC BẢO ĐẢM NGỤ Ý VỀ KHẢ NĂNG BÁN ĐƯỢC, PHÙ HỢP CHO MỤC ĐÍCH CỤ THỂ, VÀ KHÔNG VI PHẠM. PUZZLE KHÔNG ĐẢM BẢO RẰNG DỊCH VỤ SẼ KHÔNG BỊ GIÁN ĐOẠN, KHÔNG CÓ LỖI, HOẶC HOÀN TOÀN AN TOÀN."
+		},
+		"8": {
+			"title": "GIỚI HẠN TRÁCH NHIỆM",
+			"content": "BẤT CHẤP BẤT CỨ ĐIỀU GÌ TRÁI LẠI, NGOẠI TRỪ THƯƠNG TÍCH THÂN THỂ CỦA MỘT NGƯỜI, PUZZLE VÀ CÁC NHÀ CUNG CẤP CỦA NÓ (BAO GỒM NHƯNG KHÔNG GIỚI HẠN Ở TẤT CẢ CÁC NHÀ CUNG CẤP THIẾT BỊ VÀ CÔNG NGHỆ), CÁC QUAN CHỨC, CÔNG TY LIÊN KẾT, ĐẠI DIỆN, NHÀ THẦU VÀ NHÂN VIÊN SẼ KHÔNG CHỊU TRÁCH NHIỆM HOẶC TRÁCH NHIỆM ĐỐI VỚI BẤT KỲ CHỦ ĐỀ NÀO CỦA THỎA THUẬN NÀY HOẶC CÁC ĐIỀU KHOẢN VÀ ĐIỀU KIỆN LIÊN QUAN ĐẾN ĐÓ THEO BẤT KỲ HỢP ĐỒNG, SƠ SUẤT, TRÁCH NHIỆM NGHIÊM NGẶT HOẶC LÝ THUYẾT KHÁC: (A) CHO LỖI HOẶC GIÁN ĐOẠN SỬ DỤNG HOẶC CHO MẤT MÁT HOẶC KHÔNG CHÍNH XÁC HOẶC HƯ HỎNG DỮ LIỆU HOẶC CHI PHÍ MUA HÀNG HÓA, DỊCH VỤ HOẶC CÔNG NGHỆ THAY THẾ HOẶC MẤT MÁT KINH DOANH; (B) CHO BẤT KỲ THIỆT HẠI GIÁN TIẾP, MẪU, NGẪU NHIÊN, ĐẶC BIỆT HOẶC HẬU QUẢ NÀO; (C) CHO BẤT KỲ VẤN ĐỀ NÀO VƯỢT QUÁ KIỂM SOÁT HỢP LÝ CỦA PUZZLE; HOẶC (D) CHO BẤT KỲ SỐ TIỀN NÀO, CÙNG VỚI CÁC SỐ TIỀN LIÊN QUAN ĐẾN TẤT CẢ CÁC KHIẾU NẠI KHÁC, VƯỢT QUÁ CÁC KHOẢN PHÍ ĐƯỢC TRẢ BỞI KHÁCH HÀNG CHO PUZZLE CHO DỊCH VỤ THEO THỎA THUẬN NÀY TRONG 12 THÁNG TRƯỚC HÀNH ĐỘNG DẪN ĐẾN TRÁCH NHIỆM, TRONG MỖI TRƯỜNG HỢP, CHO DÙ PUZZLE CÓ ĐƯỢC TƯ VẤN VỀ KHẢ NĂNG CỦA CÁC THIỆT HẠI NHƯ VẬY HAY KHÔNG."
+		},
+		"9": {
+			"title": "THỜI HẠN VÀ CHẤM DỨT",
+			"9.1": {
+				"title": "9.1 Thời hạn",
+				"content": "Thỏa thuận này bắt đầu vào Ngày có hiệu lực và tiếp tục cho đến khi bị chấm dứt phù hợp với Mục 9 này. Thời hạn ban đầu của đăng ký Dịch vụ sẽ được quy định trong Biểu mẫu Đặt hàng có liên quan (\"<strong>Thời hạn Ban đầu</strong>\"). Trừ khi được quy định khác trong Biểu mẫu Đặt hàng, đăng ký sẽ tự động gia hạn cho các khoảng thời gian liên tiếp có cùng thời lượng như Thời hạn Ban đầu (mỗi khoảng, một \"<strong>Thời hạn Gia hạn</strong>\", và cùng với Thời hạn Ban đầu, \"<strong>Thời hạn Đăng ký</strong>\") trừ khi một trong hai bên cung cấp thông báo không gia hạn bằng văn bản ít nhất ba mươi (30) ngày trước khi kết thúc Thời hạn Đăng ký hiện tại."
+			},
+			"9.2": {
+				"title": "9.2 Chấm dứt",
+				"content": "Một trong hai bên có thể chấm dứt Thỏa thuận này (i) vì tiện lợi sau ba mươi (30) ngày thông báo bằng văn bản cho bên kia, hoặc (ii) ngay lập tức bằng thông báo bằng văn bản nếu bên kia vi phạm nghiêm trọng Thỏa thuận này và vi phạm như vậy không được khắc phục trong vòng ba mươi (30) ngày sau thông báo bằng văn bản về vi phạm đó."
+			},
+			"9.3": {
+				"title": "9.3 Hiệu lực của Chấm dứt",
+				"content": "Khi chấm dứt Thỏa thuận này, quyền truy cập và sử dụng Dịch vụ của Khách hàng sẽ ngay lập tức chấm dứt. Puzzle sẽ làm cho Dữ liệu Khách hàng có sẵn cho Khách hàng để xuất trong khoảng thời gian ba mươi (30) ngày sau khi chấm dứt. Sau khoảng thời gian đó, Puzzle có thể xóa Dữ liệu Khách hàng phù hợp với chính sách lưu trữ tiêu chuẩn của mình."
+			}
+		},
+		"10": {
+			"title": "QUY ĐỊNH CHUNG",
+			"10.1": {
+				"title": "10.1 Toàn bộ Thỏa thuận",
+				"content": "Thỏa thuận này, cùng với tất cả Biểu mẫu Đặt hàng, tạo thành toàn bộ thỏa thuận giữa các bên và thay thế tất cả các thỏa thuận, đề xuất hoặc tuyên bố trước đó và đồng thời, bằng văn bản hoặc bằng miệng, liên quan đến chủ đề của nó."
+			},
+			"10.2": {
+				"title": "10.2 Luật Điều chỉnh",
+				"content": "Thỏa thuận này sẽ được điều chỉnh bởi luật pháp của Tiểu bang Delaware mà không xem xét các quy định về xung đột luật pháp của nó. Tất cả các khiếu nại phát sinh từ hoặc liên quan đến Thỏa thuận này sẽ được đưa ra độc quyền tại các tòa án liên bang hoặc tiểu bang nằm ở Quận New Castle, Delaware."
+			},
+			"10.3": {
+				"title": "10.3 Chuyển nhượng",
+				"content": "Không bên nào có thể chuyển nhượng hoặc bằng cách khác chuyển Thỏa thuận này hoặc bất kỳ quyền hoặc nghĩa vụ nào theo đây mà không có sự đồng ý bằng văn bản của bên kia, ngoại trừ việc một trong hai bên có thể, mà không có sự đồng ý như vậy, chuyển nhượng hoặc chuyển Thỏa thuận này toàn bộ cho Công ty Liên kết hoặc người mua tất cả hoặc phần lớn tài sản của nó hoặc cho tổ chức kế thừa bằng cách sáp nhập, hợp nhất, thay đổi kiểm soát, chuyển đổi hoặc bằng cách khác."
+			},
+			"10.4": {
+				"title": "10.4 Bất khả kháng",
+				"content": "Không bên nào sẽ chịu trách nhiệm về bất kỳ sự chậm trễ hoặc thất bại nào trong việc thực hiện nghĩa vụ của mình theo đây (ngoài bất kỳ nghĩa vụ nào để thanh toán) do bất kỳ nguyên nhân nào vượt quá kiểm soát hợp lý của bên đó, bao gồm đại dịch, thời tiết, hỏa hoạn, lũ lụt, tranh chấp lao động, bạo loạn hoặc xáo trộn dân sự, hành động của chính phủ, và hành động của chiến tranh hoặc khủng bố."
+			}
+		},
+		"exhibitA": {
+			"title": "PHỤ LỤC A - ĐIỀU KHOẢN HỖ TRỢ",
+			"content": [
+				"Puzzle sẽ cung cấp hỗ trợ kỹ thuật cho Dịch vụ cho Khách hàng qua email và thông qua cổng hỗ trợ của chúng tôi vào các ngày trong tuần trong giờ từ 9:00 sáng đến 5:00 chiều giờ Thái Bình Dương, loại trừ Ngày lễ Liên bang (\"<strong>Giờ Hỗ trợ</strong>\").",
+				"Khách hàng có thể khởi tạo một vé hỗ trợ trong Giờ Hỗ trợ bằng cách gửi email đến support@puzzle.com hoặc thông qua cổng hỗ trợ có sẵn trong Dịch vụ.",
+				"Puzzle sẽ sử dụng các nỗ lực hợp lý về mặt thương mại để phản hồi tất cả các vé hỗ trợ trong vòng một (1) ngày làm việc."
+			]
+		},
+		"exhibitB": {
+			"title": "PHỤ LỤC B - THỎA THUẬN MỨC ĐỘ DỊCH VỤ",
+			"content": [
+				"Puzzle sẽ sử dụng tất cả các nỗ lực hợp lý về mặt thương mại để đảm bảo rằng Dịch vụ có sẵn cho Khách hàng 99.9% thời gian trong bất kỳ tháng dương lịch nào. Tính toán khả dụng loại trừ bất kỳ thời gian ngừng hoạt động nào do: (i) bảo trì theo lịch trình hoặc khẩn cấp; (ii) vi phạm Thỏa thuận này của Khách hàng, (iii) hành động hoặc thiếu sót của Khách hàng, Công ty Liên kết của nó, hoặc Người dùng được ủy quyền của nó hoặc của họ, (iv) Dịch vụ của Bên thứ ba; (v) sự cố của kết nối hoặc tiện ích của bên thứ ba hoặc các lý do khác ngoài kiểm soát của Puzzle.",
+				"Biện pháp khắc phục duy nhất và độc quyền của Khách hàng, và toàn bộ trách nhiệm của Puzzle, liên quan đến khả dụng Dịch vụ sẽ là đối với mỗi khoảng thời gian ngừng hoạt động kéo dài hơn một giờ, Puzzle sẽ ghi có cho Khách hàng 5% phí Dịch vụ hàng tháng cho mỗi khoảng thời gian 30 phút trở lên liên tiếp ngừng hoạt động; với điều kiện không quá một khoản tín dụng như vậy sẽ tích lũy mỗi ngày. Các khoản tín dụng như vậy sẽ được phát hành như một khoản tín dụng chống lại hóa đơn có thể thanh toán tiếp theo của Khách hàng, không thể đổi thành tiền mặt, và tổng tín dụng dịch vụ tối đa có thể thanh toán trong bất kỳ tháng nhất định nào là 25% phí Dịch vụ hàng tháng.",
+				"Để nhận tín dụng ngừng hoạt động, Khách hàng phải thông báo cho Puzzle bằng văn bản trong vòng 24 giờ kể từ thời điểm ngừng hoạt động, và việc không cung cấp thông báo như vậy sẽ mất quyền nhận tín dụng ngừng hoạt động."
+			]
+		}
+	},
+	"contact": {
+		"text": "Nếu bạn có bất kỳ câu hỏi nào về các Điều khoản Dịch vụ này, vui lòng liên hệ với chúng tôi tại",
+		"email": "legal@puzzle.com"
+	}
+}

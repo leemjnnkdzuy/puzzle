@@ -385,7 +385,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 							</p>
 							<div className='flex items-center gap-6 text-sm text-gray-600'>
 								<button
-									onClick={() => navigate("/privacy")}
+									onClick={() => navigate("/privacy-policy")}
 									className='hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0'
 								>
 									{t("footer.privacy")}
@@ -397,12 +397,6 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 									className='hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0'
 								>
 									{t("footer.terms")}
-								</button>
-								<button
-									onClick={() => navigate("/cookies")}
-									className='hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0'
-								>
-									{t("footer.cookies")}
 								</button>
 							</div>
 						</div>

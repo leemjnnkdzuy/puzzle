@@ -26,7 +26,7 @@ class ErrorBoundary extends Component<Props, State> {
 	render() {
 		if (this.state.hasError) {
 			return (
-				<div className='min-h-screen flex items-center justify-center bg-gray-50 px-4'>
+				<div className='min-h-screen flex items-center justify-center bg-gray-50 px-4 user-select'>
 					<div className='max-w-md w-full bg-white rounded-lg shadow-lg p-8'>
 						<h1 className='text-2xl font-bold text-red-600 mb-4'>
 							Đã xảy ra lỗi

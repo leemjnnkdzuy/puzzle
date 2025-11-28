@@ -10,6 +10,7 @@ import HeaderFooterLayout from "@/components/layout/HeaderFooterLayout";
 
 // Components
 import AppLoader, {PublicRoute} from "@/components/common/AppLoader";
+import RootWrapper from "@/components/common/RootWrapper";
 
 // Pages
 import LandingPage from "@/pages/LandingPage";
@@ -19,6 +20,7 @@ import SignUpPage from "@/pages/SignUpPage";
 import FogotPasswordPage from "@/pages/FogotPasswordPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 import TermsOfServicePage from "@/pages/TermsOfServicePage";
+import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 
 const publicRoutes: RouteTypes[] = [
 	{
@@ -51,6 +53,11 @@ const publicRoutes: RouteTypes[] = [
 		component: TermsOfServicePage,
 		layout: HeaderFooterLayout,
 	},
+	{
+		path: "/privacy-policy",
+		component: PrivacyPolicyPage,
+		layout: HeaderFooterLayout,
+	}
 ];
 
 const guestOnlyRoutes: RouteTypes[] = [
@@ -79,6 +86,31 @@ const privateRoutes: RouteTypes[] = [
 	},
 ];
 
+export const getRouteLayout = (pathname: string) => {
+	const allRoutes = [
+		...publicRoutes.filter(
+			(route) =>
+				!guestOnlyRoutes.some(
+					(guestRoute) => guestRoute.path === route.path
+				)
+		),
+		...guestOnlyRoutes,
+		...privateRoutes,
+	];
+
+	const exactMatch = allRoutes.find((route) => route.path === pathname);
+	if (exactMatch) {
+		return exactMatch.layout;
+	}
+
+	const wildcardRoute = allRoutes.find((route) => route.path === "*");
+	if (wildcardRoute) {
+		return wildcardRoute.layout;
+	}
+
+	return null;
+};
+
 const router = createBrowserRouter(
 	publicRoutes
 		.filter(
@@ -93,9 +125,11 @@ const router = createBrowserRouter(
 			return {
 				path: route.path,
 				element: (
-					<Layout>
-						<Page />
-					</Layout>
+					<RootWrapper>
+						<Layout>
+							<Page />
+						</Layout>
+					</RootWrapper>
 				),
 			} as RouteObject;
 		})
@@ -106,11 +140,13 @@ const router = createBrowserRouter(
 				return {
 					path: route.path,
 					element: (
-						<PublicRoute>
-							<Layout>
-								<Page />
-							</Layout>
-						</PublicRoute>
+						<RootWrapper>
+							<PublicRoute>
+								<Layout>
+									<Page />
+								</Layout>
+							</PublicRoute>
+						</RootWrapper>
 					),
 				} as RouteObject;
 			})
@@ -122,11 +158,13 @@ const router = createBrowserRouter(
 				return {
 					path: route.path,
 					element: (
-						<AppLoader>
-							<Layout>
-								<Page />
-							</Layout>
-						</AppLoader>
+						<RootWrapper>
+							<AppLoader>
+								<Layout>
+									<Page />
+								</Layout>
+							</AppLoader>
+						</RootWrapper>
 					),
 				} as RouteObject;
 			})

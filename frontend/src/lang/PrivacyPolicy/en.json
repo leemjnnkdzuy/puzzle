@@ -1,0 +1,242 @@
+{
+	"title": "Privacy Policy",
+	"lastUpdated": "Last updated:",
+	"intro": [
+		"This Privacy Policy describes how Puzzle Labs, Inc. (\"<strong>Company</strong>\" or \"<strong>our</strong>\" or \"<strong>we</strong>\") collects, uses, and discloses information associated with an identified or identifiable individual (referred to in this Privacy Policy as \"<strong>Personal Information</strong>\") and what choices you have around this activity. If you have any questions, please don't hesitate to contact us.",
+		"We may change this Privacy Policy from time to time, including as required to keep current with applicable laws and regulations, new technologies and security standards. When we do, we will post the updated policy on our Website located at https://www.puzzle.com/. If we change the policy in a material and retroactive manner, we will provide appropriate notice to you."
+	],
+	"sections": {
+		"1": {
+			"title": "1. Applicability of this Privacy Policy",
+			"content": [
+				"The Website is controlled by Puzzle Labs, Inc.. This Privacy Policy applies only to this Website (https://www.puzzle.com/), our mobile sites, and our use of social media sites (collectively, the \"<strong>Sites</strong>\"), and any other Personal Information obtained when you call, email, or otherwise communicate or interact with our Company. By accessing the Sites on any computer, mobile phone, tablet, or other device (collectively, \"<strong>Device</strong>\") or otherwise interacting with our Company, you agree to the terms of this Privacy Policy. If you do not agree to the policy, please do not use the Sites. We encourage you to periodically review our Privacy Policy to stay informed about how we are using the information we collect."
+			]
+		},
+		"2": {
+			"title": "2. Information We Collect and Receive",
+			"table": {
+				"headers": [
+					"Category of Personal Information Collected",
+					"Source",
+					"Purpose for Collection",
+					"Categories of Recipients"
+				],
+				"rows": [
+					[
+						"Contact information: such as name, email address, personal or business address, and phone number, and other information you provide.",
+						"From visitors to the Sites who call us, sign-up for emails or other services, or otherwise interact with us.",
+						"To communicate with and respond to visitors and our customers about our business operations, including verification of identity or to meet legal obligations.",
+						"We may share this information with select marketing, information technology, or other service providers and partners."
+					],
+					[
+						"Browsing information: such as your IP address, MAC address or other device identifier, HTTP Referrer information, the kind of browser or computer you use, pages and content that you visit on the Sites, what you click on, the state and country from which you access the Sites, date and time of your visit, and web pages you linked to our Sites from.",
+						"Our Sites and your interactions with the Sites, including through the use of cookies and other tracking technologies explained further below.",
+						"To evaluate usage of the Sites and improve performance and our services; to protect the security and integrity of the Sites and our business, such as preventing fraud, hacking, and other criminal activity or to meet legal obligations.",
+						"Our third party service providers who help us with fraud protection and website analytics."
+					]
+				]
+			},
+			"content": [
+				"In some jurisdictions, such as the European Union and United Kingdom, individuals may have the right to opt-in or withdraw consent for certain uses. If you reside in such jurisdictions, you may have additional rights which are detailed in \"Access, Correction, & Deletion\" below.",
+				"When you visit the Sites, we may collect certain non-personal information from you, including your Internet Protocol (IP) address, MAC address, browser type, operating system, device-identifying information, the specific web pages visited immediately preceding your connection, and the domain name from which you accessed the Sites. In addition, we may collect information about your browsing behavior, such as the date and time you visit the Sites, the areas or pages of the Sites that you visit, the amount of time you spend viewing the Sites, the number of times you return to the Sites and other clickstream data. We may also use such non-personal or deidentified, aggregated information for statistical analysis, research, and other purposes.",
+				"We do not use Google Workspace APIs to develop, improve, or train generalized AI or machine learning models."
+			]
+		},
+		"3": {
+			"title": "3. Cookie Policy",
+			"content": [
+				"A cookie is a small data text file, which is stored on the hard drive of your computer or mobile device. Each cookie is unique to your web browser. It will contain some anonymous information such as a unique identifier, website's domain name, and some digits and numbers. Cookies cannot be used to run programs or deliver viruses to your computer. At no time will our cookies collect your personally identifiable information.",
+				"When you visit our Website, we will store certain types of persistent cookies on your computer in order to authorize access to our private content and to facilitate and customize your use of our Website. A persistent cookie remembers information, settings, preferences, or sign-on credentials that the user has previously saved."
+			],
+			"subsections": {
+				"essential": {
+					"title": "Essential cookies",
+					"content": "Essential cookies allow us to offer you the best possible experience when accessing and navigating through our Sites and using its features. For example, these cookies let us recognize that you have created an account and have logged into that account."
+				},
+				"functionality": {
+					"title": "Functionality cookies",
+					"content": "Functionality cookies let us operate the Sites in accordance with the choices you make. For example, we will recognize your username and remember the choices that you made to your account during future visits."
+				},
+				"analytical": {
+					"title": "Analytical cookies",
+					"content": "These cookies enable us and third-party services to collect aggregated data for statistical purposes on how our visitors use our Website. These cookies do not contain or collect Personal Information and are merely used to help us improve your user experience of the Sites."
+				},
+				"general": {
+					"title": "General Cookie Information",
+					"content": "Once you leave our Sites, our persistent cookies remain on your hard drive. This helps create a convenient and faster website experience. You are always free to decline or restrict our cookies through your browser setting. But, due to the nature of our essential cookies, some parts of our Sites may not work properly. You can find general information on the Internet about cookies and details on how to delete them from your computer and mobile devices. At the moment we only use essential cookies, but we reserve the right to add functionality and analytical cookies in the future."
+				}
+			}
+		},
+		"4": {
+			"title": "4. Interest-based advertising",
+			"content": [
+				"You can opt out of interest-based advertising from third-party providers who follow the Digital Advertising Alliance's Self-Regulatory Principles for Online Behavioral Advertising at www.aboutads.info/choices."
+			]
+		},
+		"5": {
+			"title": "5. Your Choices",
+			"items": [
+				"Stop receiving marketing or promotional emails, direct mail, phone, and mobile marketing communications;",
+				"Update and correct your Personal Information; and",
+				"Request removal of information you post on our digital properties; in some cases, we may not be able to remove your content or Personal Information, in which case we will let you know if we are unable to do so and why."
+			],
+			"content": [
+				"To do any of these, let us know by one of these methods:",
+				"Follow the directions in a marketing email, direct mail, or mobile communication that you receive from us; and",
+				"Provide your request and current contact information through one of the contact methods listed under \"Contact Us\" below."
+			]
+		},
+		"6": {
+			"title": "6. Disclosure of Information",
+			"content": [
+				"We may disclose information collected from and about you as follows: (1) to our related companies and service providers, to perform a business, professional or technical support function for us; (2) to our business, sales and marketing partners and affiliates, advertisers or other third parties, who may contact you with their own offers; (3) as necessary if we believe that there has been a violation of the Sites Terms of Use or of our rights or the rights of any third party; (4) to respond to judicial process and provide information to law enforcement agencies or in connection with an investigation on matters related to public safety, as permitted by law; (5) as required by law, or to comply with legal process served on us; (6) in the event of a merger, acquisition, or any form of sale of some or all of our assets, in which case Personal Information held by us about our Sites users will be among the assets transferred to the buyer; and (7) as otherwise described in this Privacy Policy."
+			]
+		},
+		"7": {
+			"title": "7. Security",
+			"content": [
+				"We use commercially reasonable physical, managerial, and technical safeguards to preserve the integrity and security of your Personal Information. However, no data transmission over the Internet or data storage system can be guaranteed to be 100% secure. Please do not send sensitive information through the Sites. If you have reason to believe that your interaction with us is no longer secure, please immediately notify us of the problem by contacting us using the information in the \"Contact Us\" section below."
+			]
+		},
+		"8": {
+			"title": "8. Children's Privacy",
+			"content": [
+				"Our Sites are not intended for children under the age of 13. We do not knowingly collect Personal Information from children under 13. If you are a parent or guardian and believe your child has provided us with Personal Information, please contact us so we can delete such information."
+			]
+		},
+		"9": {
+			"title": "9. Data Retention",
+			"content": [
+				"We will retain your Personal Information for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required or permitted by law. When we no longer need your Personal Information, we will securely delete or anonymize it."
+			]
+		},
+		"10": {
+			"title": "10. Third-Party Links",
+			"content": [
+				"Our Sites may contain links to third-party websites, services, or applications that are not owned or controlled by us. This Privacy Policy does not apply to such third-party sites. We encourage you to review the privacy policies of any third-party sites you visit."
+			]
+		},
+		"11": {
+			"title": "11. International Data Transfers",
+			"content": [
+				"Your information may be transferred to, and maintained on, computers located outside of your state, province, country, or other governmental jurisdiction where the data protection laws may differ from those of your jurisdiction. If you are located outside the United States and choose to provide information to us, please note that we transfer the data, including Personal Information, to the United States and process it there."
+			]
+		},
+		"12": {
+			"title": "12. Changes to This Privacy Policy",
+			"content": [
+				"We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the \"Last updated\" date. You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page."
+			]
+		},
+		"13": {
+			"title": "13. Access, Correction, & Deletion",
+			"content": [
+				"Depending on your jurisdiction, you may have the right to access, correct, or delete your Personal Information. To exercise these rights, please contact us using the information provided in the \"Contact Us\" section below. We will respond to your request within a reasonable timeframe and in accordance with applicable law."
+			]
+		},
+		"14": {
+			"title": "14. Do Not Track Signals",
+			"content": [
+				"Some browsers incorporate a \"Do Not Track\" (DNT) feature that signals to websites you visit that you do not want to have your online activity tracked. Currently, there is no industry standard for responding to DNT signals. We do not currently respond to DNT browser signals or mechanisms."
+			]
+		},
+		"15": {
+			"title": "15. Your California Privacy Rights",
+			"content": [
+				"If you are a California resident, the California Consumer Privacy Act (CCPA) and other California privacy laws, as applicable, provide you additional rights with the respect to your personal information. California law permits our customers who are California residents to request certain information about our disclosure of Personal Information to third parties for their own direct marketing purposes during the preceding calendar year. This request is free and may be made once a year. To make such a request, please write to us at the following address:",
+				"Puzzle Labs, Inc.",
+				"ATTN: General Counsel",
+				"690 5th St.",
+				"San Francisco, CA 94107",
+				"legal@puzzle.com",
+				"If you are a California resident, California law provides you with the following additional rights with respect to your Personal Information:",
+				"The right to know what Personal Information we have collected, used, disclosed and sold about you. You may submit a request to know by using the contact information detailed in this Section. You also may designate an authorized agent to make a request for access on your behalf.",
+				"The right to request that we delete any Personal Information we have collected about you. You may submit a request for deletion by using the contact information detailed in this Section. You also may designate an authorized agent to make a request for deletion on your behalf.",
+				"California residents may also have the right not to be subject to automated decision-making, including profiling, where it would have a legal or similarly significant effect on them; and the right to data portability with regard to the data they provided to us. If you exercise any of these rights and submit a request to us, we may verify your identity. We also may use a third party verification provider to verify your identity. Your exercise of these rights will have no adverse effect on the price and quality of our goods or services. At present we have not sold Personal Information about our users; nor do we have any plans to do so in the future."
+			]
+		},
+		"16": {
+			"title": "16. Your Rights",
+			"content": [
+				"We want you to be in control of how your Personal Information is used by us. Please note that our ability to access or control your Personal Information will be limited, as required or permitted by applicable law. Depending on your jurisdiction, you may have the right to be informed of, and request access to, the Personal Information we process about you; update and correct inaccuracies in that information; have the information restricted or deleted; object or withdraw your consent to certain uses of data; and lodge a complaint with your local data protection authority."
+			],
+			"items": [
+				"The right not to be subject to automated decision-making, including profiling, where it would have a legal or similarly significant effect on you;",
+				"The right to data portability with regard to the data you provided to us."
+			]
+		},
+		"17": {
+			"title": "17. How to Exercise Your Rights",
+			"content": [
+				"If you would like to exercise any of your rights as described in this Privacy Policy, please contact us using the contact information detailed in the \"Contact Us\" section below.",
+				"Please note that you may only make a CCPA-related data access or data portability disclosure request twice within a 12-month period.",
+				"If you choose to contact directly by phone, email, or in writing, you will need to provide us with:",
+				"Enough information to identify you (e.g., your full name, address and customer or matter reference number);",
+				"Proof of your identity and address (e.g., a copy of your driving license or passport); and",
+				"A description of what right you want to exercise and the information to which your request relates.",
+				"We are not obligated to make a data access or data portability disclosure if we cannot verify that the person making the request is the person about whom we collected information, or is someone authorized to act on such person's behalf.",
+				"Any Personal Information we collect from you to verify your identity in connection with your request will be used solely for the purposes of verification."
+			]
+		},
+		"18": {
+			"title": "18. Right to Lodge Complaints",
+			"content": [
+				"We are transparent about the ways in which we collect and use Personal Information, and welcome your questions and concerns. We hope that we or our Data Protection Officer can resolve any query or concern you raise about our use of your information.",
+				"If you have any concern or complaint about the way we handle your Personal Information, please contact us using the contact information detailed in the \"Contact Us\" section below. To the extent you believe we have not addressed your concerns or otherwise choose to do so, you have the right to lodge a complaint with a supervisory authority in the country where you reside."
+			],
+			"items": [
+				{
+					"label": "United States:",
+					"content": "If you are a United States resident, you may contact the U.S. Federal Trade Commission regarding your concerns. For more information, please see: <a href='https://www.ftc.gov/news-events/news/press-releases/2014/05/file-consumer-complaint-ftc-your-mobile-device' target='_blank' rel='noopener noreferrer' class='text-blue-600 hover:text-blue-800 underline'>https://www.ftc.gov/news-events/news/press-releases/2014/05/file-consumer-complaint-ftc-your-mobile-device</a>."
+				},
+				{
+					"label": "European Union:",
+					"content": "The General Data Protection Regulation also gives you right to lodge a complaint with a supervisory authority, in the European Union (or European Economic Area) state where you work, normally live, or where any alleged infringement of data protection laws occurred. For more information, please see: <a href='https://commission.europa.eu/law/law-topic/data-protection/reform/rights-citizens/redress/what-should-i-do-if-i-think-my-personal-data-protection-rights-havent-been-respected_en' target='_blank' rel='noopener noreferrer' class='text-blue-600 hover:text-blue-800 underline'>https://commission.europa.eu/law/law-topic/data-protection/reform/rights-citizens/redress/what-should-i-do-if-i-think-my-personal-data-protection-rights-havent-been-respected_en</a>."
+				}
+			]
+		},
+		"19": {
+			"title": "19. Visitors from Outside the United States — Cross-Border Transfer",
+			"content": [
+				"The Website is hosted in the United States. If you are visiting the Website from outside the United States, your information may be transferred to, stored and processed in the United States or other countries in accordance with this Privacy Policy. The data protection and other applicable laws of the United States or other countries may not be as comprehensive as those laws or regulations in your country or may otherwise differ from the data protection or consumer protection laws in your country. Your information may be available to government authorities under lawful orders and law applicable in such jurisdictions. By using the Website and/or providing Personal Information to us, you consent to transfer of your information to our facilities as described in this Privacy Policy."
+			]
+		},
+		"20": {
+			"title": "20. Business Transfers",
+			"content": [
+				"In the event of a merger, acquisition, reorganization, bankruptcy, or other sale of all or a portion of our assets, any Personal Information owned or controlled by us may be one of the assets transferred to the acquiring party. We will provide notice before your Personal Information is transferred and becomes subject to a different privacy policy."
+			]
+		},
+		"21": {
+			"title": "21. Contact Us",
+			"content": [
+				"If you have questions about this Privacy Policy or our practices, or if you are seeking to exercise any of your statutory rights, you can contact us at the address provided below:"
+			],
+			"subsections": {
+				"us": {
+					"title": "United States and Other Countries",
+					"content": "If you live in the United States or any other country outside of the European Union, European Free Trade Association (EFTA) States, or the United Kingdom, the data controller responsible for your Personal Information is Puzzle Labs, Inc., with an address of:\n\nPuzzle Labs, Inc.\nATTN: General Counsel\n690 5th St.\nSan Francisco, CA 94107 USA"
+				},
+				"eu": {
+					"title": "European Union, EFTA States, and United Kingdom",
+					"content": "If you live in the European Union, EFTA States, or the United Kingdom, the data controller is Puzzle Labs, Inc., with an address of:\n\nPuzzle Labs, Inc.\nATTN: General Counsel\n690 5th St.\nSan Francisco, CA 94107 USA"
+				},
+				"dpo": {
+					"title": "Data Protection Officer",
+					"content": "Puzzle Labs, Inc.\nATTN: Data Protection Officer\n690 5th Street\nSan Francisco, CA 94107\nreng@puzzle.com"
+				},
+				"security": {
+					"title": "Security Contact",
+					"content": "Puzzle Labs, Inc.\nATTN: General Counsel\n690 5th Street\nSan Francisco, CA 94107\nsecurity@puzzle.com"
+				}
+			}
+		}
+	},
+	"contact": {
+		"title": "Contact Us",
+		"content": [
+			"If you would like this notice in another format (for example: audio, large print, braille) please contact us at the above."
+		],
+		"addresses": {}
+	}
+}

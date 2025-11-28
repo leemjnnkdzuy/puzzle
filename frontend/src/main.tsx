@@ -2,7 +2,7 @@ import {StrictMode} from "react";
 import {createRoot} from "react-dom/client";
 import "@/styles/index.css";
 import App from "./App.tsx";
-import {LanguageProvider} from "./contexts/LanguageProvider.tsx";
+import {LanguageProvider} from "./contexts/LanguageContext.tsx";
 import ErrorBoundary from "./components/common/ErrorBoundary.tsx";
 
 const rootElement = document.getElementById("root");

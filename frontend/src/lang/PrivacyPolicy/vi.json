@@ -1,0 +1,242 @@
+{
+	"title": "Chính Sách Bảo Mật",
+	"lastUpdated": "Cập nhật lần cuối:",
+	"intro": [
+		"Chính sách Bảo mật này mô tả cách Puzzle Labs, Inc. (\"<strong>Công ty</strong>\" hoặc \"<strong>chúng tôi</strong>\") thu thập, sử dụng và tiết lộ thông tin liên quan đến một cá nhân được xác định hoặc có thể xác định (được gọi trong Chính sách Bảo mật này là \"<strong>Thông tin Cá nhân</strong>\") và những lựa chọn bạn có liên quan đến hoạt động này. Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi.",
+		"Chúng tôi có thể thay đổi Chính sách Bảo mật này theo thời gian, bao gồm cả việc cần thiết để phù hợp với các luật và quy định hiện hành, công nghệ mới và tiêu chuẩn bảo mật. Khi chúng tôi làm vậy, chúng tôi sẽ đăng chính sách đã cập nhật trên Trang web của chúng tôi tại https://www.puzzle.com/. Nếu chúng tôi thay đổi chính sách một cách đáng kể và có hiệu lực hồi tố, chúng tôi sẽ thông báo phù hợp cho bạn."
+	],
+	"sections": {
+		"1": {
+			"title": "1. Phạm vi Áp dụng của Chính sách Bảo mật này",
+			"content": [
+				"Trang web được kiểm soát bởi Puzzle Labs, Inc.. Chính sách Bảo mật này chỉ áp dụng cho Trang web này (https://www.puzzle.com/), các trang web di động của chúng tôi và việc sử dụng các trang mạng xã hội của chúng tôi (gọi chung là \"<strong>Trang web</strong>\"), và bất kỳ Thông tin Cá nhân nào khác thu được khi bạn gọi, gửi email hoặc giao tiếp hoặc tương tác với Công ty của chúng tôi. Bằng cách truy cập Trang web trên bất kỳ máy tính, điện thoại di động, máy tính bảng hoặc thiết bị khác (gọi chung là \"<strong>Thiết bị</strong>\") hoặc tương tác với Công ty của chúng tôi, bạn đồng ý với các điều khoản của Chính sách Bảo mật này. Nếu bạn không đồng ý với chính sách, vui lòng không sử dụng Trang web. Chúng tôi khuyến khích bạn xem xét định kỳ Chính sách Bảo mật của chúng tôi để luôn được thông tin về cách chúng tôi sử dụng thông tin mà chúng tôi thu thập."
+			]
+		},
+		"2": {
+			"title": "2. Thông tin Chúng tôi Thu thập và Nhận được",
+			"table": {
+				"headers": [
+					"Danh mục Thông tin Cá nhân được Thu thập",
+					"Nguồn",
+					"Mục đích Thu thập",
+					"Danh mục Người nhận"
+				],
+				"rows": [
+					[
+						"Thông tin liên hệ: như tên, địa chỉ email, địa chỉ cá nhân hoặc doanh nghiệp, và số điện thoại, và thông tin khác bạn cung cấp.",
+						"Từ khách truy cập Trang web gọi cho chúng tôi, đăng ký email hoặc các dịch vụ khác, hoặc tương tác với chúng tôi.",
+						"Để giao tiếp và phản hồi khách truy cập và khách hàng của chúng tôi về hoạt động kinh doanh của chúng tôi, bao gồm xác minh danh tính hoặc để đáp ứng nghĩa vụ pháp lý.",
+						"Chúng tôi có thể chia sẻ thông tin này với các nhà cung cấp dịch vụ tiếp thị, công nghệ thông tin hoặc các đối tác dịch vụ khác được chọn."
+					],
+					[
+						"Thông tin duyệt web: như địa chỉ IP, địa chỉ MAC hoặc định danh thiết bị khác, thông tin HTTP Referrer, loại trình duyệt hoặc máy tính bạn sử dụng, các trang và nội dung bạn truy cập trên Trang web, những gì bạn nhấp vào, tiểu bang và quốc gia bạn truy cập Trang web, ngày và giờ bạn truy cập, và các trang web bạn liên kết đến Trang web của chúng tôi.",
+						"Trang web của chúng tôi và tương tác của bạn với Trang web, bao gồm thông qua việc sử dụng cookie và các công nghệ theo dõi khác được giải thích thêm bên dưới.",
+						"Để đánh giá việc sử dụng Trang web và cải thiện hiệu suất và dịch vụ của chúng tôi; để bảo vệ bảo mật và tính toàn vẹn của Trang web và hoạt động kinh doanh của chúng tôi, chẳng hạn như ngăn chặn gian lận, hack và các hoạt động tội phạm khác hoặc để đáp ứng nghĩa vụ pháp lý.",
+						"Các nhà cung cấp dịch vụ bên thứ ba của chúng tôi giúp chúng tôi bảo vệ chống gian lận và phân tích trang web."
+					]
+				]
+			},
+			"content": [
+				"Ở một số khu vực pháp lý, chẳng hạn như Liên minh Châu Âu và Vương quốc Anh, các cá nhân có thể có quyền chọn tham gia hoặc rút lại sự đồng ý cho một số mục đích sử dụng nhất định. Nếu bạn cư trú ở các khu vực pháp lý như vậy, bạn có thể có các quyền bổ sung được nêu chi tiết trong \"Truy cập, Sửa đổi và Xóa\" bên dưới.",
+				"Khi bạn truy cập Trang web, chúng tôi có thể thu thập một số thông tin không cá nhân từ bạn, bao gồm địa chỉ Giao thức Internet (IP), địa chỉ MAC, loại trình duyệt, hệ điều hành, thông tin định danh thiết bị, các trang web cụ thể được truy cập ngay trước khi bạn kết nối, và tên miền mà bạn truy cập Trang web. Ngoài ra, chúng tôi có thể thu thập thông tin về hành vi duyệt web của bạn, chẳng hạn như ngày và giờ bạn truy cập Trang web, các khu vực hoặc trang của Trang web mà bạn truy cập, thời lượng bạn xem Trang web, số lần bạn quay lại Trang web và dữ liệu luồng nhấp chuột khác. Chúng tôi cũng có thể sử dụng thông tin không cá nhân hoặc đã được ẩn danh, tổng hợp như vậy cho mục đích phân tích thống kê, nghiên cứu và các mục đích khác.",
+				"Chúng tôi không sử dụng Google Workspace APIs để phát triển, cải thiện hoặc đào tạo các mô hình AI hoặc machine learning tổng quát."
+			]
+		},
+		"3": {
+			"title": "3. Chính sách Cookie",
+			"content": [
+				"Cookie là một tệp văn bản dữ liệu nhỏ, được lưu trữ trên ổ cứng của máy tính hoặc thiết bị di động của bạn. Mỗi cookie là duy nhất đối với trình duyệt web của bạn. Nó sẽ chứa một số thông tin ẩn danh như định danh duy nhất, tên miền của trang web và một số chữ số và số. Cookie không thể được sử dụng để chạy chương trình hoặc phân phối vi-rút đến máy tính của bạn. Cookie của chúng tôi sẽ không bao giờ thu thập thông tin nhận dạng cá nhân của bạn.",
+				"Khi bạn truy cập Trang web của chúng tôi, chúng tôi sẽ lưu trữ một số loại cookie liên tục trên máy tính của bạn để ủy quyền truy cập vào nội dung riêng tư của chúng tôi và để tạo điều kiện và tùy chỉnh việc sử dụng Trang web của chúng tôi. Cookie liên tục ghi nhớ thông tin, cài đặt, tùy chọn hoặc thông tin đăng nhập mà người dùng đã lưu trước đó."
+			],
+			"subsections": {
+				"essential": {
+					"title": "Cookie cần thiết",
+					"content": "Cookie cần thiết cho phép chúng tôi cung cấp trải nghiệm tốt nhất có thể khi truy cập và điều hướng qua Trang web của chúng tôi và sử dụng các tính năng của nó. Ví dụ, các cookie này cho phép chúng tôi nhận ra rằng bạn đã tạo tài khoản và đã đăng nhập vào tài khoản đó."
+				},
+				"functionality": {
+					"title": "Cookie chức năng",
+					"content": "Cookie chức năng cho phép chúng tôi vận hành Trang web theo các lựa chọn bạn thực hiện. Ví dụ, chúng tôi sẽ nhận ra tên người dùng của bạn và ghi nhớ các lựa chọn mà bạn đã thực hiện đối với tài khoản của bạn trong các lần truy cập sau."
+				},
+				"analytical": {
+					"title": "Cookie phân tích",
+					"content": "Các cookie này cho phép chúng tôi và các dịch vụ bên thứ ba thu thập dữ liệu tổng hợp cho mục đích thống kê về cách khách truy cập sử dụng Trang web của chúng tôi. Các cookie này không chứa hoặc thu thập Thông tin Cá nhân và chỉ được sử dụng để giúp chúng tôi cải thiện trải nghiệm người dùng của Trang web."
+				},
+				"general": {
+					"title": "Thông tin Cookie Tổng quát",
+					"content": "Khi bạn rời khỏi Trang web của chúng tôi, cookie liên tục của chúng tôi vẫn còn trên ổ cứng của bạn. Điều này giúp tạo trải nghiệm trang web thuận tiện và nhanh hơn. Bạn luôn có thể từ chối hoặc hạn chế cookie của chúng tôi thông qua cài đặt trình duyệt của bạn. Tuy nhiên, do bản chất của cookie cần thiết của chúng tôi, một số phần của Trang web của chúng tôi có thể không hoạt động đúng cách. Bạn có thể tìm thông tin chung trên Internet về cookie và chi tiết về cách xóa chúng khỏi máy tính và thiết bị di động của bạn. Hiện tại chúng tôi chỉ sử dụng cookie cần thiết, nhưng chúng tôi bảo lưu quyền thêm cookie chức năng và phân tích trong tương lai."
+				}
+			}
+		},
+		"4": {
+			"title": "4. Quảng cáo dựa trên sở thích",
+			"content": [
+				"Bạn có thể chọn không tham gia quảng cáo dựa trên sở thích từ các nhà cung cấp bên thứ ba tuân theo Nguyên tắc Tự điều chỉnh của Liên minh Quảng cáo Kỹ thuật số về Quảng cáo Hành vi Trực tuyến tại www.aboutads.info/choices."
+			]
+		},
+		"5": {
+			"title": "5. Lựa chọn của Bạn",
+			"items": [
+				"Dừng nhận email tiếp thị hoặc quảng cáo, thư trực tiếp, điện thoại và thông tin tiếp thị di động;",
+				"Cập nhật và sửa đổi Thông tin Cá nhân của bạn; và",
+				"Yêu cầu xóa thông tin bạn đăng trên các tài sản kỹ thuật số của chúng tôi; trong một số trường hợp, chúng tôi có thể không thể xóa nội dung hoặc Thông tin Cá nhân của bạn, trong trường hợp đó chúng tôi sẽ cho bạn biết nếu chúng tôi không thể làm như vậy và lý do."
+			],
+			"content": [
+				"Để thực hiện bất kỳ điều nào trong số này, hãy cho chúng tôi biết bằng một trong các phương pháp sau:",
+				"Làm theo hướng dẫn trong email tiếp thị, thư trực tiếp hoặc thông tin di động mà bạn nhận được từ chúng tôi; và",
+				"Cung cấp yêu cầu và thông tin liên hệ hiện tại của bạn thông qua một trong các phương thức liên hệ được liệt kê trong \"Liên hệ với Chúng tôi\" bên dưới."
+			]
+		},
+		"6": {
+			"title": "6. Tiết lộ Thông tin",
+			"content": [
+				"Chúng tôi có thể tiết lộ thông tin thu thập từ và về bạn như sau: (1) cho các công ty liên quan và nhà cung cấp dịch vụ của chúng tôi, để thực hiện chức năng hỗ trợ kinh doanh, chuyên nghiệp hoặc kỹ thuật cho chúng tôi; (2) cho các đối tác kinh doanh, bán hàng và tiếp thị và các công ty liên kết, nhà quảng cáo hoặc bên thứ ba khác của chúng tôi, những người có thể liên hệ với bạn bằng các đề xuất của riêng họ; (3) nếu cần thiết nếu chúng tôi tin rằng đã có vi phạm Điều khoản Sử dụng Trang web hoặc quyền của chúng tôi hoặc quyền của bất kỳ bên thứ ba nào; (4) để phản hồi quy trình tư pháp và cung cấp thông tin cho các cơ quan thực thi pháp luật hoặc liên quan đến cuộc điều tra về các vấn đề liên quan đến an toàn công cộng, theo quy định của pháp luật; (5) theo yêu cầu của pháp luật, hoặc để tuân thủ quy trình pháp lý được gửi cho chúng tôi; (6) trong trường hợp sáp nhập, mua lại hoặc bất kỳ hình thức bán nào của một số hoặc tất cả tài sản của chúng tôi, trong trường hợp đó Thông tin Cá nhân mà chúng tôi nắm giữ về người dùng Trang web của chúng tôi sẽ nằm trong số các tài sản được chuyển giao cho người mua; và (7) như được mô tả khác trong Chính sách Bảo mật này."
+			]
+		},
+		"7": {
+			"title": "7. Bảo mật",
+			"content": [
+				"Chúng tôi sử dụng các biện pháp bảo vệ vật lý, quản lý và kỹ thuật hợp lý về mặt thương mại để bảo tồn tính toàn vẹn và bảo mật Thông tin Cá nhân của bạn. Tuy nhiên, không có hệ thống truyền dữ liệu qua Internet hoặc lưu trữ dữ liệu nào có thể được đảm bảo là an toàn 100%. Vui lòng không gửi thông tin nhạy cảm qua Trang web. Nếu bạn có lý do để tin rằng tương tác của bạn với chúng tôi không còn an toàn, vui lòng thông báo ngay cho chúng tôi về vấn đề bằng cách liên hệ với chúng tôi bằng thông tin trong phần \"Liên hệ với Chúng tôi\" bên dưới."
+			]
+		},
+		"8": {
+			"title": "8. Quyền riêng tư của Trẻ em",
+			"content": [
+				"Trang web của chúng tôi không dành cho trẻ em dưới 13 tuổi. Chúng tôi không cố ý thu thập Thông tin Cá nhân từ trẻ em dưới 13 tuổi. Nếu bạn là cha mẹ hoặc người giám hộ và tin rằng con bạn đã cung cấp cho chúng tôi Thông tin Cá nhân, vui lòng liên hệ với chúng tôi để chúng tôi có thể xóa thông tin đó."
+			]
+		},
+		"9": {
+			"title": "9. Lưu trữ Dữ liệu",
+			"content": [
+				"Chúng tôi sẽ lưu giữ Thông tin Cá nhân của bạn trong thời gian cần thiết để thực hiện các mục đích được nêu trong Chính sách Bảo mật này, trừ khi thời gian lưu trữ dài hơn được yêu cầu hoặc cho phép bởi pháp luật. Khi chúng tôi không còn cần Thông tin Cá nhân của bạn, chúng tôi sẽ xóa hoặc ẩn danh hóa nó một cách an toàn."
+			]
+		},
+		"10": {
+			"title": "10. Liên kết Bên thứ ba",
+			"content": [
+				"Trang web của chúng tôi có thể chứa liên kết đến các trang web, dịch vụ hoặc ứng dụng bên thứ ba không thuộc sở hữu hoặc kiểm soát của chúng tôi. Chính sách Bảo mật này không áp dụng cho các trang web bên thứ ba như vậy. Chúng tôi khuyến khích bạn xem xét các chính sách bảo mật của bất kỳ trang web bên thứ ba nào bạn truy cập."
+			]
+		},
+		"11": {
+			"title": "11. Chuyển giao Dữ liệu Quốc tế",
+			"content": [
+				"Thông tin của bạn có thể được chuyển đến và duy trì trên các máy tính nằm ngoài tiểu bang, tỉnh, quốc gia hoặc khu vực pháp lý chính phủ khác của bạn, nơi luật bảo vệ dữ liệu có thể khác với luật của khu vực pháp lý của bạn. Nếu bạn ở bên ngoài Hoa Kỳ và chọn cung cấp thông tin cho chúng tôi, xin lưu ý rằng chúng tôi chuyển dữ liệu, bao gồm Thông tin Cá nhân, đến Hoa Kỳ và xử lý nó ở đó."
+			]
+		},
+		"12": {
+			"title": "12. Thay đổi Chính sách Bảo mật này",
+			"content": [
+				"Chúng tôi có thể cập nhật Chính sách Bảo mật này theo thời gian. Chúng tôi sẽ thông báo cho bạn về bất kỳ thay đổi nào bằng cách đăng Chính sách Bảo mật mới trên trang này và cập nhật ngày \"Cập nhật lần cuối\". Bạn được khuyên nên xem xét Chính sách Bảo mật này định kỳ để biết bất kỳ thay đổi nào. Các thay đổi đối với Chính sách Bảo mật này có hiệu lực khi chúng được đăng trên trang này."
+			]
+		},
+		"13": {
+			"title": "13. Truy cập, Sửa đổi và Xóa",
+			"content": [
+				"Tùy thuộc vào khu vực pháp lý của bạn, bạn có thể có quyền truy cập, sửa đổi hoặc xóa Thông tin Cá nhân của bạn. Để thực hiện các quyền này, vui lòng liên hệ với chúng tôi bằng thông tin được cung cấp trong phần \"Liên hệ với Chúng tôi\" bên dưới. Chúng tôi sẽ phản hồi yêu cầu của bạn trong khung thời gian hợp lý và phù hợp với luật hiện hành."
+			]
+		},
+		"14": {
+			"title": "14. Tín hiệu Không Theo dõi",
+			"content": [
+				"Một số trình duyệt tích hợp tính năng \"Không Theo dõi\" (DNT) báo hiệu cho các trang web bạn truy cập rằng bạn không muốn hoạt động trực tuyến của mình được theo dõi. Hiện tại, không có tiêu chuẩn ngành nào để phản hồi tín hiệu DNT. Chúng tôi hiện không phản hồi tín hiệu hoặc cơ chế trình duyệt DNT."
+			]
+		},
+		"15": {
+			"title": "15. Quyền Bảo mật California của Bạn",
+			"content": [
+				"Nếu bạn là cư dân California, Đạo luật Bảo mật Người tiêu dùng California (CCPA) và các luật bảo mật California khác, nếu áp dụng, cung cấp cho bạn các quyền bổ sung đối với thông tin cá nhân của bạn. Luật California cho phép khách hàng của chúng tôi là cư dân California yêu cầu thông tin nhất định về việc chúng tôi tiết lộ Thông tin Cá nhân cho bên thứ ba cho mục đích tiếp thị trực tiếp của riêng họ trong năm dương lịch trước. Yêu cầu này miễn phí và có thể được thực hiện mỗi năm một lần. Để thực hiện yêu cầu như vậy, vui lòng viết thư cho chúng tôi tại địa chỉ sau:",
+				"Puzzle Labs, Inc.",
+				"ATTN: General Counsel",
+				"690 5th St.",
+				"San Francisco, CA 94107",
+				"legal@puzzle.com",
+				"Nếu bạn là cư dân California, luật California cung cấp cho bạn các quyền bổ sung sau đây đối với Thông tin Cá nhân của bạn:",
+				"Quyền biết Thông tin Cá nhân nào chúng tôi đã thu thập, sử dụng, tiết lộ và bán về bạn. Bạn có thể gửi yêu cầu để biết bằng cách sử dụng thông tin liên hệ được nêu chi tiết trong Phần này. Bạn cũng có thể chỉ định một đại lý được ủy quyền để thực hiện yêu cầu truy cập thay mặt bạn.",
+				"Quyền yêu cầu chúng tôi xóa bất kỳ Thông tin Cá nhân nào chúng tôi đã thu thập về bạn. Bạn có thể gửi yêu cầu xóa bằng cách sử dụng thông tin liên hệ được nêu chi tiết trong Phần này. Bạn cũng có thể chỉ định một đại lý được ủy quyền để thực hiện yêu cầu xóa thay mặt bạn.",
+				"Cư dân California cũng có thể có quyền không bị đối tượng của quyết định tự động, bao gồm phân tích hồ sơ, nơi nó sẽ có tác động pháp lý hoặc tương tự đáng kể đối với họ; và quyền tính di động dữ liệu đối với dữ liệu họ cung cấp cho chúng tôi. Nếu bạn thực hiện bất kỳ quyền nào trong số này và gửi yêu cầu cho chúng tôi, chúng tôi có thể xác minh danh tính của bạn. Chúng tôi cũng có thể sử dụng nhà cung cấp xác minh bên thứ ba để xác minh danh tính của bạn. Việc thực hiện các quyền này của bạn sẽ không có tác động bất lợi đến giá và chất lượng hàng hóa hoặc dịch vụ của chúng tôi. Hiện tại chúng tôi chưa bán Thông tin Cá nhân về người dùng của chúng tôi; và chúng tôi cũng không có kế hoạch làm như vậy trong tương lai."
+			]
+		},
+		"16": {
+			"title": "16. Quyền của Bạn",
+			"content": [
+				"Chúng tôi muốn bạn kiểm soát cách Thông tin Cá nhân của bạn được chúng tôi sử dụng. Xin lưu ý rằng khả năng truy cập hoặc kiểm soát Thông tin Cá nhân của bạn của chúng tôi sẽ bị hạn chế, theo yêu cầu hoặc được phép bởi luật hiện hành. Tùy thuộc vào khu vực pháp lý của bạn, bạn có thể có quyền được thông báo và yêu cầu truy cập vào Thông tin Cá nhân mà chúng tôi xử lý về bạn; cập nhật và sửa đổi các sai sót trong thông tin đó; hạn chế hoặc xóa thông tin; phản đối hoặc rút lại sự đồng ý của bạn đối với một số mục đích sử dụng dữ liệu; và khiếu nại với cơ quan bảo vệ dữ liệu địa phương của bạn."
+			],
+			"items": [
+				"Quyền không bị đối tượng của quyết định tự động, bao gồm phân tích hồ sơ, nơi nó sẽ có tác động pháp lý hoặc tương tự đáng kể đối với bạn;",
+				"Quyền tính di động dữ liệu đối với dữ liệu bạn cung cấp cho chúng tôi."
+			]
+		},
+		"17": {
+			"title": "17. Cách Thực hiện Quyền của Bạn",
+			"content": [
+				"Nếu bạn muốn thực hiện bất kỳ quyền nào của bạn như được mô tả trong Chính sách Bảo mật này, vui lòng liên hệ với chúng tôi bằng thông tin liên hệ được nêu chi tiết trong phần \"Liên hệ với Chúng tôi\" bên dưới.",
+				"Xin lưu ý rằng bạn chỉ có thể thực hiện yêu cầu tiết lộ truy cập dữ liệu hoặc tính di động dữ liệu liên quan đến CCPA hai lần trong khoảng thời gian 12 tháng.",
+				"Nếu bạn chọn liên hệ trực tiếp bằng điện thoại, email hoặc bằng văn bản, bạn sẽ cần cung cấp cho chúng tôi:",
+				"Đủ thông tin để xác định bạn (ví dụ: tên đầy đủ, địa chỉ và số tham chiếu khách hàng hoặc vấn đề);",
+				"Bằng chứng về danh tính và địa chỉ của bạn (ví dụ: bản sao giấy phép lái xe hoặc hộ chiếu của bạn); và",
+				"Mô tả về quyền bạn muốn thực hiện và thông tin mà yêu cầu của bạn liên quan.",
+				"Chúng tôi không có nghĩa vụ thực hiện tiết lộ truy cập dữ liệu hoặc tính di động dữ liệu nếu chúng tôi không thể xác minh rằng người thực hiện yêu cầu là người mà chúng tôi đã thu thập thông tin, hoặc là người được ủy quyền hành động thay mặt người đó.",
+				"Bất kỳ Thông tin Cá nhân nào chúng tôi thu thập từ bạn để xác minh danh tính của bạn liên quan đến yêu cầu của bạn sẽ chỉ được sử dụng cho mục đích xác minh."
+			]
+		},
+		"18": {
+			"title": "18. Quyền Khiếu nại",
+			"content": [
+				"Chúng tôi minh bạch về các cách chúng tôi thu thập và sử dụng Thông tin Cá nhân, và hoan nghênh các câu hỏi và mối quan tâm của bạn. Chúng tôi hy vọng rằng chúng tôi hoặc Nhân viên Bảo vệ Dữ liệu của chúng tôi có thể giải quyết bất kỳ câu hỏi hoặc mối quan tâm nào bạn nêu ra về việc chúng tôi sử dụng thông tin của bạn.",
+				"Nếu bạn có bất kỳ mối quan tâm hoặc khiếu nại nào về cách chúng tôi xử lý Thông tin Cá nhân của bạn, vui lòng liên hệ với chúng tôi bằng thông tin liên hệ được nêu chi tiết trong phần \"Liên hệ với Chúng tôi\" bên dưới. Trong phạm vi bạn tin rằng chúng tôi chưa giải quyết mối quan tâm của bạn hoặc nếu không bạn chọn làm như vậy, bạn có quyền khiếu nại với cơ quan giám sát ở quốc gia nơi bạn cư trú."
+			],
+			"items": [
+				{
+					"label": "Hoa Kỳ:",
+					"content": "Nếu bạn là cư dân Hoa Kỳ, bạn có thể liên hệ với Ủy ban Thương mại Liên bang Hoa Kỳ về mối quan tâm của bạn. Để biết thêm thông tin, vui lòng xem: <a href='https://www.ftc.gov/news-events/news/press-releases/2014/05/file-consumer-complaint-ftc-your-mobile-device' target='_blank' rel='noopener noreferrer' class='text-blue-600 hover:text-blue-800 underline'>https://www.ftc.gov/news-events/news/press-releases/2014/05/file-consumer-complaint-ftc-your-mobile-device</a>."
+				},
+				{
+					"label": "Liên minh Châu Âu:",
+					"content": "Quy định Bảo vệ Dữ liệu Chung cũng cho bạn quyền khiếu nại với cơ quan giám sát, ở quốc gia Liên minh Châu Âu (hoặc Khu vực Kinh tế Châu Âu) nơi bạn làm việc, thường sống, hoặc nơi xảy ra bất kỳ vi phạm luật bảo vệ dữ liệu nào. Để biết thêm thông tin, vui lòng xem: <a href='https://commission.europa.eu/law/law-topic/data-protection/reform/rights-citizens/redress/what-should-i-do-if-i-think-my-personal-data-protection-rights-havent-been-respected_en' target='_blank' rel='noopener noreferrer' class='text-blue-600 hover:text-blue-800 underline'>https://commission.europa.eu/law/law-topic/data-protection/reform/rights-citizens/redress/what-should-i-do-if-i-think-my-personal-data-protection-rights-havent-been-respected_en</a>."
+				}
+			]
+		},
+		"19": {
+			"title": "19. Khách truy cập từ Bên ngoài Hoa Kỳ — Chuyển giao Xuyên biên giới",
+			"content": [
+				"Trang web được lưu trữ tại Hoa Kỳ. Nếu bạn đang truy cập Trang web từ bên ngoài Hoa Kỳ, thông tin của bạn có thể được chuyển đến, lưu trữ và xử lý tại Hoa Kỳ hoặc các quốc gia khác phù hợp với Chính sách Bảo mật này. Luật bảo vệ dữ liệu và các luật hiện hành khác của Hoa Kỳ hoặc các quốc gia khác có thể không toàn diện như các luật hoặc quy định ở quốc gia của bạn hoặc có thể khác với luật bảo vệ dữ liệu hoặc bảo vệ người tiêu dùng ở quốc gia của bạn. Thông tin của bạn có thể được cung cấp cho các cơ quan chính phủ theo lệnh hợp pháp và luật áp dụng trong các khu vực pháp lý như vậy. Bằng cách sử dụng Trang web và/hoặc cung cấp Thông tin Cá nhân cho chúng tôi, bạn đồng ý chuyển giao thông tin của bạn đến cơ sở của chúng tôi như được mô tả trong Chính sách Bảo mật này."
+			]
+		},
+		"20": {
+			"title": "20. Chuyển giao Kinh doanh",
+			"content": [
+				"Trong trường hợp sáp nhập, mua lại, tái cơ cấu, phá sản hoặc bán khác của tất cả hoặc một phần tài sản của chúng tôi, bất kỳ Thông tin Cá nhân nào thuộc sở hữu hoặc kiểm soát của chúng tôi có thể là một trong những tài sản được chuyển giao cho bên mua lại. Chúng tôi sẽ thông báo trước khi Thông tin Cá nhân của bạn được chuyển giao và trở thành đối tượng của một chính sách bảo mật khác."
+			]
+		},
+		"21": {
+			"title": "21. Liên hệ với Chúng tôi",
+			"content": [
+				"Nếu bạn có câu hỏi về Chính sách Bảo mật này hoặc các thực hành của chúng tôi, hoặc nếu bạn đang tìm cách thực hiện bất kỳ quyền pháp định nào của bạn, bạn có thể liên hệ với chúng tôi tại địa chỉ được cung cấp bên dưới:"
+			],
+			"subsections": {
+				"us": {
+					"title": "Hoa Kỳ và Các Quốc gia Khác",
+					"content": "Nếu bạn sống ở Hoa Kỳ hoặc bất kỳ quốc gia nào khác bên ngoài Liên minh Châu Âu, Các Quốc gia Hiệp hội Thương mại Tự do Châu Âu (EFTA), hoặc Vương quốc Anh, người kiểm soát dữ liệu chịu trách nhiệm về Thông tin Cá nhân của bạn là Puzzle Labs, Inc., với địa chỉ:\n\nPuzzle Labs, Inc.\nATTN: General Counsel\n690 5th St.\nSan Francisco, CA 94107 USA"
+				},
+				"eu": {
+					"title": "Liên minh Châu Âu, Các Quốc gia EFTA và Vương quốc Anh",
+					"content": "Nếu bạn sống ở Liên minh Châu Âu, Các Quốc gia EFTA, hoặc Vương quốc Anh, người kiểm soát dữ liệu là Puzzle Labs, Inc., với địa chỉ:\n\nPuzzle Labs, Inc.\nATTN: General Counsel\n690 5th St.\nSan Francisco, CA 94107 USA"
+				},
+				"dpo": {
+					"title": "Nhân viên Bảo vệ Dữ liệu",
+					"content": "Puzzle Labs, Inc.\nATTN: Data Protection Officer\n690 5th Street\nSan Francisco, CA 94107\nreng@puzzle.com"
+				},
+				"security": {
+					"title": "Liên hệ Bảo mật",
+					"content": "Puzzle Labs, Inc.\nATTN: General Counsel\n690 5th Street\nSan Francisco, CA 94107\nsecurity@puzzle.com"
+				}
+			}
+		}
+	},
+	"contact": {
+		"title": "Liên hệ với Chúng tôi",
+		"content": [
+			"Nếu bạn muốn thông báo này ở định dạng khác (ví dụ: âm thanh, in lớn, chữ nổi) vui lòng liên hệ với chúng tôi ở trên."
+		],
+		"addresses": {}
+	}
+}
