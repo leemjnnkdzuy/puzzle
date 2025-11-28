@@ -15,6 +15,7 @@ import {
 	Volume2,
 	VolumeX,
 	RotateCcw,
+	ChevronDown,
 } from "lucide-react";
 import {FaTwitter, FaDiscord, FaGithub, FaEnvelope} from "react-icons/fa";
 import Button from "../components/ui/Button";
@@ -112,6 +113,9 @@ const LandingPage = () => {
 	const [packagesTitleAnimated, setPackagesTitleAnimated] = useState(false);
 	const [packagesSubtitleAnimated, setPackagesSubtitleAnimated] =
 		useState(false);
+	const [expandedPackages, setExpandedPackages] = useState<{
+		[key: number]: boolean;
+	}>({});
 	const hasAnimatedRef = useRef(false);
 	const demoRef = useRef<HTMLDivElement>(null);
 	const demoVideoRef = useRef<HTMLVideoElement | null>(null);
@@ -632,24 +636,40 @@ const LandingPage = () => {
 
 			<div
 				ref={demoRef}
-				className='max-w-[1400px] mx-auto min-h-[400px] px-6 mt-[200px] mb-[250px]'
+				className='max-w-[1400px] mx-auto min-h-[400px] px-4 sm:px-6 mt-16 sm:mt-24 md:mt-[200px] mb-16 sm:mb-24 md:mb-[250px]'
 			>
-				<div className='relative'>
+				<div className='relative flex flex-col lg:block'>
 					<div
-						className='video-container-smooth'
+						className='video-container-smooth w-full lg:w-auto'
 						style={{
-							width: demoShrink ? "75%" : "100%",
+							width: demoShrink
+								? window.innerWidth >= 1024
+									? "75%"
+									: "100%"
+								: "100%",
 							maxWidth: demoShrink ? "none" : "1400px",
-							marginLeft: demoShrink ? "0" : "auto",
-							marginRight: demoShrink ? "0" : "auto",
-							paddingRight: demoShrink ? "1.5rem" : "0",
+							marginLeft: demoShrink
+								? window.innerWidth >= 1024
+									? "0"
+									: "auto"
+								: "auto",
+							marginRight: demoShrink
+								? window.innerWidth >= 1024
+									? "0"
+									: "auto"
+								: "auto",
+							paddingRight: demoShrink
+								? window.innerWidth >= 1024
+									? "1.5rem"
+									: "0"
+								: "0",
 							transition:
 								"width 650ms cubic-bezier(0.4, 0, 0.2, 1), max-width 650ms cubic-bezier(0.4, 0, 0.2, 1), padding-right 650ms cubic-bezier(0.4, 0, 0.2, 1), margin-left 650ms cubic-bezier(0.4, 0, 0.2, 1), margin-right 650ms cubic-bezier(0.4, 0, 0.2, 1)",
 							willChange: "width, max-width",
 							contain: "layout style",
 						}}
 					>
-						<div className='relative rounded-3xl overflow-hidden shadow-xl border border-gray-200 bg-black aspect-[16/9]'>
+						<div className='relative rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden shadow-xl border border-gray-200 bg-black aspect-[16/9]'>
 							<VideoPlayer
 								src={demoVideoDetail.videoSrc}
 								poster={demoVideoDetail.thumbnail}
@@ -666,11 +686,11 @@ const LandingPage = () => {
 										: "opacity-0 pointer-events-none"
 								}`}
 							>
-								<div className='text-center space-y-4'>
-									<p className='text-lg font-semibold'>
+								<div className='text-center space-y-3 sm:space-y-4 px-4'>
+									<p className='text-base sm:text-lg font-semibold'>
 										{t("demo.watchFull")}
 									</p>
-									<Button className='bg-white text-black hover:bg-gray-100 px-6'>
+									<Button className='bg-white text-black hover:bg-gray-100 px-4 sm:px-6 text-sm sm:text-base'>
 										{t("demo.goToFullVideo")}
 									</Button>
 								</div>
@@ -679,19 +699,46 @@ const LandingPage = () => {
 					</div>
 
 					<div
-						className='video-panel-smooth absolute right-0 top-0'
+						className='video-panel-smooth relative lg:absolute lg:right-0 lg:top-0 mt-6 lg:mt-0 w-full lg:w-auto'
 						style={{
-							width: demoShrink ? "25%" : "0%",
-							paddingLeft: demoShrink ? "1.5rem" : "0",
-							opacity: demoShrink ? 1 : 0,
+							width: demoShrink
+								? window.innerWidth >= 1024
+									? "25%"
+									: "100%"
+								: window.innerWidth >= 1024
+								? "0%"
+								: "100%",
+							paddingLeft: demoShrink
+								? window.innerWidth >= 1024
+									? "1.5rem"
+									: "0"
+								: "0",
+							opacity: demoShrink
+								? 1
+								: window.innerWidth >= 1024
+								? 0
+								: 1,
 							transform: demoShrink
 								? "translateX(0)"
-								: "translateX(24px)",
-							pointerEvents: demoShrink ? "auto" : "none",
-							overflow: demoShrink ? "visible" : "hidden",
-							transition: demoShrink
-								? "transform 650ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms cubic-bezier(0.4, 0, 0.2, 1) 150ms, width 650ms cubic-bezier(0.4, 0, 0.2, 1), padding-left 650ms cubic-bezier(0.4, 0, 0.2, 1)"
-								: "transform 650ms cubic-bezier(0.4, 0, 0.2, 1), opacity 300ms cubic-bezier(0.4, 0, 0.2, 1), width 650ms cubic-bezier(0.4, 0, 0.2, 1), padding-left 650ms cubic-bezier(0.4, 0, 0.2, 1)",
+								: window.innerWidth >= 1024
+								? "translateX(24px)"
+								: "translateX(0)",
+							pointerEvents: demoShrink
+								? "auto"
+								: window.innerWidth >= 1024
+								? "none"
+								: "auto",
+							overflow: demoShrink
+								? "visible"
+								: window.innerWidth >= 1024
+								? "hidden"
+								: "visible",
+							transition:
+								window.innerWidth >= 1024
+									? demoShrink
+										? "transform 650ms cubic-bezier(0.4, 0, 0.2, 1), opacity 400ms cubic-bezier(0.4, 0, 0.2, 1) 150ms, width 650ms cubic-bezier(0.4, 0, 0.2, 1), padding-left 650ms cubic-bezier(0.4, 0, 0.2, 1)"
+										: "transform 650ms cubic-bezier(0.4, 0, 0.2, 1), opacity 300ms cubic-bezier(0.4, 0, 0.2, 1), width 650ms cubic-bezier(0.4, 0, 0.2, 1), padding-left 650ms cubic-bezier(0.4, 0, 0.2, 1)"
+									: "none",
 							willChange: "transform, opacity, width",
 							contain: "layout style",
 						}}
@@ -714,7 +761,7 @@ const LandingPage = () => {
 								</p>
 							</div>
 						</div>
-						<div className='grid grid-cols-1 gap-4 max-h-[520px] overflow-y-auto pr-1'>
+						<div className='grid grid-cols-2 gap-4 max-h-[520px] overflow-y-auto pr-1'>
 							<div className='rounded-xl border border-gray-200 bg-white px-4 py-3'>
 								<p className='text-xs uppercase text-gray-500'>
 									{t("demo.cost")}
@@ -958,38 +1005,68 @@ const LandingPage = () => {
 									)}
 
 									<div className='mb-4 sm:mb-5 md:mb-6'>
-										<div
-											className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 transition-all duration-200 ${
-												isPopular
-													? "bg-gradient-to-br from-gray-900 to-gray-700 text-white shadow-lg"
-													: "border border-gray-300 bg-gray-50 group-hover:bg-gray-100"
-											}`}
-										>
-											<Icon
-												className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 ${
+										<div className='flex items-center gap-3 sm:gap-4 mb-2 sm:mb-3'>
+											<div
+												className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 transition-all duration-200 ${
 													isPopular
-														? "text-white"
-														: "text-gray-800"
+														? "bg-gradient-to-br from-gray-900 to-gray-700 text-white shadow-lg"
+														: "border border-gray-300 bg-gray-50 group-hover:bg-gray-100"
 												}`}
-												strokeWidth={2}
-											/>
+											>
+												<Icon
+													className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 ${
+														isPopular
+															? "text-white"
+															: "text-gray-800"
+													}`}
+													strokeWidth={2}
+												/>
+											</div>
+											<h3
+												className={`text-lg sm:text-xl md:text-2xl font-bold flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 flex-1 ${
+													isPopular
+														? "text-gray-900"
+														: "text-gray-900"
+												}`}
+											>
+												<span>
+													{t(
+														`packages.${pkg.key}.title`
+													)}
+												</span>
+												<span className='text-xs sm:text-sm font-normal text-gray-500'>
+													{t(
+														`packages.${pkg.key}.subtitle`
+													)}
+												</span>
+											</h3>
+											<button
+												onClick={() => {
+													setExpandedPackages(
+														(prev) => ({
+															...prev,
+															[index]:
+																!prev[index],
+														})
+													);
+												}}
+												className='sm:hidden flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 transition-colors duration-200 shrink-0'
+												aria-label={
+													expandedPackages[index]
+														? "Thu gọn"
+														: "Mở rộng"
+												}
+											>
+												<ChevronDown
+													className={`w-5 h-5 text-gray-600 transition-transform duration-200 ${
+														expandedPackages[index]
+															? "rotate-180"
+															: ""
+													}`}
+													strokeWidth={2}
+												/>
+											</button>
 										</div>
-										<h3
-											className={`text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 ${
-												isPopular
-													? "text-gray-900"
-													: "text-gray-900"
-											}`}
-										>
-											<span>
-												{t(`packages.${pkg.key}.title`)}
-											</span>
-											<span className='text-xs sm:text-sm font-normal text-gray-500'>
-												{t(
-													`packages.${pkg.key}.subtitle`
-												)}
-											</span>
-										</h3>
 										<p className='text-gray-600 leading-relaxed text-xs sm:text-sm'>
 											{t(
 												`packages.${pkg.key}.description`
@@ -997,7 +1074,13 @@ const LandingPage = () => {
 										</p>
 									</div>
 
-									<div className='flex-grow mb-4 sm:mb-5 md:mb-6'>
+									<div
+										className={`flex-grow mb-4 sm:mb-5 md:mb-6 overflow-hidden transition-all duration-300 ${
+											expandedPackages[index]
+												? "max-h-[1000px] opacity-100"
+												: "max-h-0 opacity-0 sm:max-h-[1000px] sm:opacity-100"
+										}`}
+									>
 										<ul className='space-y-2 sm:space-y-2.5 md:space-y-3'>
 											{(Array.isArray(features)
 												? features
