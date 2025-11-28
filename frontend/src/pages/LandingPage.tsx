@@ -161,7 +161,7 @@ const LandingPage = () => {
 							pause();
 						}
 
-						const shrinkTrigger = rect.top < 150;
+						const shrinkTrigger = rect.top < 300;
 						const shouldShrink = shrinkTrigger;
 
 						if (shouldShrink !== prevDemoShrinkRef.current) {
@@ -500,35 +500,35 @@ const LandingPage = () => {
 				</div>
 			</header>
 
-			<main className='relative z-10 w-full min-h-screen flex items-center justify-center px-6 pt-24 pb-20'>
-				<div className='max-w-4xl mx-auto text-center'>
-					<h1 className='text-6xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight animate-fade-in'>
+			<main className='relative z-10 w-full min-h-screen flex items-center justify-center px-4 sm:px-6 pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20'>
+				<div className='max-w-4xl mx-auto text-center px-2'>
+					<h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-4 sm:mb-5 md:mb-6 leading-tight animate-fade-in'>
 						{t("hero.title")}
 						{t("hero.titlePlatform") && (
 							<>
 								{" "}
-								<span className='text-gray-500 text-5xl md:text-6xl'>
+								<span className='text-gray-500 text-3xl sm:text-4xl md:text-5xl lg:text-6xl'>
 									{t("hero.titlePlatform")}
 								</span>
 							</>
 						)}
 					</h1>
 
-					<div className='space-y-2 mb-10 text-lg text-gray-600 animate-fade-in-delay'>
+					<div className='space-y-1.5 sm:space-y-2 mb-6 sm:mb-8 md:mb-10 text-base sm:text-lg text-gray-600 animate-fade-in-delay px-2'>
 						<p>{t("hero.subtitle")}</p>
 						<p>{t("hero.subtitle2")}</p>
 					</div>
 
-					<div className='flex flex-col sm:flex-row gap-4 max-w-2xl w-full mx-auto justify-center'>
+					<div className='flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-2xl w-full mx-auto justify-center px-2'>
 						<Input
 							type='email'
 							placeholder={t("hero.emailPlaceholder")}
-							className='flex-1 h-12 px-5 py-3 text-lg border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black'
+							className='flex-1 h-11 sm:h-12 px-4 sm:px-5 py-3 text-base sm:text-lg border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black'
 						/>
 						<Button
 							variant='default'
 							size='lg'
-							className='bg-black text-white hover:bg-gray-800 w-full sm:w-auto px-7 h-12 text-lg'
+							className='bg-black text-white hover:bg-gray-800 w-full sm:w-auto px-6 sm:px-7 h-11 sm:h-12 text-base sm:text-lg'
 							onClick={() => navigate("/register")}
 						>
 							{t("hero.cta")}
@@ -575,14 +575,14 @@ const LandingPage = () => {
 			<section
 				id='features'
 				ref={featuresSectionRef}
-				className='relative z-11 w-full px-6 mb-24'
+				className='relative z-11 w-full px-4 sm:px-6 mb-12 sm:mb-16 md:mb-24'
 			>
-				<div className='max-w-8xl mx-auto text-center mb-14'>
-					<h2 className='text-4xl md:text-5xl font-bold text-gray-900'>
+				<div className='max-w-8xl mx-auto text-center mb-8 sm:mb-10 md:mb-14'>
+					<h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 px-2'>
 						{t("features.title")}
 					</h2>
 				</div>
-				<div className='max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6'>
+				<div className='max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6'>
 					{[
 						{key: "movieRecap", Icon: Clapperboard},
 						{key: "autoSubs", Icon: FileText},
@@ -591,7 +591,7 @@ const LandingPage = () => {
 					].map(({key, Icon}, index) => (
 						<div
 							key={key}
-							className={`group cursor-pointer relative border border-gray-200 rounded-2xl p-8 flex flex-col gap-8 bg-white hover:shadow-lg hover:-translate-y-1 transition-all duration-200 ${
+							className={`group cursor-pointer relative border border-gray-200 rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col gap-5 sm:gap-6 md:gap-8 bg-white hover:shadow-lg hover:-translate-y-1 transition-all duration-200 ${
 								featuresAnimated
 									? "opacity-100 translate-y-0"
 									: "opacity-0 translate-y-8"
@@ -606,22 +606,22 @@ const LandingPage = () => {
 							}}
 						>
 							<div className='flex items-start justify-between'>
-								<div className='w-14 h-14 border border-gray-300 rounded-xl flex items-center justify-center'>
+								<div className='w-12 h-12 md:w-14 md:h-14 border border-gray-300 rounded-lg sm:rounded-xl flex items-center justify-center'>
 									<Icon
-										className='w-7 h-7 text-gray-800'
+										className='w-6 h-6 sm:w-6 md:w-7 md:h-7 text-gray-800'
 										strokeWidth={2}
 									/>
 								</div>
 								<Plus
-									className='w-6 h-6 text-gray-800 transition-all duration-200 group-hover:rotate-90 group-hover:opacity-20'
+									className='w-5 h-5 sm:w-5 md:w-6 md:h-6 text-gray-800 transition-all duration-200 group-hover:rotate-90 group-hover:opacity-20'
 									strokeWidth={2}
 								/>
 							</div>
-							<div className='space-y-3'>
-								<h3 className='text-xl font-semibold text-gray-900 text-left'>
+							<div className='space-y-2 sm:space-y-3 md:space-y-3'>
+								<h3 className='text-lg sm:text-xl font-semibold text-gray-900 text-left leading-tight'>
 									{t(`features.${key}.title`)}
 								</h3>
-								<p className='text-sm text-gray-600 text-left leading-relaxed'>
+								<p className='text-xs sm:text-sm text-gray-600 text-left leading-relaxed'>
 									{t(`features.${key}.description`)}
 								</p>
 							</div>
@@ -862,12 +862,12 @@ const LandingPage = () => {
 
 			<section
 				ref={packagesSectionRef}
-				className='relative z-10 w-full px-6 py-24 mb-20'
+				className='relative z-10 w-full px-4 sm:px-6 py-12 sm:py-16 md:py-24 mb-12 sm:mb-16 md:mb-20'
 			>
 				<div className='max-w-7xl mx-auto'>
-					<div className='text-center mb-16'>
+					<div className='text-center mb-8 sm:mb-12 md:mb-16 px-2'>
 						<h2
-							className={`text-4xl md:text-5xl font-bold text-gray-900 mb-4 transition-all duration-600 ${
+							className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 transition-all duration-600 ${
 								packagesTitleAnimated
 									? "opacity-100 translate-y-0"
 									: "opacity-0 translate-y-8"
@@ -880,7 +880,7 @@ const LandingPage = () => {
 							{t("packages.title")}
 						</h2>
 						<p
-							className={`text-lg text-gray-600 max-w-2xl mx-auto transition-all duration-600 ${
+							className={`text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto transition-all duration-600 ${
 								packagesSubtitleAnimated
 									? "opacity-100 translate-y-0"
 									: "opacity-0 translate-y-8"
@@ -894,7 +894,7 @@ const LandingPage = () => {
 						</p>
 					</div>
 
-					<div className='grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-4'>
+					<div className='grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-4'>
 						{servicePackages.map((pkg, index) => {
 							const Icon = pkg.Icon;
 							const isPopular = pkg.Peak;
@@ -907,7 +907,7 @@ const LandingPage = () => {
 							return (
 								<div
 									key={index}
-									className={`group relative rounded-3xl p-8 flex flex-col transition-all duration-300 overflow-visible ${
+									className={`group relative rounded-xl sm:rounded-2xl lg:rounded-3xl p-5 sm:p-6 md:p-8 flex flex-col transition-all duration-300 overflow-visible ${
 										isPopular
 											? "lg:-mt-4 lg:mb-4 border-2 border-gray-900 bg-white shadow-xl hover:shadow-2xl"
 											: "border border-gray-200 bg-white hover:shadow-lg hover:-translate-y-1"
@@ -949,24 +949,24 @@ const LandingPage = () => {
 									}}
 								>
 									{isPopular && (
-										<div className='absolute -top-4 left-1/2 -translate-x-1/2'>
-											<span className='inline-flex items-center gap-1 text-xs font-semibold text-white bg-gray-900 px-4 py-1.5 rounded-full shadow-lg'>
-												<Sparkles className='w-3 h-3' />
+										<div className='absolute -top-3 sm:-top-4 left-1/2 -translate-x-1/2'>
+											<span className='inline-flex items-center gap-1 text-[10px] sm:text-xs font-semibold text-white bg-gray-900 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-lg'>
+												<Sparkles className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
 												{t("packages.popular")}
 											</span>
 										</div>
 									)}
 
-									<div className='mb-6'>
+									<div className='mb-4 sm:mb-5 md:mb-6'>
 										<div
-											className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-all duration-200 ${
+											className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 sm:mb-4 transition-all duration-200 ${
 												isPopular
 													? "bg-gradient-to-br from-gray-900 to-gray-700 text-white shadow-lg"
 													: "border border-gray-300 bg-gray-50 group-hover:bg-gray-100"
 											}`}
 										>
 											<Icon
-												className={`w-8 h-8 ${
+												className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 ${
 													isPopular
 														? "text-white"
 														: "text-gray-800"
@@ -975,7 +975,7 @@ const LandingPage = () => {
 											/>
 										</div>
 										<h3
-											className={`text-2xl font-bold mb-3 flex items-center gap-2 ${
+											className={`text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 ${
 												isPopular
 													? "text-gray-900"
 													: "text-gray-900"
@@ -984,21 +984,21 @@ const LandingPage = () => {
 											<span>
 												{t(`packages.${pkg.key}.title`)}
 											</span>
-											<span className='text-sm font-normal text-gray-500'>
+											<span className='text-xs sm:text-sm font-normal text-gray-500'>
 												{t(
 													`packages.${pkg.key}.subtitle`
 												)}
 											</span>
 										</h3>
-										<p className='text-gray-600 leading-relaxed text-sm'>
+										<p className='text-gray-600 leading-relaxed text-xs sm:text-sm'>
 											{t(
 												`packages.${pkg.key}.description`
 											)}
 										</p>
 									</div>
 
-									<div className='flex-grow mb-6'>
-										<ul className='space-y-3'>
+									<div className='flex-grow mb-4 sm:mb-5 md:mb-6'>
+										<ul className='space-y-2 sm:space-y-2.5 md:space-y-3'>
 											{(Array.isArray(features)
 												? features
 												: []
@@ -1009,10 +1009,10 @@ const LandingPage = () => {
 												) => (
 													<li
 														key={idx}
-														className='flex items-start gap-3 text-sm text-gray-700'
+														className='flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700'
 													>
 														<div
-															className={`w-2 h-2 mt-2 rounded-full shrink-0 ${
+															className={`w-1.5 h-1.5 sm:w-2 sm:h-2 mt-1.5 sm:mt-2 rounded-full shrink-0 ${
 																isPopular
 																	? "bg-gray-900"
 																	: "bg-gray-400"
@@ -1031,8 +1031,8 @@ const LandingPage = () => {
 										variant='default'
 										className={`w-full mt-auto transition-all duration-200 ${
 											isPopular
-												? "bg-gray-900 text-white hover:bg-gray-800 h-12 text-base font-semibold shadow-md hover:shadow-lg"
-												: "bg-black text-white hover:bg-gray-800 h-11"
+												? "bg-gray-900 text-white hover:bg-gray-800 h-11 sm:h-12 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg"
+												: "bg-black text-white hover:bg-gray-800 h-10 sm:h-11 text-sm sm:text-base"
 										}`}
 										onClick={() => navigate("/register")}
 									>
