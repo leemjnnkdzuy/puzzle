@@ -907,7 +907,7 @@ const LandingPage = () => {
 							return (
 								<div
 									key={index}
-									className={`group relative rounded-3xl p-8 flex flex-col transition-all duration-300 ${
+									className={`group relative rounded-3xl p-8 flex flex-col transition-all duration-300 overflow-visible ${
 										isPopular
 											? "lg:-mt-4 lg:mb-4 border-2 border-gray-900 bg-white shadow-xl hover:shadow-2xl"
 											: "border border-gray-200 bg-white hover:shadow-lg hover:-translate-y-1"
@@ -921,10 +921,31 @@ const LandingPage = () => {
 											? `${index * 100}ms`
 											: "0ms",
 										transitionProperty:
-											"opacity, transform",
+											"opacity, transform, box-shadow",
 										transitionDuration: "600ms",
 										transitionTimingFunction:
 											"cubic-bezier(0.4, 0, 0.2, 1)",
+										boxShadow: isPopular
+											? "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 40px -10px rgba(0, 0, 0, 0.15)"
+											: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+									}}
+									onMouseEnter={(e) => {
+										if (isPopular) {
+											e.currentTarget.style.boxShadow =
+												"0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 60px -15px rgba(0, 0, 0, 0.2)";
+										} else {
+											e.currentTarget.style.boxShadow =
+												"0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 30px -10px rgba(0, 0, 0, 0.1)";
+										}
+									}}
+									onMouseLeave={(e) => {
+										if (isPopular) {
+											e.currentTarget.style.boxShadow =
+												"0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 40px -10px rgba(0, 0, 0, 0.15)";
+										} else {
+											e.currentTarget.style.boxShadow =
+												"0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)";
+										}
 									}}
 								>
 									{isPopular && (
@@ -954,13 +975,20 @@ const LandingPage = () => {
 											/>
 										</div>
 										<h3
-											className={`text-2xl font-bold mb-3 ${
+											className={`text-2xl font-bold mb-3 flex items-center gap-2 ${
 												isPopular
 													? "text-gray-900"
 													: "text-gray-900"
 											}`}
 										>
-											{t(`packages.${pkg.key}.title`)}
+											<span>
+												{t(`packages.${pkg.key}.title`)}
+											</span>
+											<span className='text-sm font-normal text-gray-500'>
+												{t(
+													`packages.${pkg.key}.subtitle`
+												)}
+											</span>
 										</h3>
 										<p className='text-gray-600 leading-relaxed text-sm'>
 											{t(

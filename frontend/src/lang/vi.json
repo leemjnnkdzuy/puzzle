@@ -60,7 +60,8 @@
 		"popular": "Phổ biến",
 		"choose": "Chọn gói này",
 		"scriptGeneration": {
-			"title": "Tạo Kịch bản",
+			"title": "Standard",
+			"subtitle": "Tạo Kịch bản",
 			"description": "Tạo ra kịch bản cho toàn bộ video recap, tóm tắt từ nguồn user tải lên.",
 			"features": [
 				"Tự động phân tích và tóm tắt nội dung",
@@ -69,7 +70,8 @@
 			]
 		},
 		"scriptVoice": {
-			"title": "Script + Voice",
+			"title": "Pro",
+			"subtitle": "Script + Voice",
 			"description": "Tạo ra kịch bản cho toàn bộ video recap, tóm tắt từ nguồn user tải lên, giọng đọc đa dạng tùy chỉnh theo ý muốn.",
 			"features": [
 				"Tất cả tính năng của gói Script Generation",
@@ -79,7 +81,8 @@
 			]
 		},
 		"fullService": {
-			"title": "Full Service",
+			"title": "Ultra",
+			"subtitle": "Trọn gói",
 			"description": "Hoàn thiện toàn bộ quy trình recap video từ đầu đến cuối. User chỉ cần tải lên input và chờ (có thể tùy chỉnh một vài phần) và nhận sản phẩm.",
 			"features": [
 				"Tất cả tính năng của gói Script + Voice",
@@ -175,7 +178,7 @@
 		]
 	},
 	"engine": {
-		"title": "Build a recap engine"
+		"title": "Xây dựng công cụ tóm tắt"
 	},
 	"notFound": {
 		"title": "404 - Trang không tìm thấy",

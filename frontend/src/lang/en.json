@@ -60,7 +60,8 @@
 		"popular": "Popular",
 		"choose": "Choose this package",
 		"scriptGeneration": {
-			"title": "Script Generation",
+			"title": "Standard",
+			"subtitle": "Script Generation",
 			"description": "Generate scripts for entire video recaps and summaries from user-uploaded sources.",
 			"features": [
 				"Automatic content analysis and summarization",
@@ -69,7 +70,8 @@
 			]
 		},
 		"scriptVoice": {
-			"title": "Script + Voice",
+			"title": "Pro",
+			"subtitle": "Script + Voice",
 			"description": "Generate scripts for entire video recaps and summaries from user-uploaded sources, with diverse customizable voices as desired.",
 			"features": [
 				"All features of Script Generation package",
@@ -79,7 +81,8 @@
 			]
 		},
 		"fullService": {
-			"title": "Full Service",
+			"title": "Ultra",
+			"subtitle": "Full Service",
 			"description": "Complete the entire video recap process from start to finish. Users only need to upload input and wait (with some customization options) and receive the product.",
 			"features": [
 				"All features of Script + Voice package",
