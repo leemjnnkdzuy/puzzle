@@ -3,8 +3,8 @@ import type {TooltipProps} from "../../types/TooltipPropsType";
 import {cn} from "../../utils/utils";
 
 const themeClasses: Record<string, string> = {
-	light: "bg-white text-[#222] shadow-[0_2px_16px_rgba(0,0,0,0.08)] border border-white",
-	dark: "bg-[#222] text-white shadow-[0_2px_16px_rgba(0,0,0,0.2)] border border-[#222]",
+	light: "bg-white text-gray-900 shadow-lg border border-gray-300 backdrop-blur-sm",
+	dark: "bg-gray-900 text-white shadow-xl border border-gray-800/50 backdrop-blur-sm",
 };
 
 const Tooltip = ({
@@ -23,13 +23,13 @@ const Tooltip = ({
 		? theme
 		: "light";
 	const baseClasses = plain
-		? "px-0 py-0 shadow-none border-none bg-transparent text-inherit"
-		: `rounded-2xl text-sm leading-5 ${themeClasses[themeKey]}`;
+		? "px-3 py-1.5 rounded-lg bg-white text-sm font-medium shadow-md border border-gray-300"
+		: `rounded-xl px-3 py-2 text-sm font-medium leading-relaxed ${themeClasses[themeKey]}`;
 	const boxClasses = cn(baseClasses, className);
 	const textClass = plain
-		? "text-inherit"
+		? "text-gray-900"
 		: themeKey === "light"
-		? "text-[#222]"
+		? "text-gray-900"
 		: "text-white";
 
 	const sideMap: Record<string, "top" | "bottom" | "left" | "right"> = {
@@ -45,6 +45,44 @@ const Tooltip = ({
 
 	const sideOffset = offset ? offset[1] || 8 : 8;
 
+	const getAnimationClasses = () => {
+		const baseAnimations = [
+			"opacity-0 data-[state=delayed-open]:opacity-100",
+			"scale-95 data-[state=delayed-open]:scale-100",
+			"transition-all duration-200 ease-out",
+			"will-change-[transform,opacity]",
+		];
+
+		if (plain) {
+			return baseAnimations;
+		}
+
+		switch (side) {
+			case "top":
+				return [
+					...baseAnimations,
+					"translate-y-1 data-[state=delayed-open]:translate-y-0",
+				];
+			case "bottom":
+				return [
+					...baseAnimations,
+					"-translate-y-1 data-[state=delayed-open]:translate-y-0",
+				];
+			case "left":
+				return [
+					...baseAnimations,
+					"translate-x-1 data-[state=delayed-open]:translate-x-0",
+				];
+			case "right":
+				return [
+					...baseAnimations,
+					"-translate-x-1 data-[state=delayed-open]:translate-x-0",
+				];
+			default:
+				return baseAnimations;
+		}
+	};
+
 	return (
 		<TooltipPrimitive.Provider delayDuration={delayDuration}>
 			<TooltipPrimitive.Root>
@@ -56,26 +94,26 @@ const Tooltip = ({
 						side={side}
 						sideOffset={sideOffset}
 						className={cn(
-							"z-[9999] text-[13px] leading-6 font-normal",
-							"opacity-0 data-[state=delayed-open]:opacity-100",
-							"scale-95 data-[state=delayed-open]:scale-100",
-							"transition-all duration-200 ease-out",
+							"z-[9999] max-w-xs",
+							...getAnimationClasses(),
 							boxClasses,
 							textClass
 						)}
 						{...rest}
 					>
 						{content}
-						{arrow && !plain && (
+						{arrow && (
 							<TooltipPrimitive.Arrow
 								className={cn(
-									"fill-current",
-									themeKey === "light"
-										? "text-white"
-										: "text-[#222]"
+									"fill-current drop-shadow-sm",
+									plain
+										? "text-white stroke-gray-300 stroke-[0.5]"
+										: themeKey === "light"
+										? "text-white stroke-gray-300 stroke-[0.5]"
+										: "text-gray-900 stroke-gray-800/50 stroke-[0.5]"
 								)}
-								width={11}
-								height={5}
+								width={12}
+								height={6}
 							/>
 						)}
 					</TooltipPrimitive.Content>

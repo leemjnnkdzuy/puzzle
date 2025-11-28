@@ -22,26 +22,39 @@ export const calculatePasswordStrength = (pwd: string): number => {
 	return Math.min(strength, 4);
 };
 
-export const getPasswordRules = (password: string): PasswordRule[] => {
+export const getPasswordRules = (
+	password: string,
+	t?: (key: string) => string
+): PasswordRule[] => {
+	const getLabel = (key: string, fallback: string) => {
+		return t ? t(key) : fallback;
+	};
+
 	return [
 		{
-			label: "Ít nhất 6 ký tự",
+			label: getLabel(
+				"signUp.passwordRules.minLength",
+				"Ít nhất 6 ký tự"
+			),
 			test: password.length >= 6,
 		},
 		{
-			label: "Có chữ hoa",
+			label: getLabel("signUp.passwordRules.uppercase", "Có chữ hoa"),
 			test: /[A-Z]/.test(password),
 		},
 		{
-			label: "Có chữ thường",
+			label: getLabel("signUp.passwordRules.lowercase", "Có chữ thường"),
 			test: /[a-z]/.test(password),
 		},
 		{
-			label: "Có số",
+			label: getLabel("signUp.passwordRules.number", "Có số"),
 			test: /[0-9]/.test(password),
 		},
 		{
-			label: "Có ký tự đặc biệt",
+			label: getLabel(
+				"signUp.passwordRules.special",
+				"Có ký tự đặc biệt"
+			),
 			test: /[^A-Za-z0-9]/.test(password),
 		},
 	];
@@ -55,75 +68,131 @@ export const getPasswordStrengthColor = (score: number): string => {
 export const validateRegisterField = (
 	field: keyof RegisterData,
 	value: string,
-	password?: string
+	password?: string,
+	t?: (key: string) => string
 ): string | null => {
+	const getError = (key: string, fallback: string) => {
+		return t ? t(key) : fallback;
+	};
+
 	switch (field) {
 		case "last_name":
 			if (!value || value.trim().length < 2) {
-				return "Họ phải có ít nhất 2 ký tự.";
+				return getError(
+					"signUp.errors.lastNameMin",
+					"Họ phải có ít nhất 2 ký tự."
+				);
 			}
 			break;
 		case "first_name":
 			if (!value || value.trim().length < 2) {
-				return "Tên phải có ít nhất 2 ký tự.";
+				return getError(
+					"signUp.errors.firstNameMin",
+					"Tên phải có ít nhất 2 ký tự."
+				);
 			}
 			break;
 		case "username":
 			if (!value || value.length < 6) {
-				return "Tên người dùng phải có ít nhất 6 ký tự.";
+				return getError(
+					"signUp.errors.usernameMin",
+					"Tên người dùng phải có ít nhất 6 ký tự."
+				);
 			}
 			if (!/^[a-z0-9_.-]+$/.test(value)) {
-				return "Tên người dùng chỉ được chứa các ký tự a-z, 0-9, dấu gạch dưới (_), gạch ngang (-) và dấu chấm (.)";
+				return getError(
+					"signUp.errors.usernameInvalid",
+					"Tên người dùng chỉ được chứa các ký tự a-z, 0-9, dấu gạch dưới (_), gạch ngang (-) và dấu chấm (.)"
+				);
 			}
 			break;
 		case "email":
 			if (!value || !/^\S+@\S+\.\S+$/.test(value)) {
-				return "Email không hợp lệ. Vui lòng nhập đúng định dạng email.";
+				return getError(
+					"signUp.errors.emailInvalid",
+					"Email không hợp lệ. Vui lòng nhập đúng định dạng email."
+				);
 			}
 			break;
 		case "password":
 			if (value) {
-				const rules = getPasswordRules(value);
+				const rules = getPasswordRules(value, t);
 				for (const rule of rules) {
 					if (!rule.test) {
-						return `Mật khẩu: ${rule.label}`;
+						const errorKey = getError(
+							"signUp.errors.passwordRule",
+							"Mật khẩu: {rule}"
+						);
+						return errorKey.replace("{rule}", rule.label);
 					}
 				}
 			}
 			break;
 		case "confirmPassword":
 			if (value && password && value !== password) {
-				return "Mật khẩu không khớp!";
+				return getError(
+					"signUp.errors.passwordMismatch",
+					"Mật khẩu không khớp!"
+				);
 			}
 			break;
 	}
 	return null;
 };
 
-export const validateRegister = (data: RegisterData): string | null => {
+export const validateRegister = (
+	data: RegisterData,
+	t?: (key: string) => string
+): string | null => {
+	const getError = (key: string, fallback: string) => {
+		return t ? t(key) : fallback;
+	};
+
 	if (!data.last_name || data.last_name.trim().length < 2) {
-		return "Họ phải có ít nhất 2 ký tự.";
+		return getError(
+			"signUp.errors.lastNameMin",
+			"Họ phải có ít nhất 2 ký tự."
+		);
 	}
 	if (!data.first_name || data.first_name.trim().length < 2) {
-		return "Tên phải có ít nhất 2 ký tự.";
+		return getError(
+			"signUp.errors.firstNameMin",
+			"Tên phải có ít nhất 2 ký tự."
+		);
 	}
 	if (!data.username || data.username.length < 6) {
-		return "Tên người dùng phải có ít nhất 6 ký tự.";
+		return getError(
+			"signUp.errors.usernameMin",
+			"Tên người dùng phải có ít nhất 6 ký tự."
+		);
 	}
 	if (!/^[a-z0-9_.-]+$/.test(data.username)) {
-		return "Tên người dùng chỉ được chứa các ký tự a-z, 0-9, dấu gạch dưới (_), gạch ngang (-) và dấu chấm (.)";
+		return getError(
+			"signUp.errors.usernameInvalid",
+			"Tên người dùng chỉ được chứa các ký tự a-z, 0-9, dấu gạch dưới (_), gạch ngang (-) và dấu chấm (.)"
+		);
 	}
 	if (!data.email || !/^\S+@\S+\.\S+$/.test(data.email)) {
-		return "Email không hợp lệ.";
+		return getError(
+			"signUp.errors.emailInvalidShort",
+			"Email không hợp lệ."
+		);
 	}
-	const passwordRules = getPasswordRules(data.password);
+	const passwordRules = getPasswordRules(data.password, t);
 	for (const rule of passwordRules) {
 		if (!rule.test) {
-			return `Mật khẩu: ${rule.label}`;
+			const errorKey = getError(
+				"signUp.errors.passwordRule",
+				"Mật khẩu: {rule}"
+			);
+			return errorKey.replace("{rule}", rule.label);
 		}
 	}
 	if (data.password !== data.confirmPassword) {
-		return "Mật khẩu không khớp!";
+		return getError(
+			"signUp.errors.passwordMismatch",
+			"Mật khẩu không khớp!"
+		);
 	}
 	return null;
 };

@@ -183,6 +183,68 @@
 		"goHome": "Về trang chủ",
 		"goBack": "Quay lại"
 	},
+	"signIn": {
+		"title": "Đăng nhập",
+		"subtitle": "Chào mừng trở lại!",
+		"backToHome": "Trở về trang chủ",
+		"username": "Tên đăng nhập",
+		"usernamePlaceholder": "Tên đăng nhập",
+		"password": "Mật khẩu",
+		"passwordPlaceholder": "Mật khẩu",
+		"forgotPassword": "Quên mật khẩu?",
+		"submit": "Đăng nhập",
+		"noAccount": "Chưa có tài khoản?",
+		"signUp": "Đăng ký",
+		"or": "hoặc",
+		"google": "Google",
+		"facebook": "Facebook",
+		"errors": {
+			"usernameRequired": "Vui lòng nhập tên đăng nhập.",
+			"passwordRequired": "Vui lòng nhập mật khẩu.",
+			"loginFailed": "Đăng nhập thất bại!",
+			"loginSuccess": "Đăng nhập thành công!"
+		}
+	},
+	"signUp": {
+		"title": "Đăng ký",
+		"subtitle": "Tạo tài khoản mới để bắt đầu",
+		"backToHome": "Trở về trang chủ",
+		"lastName": "Họ",
+		"lastNamePlaceholder": "Họ",
+		"firstName": "Tên",
+		"firstNamePlaceholder": "Tên",
+		"username": "Tên người dùng",
+		"usernamePlaceholder": "Tên người dùng",
+		"email": "Email",
+		"emailPlaceholder": "Email",
+		"password": "Mật khẩu",
+		"passwordPlaceholder": "Mật khẩu",
+		"confirmPassword": "Xác nhận mật khẩu",
+		"confirmPasswordPlaceholder": "Xác nhận mật khẩu",
+		"submit": "Đăng ký",
+		"hasAccount": "Đã có tài khoản?",
+		"signIn": "Đăng nhập",
+		"passwordRequirements": "Yêu cầu mật khẩu:",
+		"passwordRules": {
+			"minLength": "Ít nhất 6 ký tự",
+			"uppercase": "Có chữ hoa",
+			"lowercase": "Có chữ thường",
+			"number": "Có số",
+			"special": "Có ký tự đặc biệt"
+		},
+		"errors": {
+			"lastNameMin": "Họ phải có ít nhất 2 ký tự.",
+			"firstNameMin": "Tên phải có ít nhất 2 ký tự.",
+			"usernameMin": "Tên người dùng phải có ít nhất 6 ký tự.",
+			"usernameInvalid": "Tên người dùng chỉ được chứa các ký tự a-z, 0-9, dấu gạch dưới (_), gạch ngang (-) và dấu chấm (.)",
+			"emailInvalid": "Email không hợp lệ. Vui lòng nhập đúng định dạng email.",
+			"emailInvalidShort": "Email không hợp lệ.",
+			"passwordRule": "Mật khẩu: {rule}",
+			"passwordMismatch": "Mật khẩu không khớp!",
+			"registerSuccess": "Đăng ký thành công! Vui lòng xác minh email của bạn.",
+			"registerFailed": "Đăng ký thất bại!"
+		}
+	},
 	"footer": {
 		"description": "Nền tảng tóm tắt video bằng AI. Chuyển đổi video dài thành tóm tắt ngắn gọn tự động.",
 		"product": "Sản phẩm",

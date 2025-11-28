@@ -8,6 +8,7 @@ import Loading from "@/components/ui/Loading";
 import Tooltip from "@/components/ui/Tooltip";
 import authService from "@/services/AuthService";
 import {useGlobalNotificationPopup} from "@/hooks/useGlobalNotificationPopup";
+import {useLanguage} from "@/hooks/useLanguage";
 import {
 	calculatePasswordStrength,
 	getPasswordRules,
@@ -19,6 +20,7 @@ import type {RegisterData} from "@/types/AuthTypes";
 const SignUpPage: React.FC = () => {
 	const navigate = useNavigate();
 	const {showError, showSuccess} = useGlobalNotificationPopup();
+	const {getNested, t} = useLanguage();
 	const [registerData, setRegisterData] = useState<RegisterData>({
 		first_name: "",
 		last_name: "",
@@ -33,11 +35,17 @@ const SignUpPage: React.FC = () => {
 	const password = registerData.password || "";
 	const score = calculatePasswordStrength(password);
 	const dotColor = getPasswordStrengthColor(score);
-	const rules = getPasswordRules(password);
+	const rules = getPasswordRules(password, t);
+
+	const passwordRequirementsTitle = getNested?.(
+		"signUp.passwordRequirements"
+	) as string;
 
 	const renderPasswordRequirements = () => (
 		<div className='min-w-[180px]'>
-			<div className='font-semibold mb-1'>Yêu cầu mật khẩu:</div>
+			<div className='font-semibold mb-1'>
+				{passwordRequirementsTitle}
+			</div>
 			<div className='flex flex-col gap-1'>
 				{rules.map((rule, idx) => (
 					<span
@@ -62,7 +70,7 @@ const SignUpPage: React.FC = () => {
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		const errorMsg = validateRegister(registerData);
+		const errorMsg = validateRegister(registerData, t);
 		if (errorMsg) {
 			showError(errorMsg);
 			return;
@@ -71,18 +79,45 @@ const SignUpPage: React.FC = () => {
 		setIsLoading(true);
 		try {
 			await authService.register(registerData);
-			showSuccess("Đăng ký thành công! Vui lòng xác minh email của bạn.");
+			const registerSuccess = getNested?.(
+				"signUp.errors.registerSuccess"
+			) as string;
+			showSuccess(registerSuccess);
 			setTimeout(() => {
 				navigate("/verification");
 			}, 1000);
 		} catch (error) {
-			showError(
-				error instanceof Error ? error.message : "Đăng ký thất bại!"
-			);
+			const registerFailed = getNested?.(
+				"signUp.errors.registerFailed"
+			) as string;
+			showError(error instanceof Error ? error.message : registerFailed);
 		} finally {
 			setIsLoading(false);
 		}
 	};
+
+	const title = getNested?.("signUp.title") as string;
+	const subtitle = getNested?.("signUp.subtitle") as string;
+	const backToHome = getNested?.("signUp.backToHome") as string;
+	const lastNamePlaceholder = getNested?.(
+		"signUp.lastNamePlaceholder"
+	) as string;
+	const firstNamePlaceholder = getNested?.(
+		"signUp.firstNamePlaceholder"
+	) as string;
+	const usernamePlaceholder = getNested?.(
+		"signUp.usernamePlaceholder"
+	) as string;
+	const emailPlaceholder = getNested?.("signUp.emailPlaceholder") as string;
+	const passwordPlaceholder = getNested?.(
+		"signUp.passwordPlaceholder"
+	) as string;
+	const confirmPasswordPlaceholder = getNested?.(
+		"signUp.confirmPasswordPlaceholder"
+	) as string;
+	const submit = getNested?.("signUp.submit") as string;
+	const hasAccount = getNested?.("signUp.hasAccount") as string;
+	const signIn = getNested?.("signUp.signIn") as string;
 
 	return (
 		<div className='relative flex flex-col justify-center items-center min-h-screen bg-gray-50 px-4 py-8'>
@@ -93,22 +128,20 @@ const SignUpPage: React.FC = () => {
 				variant='text'
 			>
 				<FaArrowLeft />
-				Trở về trang chủ
+				{backToHome}
 			</Button>
 
 			<div className='w-full max-w-md bg-white rounded-2xl shadow-lg p-8'>
 				<h1 className='text-3xl font-bold text-center mb-2 text-gray-900'>
-					Đăng ký
+					{title}
 				</h1>
-				<p className='text-center text-gray-600 mb-8'>
-					Tạo tài khoản mới để bắt đầu
-				</p>
+				<p className='text-center text-gray-600 mb-8'>{subtitle}</p>
 
 				<form onSubmit={handleSubmit} className='space-y-4' noValidate>
 					<div className='flex gap-4'>
 						<Input
 							type='text'
-							placeholder='Họ'
+							placeholder={lastNamePlaceholder}
 							value={registerData.last_name}
 							onChange={(e) =>
 								setRegisterData({
@@ -121,7 +154,7 @@ const SignUpPage: React.FC = () => {
 						/>
 						<Input
 							type='text'
-							placeholder='Tên'
+							placeholder={firstNamePlaceholder}
 							value={registerData.first_name}
 							onChange={(e) =>
 								setRegisterData({
@@ -136,7 +169,7 @@ const SignUpPage: React.FC = () => {
 
 					<Input
 						type='text'
-						placeholder='Tên người dùng'
+						placeholder={usernamePlaceholder}
 						value={registerData.username}
 						onChange={(e) =>
 							setRegisterData({
@@ -150,7 +183,7 @@ const SignUpPage: React.FC = () => {
 
 					<Input
 						type='email'
-						placeholder='Email'
+						placeholder={emailPlaceholder}
 						value={registerData.email}
 						onChange={(e) =>
 							setRegisterData({
@@ -165,7 +198,7 @@ const SignUpPage: React.FC = () => {
 					<div className='relative'>
 						<Input
 							type='password'
-							placeholder='Mật khẩu'
+							placeholder={passwordPlaceholder}
 							value={registerData.password}
 							onFocus={() => setPasswordFocused(true)}
 							onBlur={() => setPasswordFocused(false)}
@@ -195,7 +228,7 @@ const SignUpPage: React.FC = () => {
 
 					<Input
 						type='password'
-						placeholder='Xác nhận mật khẩu'
+						placeholder={confirmPasswordPlaceholder}
 						value={registerData.confirmPassword}
 						onChange={(e) =>
 							setRegisterData({
@@ -213,18 +246,18 @@ const SignUpPage: React.FC = () => {
 						className='w-full bg-black text-white hover:bg-gray-800'
 						size='lg'
 					>
-						{isLoading ? <Loading size='20px' /> : "Đăng ký"}
+						{isLoading ? <Loading size='20px' /> : submit}
 					</Button>
 				</form>
 
 				<div className='mt-6 text-center'>
 					<p className='text-sm text-gray-600'>
-						Đã có tài khoản?{" "}
+						{hasAccount}{" "}
 						<Link
 							to='/login'
 							className='text-blue-600 hover:text-blue-800 font-semibold hover:underline'
 						>
-							Đăng nhập
+							{signIn}
 						</Link>
 					</p>
 				</div>

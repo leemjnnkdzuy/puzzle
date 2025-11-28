@@ -7,6 +7,7 @@ import Loading from "@/components/ui/Loading";
 import {useAuth} from "@/hooks/useAuth";
 import {useGlobalNotificationPopup} from "@/hooks/useGlobalNotificationPopup";
 import {useSocialLogin} from "@/hooks/useSocialLogin";
+import {useLanguage} from "@/hooks/useLanguage";
 import type {LoginData} from "@/types/AuthTypes";
 
 const SignInPage: React.FC = () => {
@@ -14,6 +15,7 @@ const SignInPage: React.FC = () => {
 	const {login, isAuthenticated} = useAuth();
 	const {showError, showSuccess} = useGlobalNotificationPopup();
 	const {handleSocialLogin} = useSocialLogin();
+	const {getNested} = useLanguage();
 	const [loginData, setLoginData] = useState<LoginData>({
 		username: "",
 		password: "",
@@ -28,11 +30,18 @@ const SignInPage: React.FC = () => {
 	}, [isAuthenticated, navigate]);
 
 	const validateLogin = (data: LoginData): string | null => {
+		const usernameRequired = getNested?.(
+			"signIn.errors.usernameRequired"
+		) as string;
+		const passwordRequired = getNested?.(
+			"signIn.errors.passwordRequired"
+		) as string;
+
 		if (!data.username || data.username.trim().length === 0) {
-			return "Vui lòng nhập tên đăng nhập.";
+			return usernameRequired;
 		}
 		if (!data.password || data.password.length === 0) {
-			return "Vui lòng nhập mật khẩu.";
+			return passwordRequired;
 		}
 		return null;
 	};
@@ -57,22 +66,47 @@ const SignInPage: React.FC = () => {
 
 		try {
 			const result = await login(loginData.username, loginData.password);
+			const loginSuccess = getNested?.(
+				"signIn.errors.loginSuccess"
+			) as string;
+			const loginFailed = getNested?.(
+				"signIn.errors.loginFailed"
+			) as string;
+
 			if (result && result.success) {
-				showSuccess("Đăng nhập thành công!");
+				showSuccess(loginSuccess);
 				setTimeout(() => {
 					navigate("/");
 				}, 500);
 			} else {
-				showError(result?.message || "Đăng nhập thất bại!");
+				showError(result?.message || loginFailed);
 			}
 		} catch (error) {
-			showError(
-				error instanceof Error ? error.message : "Đăng nhập thất bại!"
-			);
+			const loginFailed = getNested?.(
+				"signIn.errors.loginFailed"
+			) as string;
+			showError(error instanceof Error ? error.message : loginFailed);
 		} finally {
 			setIsLoading(false);
 		}
 	};
+
+	const title = getNested?.("signIn.title") as string;
+	const subtitle = getNested?.("signIn.subtitle") as string;
+	const backToHome = getNested?.("signIn.backToHome") as string;
+	const usernamePlaceholder = getNested?.(
+		"signIn.usernamePlaceholder"
+	) as string;
+	const passwordPlaceholder = getNested?.(
+		"signIn.passwordPlaceholder"
+	) as string;
+	const forgotPassword = getNested?.("signIn.forgotPassword") as string;
+	const submit = getNested?.("signIn.submit") as string;
+	const noAccount = getNested?.("signIn.noAccount") as string;
+	const signUp = getNested?.("signIn.signUp") as string;
+	const or = getNested?.("signIn.or") as string;
+	const google = getNested?.("signIn.google") as string;
+	const facebook = getNested?.("signIn.facebook") as string;
 
 	return (
 		<div className='relative flex flex-col justify-center items-center min-h-screen bg-gray-50 px-4 py-8'>
@@ -83,22 +117,20 @@ const SignInPage: React.FC = () => {
 				variant='text'
 			>
 				<FaArrowLeft />
-				Trở về trang chủ
+				{backToHome}
 			</Button>
 
 			<div className='w-full max-w-md bg-white rounded-2xl shadow-lg p-8'>
 				<h1 className='text-3xl font-bold text-center mb-2 text-gray-900'>
-					Đăng nhập
+					{title}
 				</h1>
-				<p className='text-center text-gray-600 mb-8'>
-					Chào mừng trở lại!
-				</p>
+				<p className='text-center text-gray-600 mb-8'>{subtitle}</p>
 
 				<form onSubmit={handleSubmit} className='space-y-6' noValidate>
 					<div>
 						<Input
 							type='text'
-							placeholder='Tên đăng nhập'
+							placeholder={usernamePlaceholder}
 							value={loginData.username}
 							onChange={(e) =>
 								setLoginData({
@@ -115,7 +147,7 @@ const SignInPage: React.FC = () => {
 					<div>
 						<Input
 							type='password'
-							placeholder='Mật khẩu'
+							placeholder={passwordPlaceholder}
 							value={loginData.password}
 							onChange={(e) =>
 								setLoginData({
@@ -136,7 +168,7 @@ const SignInPage: React.FC = () => {
 							to='/forgot-password'
 							className='text-sm text-blue-600 hover:text-blue-800 hover:underline'
 						>
-							Quên mật khẩu?
+							{forgotPassword}
 						</Link>
 					</div>
 
@@ -146,18 +178,18 @@ const SignInPage: React.FC = () => {
 						className='w-full bg-black text-white hover:bg-gray-800'
 						size='lg'
 					>
-						{isLoading ? <Loading size='20px' /> : "Đăng nhập"}
+						{isLoading ? <Loading size='20px' /> : submit}
 					</Button>
 				</form>
 
 				<div className='mt-6 text-center'>
 					<p className='text-sm text-gray-600'>
-						Chưa có tài khoản?{" "}
+						{noAccount}{" "}
 						<Link
 							to='/register'
 							className='text-blue-600 hover:text-blue-800 font-semibold hover:underline'
 						>
-							Đăng ký
+							{signUp}
 						</Link>
 					</p>
 				</div>
@@ -169,7 +201,7 @@ const SignInPage: React.FC = () => {
 						</div>
 						<div className='relative flex justify-center text-sm'>
 							<span className='px-2 bg-white text-gray-500'>
-								hoặc
+								{or}
 							</span>
 						</div>
 					</div>
@@ -182,7 +214,7 @@ const SignInPage: React.FC = () => {
 							onClick={() => handleSocialLogin("google")}
 						>
 							<FaGoogle className='w-5 h-5 text-red-500' />
-							<span>Google</span>
+							<span>{google}</span>
 						</Button>
 						<Button
 							type='button'
@@ -191,7 +223,7 @@ const SignInPage: React.FC = () => {
 							onClick={() => handleSocialLogin("facebook")}
 						>
 							<FaFacebook className='w-5 h-5 text-blue-600' />
-							<span>Facebook</span>
+							<span>{facebook}</span>
 						</Button>
 					</div>
 				</div>

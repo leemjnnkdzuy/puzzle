@@ -183,6 +183,68 @@
 		"goHome": "Go to Homepage",
 		"goBack": "Go Back"
 	},
+	"signIn": {
+		"title": "Sign in",
+		"subtitle": "Welcome back!",
+		"backToHome": "Back to Home",
+		"username": "Username",
+		"usernamePlaceholder": "Enter username",
+		"password": "Password",
+		"passwordPlaceholder": "Enter password",
+		"forgotPassword": "Forgot password?",
+		"submit": "Sign in",
+		"noAccount": "Don't have an account?",
+		"signUp": "Sign up",
+		"or": "or",
+		"google": "Google",
+		"facebook": "Facebook",
+		"errors": {
+			"usernameRequired": "Please enter your username.",
+			"passwordRequired": "Please enter your password.",
+			"loginFailed": "Login failed!",
+			"loginSuccess": "Login successful!"
+		}
+	},
+	"signUp": {
+		"title": "Sign up",
+		"subtitle": "Create a new account to get started",
+		"backToHome": "Back to Home",
+		"lastName": "Last name",
+		"lastNamePlaceholder": "Last name",
+		"firstName": "First name",
+		"firstNamePlaceholder": "First name",
+		"username": "Username",
+		"usernamePlaceholder": "Username",
+		"email": "Email",
+		"emailPlaceholder": "Email",
+		"password": "Password",
+		"passwordPlaceholder": "Password",
+		"confirmPassword": "Confirm password",
+		"confirmPasswordPlaceholder": "Confirm password",
+		"submit": "Sign up",
+		"hasAccount": "Already have an account?",
+		"signIn": "Sign in",
+		"passwordRequirements": "Password requirements:",
+		"passwordRules": {
+			"minLength": "At least 6 characters",
+			"uppercase": "Has uppercase letter",
+			"lowercase": "Has lowercase letter",
+			"number": "Has number",
+			"special": "Has special character"
+		},
+		"errors": {
+			"lastNameMin": "Last name must be at least 2 characters.",
+			"firstNameMin": "First name must be at least 2 characters.",
+			"usernameMin": "Username must be at least 6 characters.",
+			"usernameInvalid": "Username can only contain a-z, 0-9, underscore (_), hyphen (-) and dot (.)",
+			"emailInvalid": "Invalid email. Please enter a valid email format.",
+			"emailInvalidShort": "Invalid email.",
+			"passwordRule": "Password: {rule}",
+			"passwordMismatch": "Passwords do not match!",
+			"registerSuccess": "Registration successful! Please verify your email.",
+			"registerFailed": "Registration failed!"
+		}
+	},
 	"footer": {
 		"description": "AI-powered video recap platform. Transform long videos into concise summaries automatically.",
 		"product": "Product",
