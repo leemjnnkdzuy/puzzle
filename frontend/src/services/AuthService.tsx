@@ -1,6 +1,6 @@
 import axios, {type AxiosInstance, type AxiosError} from "axios";
-import {DEFAULT_API_URL} from "../configs/AppConfig";
-import {RequestError} from "../utils/RequestError";
+import {DEFAULT_API_URL} from "@/configs/AppConfig";
+import {RequestError} from "@/utils/RequestError";
 import type {
 	RegisterData,
 	ForgotPasswordData,
@@ -8,7 +8,7 @@ import type {
 	VerifyResponse,
 	VerifyResetPinResponse,
 	RegisterResponse,
-} from "../types/AuthTypes";
+} from "@/types/AuthTypes";
 
 const createApiClient = (): AxiosInstance => {
 	const api = axios.create({

@@ -17,14 +17,14 @@ import {
 	RotateCcw,
 	ChevronDown,
 } from "lucide-react";
-import Button from "../components/ui/Button";
-import Input from "../components/ui/Input";
-import VideoPlayer from "../components/ui/VideoPlayer";
-import Tooltip from "../components/ui/Tooltip";
-import Assets from "../configs/AssetsConfig";
-import {useLanguage} from "../hooks/useLanguage";
-import {usePlaybackStore} from "../hooks/usePlaybackStore";
-import {useAuth} from "../hooks/useAuth";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+import VideoPlayer from "@/components/ui/VideoPlayer";
+import Tooltip from "@/components/ui/Tooltip";
+import Assets from "@/configs/AssetsConfig";
+import {useLanguage} from "@/hooks/useLanguage";
+import {usePlaybackStore} from "@/hooks/usePlaybackStore";
+import {useAuth} from "@/hooks/useAuth";
 
 const platforms = [
 	{

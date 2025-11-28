@@ -1,4 +1,4 @@
-import {SUPPORTED_LANGUAGES} from "../configs/AppConfig";
+import {SUPPORTED_LANGUAGES} from "@/configs/AppConfig";
 
 export type Language = (typeof SUPPORTED_LANGUAGES)[number];
 

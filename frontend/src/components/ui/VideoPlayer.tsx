@@ -1,6 +1,6 @@
 import {useRef, useEffect} from "react";
-import {usePlaybackStore} from "../../hooks/usePlaybackStore";
-import type {VideoPlayerProps} from "../../types/VideoPlayerPropsType";
+import {usePlaybackStore} from "@/hooks/usePlaybackStore";
+import type {VideoPlayerProps} from "@/types/VideoPlayerPropsType";
 
 const VideoPlayer = ({
 	src,

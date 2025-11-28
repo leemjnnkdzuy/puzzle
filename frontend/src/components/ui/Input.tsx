@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import {Eye, EyeOff, X} from "lucide-react";
-import {cn} from "../../utils/utils";
+import {cn} from "@/utils/utils";
 import Button from "./Button";
-import type {InputProps} from "../../types/InputPropsType";
+import type {InputProps} from "@/types/InputPropsType";
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
 	(

@@ -1,17 +1,17 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
 import {FaTwitter, FaDiscord, FaGithub, FaEnvelope} from "react-icons/fa";
-import Button from "../ui/Button";
-import Assets from "../../configs/AssetsConfig";
+import Button from "@/components/ui/Button";
+import Assets from "@/configs/AssetsConfig";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "../ui/DropdownMenu";
-import {useLanguage} from "../../hooks/useLanguage";
+} from "@/components/ui/DropdownMenu";
+import {useLanguage} from "@/hooks/useLanguage";
 import {Globe} from "lucide-react";
-import {useAuth} from "../../hooks/useAuth";
+import {useAuth} from "@/hooks/useAuth";
 
 interface HeaderFooterLayoutProps {
 	children: React.ReactNode;
@@ -315,7 +315,9 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 								</li>
 								<li>
 									<button
-										onClick={() => navigate("/privacy")}
+										onClick={() =>
+											navigate("/privacy-policy")
+										}
 										className='text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
 									>
 										{t("footer.resourcesPrivacy")}

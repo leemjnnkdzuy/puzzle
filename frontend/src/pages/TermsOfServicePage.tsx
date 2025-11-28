@@ -1,14 +1,14 @@
 import {useMemo} from "react";
-import {useLanguage} from "../hooks/useLanguage";
+import {useLanguage} from "@/hooks/useLanguage";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "../components/ui/DropdownMenu";
+} from "@/components/ui/DropdownMenu";
 import {Globe} from "lucide-react";
-import enDocument from "../lang/TermsOfService/en.json";
-import viDocument from "../lang/TermsOfService/vi.json";
+import enDocument from "@/lang/TermsOfService/en.json";
+import viDocument from "@/lang/TermsOfService/vi.json";
 
 const TermsOfServicePage = () => {
 	const {language, setLanguage} = useLanguage();

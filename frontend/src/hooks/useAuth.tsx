@@ -1,8 +1,8 @@
 import {useState, useCallback, useEffect, useRef} from "react";
 import axios from "axios";
-import {DEFAULT_API_URL} from "../configs/AppConfig";
-import authService from "../services/AuthService";
-import type {LoginResponse} from "../types/AuthTypes";
+import {DEFAULT_API_URL} from "@/configs/AppConfig";
+import authService from "@/services/AuthService";
+import type {LoginResponse} from "@/types/AuthTypes";
 
 interface UseAuthReturn {
 	login: (username: string, password: string) => Promise<LoginResponse>;

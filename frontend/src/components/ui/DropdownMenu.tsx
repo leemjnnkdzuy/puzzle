@@ -3,7 +3,7 @@ import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import {Check, ChevronRight, Circle} from "lucide-react";
 import {cva} from "class-variance-authority";
 
-import {cn} from "../../utils/utils";
+import {cn} from "@/utils/utils";
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
 
@@ -38,7 +38,7 @@ import type {
 	DropdownMenuItemProps,
 	DropdownMenuCheckboxItemProps,
 	DropdownMenuRadioItemProps,
-} from "../../types/DropdownMenuPropsType";
+} from "@/types/DropdownMenuPropsType";
 
 const DropdownMenuSubTrigger = React.forwardRef<
 	React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,

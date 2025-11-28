@@ -1,6 +1,6 @@
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import type {TooltipProps} from "../../types/TooltipPropsType";
-import {cn} from "../../utils/utils";
+import type {TooltipProps} from "@/types/TooltipPropsType";
+import {cn} from "@/utils/utils";
 
 const themeClasses: Record<string, string> = {
 	light: "bg-white text-gray-900 shadow-lg border border-gray-300 backdrop-blur-sm",

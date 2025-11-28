@@ -1,14 +1,14 @@
 import {useMemo} from "react";
-import {useLanguage} from "../hooks/useLanguage";
+import {useLanguage} from "@/hooks/useLanguage";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "../components/ui/DropdownMenu";
+} from "@/components/ui/DropdownMenu";
 import {Globe} from "lucide-react";
-import enDocument from "../lang/PrivacyPolicy/en.json";
-import viDocument from "../lang/PrivacyPolicy/vi.json";
+import enDocument from "@/lang/PrivacyPolicy/en.json";
+import viDocument from "@/lang/PrivacyPolicy/vi.json";
 
 const PrivacyPolicyPage = () => {
 	const {language, setLanguage} = useLanguage();

@@ -21,6 +21,7 @@ import FogotPasswordPage from "@/pages/FogotPasswordPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 import TermsOfServicePage from "@/pages/TermsOfServicePage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
+import AboutPage from "@/pages/AboutPage";
 
 const publicRoutes: RouteTypes[] = [
 	{
@@ -57,7 +58,12 @@ const publicRoutes: RouteTypes[] = [
 		path: "/privacy-policy",
 		component: PrivacyPolicyPage,
 		layout: HeaderFooterLayout,
-	}
+	},
+	{
+		path: "/about",
+		component: AboutPage,
+		layout: HeaderFooterLayout,
+	},
 ];
 
 const guestOnlyRoutes: RouteTypes[] = [

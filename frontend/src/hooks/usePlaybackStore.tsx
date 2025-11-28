@@ -1,6 +1,6 @@
 import {create} from "zustand";
-import {DEFAULT_FPS} from "../configs/AppConfig";
-import type {PlaybackState} from "../types/PlaybackStateType";
+import {DEFAULT_FPS} from "@/configs/AppConfig";
+import type {PlaybackState} from "@/types/PlaybackStateType";
 
 let playBackTimer: number | null = null;
 

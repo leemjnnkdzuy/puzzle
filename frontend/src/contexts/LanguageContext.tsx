@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import type {ReactNode} from "react";
 import {createContext} from "react";
-import type {LanguageContextType} from "../types/LanguageContextType";
+import type {LanguageContextType} from "@/types/LanguageContextType";
 import type {Language} from "@/types/LanguageContextType";
 import {DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES} from "@/configs/AppConfig";
 import enTranslations from "@/lang/Global/en.json";

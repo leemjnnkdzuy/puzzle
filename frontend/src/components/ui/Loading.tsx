@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import type {LoadingProps} from "../../types/LoadingPropsType";
+import type {LoadingProps} from "@/types/LoadingPropsType";
 
 const Loading = React.forwardRef<HTMLDivElement, LoadingProps>(
 	({size}, ref) => {
