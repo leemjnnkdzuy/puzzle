@@ -17,21 +17,12 @@ import {
 	RotateCcw,
 	ChevronDown,
 } from "lucide-react";
-import {FaTwitter, FaDiscord, FaGithub, FaEnvelope} from "react-icons/fa";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import VideoPlayer from "../components/ui/VideoPlayer";
 import Tooltip from "../components/ui/Tooltip";
 import Assets from "../configs/AssetsConfig";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "../components/ui/DropdownMenu";
 import {useLanguage} from "../hooks/useLanguage";
-import {Globe} from "lucide-react";
-
 import {usePlaybackStore} from "../hooks/usePlaybackStore";
 import {useAuth} from "../hooks/useAuth";
 
@@ -100,7 +91,7 @@ const servicePackages = [
 
 const LandingPage = () => {
 	const navigate = useNavigate();
-	const {language, setLanguage, t, getNested} = useLanguage();
+	const {t, getNested} = useLanguage();
 	const {isAuthenticated} = useAuth({skipInitialCheck: true});
 	const [showNav, setShowNav] = useState(false);
 	const [demoOverlay, setDemoOverlay] = useState(false);
@@ -110,9 +101,6 @@ const LandingPage = () => {
 	const [ctaAnimationStep, setCtaAnimationStep] = useState(0);
 	const [featuresAnimated, setFeaturesAnimated] = useState(false);
 	const [packagesAnimated, setPackagesAnimated] = useState(false);
-	const [packagesTitleAnimated, setPackagesTitleAnimated] = useState(false);
-	const [packagesSubtitleAnimated, setPackagesSubtitleAnimated] =
-		useState(false);
 	const [expandedPackages, setExpandedPackages] = useState<{
 		[key: number]: boolean;
 	}>({});
@@ -124,6 +112,8 @@ const LandingPage = () => {
 	const packagesSectionRef = useRef<HTMLElement>(null);
 	const prevDemoShrinkRef = useRef(false);
 	const prevShowNavRef = useRef(false);
+	const featuresAnimatingRef = useRef(false);
+	const packagesAnimatingRef = useRef(false);
 	const {
 		play,
 		pause,
@@ -271,9 +261,17 @@ const LandingPage = () => {
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				if (entry.isIntersecting) {
-					setFeaturesAnimated(true);
+					if (!featuresAnimatingRef.current) {
+						featuresAnimatingRef.current = true;
+						setFeaturesAnimated(true);
+						setTimeout(() => {
+							featuresAnimatingRef.current = false;
+						}, 900);
+					}
 				} else {
-					setFeaturesAnimated(false);
+					if (!featuresAnimatingRef.current) {
+						setFeaturesAnimated(false);
+					}
 				}
 			},
 			{threshold: 0.5, rootMargin: "0px"}
@@ -289,22 +287,20 @@ const LandingPage = () => {
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				if (entry.isIntersecting) {
-					setTimeout(() => {
-						setPackagesTitleAnimated(true);
-					}, 0);
-					setTimeout(() => {
-						setPackagesSubtitleAnimated(true);
-					}, 200);
-					setTimeout(() => {
+					if (!packagesAnimatingRef.current) {
+						packagesAnimatingRef.current = true;
 						setPackagesAnimated(true);
-					}, 400);
+						setTimeout(() => {
+							packagesAnimatingRef.current = false;
+						}, 1000);
+					}
 				} else {
-					setPackagesTitleAnimated(false);
-					setPackagesSubtitleAnimated(false);
-					setPackagesAnimated(false);
+					if (!packagesAnimatingRef.current) {
+						setPackagesAnimated(false);
+					}
 				}
 			},
-			{threshold: 0.2, rootMargin: "0px"}
+			{threshold: 0.5, rootMargin: "0px"}
 		);
 
 		observer.observe(packagesSectionRef.current);
@@ -389,120 +385,6 @@ const LandingPage = () => {
 					</button>
 				))}
 			</div>
-
-			<header className='fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100'>
-				<div className='container mx-auto px-6 py-6'>
-					<div className='flex items-center justify-between'>
-						<div className='flex items-center gap-2'>
-							<img
-								src={Assets.AppIcon}
-								alt='Puzzle'
-								className='w-8 h-8 object-contain'
-							/>
-							<span className='text-xl font-semibold text-gray-900'>
-								Puzzle
-							</span>
-						</div>
-
-						<nav className='hidden md:flex items-center gap-8'>
-							<div className='flex items-center gap-1 cursor-pointer'>
-								<span className='text-gray-700 hover:text-gray-900'>
-									{t("nav.product")}
-								</span>
-								<svg
-									className='w-4 h-4 text-gray-500'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
-								>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth={2}
-										d='M19 9l-7 7-7-7'
-									/>
-								</svg>
-							</div>
-							<a
-								href='/customers'
-								className='text-gray-700 hover:text-gray-900'
-							>
-								{t("nav.customers")}
-							</a>
-							<div className='flex items-center gap-1 cursor-pointer'>
-								<span className='text-gray-700 hover:text-gray-900'>
-									{t("nav.resources")}
-								</span>
-								<svg
-									className='w-4 h-4 text-gray-500'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
-								>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth={2}
-										d='M19 9l-7 7-7-7'
-									/>
-								</svg>
-							</div>
-							<a
-								href='/pricing'
-								className='text-gray-700 hover:text-gray-900'
-							>
-								{t("nav.pricing")}
-							</a>
-							<div className='flex items-center gap-1 cursor-pointer'>
-								<span className='text-gray-700 hover:text-gray-900'>
-									{t("nav.company")}
-								</span>
-								<svg
-									className='w-4 h-4 text-gray-500'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
-								>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth={2}
-										d='M19 9l-7 7-7-7'
-									/>
-								</svg>
-							</div>
-						</nav>
-
-						<div className='flex items-center gap-4'>
-							{isAuthenticated ? (
-								<Button
-									variant='default'
-									className='bg-black text-white hover:bg-gray-800'
-									onClick={() => navigate("/home")}
-								>
-									{t("nav.goHome")}
-								</Button>
-							) : (
-								<>
-									<Button
-										variant='outline'
-										onClick={() => navigate("/login")}
-									>
-										{t("nav.signIn")}
-									</Button>
-									<Button
-										variant='default'
-										className='bg-black text-white hover:bg-gray-800'
-										onClick={() => navigate("/register")}
-									>
-										{t("nav.signUp")}
-									</Button>
-								</>
-							)}
-						</div>
-					</div>
-				</div>
-			</header>
 
 			<main className='relative z-10 w-full min-h-screen flex items-center justify-center px-4 sm:px-6 pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20'>
 				<div className='max-w-4xl mx-auto text-center px-2'>
@@ -914,12 +796,16 @@ const LandingPage = () => {
 				<div className='max-w-7xl mx-auto'>
 					<div className='text-center mb-8 sm:mb-12 md:mb-16 px-2'>
 						<h2
-							className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 transition-all duration-600 ${
-								packagesTitleAnimated
+							className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 ${
+								packagesAnimated
 									? "opacity-100 translate-y-0"
 									: "opacity-0 translate-y-8"
 							}`}
 							style={{
+								transitionDelay: packagesAnimated
+									? "0ms"
+									: "0ms",
+								transitionDuration: "600ms",
 								transitionTimingFunction:
 									"cubic-bezier(0.4, 0, 0.2, 1)",
 							}}
@@ -927,12 +813,16 @@ const LandingPage = () => {
 							{t("packages.title")}
 						</h2>
 						<p
-							className={`text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto transition-all duration-600 ${
-								packagesSubtitleAnimated
+							className={`text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto ${
+								packagesAnimated
 									? "opacity-100 translate-y-0"
 									: "opacity-0 translate-y-8"
 							}`}
 							style={{
+								transitionDelay: packagesAnimated
+									? "100ms"
+									: "0ms",
+								transitionDuration: "600ms",
 								transitionTimingFunction:
 									"cubic-bezier(0.4, 0, 0.2, 1)",
 							}}
@@ -954,10 +844,10 @@ const LandingPage = () => {
 							return (
 								<div
 									key={index}
-									className={`group relative rounded-xl sm:rounded-2xl lg:rounded-3xl p-5 sm:p-6 md:p-8 flex flex-col transition-all duration-300 overflow-visible ${
+									className={`group relative rounded-xl sm:rounded-2xl lg:rounded-3xl p-5 sm:p-6 md:p-8 flex flex-col overflow-visible ${
 										isPopular
-											? "lg:-mt-4 lg:mb-4 border-2 border-gray-900 bg-white shadow-xl hover:shadow-2xl"
-											: "border border-gray-200 bg-white hover:shadow-lg hover:-translate-y-1"
+											? "lg:-mt-4 border-2 border-gray-900 bg-white shadow-xl hover:shadow-2xl"
+											: "border border-gray-200 bg-white hover:shadow-lg"
 									} ${
 										packagesAnimated
 											? "opacity-100 translate-y-0"
@@ -965,10 +855,8 @@ const LandingPage = () => {
 									}`}
 									style={{
 										transitionDelay: packagesAnimated
-											? `${index * 100}ms`
+											? `${(index + 2) * 100}ms`
 											: "0ms",
-										transitionProperty:
-											"opacity, transform, box-shadow",
 										transitionDuration: "600ms",
 										transitionTimingFunction:
 											"cubic-bezier(0.4, 0, 0.2, 1)",
@@ -977,6 +865,8 @@ const LandingPage = () => {
 											: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
 									}}
 									onMouseEnter={(e) => {
+										e.currentTarget.style.transition =
+											"box-shadow 100ms ease-out";
 										if (isPopular) {
 											e.currentTarget.style.boxShadow =
 												"0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 60px -15px rgba(0, 0, 0, 0.2)";
@@ -986,6 +876,8 @@ const LandingPage = () => {
 										}
 									}}
 									onMouseLeave={(e) => {
+										e.currentTarget.style.transition =
+											"box-shadow 100ms ease-out";
 										if (isPopular) {
 											e.currentTarget.style.boxShadow =
 												"0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 40px -10px rgba(0, 0, 0, 0.15)";
@@ -1722,249 +1614,6 @@ const LandingPage = () => {
 					</div>
 				</div>
 			</section>
-
-			<footer className='relative z-10 w-full border-t border-gray-200 bg-white'>
-				<div className='max-w-7xl mx-auto px-6 py-12 md:py-16'>
-					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 mb-8'>
-						<div className='lg:col-span-2'>
-							<div className='flex items-center gap-2 mb-4'>
-								<img
-									src={Assets.AppIcon}
-									alt='Puzzle'
-									className='w-8 h-8 object-contain'
-								/>
-								<span className='text-xl font-semibold text-gray-900'>
-									Puzzle
-								</span>
-							</div>
-							<p className='text-gray-600 text-sm leading-relaxed max-w-md'>
-								{t("footer.description")}
-							</p>
-							<div className='flex items-center gap-4 mt-6'>
-								<a
-									href='#'
-									className='w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:border-gray-300 transition-colors'
-									aria-label='Twitter'
-								>
-									<FaTwitter className='w-5 h-5' />
-								</a>
-								<a
-									href='#'
-									className='w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:border-gray-300 transition-colors'
-									aria-label='Discord'
-								>
-									<FaDiscord className='w-5 h-5' />
-								</a>
-								<a
-									href='#'
-									className='w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:border-gray-300 transition-colors'
-									aria-label='GitHub'
-								>
-									<FaGithub className='w-5 h-5' />
-								</a>
-								<a
-									href='#'
-									className='w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:border-gray-300 transition-colors'
-									aria-label='Email'
-								>
-									<FaEnvelope className='w-5 h-5' />
-								</a>
-							</div>
-						</div>
-
-						<div>
-							<h3 className='text-sm font-semibold text-gray-900 mb-4'>
-								{t("footer.product")}
-							</h3>
-							<ul className='space-y-3'>
-								<li>
-									<a
-										href='#'
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors'
-									>
-										{t("footer.productFeatures")}
-									</a>
-								</li>
-								<li>
-									<a
-										href='#'
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors'
-									>
-										{t("footer.productPricing")}
-									</a>
-								</li>
-								<li>
-									<a
-										href='#'
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors'
-									>
-										{t("footer.productDocumentation")}
-									</a>
-								</li>
-								<li>
-									<a
-										href='#'
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors'
-									>
-										{t("footer.productApi")}
-									</a>
-								</li>
-							</ul>
-						</div>
-
-						<div>
-							<h3 className='text-sm font-semibold text-gray-900 mb-4'>
-								{t("footer.company")}
-							</h3>
-							<ul className='space-y-3'>
-								<li>
-									<a
-										href='#'
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors'
-									>
-										{t("footer.companyAbout")}
-									</a>
-								</li>
-								<li>
-									<a
-										href='#'
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors'
-									>
-										{t("footer.companyBlog")}
-									</a>
-								</li>
-								<li>
-									<a
-										href='#'
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors'
-									>
-										{t("footer.companyCareers")}
-									</a>
-								</li>
-								<li>
-									<a
-										href='#'
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors'
-									>
-										{t("footer.companyContact")}
-									</a>
-								</li>
-							</ul>
-						</div>
-
-						<div>
-							<h3 className='text-sm font-semibold text-gray-900 mb-4'>
-								{t("footer.resources")}
-							</h3>
-							<ul className='space-y-3'>
-								<li>
-									<a
-										href='#'
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors'
-									>
-										{t("footer.resourcesHelp")}
-									</a>
-								</li>
-								<li>
-									<a
-										href='#'
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors'
-									>
-										{t("footer.resourcesCommunity")}
-									</a>
-								</li>
-								<li>
-									<a
-										href='#'
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors'
-									>
-										{t("footer.resourcesPrivacy")}
-									</a>
-								</li>
-								<li>
-									<a
-										href='#'
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors'
-									>
-										{t("footer.resourcesTerms")}
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-
-					<div className='pt-8 border-t border-gray-200'>
-						<div className='flex flex-col md:flex-row items-center justify-between gap-4'>
-							<div className='flex items-center gap-4'>
-								<DropdownMenu>
-									<DropdownMenuTrigger asChild>
-										<button className='flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors'>
-											<Globe className='w-4 h-4' />
-											<span>
-												{language === "en"
-													? "English"
-													: "Tiếng Việt"}
-											</span>
-											<svg
-												className='w-4 h-4'
-												fill='none'
-												stroke='currentColor'
-												viewBox='0 0 24 24'
-											>
-												<path
-													strokeLinecap='round'
-													strokeLinejoin='round'
-													strokeWidth={2}
-													d='M19 9l-7 7-7-7'
-												/>
-											</svg>
-										</button>
-									</DropdownMenuTrigger>
-									<DropdownMenuContent
-										align='start'
-										className='bg-white border border-gray-200 min-w-[120px]'
-									>
-										<DropdownMenuItem
-											onSelect={() => setLanguage("en")}
-										>
-											English
-										</DropdownMenuItem>
-										<DropdownMenuItem
-											onSelect={() => setLanguage("vi")}
-										>
-											Tiếng Việt
-										</DropdownMenuItem>
-									</DropdownMenuContent>
-								</DropdownMenu>
-							</div>
-							<p className='text-sm text-gray-600'>
-								© {new Date().getFullYear()} Puzzle.{" "}
-								{t("footer.copyright")}
-							</p>
-							<div className='flex items-center gap-6 text-sm text-gray-600'>
-								<a
-									href='#'
-									className='hover:text-gray-900 transition-colors'
-								>
-									{t("footer.privacy")}
-								</a>
-								<a
-									href='#'
-									className='hover:text-gray-900 transition-colors'
-								>
-									{t("footer.terms")}
-								</a>
-								<a
-									href='#'
-									className='hover:text-gray-900 transition-colors'
-								>
-									{t("footer.cookies")}
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</footer>
 		</div>
 	);
 };

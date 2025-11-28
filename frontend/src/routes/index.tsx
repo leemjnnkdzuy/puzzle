@@ -6,6 +6,7 @@ import type {RouteTypes} from "@/types/RouteTypes";
 
 // layouts
 import NotThingLayout from "@/components/layout/NotThingLayout";
+import HeaderFooterLayout from "@/components/layout/HeaderFooterLayout";
 
 // Components
 import AppLoader, {PublicRoute} from "@/components/common/AppLoader";
@@ -17,12 +18,13 @@ import SignInPage from "@/pages/SignInPage";
 import SignUpPage from "@/pages/SignUpPage";
 import FogotPasswordPage from "@/pages/FogotPasswordPage";
 import NotFoundPage from "@/pages/NotFoundPage";
+import TermsOfServicePage from "@/pages/TermsOfServicePage";
 
 const publicRoutes: RouteTypes[] = [
 	{
 		path: "/",
 		component: LandingPage,
-		layout: NotThingLayout,
+		layout: HeaderFooterLayout,
 	},
 	{
 		path: "/login",
@@ -43,6 +45,11 @@ const publicRoutes: RouteTypes[] = [
 		path: "*",
 		component: NotFoundPage,
 		layout: NotThingLayout,
+	},
+	{
+		path: "/terms-of-service",
+		component: TermsOfServicePage,
+		layout: HeaderFooterLayout,
 	},
 ];
 

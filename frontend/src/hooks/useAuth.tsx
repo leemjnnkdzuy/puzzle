@@ -254,12 +254,17 @@ export const useAuth = (options?: UseAuthOptions): UseAuthReturn => {
 		if (!skipInitialCheck && !hasCheckedRef.current) {
 			checkAuth();
 		} else if (skipInitialCheck) {
-			setToken(globalAuthState.token);
-			setIsAuthenticated(globalAuthState.isAuthenticated);
-			setUser(globalAuthState.user);
-			setLoading(
-				globalAuthState.hasChecked ? globalAuthState.loading : false
-			);
+			const authFlag = sessionStorage.getItem(AUTH_FLAG_KEY);
+			if (authFlag === "true" && !globalAuthState.hasChecked) {
+				checkAuth();
+			} else {
+				setToken(globalAuthState.token);
+				setIsAuthenticated(globalAuthState.isAuthenticated);
+				setUser(globalAuthState.user);
+				setLoading(
+					globalAuthState.hasChecked ? globalAuthState.loading : false
+				);
+			}
 		}
 	}, [checkAuth, skipInitialCheck]);
 
