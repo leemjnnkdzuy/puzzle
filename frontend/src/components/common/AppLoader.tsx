@@ -30,15 +30,16 @@ const AppLoader: React.FC<AppLoaderProps> = ({children}) => {
 };
 
 export const PublicRoute: React.FC<PublicRouteProps> = ({children}) => {
-	const {isAuthenticated, loading} = useAuth({skipInitialCheck: true});
+	const checkAuthFlag = (): boolean => {
+		try {
+			return sessionStorage.getItem("auth_authenticated") === "true";
+		} catch (error) {
+			console.error("Failed to check auth flag:", error);
+			return false;
+		}
+	};
 
-	if (loading) {
-		return (
-			<div className='flex items-center justify-center min-h-screen'>
-				<Loading size={40} />
-			</div>
-		);
-	}
+	const isAuthenticated = checkAuthFlag();
 
 	if (isAuthenticated) {
 		return <Navigate to='/home' replace />;

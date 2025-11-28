@@ -6,7 +6,8 @@
 		"pricing": "Giá cả",
 		"company": "Công ty",
 		"signIn": "Đăng nhập",
-		"signUp": "Đăng ký"
+		"signUp": "Đăng ký",
+		"goHome": "Trở về trang chủ"
 	},
 	"hero": {
 		"title": "Nền tảng tóm tắt video bằng AI",
@@ -318,7 +319,10 @@
 			"title": "Sẵn sàng bắt đầu?",
 			"description": "Tham gia cùng hàng nghìn nhà sáng tạo đang sử dụng Puzzle để chuyển đổi nội dung video của họ.",
 			"signIn": "Đăng nhập",
-			"signUp": "Đăng ký miễn phí"
+			"signUp": "Đăng ký miễn phí",
+			"authenticatedTitle": "Chào mừng trở lại!",
+			"authenticatedDescription": "Bắt đầu tạo những video tóm tắt tuyệt vời và chuyển đổi nội dung của bạn với các công cụ AI mạnh mẽ của Puzzle.",
+			"authenticatedButton": "Trở về trang chủ"
 		}
 	}
 }

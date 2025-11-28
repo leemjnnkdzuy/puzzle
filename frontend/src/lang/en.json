@@ -6,7 +6,8 @@
 		"pricing": "Pricing",
 		"company": "Company",
 		"signIn": "Sign in",
-		"signUp": "Sign up"
+		"signUp": "Sign up",
+		"goHome": "Go to Homepage"
 	},
 	"hero": {
 		"title": "AI-powered video recap",
@@ -318,7 +319,10 @@
 			"title": "Ready to get started?",
 			"description": "Join thousands of creators using Puzzle to transform their video content.",
 			"signIn": "Sign in",
-			"signUp": "Sign up for free"
+			"signUp": "Sign up for free",
+			"authenticatedTitle": "Welcome back!",
+			"authenticatedDescription": "Start creating amazing video recaps and transform your content with Puzzle's powerful AI tools.",
+			"authenticatedButton": "Go to Homepage"
 		}
 	}
 }

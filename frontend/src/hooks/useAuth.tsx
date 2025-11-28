@@ -12,11 +12,14 @@ interface UseAuthReturn {
 	token: string | null;
 	user: unknown | null;
 	loading: boolean;
+	hasChecked: boolean;
 }
 
 interface UseAuthOptions {
 	skipInitialCheck?: boolean;
 }
+
+const AUTH_FLAG_KEY = "auth_authenticated";
 
 const globalAuthState: {
 	token: string | null;
@@ -34,14 +37,35 @@ const globalAuthState: {
 
 let checkAuthPromise: Promise<void> | null = null;
 
+const setAuthFlag = (): void => {
+	try {
+		sessionStorage.setItem(AUTH_FLAG_KEY, "true");
+	} catch (error) {
+		console.error("Failed to set auth flag:", error);
+	}
+};
+
+const removeAuthFlag = (): void => {
+	try {
+		sessionStorage.removeItem(AUTH_FLAG_KEY);
+	} catch (error) {
+		console.error("Failed to remove auth flag:", error);
+	}
+};
+
 export const useAuth = (options?: UseAuthOptions): UseAuthReturn => {
 	const {skipInitialCheck = false} = options || {};
+	const initialLoading = skipInitialCheck
+		? globalAuthState.hasChecked
+			? globalAuthState.loading
+			: false
+		: globalAuthState.loading;
 	const [token, setToken] = useState<string | null>(globalAuthState.token);
 	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
 		globalAuthState.isAuthenticated
 	);
 	const [user, setUser] = useState<unknown | null>(globalAuthState.user);
-	const [loading, setLoading] = useState<boolean>(globalAuthState.loading);
+	const [loading, setLoading] = useState<boolean>(initialLoading);
 	const hasCheckedRef = useRef<boolean>(globalAuthState.hasChecked);
 
 	const login = useCallback(
@@ -61,6 +85,8 @@ export const useAuth = (options?: UseAuthOptions): UseAuthReturn => {
 				if (response.data.success) {
 					globalAuthState.token = "authenticated";
 					globalAuthState.isAuthenticated = true;
+					globalAuthState.hasChecked = true;
+					setAuthFlag();
 					setToken("authenticated");
 					setIsAuthenticated(true);
 					try {
@@ -105,6 +131,7 @@ export const useAuth = (options?: UseAuthOptions): UseAuthReturn => {
 			globalAuthState.isAuthenticated = false;
 			globalAuthState.user = null;
 			globalAuthState.hasChecked = true;
+			removeAuthFlag();
 			setToken(null);
 			setIsAuthenticated(false);
 			setUser(null);
@@ -154,6 +181,7 @@ export const useAuth = (options?: UseAuthOptions): UseAuthReturn => {
 					globalAuthState.user = result.data.user;
 					globalAuthState.token = "authenticated";
 					globalAuthState.isAuthenticated = true;
+					setAuthFlag();
 					setUser(globalAuthState.user);
 					setToken(globalAuthState.token);
 					setIsAuthenticated(globalAuthState.isAuthenticated);
@@ -165,6 +193,7 @@ export const useAuth = (options?: UseAuthOptions): UseAuthReturn => {
 							globalAuthState.user = retryResult.data.user;
 							globalAuthState.token = "authenticated";
 							globalAuthState.isAuthenticated = true;
+							setAuthFlag();
 							setUser(globalAuthState.user);
 							setToken(globalAuthState.token);
 							setIsAuthenticated(globalAuthState.isAuthenticated);
@@ -172,6 +201,7 @@ export const useAuth = (options?: UseAuthOptions): UseAuthReturn => {
 							globalAuthState.isAuthenticated = false;
 							globalAuthState.token = null;
 							globalAuthState.user = null;
+							removeAuthFlag();
 							setIsAuthenticated(false);
 							setToken(null);
 							setUser(null);
@@ -180,6 +210,7 @@ export const useAuth = (options?: UseAuthOptions): UseAuthReturn => {
 						globalAuthState.isAuthenticated = false;
 						globalAuthState.token = null;
 						globalAuthState.user = null;
+						removeAuthFlag();
 						setIsAuthenticated(false);
 						setToken(null);
 						setUser(null);
@@ -193,6 +224,7 @@ export const useAuth = (options?: UseAuthOptions): UseAuthReturn => {
 					globalAuthState.isAuthenticated = false;
 					globalAuthState.token = null;
 					globalAuthState.user = null;
+					removeAuthFlag();
 					setIsAuthenticated(false);
 					setToken(null);
 					setUser(null);
@@ -201,6 +233,7 @@ export const useAuth = (options?: UseAuthOptions): UseAuthReturn => {
 					globalAuthState.isAuthenticated = false;
 					globalAuthState.token = null;
 					globalAuthState.user = null;
+					removeAuthFlag();
 					setIsAuthenticated(false);
 					setToken(null);
 					setUser(null);
@@ -221,14 +254,12 @@ export const useAuth = (options?: UseAuthOptions): UseAuthReturn => {
 		if (!skipInitialCheck && !hasCheckedRef.current) {
 			checkAuth();
 		} else if (skipInitialCheck) {
-			if (globalAuthState.hasChecked) {
-				setToken(globalAuthState.token);
-				setIsAuthenticated(globalAuthState.isAuthenticated);
-				setUser(globalAuthState.user);
-				setLoading(globalAuthState.loading);
-			} else {
-				setLoading(false);
-			}
+			setToken(globalAuthState.token);
+			setIsAuthenticated(globalAuthState.isAuthenticated);
+			setUser(globalAuthState.user);
+			setLoading(
+				globalAuthState.hasChecked ? globalAuthState.loading : false
+			);
 		}
 	}, [checkAuth, skipInitialCheck]);
 
@@ -240,5 +271,6 @@ export const useAuth = (options?: UseAuthOptions): UseAuthReturn => {
 		token,
 		user,
 		loading,
+		hasChecked: globalAuthState.hasChecked,
 	};
 };

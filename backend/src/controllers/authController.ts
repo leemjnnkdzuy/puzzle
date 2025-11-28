@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
 import User from "@/models/User";
+import LoginHistory from "@/models/LoginHistory";
 import {
 	generateAccessToken,
 	generateRefreshToken,
@@ -12,6 +13,7 @@ import {
 	sendVerificationEmail,
 	sendResetCodeEmail,
 } from "@/helpers/sendMailHelper";
+import {getDeviceInfo, getIpAddress} from "@/helpers/deviceHelper";
 
 export const register = async (req: Request, res: Response): Promise<void> => {
 	try {
@@ -158,6 +160,19 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 		user.refreshTokenExpires = refreshTokenExpires;
 		await user.save();
 
+		const deviceInfo = getDeviceInfo(req);
+		const ipAddress = getIpAddress(req);
+
+		const loginHistory = new LoginHistory({
+			user: user._id,
+			deviceInfo,
+			ipAddress,
+			loginAt: new Date(),
+			isActive: true,
+		});
+
+		await loginHistory.save();
+
 		const isProduction = process.env.NODE_ENV === "production";
 		const cookieOptions = {
 			httpOnly: true,
@@ -287,9 +302,7 @@ export const refreshToken = async (
 			return;
 		}
 
-		// Check if refresh token is expired
 		if (user.refreshTokenExpires && user.refreshTokenExpires < new Date()) {
-			// Clear expired refresh token
 			user.refreshToken = undefined;
 			user.refreshTokenExpires = undefined;
 			await user.save();
@@ -301,16 +314,14 @@ export const refreshToken = async (
 			return;
 		}
 
-		// Generate new access token
 		const accessToken = generateAccessToken(user._id.toString());
 
-		// Set new access token cookie
 		const isProduction = process.env.NODE_ENV === "production";
 		res.cookie("accessToken", accessToken, {
 			httpOnly: true,
 			secure: isProduction,
 			sameSite: isProduction ? ("strict" as const) : ("lax" as const),
-			maxAge: 15 * 60 * 1000, // 15 minutes
+			maxAge: 15 * 60 * 1000,
 		});
 
 		res.status(200).json({
@@ -337,9 +348,24 @@ export const logout = async (
 			user.refreshToken = undefined;
 			user.refreshTokenExpires = undefined;
 			await user.save();
+
+			await LoginHistory.findOneAndUpdate(
+				{
+					user: user._id,
+					isActive: true,
+				},
+				{
+					$set: {
+						logoutAt: new Date(),
+						isActive: false,
+					},
+				},
+				{
+					sort: {loginAt: -1},
+				}
+			);
 		}
 
-		// Clear cookies
 		res.clearCookie("accessToken");
 		res.clearCookie("refreshToken");
 
@@ -382,6 +408,45 @@ export const getCurrentUser = async (
 		res.status(500).json({
 			success: false,
 			message: "Failed to get user information",
+		});
+	}
+};
+
+export const getLoginHistory = async (
+	req: AuthRequest,
+	res: Response
+): Promise<void> => {
+	try {
+		const userId = req.user?._id;
+		const page = parseInt(req.query.page as string) || 1;
+		const limit = parseInt(req.query.limit as string) || 10;
+		const skip = (page - 1) * limit;
+
+		const loginHistory = await LoginHistory.find({user: userId})
+			.sort({loginAt: -1})
+			.skip(skip)
+			.limit(limit)
+			.select("-__v");
+
+		const total = await LoginHistory.countDocuments({user: userId});
+
+		res.status(200).json({
+			success: true,
+			data: {
+				loginHistory,
+				pagination: {
+					page,
+					limit,
+					total,
+					pages: Math.ceil(total / limit),
+				},
+			},
+		});
+	} catch (error) {
+		console.error("Get login history error:", error);
+		res.status(500).json({
+			success: false,
+			message: "Failed to get login history",
 		});
 	}
 };
@@ -458,10 +523,8 @@ export const verifyResetPin = async (
 			return;
 		}
 
-		// Generate reset token (JWT)
 		const resetToken = generateAccessToken(user._id.toString());
 
-		// Clear verification code
 		user.verificationCode = undefined;
 		user.verificationCodeExpires = undefined;
 		await user.save();
@@ -495,7 +558,6 @@ export const resetPassword = async (
 			return;
 		}
 
-		// Verify reset token
 		let decoded: {userId: string; type: string};
 		try {
 			decoded = verifyAccessToken(resetToken);
@@ -517,7 +579,6 @@ export const resetPassword = async (
 			return;
 		}
 
-		// Update password
 		user.password = password;
 		await user.save();
 

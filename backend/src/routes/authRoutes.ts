@@ -6,6 +6,7 @@ import {
 	refreshToken,
 	logout,
 	getCurrentUser,
+	getLoginHistory,
 	verify,
 	verifyResetPin,
 	resetPassword,
@@ -42,5 +43,6 @@ router.post("/refresh-token", validate(refreshTokenValidator), refreshToken);
 
 router.post("/logout", authenticate, logout);
 router.get("/me", authenticate, getCurrentUser);
+router.get("/login-history", authenticate, getLoginHistory);
 
 export default router;

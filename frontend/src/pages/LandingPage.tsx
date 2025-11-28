@@ -32,6 +32,7 @@ import {useLanguage} from "../hooks/useLanguage";
 import {Globe} from "lucide-react";
 
 import {usePlaybackStore} from "../hooks/usePlaybackStore";
+import {useAuth} from "../hooks/useAuth";
 
 const platforms = [
 	{
@@ -99,22 +100,24 @@ const servicePackages = [
 const LandingPage = () => {
 	const navigate = useNavigate();
 	const {language, setLanguage, t, getNested} = useLanguage();
+	const {isAuthenticated} = useAuth({skipInitialCheck: true});
 	const [showNav, setShowNav] = useState(false);
 	const [demoOverlay, setDemoOverlay] = useState(false);
 	const [demoShrink, setDemoShrink] = useState(false);
-	const [scrollLocked, setScrollLocked] = useState(false);
-	const [lockDismissed, setLockDismissed] = useState(false);
-	const [lockReveal, setLockReveal] = useState(false);
-	const [forceShrink, setForceShrink] = useState(false);
 	const [audioOn, setAudioOn] = useState(false);
 	const [showVolumeSlider, setShowVolumeSlider] = useState(false);
 	const [ctaAnimationStep, setCtaAnimationStep] = useState(0);
+	const [featuresAnimated, setFeaturesAnimated] = useState(false);
+	const [packagesAnimated, setPackagesAnimated] = useState(false);
+	const [packagesTitleAnimated, setPackagesTitleAnimated] = useState(false);
+	const [packagesSubtitleAnimated, setPackagesSubtitleAnimated] =
+		useState(false);
 	const hasAnimatedRef = useRef(false);
 	const demoRef = useRef<HTMLDivElement>(null);
 	const demoVideoRef = useRef<HTMLVideoElement | null>(null);
 	const ctaSectionRef = useRef<HTMLElement>(null);
-	const lockPositionRef = useRef(0);
-	const prevScrollLockedRef = useRef(scrollLocked);
+	const featuresSectionRef = useRef<HTMLElement>(null);
+	const packagesSectionRef = useRef<HTMLElement>(null);
 	const prevDemoShrinkRef = useRef(false);
 	const prevShowNavRef = useRef(false);
 	const {
@@ -128,15 +131,6 @@ const LandingPage = () => {
 		volume,
 		setVolume,
 	} = usePlaybackStore();
-
-	useEffect(() => {
-		document.documentElement.classList.add("no-scrollbar");
-		document.body.classList.add("no-scrollbar");
-		return () => {
-			document.documentElement.classList.remove("no-scrollbar");
-			document.body.classList.remove("no-scrollbar");
-		};
-	}, []);
 
 	useEffect(() => {
 		let rafId: number | null = null;
@@ -168,16 +162,11 @@ const LandingPage = () => {
 						}
 
 						const shrinkTrigger = rect.top < 150;
-						const shouldShrink =
-							shrinkTrigger || lockReveal || forceShrink;
-						
+						const shouldShrink = shrinkTrigger;
+
 						if (shouldShrink !== prevDemoShrinkRef.current) {
 							prevDemoShrinkRef.current = shouldShrink;
 							setDemoShrink(shouldShrink);
-						}
-
-						if (!inView && forceShrink) {
-							setForceShrink(false);
 						}
 					}
 
@@ -218,7 +207,7 @@ const LandingPage = () => {
 				cancelAnimationFrame(rafId);
 			}
 		};
-	}, [play, pause, lockReveal, forceShrink]);
+	}, [play, pause]);
 
 	const handleTimeUpdate = (
 		e: React.SyntheticEvent<HTMLVideoElement, Event>
@@ -231,125 +220,6 @@ const LandingPage = () => {
 			setDemoOverlay(duration - currentTime <= 5);
 		}
 	};
-
-	useEffect(() => {
-		if (!demoRef.current || lockDismissed) return;
-
-		const observer = new IntersectionObserver(
-			([entry]) => {
-				if (entry.isIntersecting && !scrollLocked) {
-					lockPositionRef.current = window.scrollY;
-					requestAnimationFrame(() => {
-						setScrollLocked(true);
-					});
-				}
-			},
-			{threshold: 0.65, rootMargin: "0px"}
-		);
-
-		observer.observe(demoRef.current);
-		return () => observer.disconnect();
-	}, [scrollLocked, lockDismissed]);
-
-	useEffect(() => {
-		if (!scrollLocked) {
-			requestAnimationFrame(() => {
-				document.body.style.overflowY = "scroll";
-				document.documentElement.style.overflowY = "scroll";
-				document.body.style.scrollBehavior = "smooth";
-				document.documentElement.style.scrollBehavior = "smooth";
-			});
-
-			if (prevScrollLockedRef.current) {
-				requestAnimationFrame(() => {
-					setLockReveal(false);
-				});
-			}
-			prevScrollLockedRef.current = false;
-			return;
-		}
-
-		prevScrollLockedRef.current = true;
-		requestAnimationFrame(() => {
-			document.body.style.overflow = "hidden";
-			document.documentElement.style.overflow = "hidden";
-			document.body.style.scrollBehavior = "auto";
-			document.documentElement.style.scrollBehavior = "auto";
-			window.scrollTo({top: lockPositionRef.current, behavior: "auto"});
-		});
-
-		let wheelTimeout: number | null = null;
-		const preventScroll = (e: WheelEvent | TouchEvent) => {
-			if (wheelTimeout) {
-				cancelAnimationFrame(wheelTimeout);
-			}
-
-			wheelTimeout = requestAnimationFrame(() => {
-				setLockReveal(true);
-				setForceShrink(true);
-			});
-
-			e.preventDefault();
-		};
-
-		window.addEventListener("wheel", preventScroll, {passive: false});
-		window.addEventListener("touchmove", preventScroll, {passive: false});
-
-		return () => {
-			window.removeEventListener("wheel", preventScroll);
-			window.removeEventListener("touchmove", preventScroll);
-			if (wheelTimeout) {
-				cancelAnimationFrame(wheelTimeout);
-			}
-			document.body.style.overflowY = "scroll";
-			document.documentElement.style.overflowY = "scroll";
-		};
-	}, [scrollLocked]);
-
-	useEffect(() => {
-		if (!scrollLocked || !lockReveal) return;
-
-		const timer = setTimeout(() => {
-			requestAnimationFrame(() => {
-				setScrollLocked(false);
-				setLockDismissed(true);
-				setLockReveal(false);
-			});
-		}, 700);
-
-		return () => clearTimeout(timer);
-	}, [scrollLocked, lockReveal]);
-
-	useEffect(() => {
-		if (!scrollLocked) return;
-		const handleKey = (e: KeyboardEvent) => {
-			if (e.key === "Escape") {
-				setScrollLocked(false);
-				setLockDismissed(true);
-				setLockReveal(false);
-			}
-		};
-
-		window.addEventListener("keydown", handleKey);
-		return () => window.removeEventListener("keydown", handleKey);
-	}, [scrollLocked]);
-
-	useEffect(() => {
-		if (!lockDismissed || !demoRef.current) return;
-
-		const observer = new IntersectionObserver(
-			([entry]) => {
-				if (!entry.isIntersecting) {
-					setLockDismissed(false);
-					setLockReveal(false);
-				}
-			},
-			{threshold: 0.15}
-		);
-
-		observer.observe(demoRef.current);
-		return () => observer.disconnect();
-	}, [lockDismissed]);
 
 	useEffect(() => {
 		if (!ctaSectionRef.current) return;
@@ -384,17 +254,60 @@ const LandingPage = () => {
 					observer.disconnect();
 				}
 			},
-			{threshold: 0.2, rootMargin: "0px"}
+			{threshold: 0.5, rootMargin: "0px"}
 		);
 
 		observer.observe(ctaSectionRef.current);
 		return () => observer.disconnect();
 	}, [showNav]);
 
+	useEffect(() => {
+		if (!featuresSectionRef.current) return;
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					setFeaturesAnimated(true);
+				} else {
+					setFeaturesAnimated(false);
+				}
+			},
+			{threshold: 0.5, rootMargin: "0px"}
+		);
+
+		observer.observe(featuresSectionRef.current);
+		return () => observer.disconnect();
+	}, []);
+
+	useEffect(() => {
+		if (!packagesSectionRef.current) return;
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					setTimeout(() => {
+						setPackagesTitleAnimated(true);
+					}, 0);
+					setTimeout(() => {
+						setPackagesSubtitleAnimated(true);
+					}, 200);
+					setTimeout(() => {
+						setPackagesAnimated(true);
+					}, 400);
+				} else {
+					setPackagesTitleAnimated(false);
+					setPackagesSubtitleAnimated(false);
+					setPackagesAnimated(false);
+				}
+			},
+			{threshold: 0.2, rootMargin: "0px"}
+		);
+
+		observer.observe(packagesSectionRef.current);
+		return () => observer.disconnect();
+	}, []);
+
 	const handleNavClick = (id: string) => {
-		setScrollLocked(false);
-		setLockDismissed(true);
-		setLockReveal(false);
 		const el = document.getElementById(id);
 		if (el) {
 			const y = el.getBoundingClientRect().top + window.scrollY - 120;
@@ -557,19 +470,31 @@ const LandingPage = () => {
 						</nav>
 
 						<div className='flex items-center gap-4'>
-							<Button
-								variant='outline'
-								onClick={() => navigate("/login")}
-							>
-								{t("nav.signIn")}
-							</Button>
-							<Button
-								variant='default'
-								className='bg-black text-white hover:bg-gray-800'
-								onClick={() => navigate("/register")}
-							>
-								{t("nav.signUp")}
-							</Button>
+							{isAuthenticated ? (
+								<Button
+									variant='default'
+									className='bg-black text-white hover:bg-gray-800'
+									onClick={() => navigate("/home")}
+								>
+									{t("nav.goHome")}
+								</Button>
+							) : (
+								<>
+									<Button
+										variant='outline'
+										onClick={() => navigate("/login")}
+									>
+										{t("nav.signIn")}
+									</Button>
+									<Button
+										variant='default'
+										className='bg-black text-white hover:bg-gray-800'
+										onClick={() => navigate("/register")}
+									>
+										{t("nav.signUp")}
+									</Button>
+								</>
+							)}
 						</div>
 					</div>
 				</div>
@@ -612,7 +537,7 @@ const LandingPage = () => {
 				</div>
 			</main>
 
-			<section className='relative z-10 w-full px-6 py-16 border-t border-gray-200 overflow-hidden'>
+			<section className='relative z-10 w-full px-6 py-16 mb-32 border-t border-gray-200 overflow-hidden'>
 				<div className='container mx-auto mb-8'>
 					<h2 className='text-center text-2xl font-semibold text-gray-900 mb-2'>
 						{t("platforms.trusted")}
@@ -647,7 +572,11 @@ const LandingPage = () => {
 				</div>
 			</section>
 
-			<section id='features' className='relative z-11 w-full px-6 mb-24'>
+			<section
+				id='features'
+				ref={featuresSectionRef}
+				className='relative z-11 w-full px-6 mb-24'
+			>
 				<div className='max-w-8xl mx-auto text-center mb-14'>
 					<h2 className='text-4xl md:text-5xl font-bold text-gray-900'>
 						{t("features.title")}
@@ -659,10 +588,22 @@ const LandingPage = () => {
 						{key: "autoSubs", Icon: FileText},
 						{key: "highlightScenes", Icon: Sparkles},
 						{key: "multiPlatform", Icon: Share2},
-					].map(({key, Icon}) => (
+					].map(({key, Icon}, index) => (
 						<div
 							key={key}
-							className='group cursor-pointer relative border border-gray-200 rounded-2xl p-8 flex flex-col gap-8 bg-white hover:shadow-lg hover:-translate-y-1 transition-all duration-200'
+							className={`group cursor-pointer relative border border-gray-200 rounded-2xl p-8 flex flex-col gap-8 bg-white hover:shadow-lg hover:-translate-y-1 transition-all duration-200 ${
+								featuresAnimated
+									? "opacity-100 translate-y-0"
+									: "opacity-0 translate-y-8"
+							}`}
+							style={{
+								transitionDelay: featuresAnimated
+									? `${index * 100}ms`
+									: "0ms",
+								transitionDuration: "600ms",
+								transitionTimingFunction:
+									"cubic-bezier(0.4, 0, 0.2, 1)",
+							}}
 						>
 							<div className='flex items-start justify-between'>
 								<div className='w-14 h-14 border border-gray-300 rounded-xl flex items-center justify-center'>
@@ -691,7 +632,7 @@ const LandingPage = () => {
 
 			<div
 				ref={demoRef}
-				className='max-w-[1480px] mx-auto min-h-[400px] px-6 mt-[200px] mb-[250px]'
+				className='max-w-[1400px] mx-auto min-h-[400px] px-6 mt-[200px] mb-[250px]'
 			>
 				<div className='relative'>
 					<div
@@ -702,7 +643,8 @@ const LandingPage = () => {
 							marginLeft: demoShrink ? "0" : "auto",
 							marginRight: demoShrink ? "0" : "auto",
 							paddingRight: demoShrink ? "1.5rem" : "0",
-							transition: "width 650ms cubic-bezier(0.4, 0, 0.2, 1), max-width 650ms cubic-bezier(0.4, 0, 0.2, 1), padding-right 650ms cubic-bezier(0.4, 0, 0.2, 1), margin-left 650ms cubic-bezier(0.4, 0, 0.2, 1), margin-right 650ms cubic-bezier(0.4, 0, 0.2, 1)",
+							transition:
+								"width 650ms cubic-bezier(0.4, 0, 0.2, 1), max-width 650ms cubic-bezier(0.4, 0, 0.2, 1), padding-right 650ms cubic-bezier(0.4, 0, 0.2, 1), margin-left 650ms cubic-bezier(0.4, 0, 0.2, 1), margin-right 650ms cubic-bezier(0.4, 0, 0.2, 1)",
 							willChange: "width, max-width",
 							contain: "layout style",
 						}}
@@ -742,7 +684,9 @@ const LandingPage = () => {
 							width: demoShrink ? "25%" : "0%",
 							paddingLeft: demoShrink ? "1.5rem" : "0",
 							opacity: demoShrink ? 1 : 0,
-							transform: demoShrink ? "translateX(0)" : "translateX(24px)",
+							transform: demoShrink
+								? "translateX(0)"
+								: "translateX(24px)",
 							pointerEvents: demoShrink ? "auto" : "none",
 							overflow: demoShrink ? "visible" : "hidden",
 							transition: demoShrink
@@ -916,13 +860,36 @@ const LandingPage = () => {
 				</div>
 			</div>
 
-			<section className='relative z-10 w-full px-6 py-24 mb-20'>
+			<section
+				ref={packagesSectionRef}
+				className='relative z-10 w-full px-6 py-24 mb-20'
+			>
 				<div className='max-w-7xl mx-auto'>
 					<div className='text-center mb-16'>
-						<h2 className='text-4xl md:text-5xl font-bold text-gray-900 mb-4'>
+						<h2
+							className={`text-4xl md:text-5xl font-bold text-gray-900 mb-4 transition-all duration-600 ${
+								packagesTitleAnimated
+									? "opacity-100 translate-y-0"
+									: "opacity-0 translate-y-8"
+							}`}
+							style={{
+								transitionTimingFunction:
+									"cubic-bezier(0.4, 0, 0.2, 1)",
+							}}
+						>
 							{t("packages.title")}
 						</h2>
-						<p className='text-lg text-gray-600 max-w-2xl mx-auto'>
+						<p
+							className={`text-lg text-gray-600 max-w-2xl mx-auto transition-all duration-600 ${
+								packagesSubtitleAnimated
+									? "opacity-100 translate-y-0"
+									: "opacity-0 translate-y-8"
+							}`}
+							style={{
+								transitionTimingFunction:
+									"cubic-bezier(0.4, 0, 0.2, 1)",
+							}}
+						>
 							{t("packages.subtitle")}
 						</p>
 					</div>
@@ -944,7 +911,21 @@ const LandingPage = () => {
 										isPopular
 											? "lg:-mt-4 lg:mb-4 border-2 border-gray-900 bg-white shadow-xl hover:shadow-2xl"
 											: "border border-gray-200 bg-white hover:shadow-lg hover:-translate-y-1"
+									} ${
+										packagesAnimated
+											? "opacity-100 translate-y-0"
+											: "opacity-0 translate-y-8"
 									}`}
+									style={{
+										transitionDelay: packagesAnimated
+											? `${index * 100}ms`
+											: "0ms",
+										transitionProperty:
+											"opacity, transform",
+										transitionDuration: "600ms",
+										transitionTimingFunction:
+											"cubic-bezier(0.4, 0, 0.2, 1)",
+									}}
 								>
 									{isPopular && (
 										<div className='absolute -top-4 left-1/2 -translate-x-1/2'>
@@ -1544,48 +1525,89 @@ const LandingPage = () => {
 			>
 				<div className='max-w-7xl mx-auto px-6 py-16 md:py-48 mb-36'>
 					<div className='max-w-4xl mx-auto text-center'>
-						<h3
-							className={`text-5xl md:text-5xl font-bold text-gray-900 mb-3 transition-all duration-700 ease-out ${
-								ctaAnimationStep >= 1
-									? "opacity-100 translate-y-0"
-									: "opacity-0 translate-y-8"
-							}`}
-						>
-							{t("footer.cta.title")}
-						</h3>
-						<p
-							className={`text-gray-600 mb-8 text-lg transition-all duration-700 ease-out ${
-								ctaAnimationStep >= 2
-									? "opacity-100 translate-y-0"
-									: "opacity-0 translate-y-8"
-							}`}
-						>
-							{t("footer.cta.description")}
-						</p>
-						<div
-							className={`flex flex-col sm:flex-row gap-4 justify-center transition-all duration-700 ease-out ${
-								ctaAnimationStep >= 3
-									? "opacity-100 translate-y-0"
-									: "opacity-0 translate-y-8"
-							}`}
-						>
-							<Button
-								variant='outline'
-								size='lg'
-								className='px-8'
-								onClick={() => navigate("/login")}
-							>
-								{t("footer.cta.signIn")}
-							</Button>
-							<Button
-								variant='default'
-								size='lg'
-								className='bg-black text-white hover:bg-gray-800 px-8'
-								onClick={() => navigate("/register")}
-							>
-								{t("footer.cta.signUp")}
-							</Button>
-						</div>
+						{isAuthenticated ? (
+							<>
+								<h3
+									className={`text-5xl md:text-5xl font-bold text-gray-900 mb-3 transition-all duration-700 ease-out ${
+										ctaAnimationStep >= 1
+											? "opacity-100 translate-y-0"
+											: "opacity-0 translate-y-8"
+									}`}
+								>
+									{t("footer.cta.authenticatedTitle")}
+								</h3>
+								<p
+									className={`text-gray-600 mb-8 text-lg transition-all duration-700 ease-out ${
+										ctaAnimationStep >= 2
+											? "opacity-100 translate-y-0"
+											: "opacity-0 translate-y-8"
+									}`}
+								>
+									{t("footer.cta.authenticatedDescription")}
+								</p>
+								<div
+									className={`flex flex-col sm:flex-row gap-4 justify-center transition-all duration-700 ease-out ${
+										ctaAnimationStep >= 3
+											? "opacity-100 translate-y-0"
+											: "opacity-0 translate-y-8"
+									}`}
+								>
+									<Button
+										variant='default'
+										size='lg'
+										className='bg-black text-white hover:bg-gray-800 px-8'
+										onClick={() => navigate("/home")}
+									>
+										{t("footer.cta.authenticatedButton")}
+									</Button>
+								</div>
+							</>
+						) : (
+							<>
+								<h3
+									className={`text-5xl md:text-5xl font-bold text-gray-900 mb-3 transition-all duration-700 ease-out ${
+										ctaAnimationStep >= 1
+											? "opacity-100 translate-y-0"
+											: "opacity-0 translate-y-8"
+									}`}
+								>
+									{t("footer.cta.title")}
+								</h3>
+								<p
+									className={`text-gray-600 mb-8 text-lg transition-all duration-700 ease-out ${
+										ctaAnimationStep >= 2
+											? "opacity-100 translate-y-0"
+											: "opacity-0 translate-y-8"
+									}`}
+								>
+									{t("footer.cta.description")}
+								</p>
+								<div
+									className={`flex flex-col sm:flex-row gap-4 justify-center transition-all duration-700 ease-out ${
+										ctaAnimationStep >= 3
+											? "opacity-100 translate-y-0"
+											: "opacity-0 translate-y-8"
+									}`}
+								>
+									<Button
+										variant='outline'
+										size='lg'
+										className='px-8'
+										onClick={() => navigate("/login")}
+									>
+										{t("footer.cta.signIn")}
+									</Button>
+									<Button
+										variant='default'
+										size='lg'
+										className='bg-black text-white hover:bg-gray-800 px-8'
+										onClick={() => navigate("/register")}
+									>
+										{t("footer.cta.signUp")}
+									</Button>
+								</div>
+							</>
+						)}
 					</div>
 				</div>
 			</section>
