@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {FaTwitter, FaDiscord, FaGithub, FaEnvelope} from "react-icons/fa";
 import {FileText, Mic, Sparkles} from "lucide-react";
 import Button from "@/components/ui/Button";
-import Assets from "@/configs/AssetsConfig";
+import AppIcon from "@/components/common/AppIcon";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -27,23 +27,19 @@ const servicePackages = [
 const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 	const navigate = useNavigate();
 	const {language, setLanguage, t} = useLanguage();
-	const {isAuthenticated} = useAuth({skipInitialCheck: true});
+	const {isAuthenticated} = useAuth();
 
 	return (
-		<div className='min-h-screen bg-white relative overflow-hidden'>
-			<header className='fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100'>
+		<div className='min-h-screen bg-background relative overflow-hidden'>
+			<header className='fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border'>
 				<div className='container mx-auto px-6 py-6'>
 					<div className='flex items-center justify-between'>
 						<div
 							className='flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity'
 							onClick={() => navigate("/")}
 						>
-							<img
-								src={Assets.AppIcon}
-								alt='Puzzle'
-								className='w-8 h-8 object-contain'
-							/>
-							<span className='text-xl font-semibold text-gray-900'>
+							<AppIcon className='w-8 h-8 object-contain' />
+							<span className='text-xl font-semibold text-foreground'>
 								Puzzle
 							</span>
 						</div>
@@ -52,11 +48,11 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
 									<div className='flex items-center gap-1 cursor-pointer'>
-										<span className='text-gray-700 hover:text-gray-900'>
+										<span className='text-foreground hover:text-foreground/80'>
 											{t("nav.product")}
 										</span>
 										<svg
-											className='w-4 h-4 text-gray-500'
+											className='w-4 h-4 text-muted-foreground'
 											fill='none'
 											stroke='currentColor'
 											viewBox='0 0 24 24'
@@ -72,7 +68,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 								</DropdownMenuTrigger>
 								<DropdownMenuContent
 									align='start'
-									className='w-[400px] p-4 bg-white border border-gray-200 shadow-lg'
+									className='w-[400px] p-4 bg-card border border-border shadow-lg'
 								>
 									<div className='space-y-3'>
 										{servicePackages.map((pkg) => {
@@ -80,31 +76,31 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 											return (
 												<DropdownMenuItem
 													key={pkg.key}
-													className='flex items-start gap-4 p-4 rounded-lg hover:bg-gray-50 cursor-pointer focus:bg-gray-50'
+													className='flex items-start gap-4 p-4 rounded-lg hover:bg-muted cursor-pointer focus:bg-muted'
 													onClick={() =>
 														navigate("/register")
 													}
 												>
-													<div className='flex-shrink-0 w-12 h-12 rounded-lg border border-gray-300 bg-gray-50 flex items-center justify-center'>
+													<div className='flex-shrink-0 w-12 h-12 rounded-lg border border-border bg-muted flex items-center justify-center'>
 														<Icon
-															className='w-6 h-6 text-gray-800'
+															className='w-6 h-6 text-foreground'
 															strokeWidth={2}
 														/>
 													</div>
 													<div className='flex-1 min-w-0'>
 														<div className='flex items-center gap-2 mb-1'>
-															<h3 className='text-base font-semibold text-gray-900'>
+															<h3 className='text-base font-semibold text-foreground'>
 																{t(
 																	`packages.${pkg.key}.title`
 																)}
 															</h3>
-															<span className='text-sm text-gray-500'>
+															<span className='text-sm text-muted-foreground'>
 																{t(
 																	`packages.${pkg.key}.subtitle`
 																)}
 															</span>
 														</div>
-														<p className='text-sm text-gray-600 leading-relaxed'>
+														<p className='text-sm text-muted-foreground leading-relaxed'>
 															{t(
 																`packages.${pkg.key}.description`
 															)}
@@ -118,16 +114,16 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 							</DropdownMenu>
 							<button
 								onClick={() => navigate("/customers")}
-								className='text-gray-700 hover:text-gray-900 cursor-pointer bg-transparent border-none p-0'
+								className='text-foreground hover:text-foreground/80 cursor-pointer bg-transparent border-none p-0'
 							>
 								{t("nav.customers")}
 							</button>
 							<div className='flex items-center gap-1 cursor-pointer'>
-								<span className='text-gray-700 hover:text-gray-900'>
+								<span className='text-foreground hover:text-foreground/80'>
 									{t("nav.resources")}
 								</span>
 								<svg
-									className='w-4 h-4 text-gray-500'
+									className='w-4 h-4 text-muted-foreground'
 									fill='none'
 									stroke='currentColor'
 									viewBox='0 0 24 24'
@@ -142,16 +138,16 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 							</div>
 							<button
 								onClick={() => navigate("/pricing")}
-								className='text-gray-700 hover:text-gray-900 cursor-pointer bg-transparent border-none p-0'
+								className='text-foreground hover:text-foreground/80 cursor-pointer bg-transparent border-none p-0'
 							>
 								{t("nav.pricing")}
 							</button>
 							<div className='flex items-center gap-1 cursor-pointer'>
-								<span className='text-gray-700 hover:text-gray-900'>
+								<span className='text-foreground hover:text-foreground/80'>
 									{t("nav.company")}
 								</span>
 								<svg
-									className='w-4 h-4 text-gray-500'
+									className='w-4 h-4 text-muted-foreground'
 									fill='none'
 									stroke='currentColor'
 									viewBox='0 0 24 24'
@@ -170,7 +166,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 							{isAuthenticated ? (
 								<Button
 									variant='default'
-									className='bg-black text-white hover:bg-gray-800'
+									className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background'
 									onClick={() => navigate("/home")}
 								>
 									{t("nav.goHome")}
@@ -185,7 +181,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 									</Button>
 									<Button
 										variant='default'
-										className='bg-black text-white hover:bg-gray-800'
+										className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background'
 										onClick={() => navigate("/register")}
 									>
 										{t("nav.signUp")}
@@ -199,7 +195,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 
 			{children}
 
-			<footer className='relative z-10 w-full border-t border-gray-200 bg-white'>
+			<footer className='relative z-10 w-full border-t border-border bg-background'>
 				<div className='max-w-7xl mx-auto px-6 py-12 md:py-16'>
 					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 mb-8'>
 						<div className='lg:col-span-2'>
@@ -207,16 +203,12 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 								className='flex items-center gap-2 mb-4 cursor-pointer hover:opacity-80 transition-opacity'
 								onClick={() => navigate("/")}
 							>
-								<img
-									src={Assets.AppIcon}
-									alt='Puzzle'
-									className='w-8 h-8 object-contain'
-								/>
-								<span className='text-xl font-semibold text-gray-900'>
+								<AppIcon className='w-8 h-8 object-contain' />
+								<span className='text-xl font-semibold text-foreground'>
 									Puzzle
 								</span>
 							</div>
-							<p className='text-gray-600 text-sm leading-relaxed max-w-md'>
+							<p className='text-muted-foreground text-sm leading-relaxed max-w-md'>
 								{t("footer.description")}
 							</p>
 							<div className='flex items-center gap-4 mt-6'>
@@ -227,7 +219,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 											"_blank"
 										)
 									}
-									className='w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:border-gray-300 transition-colors cursor-pointer'
+									className='w-10 h-10 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors cursor-pointer'
 									aria-label='Twitter'
 								>
 									<FaTwitter className='w-5 h-5' />
@@ -239,7 +231,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 											"_blank"
 										)
 									}
-									className='w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:border-gray-300 transition-colors cursor-pointer'
+									className='w-10 h-10 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors cursor-pointer'
 									aria-label='Discord'
 								>
 									<FaDiscord className='w-5 h-5' />
@@ -251,7 +243,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 											"_blank"
 										)
 									}
-									className='w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:border-gray-300 transition-colors cursor-pointer'
+									className='w-10 h-10 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors cursor-pointer'
 									aria-label='GitHub'
 								>
 									<FaGithub className='w-5 h-5' />
@@ -260,7 +252,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 									onClick={() =>
 										window.open("mailto:", "_blank")
 									}
-									className='w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:text-gray-900 hover:border-gray-300 transition-colors cursor-pointer'
+									className='w-10 h-10 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-border transition-colors cursor-pointer'
 									aria-label='Email'
 								>
 									<FaEnvelope className='w-5 h-5' />
@@ -269,14 +261,14 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 						</div>
 
 						<div>
-							<h3 className='text-sm font-semibold text-gray-900 mb-4'>
+							<h3 className='text-sm font-semibold text-foreground mb-4'>
 								{t("footer.product")}
 							</h3>
 							<ul className='space-y-3'>
 								<li>
 									<button
 										onClick={() => navigate("/features")}
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
+										className='text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
 									>
 										{t("footer.productFeatures")}
 									</button>
@@ -284,7 +276,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 								<li>
 									<button
 										onClick={() => navigate("/pricing")}
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
+										className='text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
 									>
 										{t("footer.productPricing")}
 									</button>
@@ -292,7 +284,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 								<li>
 									<button
 										onClick={() => navigate("/docs")}
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
+										className='text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
 									>
 										{t("footer.productDocumentation")}
 									</button>
@@ -300,7 +292,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 								<li>
 									<button
 										onClick={() => navigate("/api")}
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
+										className='text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
 									>
 										{t("footer.productApi")}
 									</button>
@@ -309,14 +301,14 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 						</div>
 
 						<div>
-							<h3 className='text-sm font-semibold text-gray-900 mb-4'>
+							<h3 className='text-sm font-semibold text-foreground mb-4'>
 								{t("footer.company")}
 							</h3>
 							<ul className='space-y-3'>
 								<li>
 									<button
 										onClick={() => navigate("/about")}
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
+										className='text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
 									>
 										{t("footer.companyAbout")}
 									</button>
@@ -324,7 +316,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 								<li>
 									<button
 										onClick={() => navigate("/blog")}
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
+										className='text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
 									>
 										{t("footer.companyBlog")}
 									</button>
@@ -332,7 +324,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 								<li>
 									<button
 										onClick={() => navigate("/careers")}
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
+										className='text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
 									>
 										{t("footer.companyCareers")}
 									</button>
@@ -340,7 +332,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 								<li>
 									<button
 										onClick={() => navigate("/contact")}
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
+										className='text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
 									>
 										{t("footer.companyContact")}
 									</button>
@@ -349,14 +341,14 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 						</div>
 
 						<div>
-							<h3 className='text-sm font-semibold text-gray-900 mb-4'>
+							<h3 className='text-sm font-semibold text-foreground mb-4'>
 								{t("footer.resources")}
 							</h3>
 							<ul className='space-y-3'>
 								<li>
 									<button
 										onClick={() => navigate("/help")}
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
+										className='text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
 									>
 										{t("footer.resourcesHelp")}
 									</button>
@@ -364,7 +356,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 								<li>
 									<button
 										onClick={() => navigate("/community")}
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
+										className='text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
 									>
 										{t("footer.resourcesCommunity")}
 									</button>
@@ -374,7 +366,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 										onClick={() =>
 											navigate("/privacy-policy")
 										}
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
+										className='text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
 									>
 										{t("footer.resourcesPrivacy")}
 									</button>
@@ -384,7 +376,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 										onClick={() =>
 											navigate("/terms-of-service")
 										}
-										className='text-sm text-gray-600 hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
+										className='text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0 text-left'
 									>
 										{t("footer.resourcesTerms")}
 									</button>
@@ -393,12 +385,12 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 						</div>
 					</div>
 
-					<div className='pt-8 border-t border-gray-200'>
+					<div className='pt-8 border-t border-border'>
 						<div className='flex flex-col md:flex-row items-center justify-between gap-4'>
 							<div className='flex items-center gap-4'>
 								<DropdownMenu>
 									<DropdownMenuTrigger asChild>
-										<button className='flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors'>
+										<button className='flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors'>
 											<Globe className='w-4 h-4' />
 											<span>
 												{language === "en"
@@ -422,7 +414,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 									</DropdownMenuTrigger>
 									<DropdownMenuContent
 										align='start'
-										className='bg-white border border-gray-200 min-w-[120px]'
+										className='bg-card border border-border min-w-[120px]'
 									>
 										<DropdownMenuItem
 											onSelect={() => setLanguage("en")}
@@ -437,14 +429,14 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 									</DropdownMenuContent>
 								</DropdownMenu>
 							</div>
-							<p className='text-sm text-gray-600'>
+							<p className='text-sm text-muted-foreground'>
 								© {new Date().getFullYear()} Puzzle.{" "}
 								{t("footer.copyright")}
 							</p>
-							<div className='flex items-center gap-6 text-sm text-gray-600'>
+							<div className='flex items-center gap-6 text-sm text-muted-foreground'>
 								<button
 									onClick={() => navigate("/privacy-policy")}
-									className='hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0'
+									className='hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0'
 								>
 									{t("footer.privacy")}
 								</button>
@@ -452,7 +444,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 									onClick={() =>
 										navigate("/terms-of-service")
 									}
-									className='hover:text-gray-900 transition-colors cursor-pointer bg-transparent border-none p-0'
+									className='hover:text-foreground transition-colors cursor-pointer bg-transparent border-none p-0'
 								>
 									{t("footer.terms")}
 								</button>

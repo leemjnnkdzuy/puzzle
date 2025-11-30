@@ -11,7 +11,7 @@ import type {LoginData} from "@/types/AuthTypes";
 
 const SignInPage: React.FC = () => {
 	const navigate = useNavigate();
-	const {login, isAuthenticated} = useAuth({skipInitialCheck: true});
+	const {login, isAuthenticated} = useAuth();
 	const {showError, showSuccess} = useGlobalNotificationPopup();
 	const {handleSocialLogin} = useSocialLogin();
 	const {getNested} = useLanguage();
@@ -25,7 +25,7 @@ const SignInPage: React.FC = () => {
 
 	useEffect(() => {
 		if (isAuthenticated) {
-			navigate("/home");
+			navigate("/home", {replace: true});
 		}
 	}, [isAuthenticated, navigate]);
 
@@ -68,9 +68,7 @@ const SignInPage: React.FC = () => {
 
 			if (result && result.success) {
 				showSuccess(loginSuccess);
-				setTimeout(() => {
-					navigate("/home");
-				}, 500);
+				// Navigation will be handled by useEffect when isAuthenticated changes
 			} else {
 				showError(result?.message || loginFailed);
 			}
@@ -103,10 +101,10 @@ const SignInPage: React.FC = () => {
 	const facebook = getNested?.("signIn.facebook") as string;
 
 	return (
-		<div className='relative flex flex-col justify-center items-center min-h-screen bg-gray-50 px-4 py-8'>
+		<div className='relative flex flex-col justify-center items-center min-h-screen bg-background px-4 py-8'>
 			<Button
 				size='sm'
-				className='absolute top-8 left-8 z-20 text-gray-400 hover:text-gray-600 hover:opacity-100 bg-transparent border-none shadow-none transition-colors duration-200'
+				className='absolute top-8 left-8 z-20 text-muted-foreground hover:text-foreground hover:opacity-100 bg-transparent border-none shadow-none transition-colors duration-200'
 				onClick={() => navigate("/")}
 				variant='text'
 			>
@@ -115,10 +113,12 @@ const SignInPage: React.FC = () => {
 			</Button>
 
 			<div className='w-full max-w-md rounded-2xl p-8'>
-				<h1 className='text-3xl font-bold text-center mb-2 text-gray-900'>
+				<h1 className='text-3xl font-bold text-center mb-2 text-foreground'>
 					{title}
 				</h1>
-				<p className='text-center text-gray-600 mb-8'>{subtitle}</p>
+				<p className='text-center text-muted-foreground mb-8'>
+					{subtitle}
+				</p>
 
 				<form onSubmit={handleSubmit} className='space-y-6' noValidate>
 					<div>
@@ -163,15 +163,15 @@ const SignInPage: React.FC = () => {
 								onChange={(e) =>
 									setRememberMe(e.target.checked)
 								}
-								className='w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500'
+								className='w-4 h-4 text-primary border-border rounded focus:ring-primary'
 							/>
-							<span className='text-sm text-gray-700'>
+							<span className='text-sm text-foreground'>
 								{rememberMeText}
 							</span>
 						</label>
 						<Link
 							to='/forgot-password'
-							className='text-sm text-blue-600 hover:text-blue-800 hover:underline'
+							className='text-sm text-primary hover:text-primary/80 hover:underline'
 						>
 							{forgotPassword}
 						</Link>
@@ -180,7 +180,7 @@ const SignInPage: React.FC = () => {
 					<Button
 						type='submit'
 						loading={isLoading}
-						className='w-full bg-black text-white hover:bg-gray-800'
+						className='w-full bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background'
 						size='lg'
 					>
 						{submit}
@@ -188,11 +188,11 @@ const SignInPage: React.FC = () => {
 				</form>
 
 				<div className='mt-6 text-center'>
-					<p className='text-sm text-gray-600'>
+					<p className='text-sm text-muted-foreground'>
 						{noAccount}{" "}
 						<Link
 							to='/register'
-							className='text-blue-600 hover:text-blue-800 font-semibold hover:underline'
+							className='text-primary hover:text-primary/80 font-semibold hover:underline'
 						>
 							{signUp}
 						</Link>
@@ -202,10 +202,10 @@ const SignInPage: React.FC = () => {
 				<div className='mt-6'>
 					<div className='relative'>
 						<div className='absolute inset-0 flex items-center'>
-							<div className='w-full border-t border-gray-300'></div>
+							<div className='w-full border-t border-border'></div>
 						</div>
 						<div className='relative flex justify-center text-sm'>
-							<span className='px-2 bg-white text-gray-500'>
+							<span className='px-2 bg-background text-muted-foreground'>
 								{or}
 							</span>
 						</div>
@@ -215,19 +215,19 @@ const SignInPage: React.FC = () => {
 						<Button
 							type='button'
 							variant='outline'
-							className='w-full border-gray-300 hover:bg-gray-50 flex items-center justify-center gap-2'
+							className='w-full border-border hover:bg-muted flex items-center justify-center gap-2'
 							onClick={() => handleSocialLogin("google")}
 						>
-							<FaGoogle className='w-5 h-5 text-red-500' />
+							<FaGoogle className='w-5 h-5 text-red-500 dark:text-red-400' />
 							<span>{google}</span>
 						</Button>
 						<Button
 							type='button'
 							variant='outline'
-							className='w-full border-gray-300 hover:bg-gray-50 flex items-center justify-center gap-2'
+							className='w-full border-border hover:bg-muted flex items-center justify-center gap-2'
 							onClick={() => handleSocialLogin("facebook")}
 						>
-							<FaFacebook className='w-5 h-5 text-blue-600' />
+							<FaFacebook className='w-5 h-5 text-blue-600 dark:text-blue-400' />
 							<span>{facebook}</span>
 						</Button>
 					</div>

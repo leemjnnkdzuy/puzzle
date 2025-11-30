@@ -199,10 +199,10 @@ const FogotPasswordPage: React.FC = () => {
 	};
 
 	return (
-		<div className='relative flex flex-col justify-center items-center min-h-screen bg-gray-50 px-4 py-8'>
+		<div className='relative flex flex-col justify-center items-center min-h-screen bg-background px-4 py-8'>
 			<Button
 				size='sm'
-				className='absolute top-8 left-8 z-20 text-gray-400 hover:text-gray-600 hover:opacity-100 bg-transparent border-none shadow-none transition-colors duration-200'
+				className='absolute top-8 left-8 z-20 text-muted-foreground hover:text-foreground hover:opacity-100 bg-transparent border-none shadow-none transition-colors duration-200'
 				onClick={() => navigate("/")}
 				variant='text'
 			>
@@ -211,14 +211,14 @@ const FogotPasswordPage: React.FC = () => {
 			</Button>
 
 			<div className='w-full max-w-md rounded-2xl p-8'>
-				<h1 className='text-3xl font-bold text-center mb-2 text-gray-900'>
+				<h1 className='text-3xl font-bold text-center mb-2 text-foreground'>
 					{phase === "forgotPassword"
 						? title
 						: phase === "verification"
 						? verificationTitle
 						: resetTitle}
 				</h1>
-				<p className='text-center text-gray-600 mb-8'>
+				<p className='text-center text-muted-foreground mb-8'>
 					{phase === "forgotPassword"
 						? subtitle
 						: phase === "verification"
@@ -246,7 +246,7 @@ const FogotPasswordPage: React.FC = () => {
 						<Button
 							type='submit'
 							loading={isLoading}
-							className='w-full bg-black text-white hover:bg-gray-800'
+							className='w-full bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background'
 							size='lg'
 						>
 							{submit}
@@ -274,7 +274,7 @@ const FogotPasswordPage: React.FC = () => {
 						<Button
 							type='submit'
 							loading={isLoading}
-							className='w-full bg-black text-white hover:bg-gray-800'
+							className='w-full bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background'
 							size='lg'
 						>
 							{verifySubmit}
@@ -326,7 +326,7 @@ const FogotPasswordPage: React.FC = () => {
 						<Button
 							type='submit'
 							loading={isLoading}
-							className='w-full bg-black text-white hover:bg-gray-800'
+							className='w-full bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background'
 							size='lg'
 						>
 							{resetSubmit}
@@ -336,11 +336,11 @@ const FogotPasswordPage: React.FC = () => {
 
 				{phase === "forgotPassword" && (
 					<div className='mt-6 text-center'>
-						<p className='text-sm text-gray-600'>
+						<p className='text-sm text-muted-foreground'>
 							{rememberPassword}{" "}
 							<Link
 								to='/login'
-								className='text-blue-600 hover:text-blue-800 font-semibold hover:underline'
+								className='text-primary hover:text-primary/80 font-semibold hover:underline'
 							>
 								{signIn}
 							</Link>

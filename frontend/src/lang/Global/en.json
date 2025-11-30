@@ -297,6 +297,25 @@
 			"resetFailed": "Password reset failed. Please try again."
 		}
 	},
+	"about": {
+		"title": "About Us",
+		"subtitle": "Two young, passionate developers determined to create quality products with a bit of... too much sex, man!",
+		"duy": {
+			"name": "Duy Lê (leemjnnkdzuy)",
+			"quote1": "\"What would you do if you had 10 billion right now?\"",
+			"quote2": "\"What if Nghĩa Trần got kidnapped, and they force you to eat shit to save Nghĩa Trần, would you save him?\""
+		},
+		"truong": {
+			"name": "Ngô Trường (TruongSoCute)",
+			"quote1": "\"If I were rich right now, damn I'd raise dozens of kids.\"",
+			"quote2": "\"Too much bullshit, man.\""
+		},
+		"social": {
+			"facebook": "Facebook",
+			"github": "GitHub",
+			"instagram": "Instagram"
+		}
+	},
 	"footer": {
 		"description": "AI-powered video recap platform. Transform long videos into concise summaries automatically.",
 		"product": "Product",
@@ -326,5 +345,29 @@
 			"authenticatedDescription": "Start creating amazing video recaps and transform your content with Puzzle's powerful AI tools.",
 			"authenticatedButton": "Go to Homepage"
 		}
+	},
+	"sidebar": {
+		"home": "Home",
+		"api": "API",
+		"voice": "Voice",
+		"tts": "Text-to-Speech",
+		"stt": "Speech-to-Text",
+		"projects": "Projects",
+		"templates": "Templates",
+		"shared": "Shared Projects",
+		"about": "About Us",
+		"viewProfile": "View Profile",
+		"settings": "Settings",
+		"theme": "Theme",
+		"language": "Language",
+		"logout": "Logout",
+		"light": "Light",
+		"dark": "Dark"
+	},
+	"logout": {
+		"confirmTitle": "Confirm Logout",
+		"confirmMessage": "Are you sure you want to logout?",
+		"confirm": "Logout",
+		"cancel": "Cancel"
 	}
 }

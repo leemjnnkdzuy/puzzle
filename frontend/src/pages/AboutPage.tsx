@@ -2,19 +2,31 @@ import React from "react";
 import {FaGithub, FaFacebook, FaInstagram} from "react-icons/fa";
 import Assets from "@/configs/AssetsConfig";
 import Button from "@/components/ui/Button";
+import {useLanguage} from "@/hooks/useLanguage";
 
 const AboutPage: React.FC = () => {
+	const {getNested} = useLanguage();
+
+	const about = getNested?.("about") as
+		| {
+				title: string;
+				subtitle: string;
+				duy: {name: string; quote1: string; quote2: string};
+				truong: {name: string; quote1: string; quote2: string};
+				social: {facebook: string; github: string; instagram: string};
+		  }
+		| undefined;
+
 	return (
 		<div className='min-h-screen bg-white pt-32 pb-20'>
 			<div className='max-w-7xl mx-auto px-6'>
 				<div className='text-center mb-16'>
 					<h1 className='text-4xl md:text-5xl font-bold text-gray-900 mb-4'>
-						Về Chúng Tôi
+						{about?.title || "Về Chúng Tôi"}
 					</h1>
 					<p className='text-lg text-gray-600 max-w-2xl mx-auto'>
-						Hai developer trẻ đầy nhiệt huyết, quyết tâm tạo ra
-						những sản phẩm chất lượng với một chút... sex quá ông
-						ơi!
+						{about?.subtitle ||
+							"Hai developer trẻ đầy nhiệt huyết, quyết tâm tạo ra những sản phẩm chất lượng với một chút... sex quá ông ơi!"}
 					</p>
 				</div>
 
@@ -32,15 +44,16 @@ const AboutPage: React.FC = () => {
 							</div>
 							<div className='flex-1 text-center md:text-left'>
 								<h2 className='text-2xl font-bold text-gray-900 mb-2'>
-									Duy Lê (leemjnnkdzuy)
+									{about?.duy?.name ||
+										"Duy Lê (leemjnnkdzuy)"}
 								</h2>
 								<p className='text-gray-600 leading-relaxed'>
-									"Thí dụ giờ có 10 tỷ mày sẽ làm gì ?"
+									{about?.duy?.quote1 ||
+										'"Thí dụ giờ có 10 tỷ mày sẽ làm gì ?"'}
 								</p>
 								<p className='text-gray-600 mb-6 leading-relaxed'>
-									"Thí dụ giờ Nghĩa Trần bị bắt cóc, mà tụi nó
-									bắt mày ăn cứt cứu Nghĩa Trần mày có cứu
-									không ?"
+									{about?.duy?.quote2 ||
+										'"Thí dụ giờ Nghĩa Trần bị bắt cóc, mà tụi nó bắt mày ăn cứt cứu Nghĩa Trần mày có cứu không ?"'}
 								</p>
 
 								<div className='flex items-center justify-center md:justify-start gap-4'>
@@ -55,7 +68,10 @@ const AboutPage: React.FC = () => {
 											)
 										}
 										className='w-10 h-10 rounded-lg border border-gray-200 text-gray-600 hover:text-blue-600 hover:border-blue-300 transition-colors'
-										aria-label='Facebook'
+										aria-label={
+											about?.social?.facebook ||
+											"Facebook"
+										}
 									>
 										<FaFacebook className='w-5 h-5' />
 									</Button>
@@ -70,7 +86,9 @@ const AboutPage: React.FC = () => {
 											)
 										}
 										className='w-10 h-10 rounded-lg border border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-300 transition-colors'
-										aria-label='GitHub'
+										aria-label={
+											about?.social?.github || "GitHub"
+										}
 									>
 										<FaGithub className='w-5 h-5' />
 									</Button>
@@ -85,7 +103,10 @@ const AboutPage: React.FC = () => {
 											)
 										}
 										className='w-10 h-10 rounded-lg border border-gray-200 text-gray-600 hover:text-pink-600 hover:border-pink-300 transition-colors'
-										aria-label='Instagram'
+										aria-label={
+											about?.social?.instagram ||
+											"Instagram"
+										}
 									>
 										<FaInstagram className='w-5 h-5' />
 									</Button>
@@ -107,14 +128,16 @@ const AboutPage: React.FC = () => {
 							</div>
 							<div className='flex-1 text-center md:text-right'>
 								<h2 className='text-2xl font-bold text-gray-900 mb-2'>
-									Ngô Trường (TruongSoCute)
+									{about?.truong?.name ||
+										"Ngô Trường (TruongSoCute)"}
 								</h2>
 								<p className='text-gray-600 leading-relaxed'>
-									"Giờ mà tao giàu thì đcm tao bao nuôi chục
-									con."
+									{about?.truong?.quote1 ||
+										'"Giờ mà tao giàu thì đcm tao bao nuôi chục con."'}
 								</p>
 								<p className='text-gray-600 mb-6 leading-relaxed'>
-									"Xàm lồn quá ông ơi."
+									{about?.truong?.quote2 ||
+										'"Xàm lồn quá ông ơi."'}
 								</p>
 								<div className='flex items-center justify-center md:justify-end gap-4'>
 									<Button
@@ -128,7 +151,10 @@ const AboutPage: React.FC = () => {
 											)
 										}
 										className='w-10 h-10 rounded-lg border border-gray-200 text-gray-600 hover:text-blue-600 hover:border-blue-300 transition-colors'
-										aria-label='Facebook'
+										aria-label={
+											about?.social?.facebook ||
+											"Facebook"
+										}
 									>
 										<FaFacebook className='w-5 h-5' />
 									</Button>
@@ -143,7 +169,9 @@ const AboutPage: React.FC = () => {
 											)
 										}
 										className='w-10 h-10 rounded-lg border border-gray-200 text-gray-600 hover:text-gray-900 hover:border-gray-300 transition-colors'
-										aria-label='GitHub'
+										aria-label={
+											about?.social?.github || "GitHub"
+										}
 									>
 										<FaGithub className='w-5 h-5' />
 									</Button>

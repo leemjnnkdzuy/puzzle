@@ -1,6 +1,5 @@
 import axios, {type AxiosInstance, type AxiosError} from "axios";
 import {DEFAULT_API_URL} from "@/configs/AppConfig";
-import {RequestError} from "@/utils/RequestError";
 import type {
 	RegisterData,
 	ForgotPasswordData,
@@ -35,7 +34,7 @@ const createApiClient = (): AxiosInstance => {
 				error.response?.data?.message ||
 				error.message ||
 				"Đã xảy ra lỗi không xác định";
-			throw new RequestError(message);
+			throw new Error(message);
 		}
 	);
 

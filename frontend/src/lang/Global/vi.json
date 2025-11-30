@@ -297,6 +297,25 @@
 			"resetFailed": "Đặt lại mật khẩu thất bại. Vui lòng thử lại."
 		}
 	},
+	"about": {
+		"title": "Về Chúng Tôi",
+		"subtitle": "Hai developer trẻ đầy nhiệt huyết, quyết tâm tạo ra những sản phẩm chất lượng với một chút... sex quá ông ơi!",
+		"duy": {
+			"name": "Duy Lê (leemjnnkdzuy)",
+			"quote1": "\"Thí dụ giờ có 10 tỷ mày sẽ làm gì ?\"",
+			"quote2": "\"Thí dụ giờ Nghĩa Trần bị bắt cóc, mà tụi nó bắt mày ăn cứt cứu Nghĩa Trần mày có cứu không ?\""
+		},
+		"truong": {
+			"name": "Ngô Trường (TruongSoCute)",
+			"quote1": "\"Giờ mà tao giàu thì đcm tao bao nuôi chục con.\"",
+			"quote2": "\"Xàm lồn quá ông ơi.\""
+		},
+		"social": {
+			"facebook": "Facebook",
+			"github": "GitHub",
+			"instagram": "Instagram"
+		}
+	},
 	"footer": {
 		"description": "Nền tảng tóm tắt video bằng AI. Chuyển đổi video dài thành tóm tắt ngắn gọn tự động.",
 		"product": "Sản phẩm",
@@ -326,5 +345,29 @@
 			"authenticatedDescription": "Bắt đầu tạo những video tóm tắt tuyệt vời và chuyển đổi nội dung của bạn với các công cụ AI mạnh mẽ của Puzzle.",
 			"authenticatedButton": "Trở về trang chủ"
 		}
+	},
+	"sidebar": {
+		"home": "Trang chủ",
+		"api": "API",
+		"voice": "Voice",
+		"tts": "Text-to-Speech",
+		"stt": "Speech-to-Text",
+		"projects": "Dự án",
+		"templates": "Mẫu",
+		"shared": "Dự án được chia sẻ",
+		"about": "Về chúng tôi",
+		"viewProfile": "Xem hồ sơ",
+		"settings": "Cài đặt",
+		"theme": "Chủ đề",
+		"language": "Ngôn ngữ",
+		"logout": "Đăng xuất",
+		"light": "Sáng",
+		"dark": "Tối"
+	},
+	"logout": {
+		"confirmTitle": "Xác nhận đăng xuất",
+		"confirmMessage": "Bạn có chắc chắn muốn đăng xuất?",
+		"confirm": "Đăng xuất",
+		"cancel": "Hủy"
 	}
 }

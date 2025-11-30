@@ -7,6 +7,7 @@ import type {RouteTypes} from "@/types/RouteTypes";
 // layouts
 import NotThingLayout from "@/components/layout/NotThingLayout";
 import HeaderFooterLayout from "@/components/layout/HeaderFooterLayout";
+import SidebarLayout from "@/components/layout/SidebarLayout";
 
 // Components
 import AppLoader, {PublicRoute} from "@/components/common/AppLoader";
@@ -88,7 +89,7 @@ const privateRoutes: RouteTypes[] = [
 	{
 		path: "/home",
 		component: HomePage,
-		layout: NotThingLayout,
+		layout: SidebarLayout,
 	},
 ];
 

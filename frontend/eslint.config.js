@@ -26,4 +26,16 @@ export default defineConfig([
 			"react-refresh/only-export-components": "off",
 		},
 	},
+	{
+		files: ["**/contexts/ThemeContext.tsx"],
+		rules: {
+			"react-refresh/only-export-components": "off",
+		},
+	},
+	{
+		files: ["**/main.tsx"],
+		rules: {
+			"react-refresh/only-export-components": "off",
+		},
+	},
 ]);

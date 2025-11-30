@@ -1,6 +1,6 @@
-import {type ReactElement} from "react";
+import {type ReactElement, useEffect} from "react";
 import {Navigate} from "react-router-dom";
-import {useAuth} from "@/hooks/useAuth";
+import {useAuthStore} from "@/stores/authStore";
 import Loading from "@/components/ui/Loading";
 
 interface AppLoaderProps {
@@ -12,9 +12,18 @@ interface PublicRouteProps {
 }
 
 const AppLoader: React.FC<AppLoaderProps> = ({children}) => {
-	const {isAuthenticated, loading} = useAuth();
+	const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+	const loading = useAuthStore((state) => state.loading);
+	const isInitialized = useAuthStore((state) => state.isInitialized);
+	const checkAuth = useAuthStore((state) => state.checkAuth);
 
-	if (loading) {
+	useEffect(() => {
+		if (!isInitialized) {
+			checkAuth();
+		}
+	}, [isInitialized, checkAuth]);
+
+	if (loading || !isInitialized) {
 		return (
 			<div className='flex items-center justify-center min-h-screen'>
 				<Loading size={40} color='rgb(17, 24, 39)' />
@@ -30,16 +39,7 @@ const AppLoader: React.FC<AppLoaderProps> = ({children}) => {
 };
 
 export const PublicRoute: React.FC<PublicRouteProps> = ({children}) => {
-	const checkAuthFlag = (): boolean => {
-		try {
-			return sessionStorage.getItem("auth_authenticated") === "true";
-		} catch (error) {
-			console.error("Failed to check auth flag:", error);
-			return false;
-		}
-	};
-
-	const isAuthenticated = checkAuthFlag();
+	const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
 	if (isAuthenticated) {
 		return <Navigate to='/home' replace />;

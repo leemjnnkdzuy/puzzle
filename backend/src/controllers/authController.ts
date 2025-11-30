@@ -401,10 +401,12 @@ export const getCurrentUser = async (
 			return;
 		}
 
+		const userObject = user.toObject();
+
 		res.status(200).json({
 			success: true,
 			data: {
-				user,
+				user: userObject,
 			},
 		});
 	} catch (error) {

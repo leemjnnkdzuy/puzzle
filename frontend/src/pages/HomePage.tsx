@@ -18,7 +18,6 @@ const HomePage: React.FC = () => {
 		useAuth();
 	const {showError, showSuccess} = useGlobalNotificationPopup();
 
-	// Form states
 	const [activeForm, setActiveForm] = useState<
 		"register" | "login" | "forgotPassword" | null
 	>(null);
@@ -123,7 +122,6 @@ const HomePage: React.FC = () => {
 			const result = await authService.getCurrentUser();
 			if (result.success && result.data?.user) {
 				showSuccess("Lấy thông tin user thành công!");
-				console.log("Current user:", result.data.user);
 			} else {
 				showError(result.message || "Không thể lấy thông tin user!");
 			}
@@ -163,6 +161,7 @@ const HomePage: React.FC = () => {
 		try {
 			await logout();
 			showSuccess("Đăng xuất thành công!");
+			// Navigation will be handled by AppLoader/PublicRoute
 		} catch (error) {
 			showError(
 				error instanceof Error ? error.message : "Đăng xuất thất bại!"
@@ -174,34 +173,38 @@ const HomePage: React.FC = () => {
 
 	if (loading) {
 		return (
-			<div className='flex items-center justify-center min-h-screen'>
-				<Loading size={40} color='rgb(17, 24, 39)' />
+			<div className='flex items-center justify-center min-h-screen bg-background'>
+				<Loading size={40} color='rgb(var(--foreground))' />
 			</div>
 		);
 	}
 
 	return (
-		<div className='min-h-screen bg-gray-50 p-8'>
+		<div className='min-h-screen p-8 bg-background transition-colors duration-300'>
 			<div className='max-w-4xl mx-auto'>
-				<h1 className='text-3xl font-bold mb-8 text-center'>
+				<h1 className='text-3xl font-bold mb-8 text-center text-foreground'>
 					Test Authentication
 				</h1>
 
-				<div className='bg-white rounded-lg shadow-md p-6 mb-6'>
-					<h2 className='text-xl font-semibold mb-4'>User Info</h2>
+				<div className='rounded-lg shadow-md p-6 mb-6 bg-card'>
+					<h2 className='text-xl font-semibold mb-4 text-card-foreground'>
+						User Info
+					</h2>
 					{isAuthenticated && user ? (
 						<div className='space-y-2'>
-							<pre className='bg-gray-100 p-4 rounded overflow-auto text-sm'>
+							<pre className='p-4 rounded overflow-auto text-sm bg-muted text-foreground'>
 								{JSON.stringify(user, null, 2)}
 							</pre>
 						</div>
 					) : (
-						<p className='text-gray-500'>Chưa đăng nhập</p>
+						<p className='text-muted-foreground'>Chưa đăng nhập</p>
 					)}
 				</div>
 
-				<div className='bg-white rounded-lg shadow-md p-6 mb-6'>
-					<h2 className='text-xl font-semibold mb-4'>Actions</h2>
+				<div className='rounded-lg shadow-md p-6 mb-6 bg-card'>
+					<h2 className='text-xl font-semibold mb-4 text-card-foreground'>
+						Actions
+					</h2>
 					<div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
 						<Button
 							onClick={() => setActiveForm("register")}
@@ -253,10 +256,10 @@ const HomePage: React.FC = () => {
 
 				{/* Forms */}
 				{activeForm && (
-					<div className='bg-white rounded-lg shadow-md p-6'>
+					<div className='rounded-lg shadow-md p-6 bg-card'>
 						{activeForm === "register" && (
 							<div className='space-y-4'>
-								<h2 className='text-xl font-semibold mb-4'>
+								<h2 className='text-xl font-semibold mb-4 text-card-foreground'>
 									Register
 								</h2>
 								<div className='grid grid-cols-2 gap-4'>
@@ -346,7 +349,7 @@ const HomePage: React.FC = () => {
 
 						{activeForm === "login" && (
 							<div className='space-y-4'>
-								<h2 className='text-xl font-semibold mb-4'>
+								<h2 className='text-xl font-semibold mb-4 text-card-foreground'>
 									Login
 								</h2>
 								<Input
@@ -391,7 +394,7 @@ const HomePage: React.FC = () => {
 
 						{activeForm === "forgotPassword" && (
 							<div className='space-y-4'>
-								<h2 className='text-xl font-semibold mb-4'>
+								<h2 className='text-xl font-semibold mb-4 text-card-foreground'>
 									Forgot Password
 								</h2>
 								<Input

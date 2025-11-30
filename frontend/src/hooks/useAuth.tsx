@@ -1,7 +1,5 @@
-import {useState, useCallback, useEffect, useRef} from "react";
-import axios from "axios";
-import {DEFAULT_API_URL} from "@/configs/AppConfig";
-import authService from "@/services/AuthService";
+import {useEffect} from "react";
+import {useAuthStore} from "@/stores/authStore";
 import type {LoginResponse} from "@/types/AuthTypes";
 
 interface UseAuthReturn {
@@ -19,263 +17,37 @@ interface UseAuthOptions {
 	skipInitialCheck?: boolean;
 }
 
-const AUTH_FLAG_KEY = "auth_authenticated";
-
-const globalAuthState: {
-	token: string | null;
-	isAuthenticated: boolean;
-	user: unknown | null;
-	loading: boolean;
-	hasChecked: boolean;
-} = {
-	token: null,
-	isAuthenticated: false,
-	user: null,
-	loading: true,
-	hasChecked: false,
-};
-
-let checkAuthPromise: Promise<void> | null = null;
-
-const setAuthFlag = (): void => {
-	try {
-		sessionStorage.setItem(AUTH_FLAG_KEY, "true");
-	} catch (error) {
-		console.error("Failed to set auth flag:", error);
-	}
-};
-
-const removeAuthFlag = (): void => {
-	try {
-		sessionStorage.removeItem(AUTH_FLAG_KEY);
-	} catch (error) {
-		console.error("Failed to remove auth flag:", error);
-	}
-};
-
 export const useAuth = (options?: UseAuthOptions): UseAuthReturn => {
 	const {skipInitialCheck = false} = options || {};
-	const initialLoading = skipInitialCheck
-		? globalAuthState.hasChecked
-			? globalAuthState.loading
-			: false
-		: globalAuthState.loading;
-	const [token, setToken] = useState<string | null>(globalAuthState.token);
-	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
-		globalAuthState.isAuthenticated
-	);
-	const [user, setUser] = useState<unknown | null>(globalAuthState.user);
-	const [loading, setLoading] = useState<boolean>(initialLoading);
-	const hasCheckedRef = useRef<boolean>(globalAuthState.hasChecked);
 
-	const login = useCallback(
-		async (username: string, password: string): Promise<LoginResponse> => {
-			try {
-				const response = await axios.post<LoginResponse>(
-					`${DEFAULT_API_URL}/api/auth/login`,
-					{
-						username,
-						password,
-					},
-					{
-						withCredentials: true,
-					}
-				);
+	const user = useAuthStore((state) => state.user);
+	const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+	const loading = useAuthStore((state) => state.loading);
+	const isInitialized = useAuthStore((state) => state.isInitialized);
+	const login = useAuthStore((state) => state.login);
+	const logout = useAuthStore((state) => state.logout);
+	const refreshToken = useAuthStore((state) => state.refreshToken);
+	const checkAuth = useAuthStore((state) => state.checkAuth);
 
-				if (response.data.success) {
-					globalAuthState.token = "authenticated";
-					globalAuthState.isAuthenticated = true;
-					globalAuthState.hasChecked = true;
-					setAuthFlag();
-					setToken("authenticated");
-					setIsAuthenticated(true);
-					try {
-						const userResult = await authService.getCurrentUser();
-						if (userResult.success && userResult.data?.user) {
-							globalAuthState.user = userResult.data.user;
-							setUser(userResult.data.user);
-						}
-					} catch (error) {
-						console.error("Failed to get user after login:", error);
-					}
-				}
-
-				return response.data;
-			} catch (error) {
-				if (axios.isAxiosError(error)) {
-					const message =
-						error.response?.data?.message ||
-						error.message ||
-						"Đăng nhập thất bại!";
-					return {
-						success: false,
-						message,
-					};
-				}
-				return {
-					success: false,
-					message: "Đăng nhập thất bại!",
-				};
-			}
-		},
-		[]
-	);
-
-	const logout = useCallback(async () => {
-		try {
-			await authService.logout();
-		} catch (error) {
-			console.error("Logout error:", error);
-		} finally {
-			globalAuthState.token = null;
-			globalAuthState.isAuthenticated = false;
-			globalAuthState.user = null;
-			globalAuthState.hasChecked = true;
-			removeAuthFlag();
-			setToken(null);
-			setIsAuthenticated(false);
-			setUser(null);
-		}
-	}, []);
-
-	const refreshAccessToken = useCallback(async (): Promise<boolean> => {
-		try {
-			const result = await authService.refreshToken();
-			if (result.success) {
-				globalAuthState.token = "authenticated";
-				setToken("authenticated");
-				return true;
-			}
-			return false;
-		} catch (error) {
-			console.error("Refresh token error:", error);
-			return false;
-		}
-	}, []);
-
-	const checkAuth = useCallback(async () => {
-		if (checkAuthPromise && globalAuthState.hasChecked) {
-			await checkAuthPromise;
-			setToken(globalAuthState.token);
-			setIsAuthenticated(globalAuthState.isAuthenticated);
-			setUser(globalAuthState.user);
-			setLoading(globalAuthState.loading);
-			return;
-		}
-
-		if (globalAuthState.hasChecked) {
-			setToken(globalAuthState.token);
-			setIsAuthenticated(globalAuthState.isAuthenticated);
-			setUser(globalAuthState.user);
-			setLoading(globalAuthState.loading);
-			return;
-		}
-
-		checkAuthPromise = (async () => {
-			try {
-				setLoading(true);
-				globalAuthState.loading = true;
-
-				const result = await authService.getCurrentUser();
-				if (result.success && result.data?.user) {
-					globalAuthState.user = result.data.user;
-					globalAuthState.token = "authenticated";
-					globalAuthState.isAuthenticated = true;
-					setAuthFlag();
-					setUser(globalAuthState.user);
-					setToken(globalAuthState.token);
-					setIsAuthenticated(globalAuthState.isAuthenticated);
-				} else {
-					const refreshed = await refreshAccessToken();
-					if (refreshed) {
-						const retryResult = await authService.getCurrentUser();
-						if (retryResult.success && retryResult.data?.user) {
-							globalAuthState.user = retryResult.data.user;
-							globalAuthState.token = "authenticated";
-							globalAuthState.isAuthenticated = true;
-							setAuthFlag();
-							setUser(globalAuthState.user);
-							setToken(globalAuthState.token);
-							setIsAuthenticated(globalAuthState.isAuthenticated);
-						} else {
-							globalAuthState.isAuthenticated = false;
-							globalAuthState.token = null;
-							globalAuthState.user = null;
-							removeAuthFlag();
-							setIsAuthenticated(false);
-							setToken(null);
-							setUser(null);
-						}
-					} else {
-						globalAuthState.isAuthenticated = false;
-						globalAuthState.token = null;
-						globalAuthState.user = null;
-						removeAuthFlag();
-						setIsAuthenticated(false);
-						setToken(null);
-						setUser(null);
-					}
-				}
-			} catch (error: unknown) {
-				const isUnauthorized =
-					axios.isAxiosError(error) && error.response?.status === 401;
-
-				if (isUnauthorized) {
-					globalAuthState.isAuthenticated = false;
-					globalAuthState.token = null;
-					globalAuthState.user = null;
-					removeAuthFlag();
-					setIsAuthenticated(false);
-					setToken(null);
-					setUser(null);
-				} else {
-					console.error("Check auth error:", error);
-					globalAuthState.isAuthenticated = false;
-					globalAuthState.token = null;
-					globalAuthState.user = null;
-					removeAuthFlag();
-					setIsAuthenticated(false);
-					setToken(null);
-					setUser(null);
-				}
-			} finally {
-				globalAuthState.loading = false;
-				globalAuthState.hasChecked = true;
-				hasCheckedRef.current = true;
-				setLoading(false);
-				checkAuthPromise = null;
-			}
-		})();
-
-		await checkAuthPromise;
-	}, [refreshAccessToken]);
-
+	// Initialize auth check on mount if needed
 	useEffect(() => {
-		if (!skipInitialCheck && !hasCheckedRef.current) {
+		if (!skipInitialCheck && !isInitialized) {
 			checkAuth();
-		} else if (skipInitialCheck) {
-			const authFlag = sessionStorage.getItem(AUTH_FLAG_KEY);
-			if (authFlag === "true" && !globalAuthState.hasChecked) {
-				checkAuth();
-			} else {
-				setToken(globalAuthState.token);
-				setIsAuthenticated(globalAuthState.isAuthenticated);
-				setUser(globalAuthState.user);
-				setLoading(
-					globalAuthState.hasChecked ? globalAuthState.loading : false
-				);
-			}
 		}
-	}, [checkAuth, skipInitialCheck]);
+	}, [skipInitialCheck, isInitialized, checkAuth]);
+
+	const refreshAccessToken = async (): Promise<boolean> => {
+		return refreshToken();
+	};
 
 	return {
 		login,
 		logout,
 		refreshAccessToken,
 		isAuthenticated,
-		token,
+		token: isAuthenticated ? "authenticated" : null,
 		user,
 		loading,
-		hasChecked: globalAuthState.hasChecked,
+		hasChecked: isInitialized,
 	};
 };

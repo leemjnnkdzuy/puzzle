@@ -1,8 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 export default {
 	content: ["./src/**/*.{js,jsx,ts,tsx}", "./index.html"],
+	darkMode: "class",
 	theme: {
 		extend: {
+			screens: {
+				"nav-menu-1400": "1400px",
+			},
 			colors: {
 				foreground: "rgb(var(--foreground) / <alpha-value>)",
 				background: "rgb(var(--background) / <alpha-value>)",
@@ -31,6 +35,25 @@ export default {
 				},
 				input: "rgb(var(--input) / <alpha-value>)",
 				ring: "rgb(var(--ring) / <alpha-value>)",
+				card: {
+					DEFAULT: "rgb(var(--card) / <alpha-value>)",
+					foreground: "rgb(var(--card-foreground) / <alpha-value>)",
+				},
+				border: "rgb(var(--border) / <alpha-value>)",
+				sidebar: {
+					DEFAULT: "rgb(var(--sidebar) / <alpha-value>)",
+					foreground:
+						"rgb(var(--sidebar-foreground) / <alpha-value>)",
+					border: "rgb(var(--sidebar-border) / <alpha-value>)",
+					accent: "rgb(var(--sidebar-accent) / <alpha-value>)",
+					muted: "rgb(var(--sidebar-muted) / <alpha-value>)",
+				},
+				dropdown: {
+					DEFAULT: "rgb(var(--dropdown) / <alpha-value>)",
+					foreground:
+						"rgb(var(--dropdown-foreground) / <alpha-value>)",
+					border: "rgb(var(--dropdown-border) / <alpha-value>)",
+				},
 			},
 			keyframes: {
 				slideInRight: {

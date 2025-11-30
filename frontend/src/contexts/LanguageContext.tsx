@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useCallback, useRef} from "react";
 import type {ReactNode} from "react";
 import {createContext} from "react";
 import type {LanguageContextType} from "@/types/LanguageContextType";
@@ -6,6 +6,7 @@ import type {Language} from "@/types/LanguageContextType";
 import {DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES} from "@/configs/AppConfig";
 import enTranslations from "@/lang/Global/en.json";
 import viTranslations from "@/lang/Global/vi.json";
+import userService from "@/services/UserService";
 
 export const LanguageContext = createContext<LanguageContextType | undefined>(
 	undefined
@@ -56,8 +57,14 @@ const nestedTranslations = {
 	vi: viTranslations,
 };
 
-export const LanguageProvider: React.FC<{children: ReactNode}> = ({
+interface LanguageProviderProps {
+	children: ReactNode;
+	isAuthenticated?: boolean;
+}
+
+export const LanguageProvider: React.FC<LanguageProviderProps> = ({
 	children,
+	isAuthenticated = false,
 }) => {
 	const [language, setLanguageState] = useState<Language>(() => {
 		try {
@@ -77,6 +84,42 @@ export const LanguageProvider: React.FC<{children: ReactNode}> = ({
 			return DEFAULT_LANGUAGE as Language;
 		}
 	});
+	const isSyncingRef = useRef(false);
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			const loadLanguageFromServer = async () => {
+				if (isSyncingRef.current) return;
+				try {
+					isSyncingRef.current = true;
+					const result = await userService.getPreferences();
+					if (result.success && result.data?.language) {
+						const serverLanguage = result.data.language;
+						if (SUPPORTED_LANGUAGES.includes(serverLanguage)) {
+							setLanguageState(serverLanguage as Language);
+							try {
+								localStorage.setItem(
+									"language",
+									serverLanguage
+								);
+							} catch (e) {
+								console.warn(
+									"Could not save language to localStorage:",
+									e
+								);
+							}
+						}
+					}
+				} catch (error) {
+					console.warn("Failed to load language from server:", error);
+				} finally {
+					isSyncingRef.current = false;
+				}
+			};
+
+			loadLanguageFromServer();
+		}
+	}, [isAuthenticated]);
 
 	useEffect(() => {
 		try {
@@ -86,9 +129,24 @@ export const LanguageProvider: React.FC<{children: ReactNode}> = ({
 		}
 	}, [language]);
 
-	const setLanguage = (lang: Language) => {
-		setLanguageState(lang);
-	};
+	const setLanguage = useCallback(
+		async (lang: Language) => {
+			setLanguageState(lang);
+
+			// Sync to server if authenticated
+			if (isAuthenticated) {
+				try {
+					await userService.updatePreferences({
+						language: lang as "en" | "vi",
+					});
+				} catch (error) {
+					console.warn("Failed to sync language to server:", error);
+					// Continue with local language
+				}
+			}
+		},
+		[isAuthenticated]
+	);
 
 	const t = (key: string): string => {
 		const langTranslations =

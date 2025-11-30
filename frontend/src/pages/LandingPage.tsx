@@ -92,7 +92,7 @@ const servicePackages = [
 const LandingPage = () => {
 	const navigate = useNavigate();
 	const {t, getNested} = useLanguage();
-	const {isAuthenticated} = useAuth({skipInitialCheck: true});
+	const {isAuthenticated} = useAuth();
 	const [showNav, setShowNav] = useState(false);
 	const [demoOverlay, setDemoOverlay] = useState(false);
 	const [demoShrink, setDemoShrink] = useState(false);
@@ -258,6 +258,7 @@ const LandingPage = () => {
 	useEffect(() => {
 		if (!featuresSectionRef.current) return;
 
+		const isMobile = window.innerWidth < 768;
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				if (entry.isIntersecting) {
@@ -269,12 +270,15 @@ const LandingPage = () => {
 						}, 900);
 					}
 				} else {
-					if (!featuresAnimatingRef.current) {
+					if (!featuresAnimatingRef.current && !isMobile) {
 						setFeaturesAnimated(false);
 					}
 				}
 			},
-			{threshold: 0.5, rootMargin: "-100px"}
+			{
+				threshold: isMobile ? 0.1 : 0.5,
+				rootMargin: isMobile ? "0px" : "-100px",
+			}
 		);
 
 		observer.observe(featuresSectionRef.current);
@@ -313,7 +317,7 @@ const LandingPage = () => {
 	};
 
 	return (
-		<div className='min-h-screen bg-white relative overflow-hidden'>
+		<div className='min-h-screen bg-background relative overflow-hidden'>
 			<div className='parallax-bg absolute inset-0 pointer-events-none'>
 				<div className='absolute top-20 left-10 w-32 h-32 bg-blue-100 opacity-50'></div>
 				<div className='absolute left-4 bottom-14 w-48 h-48 border-2 border-purple-200 rounded-full spin-slower opacity-70'></div>
@@ -326,7 +330,7 @@ const LandingPage = () => {
 					{[...Array(9)].map((_, i) => (
 						<div
 							key={i}
-							className='w-16 h-16 border border-gray-200 bg-white'
+							className='w-16 h-16 border border-border bg-card'
 							style={{
 								backgroundImage:
 									i % 3 === 0
@@ -347,7 +351,7 @@ const LandingPage = () => {
 					}}
 				></div>
 
-				<span className='glow-dot absolute top-10 left-24 w-3 h-3 rounded-full bg-white/70 blur-sm'></span>
+				<span className='glow-dot absolute top-10 left-24 w-3 h-3 rounded-full bg-background/70 blur-sm'></span>
 				<span
 					className='glow-dot absolute top-28 right-32 w-3 h-3 rounded-full bg-amber-200/80 blur-sm'
 					style={{animationDelay: "0.8s"}}
@@ -363,7 +367,7 @@ const LandingPage = () => {
 			</div>
 
 			<div
-				className={`hidden z-50 lg:flex fixed left-6 top-1/2 -translate-y-1/2 flex-col gap-3 transition-opacity duration-300 ${
+				className={`z-50 fixed left-6 top-1/2 -translate-y-1/2 flex-col gap-3 transition-opacity duration-300 nav-menu-1400-only ${
 					showNav ? "opacity-100" : "opacity-0 pointer-events-none"
 				}`}
 			>
@@ -371,12 +375,12 @@ const LandingPage = () => {
 					<button
 						key={id}
 						onClick={() => handleNavClick(id)}
-						className='group flex items-center gap-3 rounded-full border border-gray-200 bg-white/90 px-3 py-2 shadow-sm hover:shadow-md hover:-translate-y-[2px] transition-all duration-200'
+						className='group flex items-center gap-3 rounded-full border border-border bg-card/90 px-3 py-2 shadow-sm hover:shadow-md hover:-translate-y-[2px] transition-all duration-200'
 					>
-						<span className='w-9 h-9 rounded-full bg-gray-900 text-white flex items-center justify-center shadow'>
+						<span className='w-9 h-9 rounded-full bg-foreground text-background flex items-center justify-center shadow'>
 							<Icon className='w-4 h-4' />
 						</span>
-						<span className='text-sm font-semibold text-gray-800 pr-2'>
+						<span className='text-sm font-semibold text-foreground pr-2'>
 							{label}
 						</span>
 					</button>
@@ -385,19 +389,19 @@ const LandingPage = () => {
 
 			<main className='relative z-10 w-full min-h-screen flex items-center justify-center px-4 sm:px-6 pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20'>
 				<div className='max-w-4xl mx-auto text-center px-2'>
-					<h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-4 sm:mb-5 md:mb-6 leading-tight animate-fade-in'>
+					<h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground mb-4 sm:mb-5 md:mb-6 leading-tight animate-fade-in'>
 						{t("hero.title")}
 						{t("hero.titlePlatform") && (
 							<>
 								{" "}
-								<span className='text-gray-500 text-3xl sm:text-4xl md:text-5xl lg:text-6xl'>
+								<span className='text-muted-foreground text-3xl sm:text-4xl md:text-5xl lg:text-6xl'>
 									{t("hero.titlePlatform")}
 								</span>
 							</>
 						)}
 					</h1>
 
-					<div className='space-y-1.5 sm:space-y-2 mb-6 sm:mb-8 md:mb-10 text-base sm:text-lg text-gray-600 animate-fade-in-delay px-2'>
+					<div className='space-y-1.5 sm:space-y-2 mb-6 sm:mb-8 md:mb-10 text-base sm:text-lg text-muted-foreground animate-fade-in-delay px-2'>
 						<p>{t("hero.subtitle")}</p>
 						<p>{t("hero.subtitle2")}</p>
 					</div>
@@ -406,12 +410,12 @@ const LandingPage = () => {
 						<Input
 							type='email'
 							placeholder={t("hero.emailPlaceholder")}
-							className='flex-1 h-11 sm:h-12 px-4 sm:px-5 py-3 text-base sm:text-lg border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black'
+							className='flex-1 h-11 sm:h-12 px-4 sm:px-5 py-3 text-base sm:text-lg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-foreground'
 						/>
 						<Button
 							variant='default'
 							size='lg'
-							className='bg-black text-white hover:bg-gray-800 w-full sm:w-auto px-6 sm:px-7 h-11 sm:h-12 text-base sm:text-lg'
+							className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background w-full sm:w-auto px-6 sm:px-7 h-11 sm:h-12 text-base sm:text-lg'
 							onClick={() => navigate("/register")}
 						>
 							{t("hero.cta")}
@@ -420,12 +424,12 @@ const LandingPage = () => {
 				</div>
 			</main>
 
-			<section className='relative z-10 w-full px-6 py-16 mb-32 border-t border-gray-200 overflow-hidden'>
+			<section className='relative z-10 w-full px-6 py-16 mb-32 border-t border-border overflow-hidden'>
 				<div className='container mx-auto mb-8'>
-					<h2 className='text-center text-2xl font-semibold text-gray-900 mb-2'>
+					<h2 className='text-center text-2xl font-semibold text-foreground mb-2'>
 						{t("platforms.trusted")}
 					</h2>
-					<p className='text-center text-gray-600'>
+					<p className='text-center text-muted-foreground'>
 						{t("platforms.support")}
 					</p>
 				</div>
@@ -435,7 +439,7 @@ const LandingPage = () => {
 						{[...platforms, ...platforms].map((platform, index) => (
 							<div
 								key={`${platform.name}-${index}`}
-								className='cursor-pointer group flex items-center gap-3 px-6 py-3 bg-white rounded-lg shadow-sm border border-gray-100 min-w-[200px] transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg hover:border-gray-200'
+								className='cursor-pointer group flex items-center gap-3 px-6 py-3 bg-card rounded-lg shadow-sm border border-border min-w-[200px] transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg hover:border-border'
 							>
 								<div
 									className={`w-10 h-10 rounded-lg flex items-center justify-center`}
@@ -446,7 +450,7 @@ const LandingPage = () => {
 										className='w-8 h-8 object-contain transition-transform duration-200 group-hover:scale-105'
 									/>
 								</div>
-								<span className='text-lg font-semibold text-gray-900'>
+								<span className='text-lg font-semibold text-foreground'>
 									{platform.name}
 								</span>
 							</div>
@@ -461,7 +465,7 @@ const LandingPage = () => {
 				className='relative z-11 w-full px-4 sm:px-6 mb-12 sm:mb-16 md:mb-24'
 			>
 				<div className='max-w-8xl mx-auto text-center mb-8 sm:mb-10 md:mb-14'>
-					<h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 px-2'>
+					<h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground px-2'>
 						{t("features.title")}
 					</h2>
 				</div>
@@ -474,10 +478,10 @@ const LandingPage = () => {
 					].map(({key, Icon}, index) => (
 						<div
 							key={key}
-							className={`group cursor-pointer relative border border-gray-200 rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col gap-5 sm:gap-6 md:gap-8 bg-white hover:shadow-lg hover:-translate-y-1 transition-all duration-200 ${
+							className={`group cursor-pointer relative border border-border rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col gap-5 sm:gap-6 md:gap-8 bg-card hover:shadow-lg hover:-translate-y-1 transition-all duration-200 ${
 								featuresAnimated
 									? "opacity-100 translate-y-0"
-									: "opacity-0 translate-y-8"
+									: "opacity-100 translate-y-0 sm:opacity-0 sm:translate-y-8"
 							}`}
 							style={{
 								transitionDelay: featuresAnimated
@@ -489,22 +493,22 @@ const LandingPage = () => {
 							}}
 						>
 							<div className='flex items-start justify-between'>
-								<div className='w-12 h-12 md:w-14 md:h-14 border border-gray-300 rounded-lg sm:rounded-xl flex items-center justify-center'>
+								<div className='w-12 h-12 md:w-14 md:h-14 border border-border rounded-lg sm:rounded-xl flex items-center justify-center shrink-0'>
 									<Icon
-										className='w-6 h-6 sm:w-6 md:w-7 md:h-7 text-gray-800'
+										className='w-6 h-6 sm:w-6 md:w-7 md:h-7 text-foreground'
 										strokeWidth={2}
 									/>
 								</div>
 								<Plus
-									className='w-5 h-5 sm:w-5 md:w-6 md:h-6 text-gray-800 transition-all duration-200 group-hover:rotate-90 group-hover:opacity-20'
+									className='w-5 h-5 sm:w-5 md:w-6 md:h-6 text-foreground transition-all duration-200 group-hover:rotate-90 group-hover:opacity-20 shrink-0'
 									strokeWidth={2}
 								/>
 							</div>
-							<div className='space-y-2 sm:space-y-3 md:space-y-3'>
-								<h3 className='text-lg sm:text-xl font-semibold text-gray-900 text-left leading-tight'>
+							<div className='space-y-2 sm:space-y-3 md:space-y-3 min-w-0'>
+								<h3 className='text-lg sm:text-xl font-semibold text-foreground text-left leading-tight break-words'>
 									{t(`features.${key}.title`)}
 								</h3>
-								<p className='text-xs sm:text-sm text-gray-600 text-left leading-relaxed'>
+								<p className='text-xs sm:text-sm text-muted-foreground text-left leading-relaxed break-words overflow-wrap-anywhere'>
 									{t(`features.${key}.description`)}
 								</p>
 							</div>
@@ -548,7 +552,7 @@ const LandingPage = () => {
 							contain: "layout style",
 						}}
 					>
-						<div className='relative rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden shadow-xl border border-gray-200 bg-black aspect-[16/9]'>
+						<div className='relative rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden shadow-xl border border-border bg-foreground aspect-[16/9]'>
 							<VideoPlayer
 								src={demoVideoDetail.videoSrc}
 								poster={demoVideoDetail.thumbnail}
@@ -559,17 +563,17 @@ const LandingPage = () => {
 								onTimeUpdate={handleTimeUpdate}
 							/>
 							<div
-								className={`absolute inset-0 flex items-center justify-center bg-black text-white transition-opacity duration-500 ${
+								className={`absolute inset-0 flex items-center justify-center bg-black/80 dark:bg-black/90 text-white transition-opacity duration-500 ${
 									demoOverlay
-										? "opacity-80"
+										? "opacity-100"
 										: "opacity-0 pointer-events-none"
 								}`}
 							>
 								<div className='text-center space-y-3 sm:space-y-4 px-4'>
-									<p className='text-base sm:text-lg font-semibold'>
+									<p className='text-base sm:text-lg font-semibold text-white'>
 										{t("demo.watchFull")}
 									</p>
-									<Button className='bg-white text-black hover:bg-gray-100 px-4 sm:px-6 text-sm sm:text-base'>
+									<Button className='bg-white text-black hover:bg-gray-100 dark:bg-white dark:text-black dark:hover:bg-gray-200 px-4 sm:px-6 text-sm sm:text-base'>
 										{t("demo.goToFullVideo")}
 									</Button>
 								</div>
@@ -629,59 +633,59 @@ const LandingPage = () => {
 								className='w-20 h-28 rounded-xl object-cover shadow'
 							/>
 							<div>
-								<p className='text-xs uppercase tracking-wide text-gray-500'>
+								<p className='text-xs uppercase tracking-wide text-muted-foreground'>
 									{demoVideoDetail.platform}
 								</p>
-								<h3 className='text-2xl font-bold text-gray-900'>
+								<h3 className='text-2xl font-bold text-foreground'>
 									{demoVideoDetail.title}
 								</h3>
-								<p className='text-sm text-gray-600'>
+								<p className='text-sm text-muted-foreground'>
 									{t("demo.recapRuntime")} 03:45
 								</p>
 							</div>
 						</div>
 						<div className='grid grid-cols-2 gap-4 max-h-[520px] overflow-y-auto pr-1'>
-							<div className='rounded-xl border border-gray-200 bg-white px-4 py-3'>
-								<p className='text-xs uppercase text-gray-500'>
+							<div className='rounded-xl border border-border bg-card px-4 py-3'>
+								<p className='text-xs uppercase text-muted-foreground'>
 									{t("demo.cost")}
 								</p>
-								<p className='text-lg font-semibold text-gray-900'>
+								<p className='text-lg font-semibold text-foreground'>
 									{demoVideoDetail.cost}
 								</p>
-								<p className='text-xs text-gray-600'>
+								<p className='text-xs text-muted-foreground'>
 									{t("demo.roughTotal")}
 								</p>
 							</div>
-							<div className='rounded-xl border border-gray-200 bg-white px-4 py-3'>
-								<p className='text-xs uppercase text-gray-500'>
+							<div className='rounded-xl border border-border bg-card px-4 py-3'>
+								<p className='text-xs uppercase text-muted-foreground'>
 									{t("demo.context")}
 								</p>
-								<p className='text-lg font-semibold text-gray-900'>
+								<p className='text-lg font-semibold text-foreground'>
 									{demoVideoDetail.context}
 								</p>
-								<p className='text-xs text-gray-600'>
+								<p className='text-xs text-muted-foreground'>
 									{t("demo.scriptScene")}
 								</p>
 							</div>
-							<div className='rounded-xl border border-gray-200 bg-white px-4 py-3'>
-								<p className='text-xs uppercase text-gray-500'>
+							<div className='rounded-xl border border-border bg-card px-4 py-3'>
+								<p className='text-xs uppercase text-muted-foreground'>
 									{t("demo.captions")}
 								</p>
-								<p className='text-lg font-semibold text-gray-900'>
+								<p className='text-lg font-semibold text-foreground'>
 									{demoVideoDetail.captions}
 								</p>
-								<p className='text-xs text-gray-600'>
+								<p className='text-xs text-muted-foreground'>
 									{t("demo.autoAligned")}
 								</p>
 							</div>
-							<div className='rounded-xl border border-gray-200 bg-white px-4 py-3'>
-								<p className='text-xs uppercase text-gray-500'>
+							<div className='rounded-xl border border-border bg-card px-4 py-3'>
+								<p className='text-xs uppercase text-muted-foreground'>
 									{t("demo.exports")}
 								</p>
-								<p className='text-lg font-semibold text-gray-900'>
+								<p className='text-lg font-semibold text-foreground'>
 									{demoVideoDetail.exports}
 								</p>
-								<p className='text-xs text-gray-600'>
+								<p className='text-xs text-muted-foreground'>
 									{t("demo.masterReels")}
 								</p>
 							</div>
@@ -693,11 +697,11 @@ const LandingPage = () => {
 								onMouseEnter={() => setShowVolumeSlider(true)}
 								onMouseLeave={() => setShowVolumeSlider(false)}
 							>
-								<div className='flex items-center border border-gray-200 bg-white rounded-full transition-colors duration-200'>
+								<div className='flex items-center border border-border bg-card rounded-full transition-colors duration-200'>
 									<Button
 										variant='outline'
 										size='icon'
-										className='border-none bg-white text-gray-900 hover:bg-gray-100 rounded-full w-10 h-10 shrink-0 shadow-none'
+										className='border-none bg-card text-foreground hover:bg-muted rounded-full w-10 h-10 shrink-0 shadow-none'
 										onClick={() => {
 											const next = !audioOn;
 											setAudioOn(next);
@@ -743,7 +747,7 @@ const LandingPage = () => {
 													mute?.();
 												}
 											}}
-											className='mx-[10px] w-full h-1 my-0 bg-gray-200 rounded-lg appearance-none cursor-pointer align-middle [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-black [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-black [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer'
+											className='mx-[10px] w-full h-1 my-0 bg-secondary rounded-lg appearance-none cursor-pointer align-middle [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-background [&::-moz-range-thumb]:cursor-pointer'
 											onMouseEnter={() =>
 												setShowVolumeSlider(true)
 											}
@@ -765,7 +769,7 @@ const LandingPage = () => {
 								<Button
 									variant='default'
 									size='icon'
-									className='bg-black text-white hover:bg-gray-800 rounded-full w-10 h-10 shrink-0'
+									className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background rounded-full w-10 h-10 shrink-0'
 									onClick={() => {
 										setCurrentTime(0);
 										seek?.(0);
@@ -793,7 +797,7 @@ const LandingPage = () => {
 				<div className='max-w-7xl mx-auto'>
 					<div className='text-center mb-8 sm:mb-12 md:mb-16 px-2'>
 						<h2
-							className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 ${
+							className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 ${
 								packagesAnimated
 									? "opacity-100 translate-y-0"
 									: "opacity-0 translate-y-8"
@@ -810,7 +814,7 @@ const LandingPage = () => {
 							{t("packages.title")}
 						</h2>
 						<p
-							className={`text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto ${
+							className={`text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto ${
 								packagesAnimated
 									? "opacity-100 translate-y-0"
 									: "opacity-0 translate-y-8"
@@ -843,8 +847,8 @@ const LandingPage = () => {
 									key={index}
 									className={`group relative rounded-xl sm:rounded-2xl lg:rounded-3xl p-5 sm:p-6 md:p-8 flex flex-col overflow-visible ${
 										isPopular
-											? "lg:-mt-4 border-2 border-gray-900 bg-white shadow-xl hover:shadow-2xl"
-											: "border border-gray-200 bg-white hover:shadow-lg"
+											? "lg:-mt-4 border-2 border-foreground bg-card shadow-xl hover:shadow-2xl"
+											: "border border-border bg-card hover:shadow-lg"
 									} ${
 										packagesAnimated
 											? "opacity-100 translate-y-0"
@@ -889,7 +893,7 @@ const LandingPage = () => {
 								>
 									{isPopular && (
 										<div className='absolute -top-3 sm:-top-4 left-1/2 -translate-x-1/2'>
-											<span className='inline-flex items-center gap-1 text-[10px] sm:text-xs font-semibold text-white bg-gray-900 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-lg'>
+											<span className='inline-flex items-center gap-1 text-[10px] sm:text-xs font-semibold text-background bg-foreground px-3 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-lg'>
 												<Sparkles className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
 												{t("packages.popular")}
 											</span>
@@ -901,15 +905,15 @@ const LandingPage = () => {
 											<div
 												className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 transition-all duration-200 ${
 													isPopular
-														? "bg-gradient-to-br from-gray-900 to-gray-700 text-white shadow-lg"
-														: "border border-gray-300 bg-gray-50 group-hover:bg-gray-100"
+														? "bg-gradient-to-br from-foreground to-foreground/80 text-background shadow-lg"
+														: "border border-border bg-muted group-hover:bg-muted/80"
 												}`}
 											>
 												<Icon
 													className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 ${
 														isPopular
-															? "text-white"
-															: "text-gray-800"
+															? "text-background"
+															: "text-foreground"
 													}`}
 													strokeWidth={2}
 												/>
@@ -917,8 +921,8 @@ const LandingPage = () => {
 											<h3
 												className={`text-lg sm:text-xl md:text-2xl font-bold flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 flex-1 ${
 													isPopular
-														? "text-gray-900"
-														: "text-gray-900"
+														? "text-foreground"
+														: "text-foreground"
 												}`}
 											>
 												<span>
@@ -926,7 +930,7 @@ const LandingPage = () => {
 														`packages.${pkg.key}.title`
 													)}
 												</span>
-												<span className='text-xs sm:text-sm font-normal text-gray-500'>
+												<span className='text-xs sm:text-sm font-normal text-muted-foreground'>
 													{t(
 														`packages.${pkg.key}.subtitle`
 													)}
@@ -942,7 +946,7 @@ const LandingPage = () => {
 														})
 													);
 												}}
-												className='sm:hidden flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 transition-colors duration-200 shrink-0'
+												className='sm:hidden flex items-center justify-center w-8 h-8 rounded-lg hover:bg-muted transition-colors duration-200 shrink-0'
 												aria-label={
 													expandedPackages[index]
 														? "Thu gọn"
@@ -950,7 +954,7 @@ const LandingPage = () => {
 												}
 											>
 												<ChevronDown
-													className={`w-5 h-5 text-gray-600 transition-transform duration-200 ${
+													className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${
 														expandedPackages[index]
 															? "rotate-180"
 															: ""
@@ -959,7 +963,7 @@ const LandingPage = () => {
 												/>
 											</button>
 										</div>
-										<p className='text-gray-600 leading-relaxed text-xs sm:text-sm'>
+										<p className='text-muted-foreground leading-relaxed text-xs sm:text-sm'>
 											{t(
 												`packages.${pkg.key}.description`
 											)}
@@ -984,13 +988,13 @@ const LandingPage = () => {
 												) => (
 													<li
 														key={idx}
-														className='flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700'
+														className='flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-foreground'
 													>
 														<div
 															className={`w-1.5 h-1.5 sm:w-2 sm:h-2 mt-1.5 sm:mt-2 rounded-full shrink-0 ${
 																isPopular
-																	? "bg-gray-900"
-																	: "bg-gray-400"
+																	? "bg-foreground"
+																	: "bg-muted-foreground"
 															}`}
 														></div>
 														<span className='leading-relaxed'>
@@ -1006,8 +1010,8 @@ const LandingPage = () => {
 										variant='default'
 										className={`w-full mt-auto transition-all duration-200 ${
 											isPopular
-												? "bg-gray-900 text-white hover:bg-gray-800 h-11 sm:h-12 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg"
-												: "bg-black text-white hover:bg-gray-800 h-10 sm:h-11 text-sm sm:text-base"
+												? "bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background h-11 sm:h-12 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg"
+												: "bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background h-10 sm:h-11 text-sm sm:text-base"
 										}`}
 										onClick={() => navigate("/register")}
 									>
@@ -1023,7 +1027,7 @@ const LandingPage = () => {
 			<div className='space-y-20 mb-32'>
 				<h2
 					id='engine-anchor'
-					className='text-4xl md:text-5xl font-bold text-gray-900 text-center'
+					className='text-4xl md:text-5xl font-bold text-foreground text-center'
 				>
 					{t("engine.title")}
 				</h2>
@@ -1034,32 +1038,32 @@ const LandingPage = () => {
 					<div className='max-w-6xl mx-auto'>
 						<div className='grid md:grid-cols-2 gap-10 items-center'>
 							<div className='relative flex justify-center'>
-								<div className='absolute inset-0 bg-gray-100 rounded-3xl blur-2xl scale-105'></div>
-								<div className='relative w-full max-w-xl bg-white border border-gray-200 rounded-3xl shadow-xl overflow-hidden'>
-									<div className='flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-gray-50'>
+								<div className='absolute inset-0 bg-muted rounded-3xl blur-2xl scale-105'></div>
+								<div className='relative w-full max-w-xl bg-card border border-border rounded-3xl shadow-xl overflow-hidden'>
+									<div className='flex items-center justify-between px-5 py-4 border-b border-border bg-muted'>
 										<div>
-											<p className='text-xs uppercase tracking-wide text-gray-500'>
+											<p className='text-xs uppercase tracking-wide text-muted-foreground'>
 												{t("workflow.workspace")}
 											</p>
-											<p className='text-sm font-semibold text-gray-900'>
+											<p className='text-sm font-semibold text-foreground'>
 												{t("workflow.cinemaAnime")}
 											</p>
 										</div>
-										<span className='text-xs text-gray-500'>
+										<span className='text-xs text-muted-foreground'>
 											{t("workflow.autoSaved")}
 										</span>
 									</div>
 
-									<div className='grid grid-cols-2 text-sm font-medium text-gray-600 border-b border-gray-100'>
-										<div className='px-5 py-3 bg-white'>
+									<div className='grid grid-cols-2 text-sm font-medium text-muted-foreground border-b border-border'>
+										<div className='px-5 py-3 bg-card'>
 											{t("workflow.clips")} 8
 										</div>
-										<div className='px-5 py-3 bg-gray-50 text-right text-gray-400'>
+										<div className='px-5 py-3 bg-muted text-right text-muted-foreground'>
 											{t("workflow.drafts")} 1
 										</div>
 									</div>
 
-									<div className='p-5 space-y-4 bg-gradient-to-b from-white via-gray-50 to-white'>
+									<div className='p-5 space-y-4 bg-gradient-to-b from-card via-muted to-card'>
 										{[
 											{
 												title: "Episode 5: Final battle reveal",
@@ -1084,20 +1088,20 @@ const LandingPage = () => {
 										].map((item, idx) => (
 											<div
 												key={idx}
-												className='flex items-start gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm'
+												className='flex items-start gap-3 rounded-2xl border border-border bg-card px-4 py-3 shadow-sm'
 											>
-												<div className='w-10 h-10 rounded-xl bg-black flex items-center justify-center text-white font-semibold text-xs'>
+												<div className='w-10 h-10 rounded-xl bg-foreground flex items-center justify-center text-background font-semibold text-xs'>
 													{idx + 1}
 												</div>
 												<div className='flex-1'>
-													<p className='text-sm font-semibold text-gray-900'>
+													<p className='text-sm font-semibold text-foreground'>
 														{item.title}
 													</p>
-													<p className='text-xs text-gray-500'>
+													<p className='text-xs text-muted-foreground'>
 														{item.meta}
 													</p>
 												</div>
-												<div className='text-xs text-gray-400 border border-gray-200 px-2 py-1 rounded-lg'>
+												<div className='text-xs text-muted-foreground border border-border px-2 py-1 rounded-lg'>
 													{t("workflow.export")}
 												</div>
 											</div>
@@ -1107,24 +1111,24 @@ const LandingPage = () => {
 							</div>
 
 							<div className='space-y-6 h-full flex flex-col justify-center md:justify-start'>
-								<div className='flex items-center gap-2 text-sm font-semibold text-gray-700'>
+								<div className='flex items-center gap-2 text-sm font-semibold text-foreground'>
 									<Sparkles className='w-4 h-4' />
 									<span>{t("workflow.label")}</span>
 								</div>
-								<h3 className='text-4xl font-bold text-gray-900 leading-tight'>
+								<h3 className='text-4xl font-bold text-foreground leading-tight'>
 									{t("workflow.title")}
 								</h3>
-								<p className='text-base text-gray-600 leading-relaxed'>
+								<p className='text-base text-muted-foreground leading-relaxed'>
 									{t("workflow.description")}
 								</p>
 								<Button
 									variant='default'
-									className='bg-black text-white hover:bg-gray-800 w-full sm:w-auto px-7 h-12 text-lg'
+									className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background w-full sm:w-auto px-7 h-12 text-lg'
 									onClick={() => navigate("/register")}
 								>
 									{t("workflow.cta")}
 								</Button>
-								<ul className='space-y-3 text-gray-700'>
+								<ul className='space-y-3 text-foreground'>
 									{(Array.isArray(
 										getNested?.("workflow.features")
 									)
@@ -1137,7 +1141,7 @@ const LandingPage = () => {
 											key={idx}
 											className='flex items-start gap-3'
 										>
-											<div className='w-2.5 h-2.5 mt-2 bg-black rounded-full'></div>
+											<div className='w-2.5 h-2.5 mt-2 bg-foreground rounded-full'></div>
 											<span>{feature}</span>
 										</li>
 									))}
@@ -1153,24 +1157,24 @@ const LandingPage = () => {
 				>
 					<div className='max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center'>
 						<div className='space-y-5'>
-							<div className='flex items-center gap-2 text-sm font-semibold text-gray-700'>
+							<div className='flex items-center gap-2 text-sm font-semibold text-foreground'>
 								<Layers className='w-4 h-4' />
 								<span>{t("models.label")}</span>
 							</div>
-							<h3 className='text-4xl font-bold text-gray-900 leading-tight'>
+							<h3 className='text-4xl font-bold text-foreground leading-tight'>
 								{t("models.title")}
 							</h3>
-							<p className='text-base text-gray-600 leading-relaxed'>
+							<p className='text-base text-muted-foreground leading-relaxed'>
 								{t("models.description")}
 							</p>
 							<Button
 								variant='default'
-								className='bg-black text-white hover:bg-gray-800 w-full sm:w-auto px-7 h-12 text-lg'
+								className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background w-full sm:w-auto px-7 h-12 text-lg'
 								onClick={() => navigate("/register")}
 							>
 								{t("models.cta")}
 							</Button>
-							<ul className='space-y-3 text-gray-700'>
+							<ul className='space-y-3 text-foreground'>
 								{(Array.isArray(getNested?.("models.features"))
 									? (getNested("models.features") as string[])
 									: []
@@ -1179,7 +1183,7 @@ const LandingPage = () => {
 										key={idx}
 										className='flex items-start gap-3'
 									>
-										<div className='w-2.5 h-2.5 mt-2 bg-black rounded-full'></div>
+										<div className='w-2.5 h-2.5 mt-2 bg-foreground rounded-full'></div>
 										<span>{feature}</span>
 									</li>
 								))}
@@ -1188,22 +1192,22 @@ const LandingPage = () => {
 						<div className='relative'>
 							<div className='absolute inset-0 bg-gradient-to-br from-indigo-100 via-purple-100 to-blue-50 rounded-[32px]'></div>
 							<div className='relative rounded-[32px] p-8 space-y-4'>
-								<div className='inline-flex items-center gap-2 text-xs font-semibold text-purple-700 bg-white/60 px-3 py-1 rounded-full shadow-sm'>
+								<div className='inline-flex items-center gap-2 text-xs font-semibold text-purple-700 dark:text-purple-400 bg-card/60 px-3 py-1 rounded-full shadow-sm'>
 									<Cpu className='w-4 h-4' />
 									<span>{t("models.stack")}</span>
 								</div>
 
-								<div className='space-y-4 bg-white rounded-2xl p-4 shadow'>
-									<p className='text-xs font-semibold text-purple-800'>
+								<div className='space-y-4 bg-card rounded-2xl p-4 shadow'>
+									<p className='text-xs font-semibold text-purple-800 dark:text-purple-300'>
 										{t("models.editTimeline")}
 									</p>
-									<div className='flex h-3 w-full overflow-hidden rounded-full bg-gray-100'>
-										<div className='bg-purple-500 w-2/5'></div>
-										<div className='bg-blue-400 w-1/5'></div>
-										<div className='bg-amber-400 w-1/6'></div>
-										<div className='bg-gray-300 flex-1'></div>
+									<div className='flex h-3 w-full overflow-hidden rounded-full bg-muted'>
+										<div className='bg-purple-500 dark:bg-purple-400 w-2/5'></div>
+										<div className='bg-blue-400 dark:bg-blue-300 w-1/5'></div>
+										<div className='bg-amber-400 dark:bg-amber-300 w-1/6'></div>
+										<div className='bg-muted-foreground/30 flex-1'></div>
 									</div>
-									<div className='space-y-2 text-sm text-gray-800'>
+									<div className='space-y-2 text-sm text-foreground'>
 										<div className='flex items-center gap-3'>
 											<span className='text-xs px-2 py-1 rounded-lg bg-purple-50 text-purple-800 border border-purple-100'>
 												00:00
@@ -1228,34 +1232,34 @@ const LandingPage = () => {
 												Director notes clipped
 											</span>
 										</div>
-										<p className='text-xs text-gray-600 mt-2'>
+										<p className='text-xs text-muted-foreground mt-2'>
 											{t("models.appliedDirectly")}
 										</p>
 									</div>
 								</div>
 
-								<div className='bg-white rounded-2xl p-4 shadow flex items-center justify-between'>
+								<div className='bg-card rounded-2xl p-4 shadow flex items-center justify-between'>
 									<div>
-										<p className='text-xs uppercase text-gray-500'>
+										<p className='text-xs uppercase text-muted-foreground'>
 											{t("models.llm")}
 										</p>
-										<p className='text-sm font-semibold text-gray-900'>
+										<p className='text-sm font-semibold text-foreground'>
 											{t("models.plotAware")}
 										</p>
 									</div>
-									<Bot className='w-5 h-5 text-gray-700' />
+									<Bot className='w-5 h-5 text-foreground' />
 								</div>
 
-								<div className='bg-white rounded-2xl p-4 shadow flex items-center justify-between'>
+								<div className='bg-card rounded-2xl p-4 shadow flex items-center justify-between'>
 									<div>
-										<p className='text-xs uppercase text-gray-500'>
+										<p className='text-xs uppercase text-muted-foreground'>
 											{t("models.asr")}
 										</p>
-										<p className='text-sm font-semibold text-gray-900'>
+										<p className='text-sm font-semibold text-foreground'>
 											{t("models.dualSubs")}
 										</p>
 									</div>
-									<Cpu className='w-5 h-5 text-gray-700' />
+									<Cpu className='w-5 h-5 text-foreground' />
 								</div>
 							</div>
 						</div>
@@ -1268,14 +1272,14 @@ const LandingPage = () => {
 				>
 					<div className='max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-start md:items-stretch'>
 						<div className='relative h-full'>
-							<div className='absolute inset-0 bg-gradient-to-br from-purple-100 via-blue-50 to-indigo-100 rounded-[32px] blur-2xl'></div>
-							<div className='relative bg-white rounded-[28px] border border-gray-200 shadow-xl p-7 space-y-5 h-full flex flex-col'>
+							<div className='absolute inset-0 bg-gradient-to-br from-purple-100 via-blue-50 to-indigo-100 dark:from-purple-900/20 dark:via-blue-900/20 dark:to-indigo-900/20 rounded-[32px] blur-2xl'></div>
+							<div className='relative bg-card rounded-[28px] border border-border shadow-xl p-7 space-y-5 h-full flex flex-col'>
 								<div className='flex items-center justify-between'>
-									<div className='flex items-center gap-2 text-sm font-semibold text-gray-800'>
+									<div className='flex items-center gap-2 text-sm font-semibold text-foreground'>
 										<Languages className='w-4 h-4' />
 										<span>{t("voice.voiceTrack")}</span>
 									</div>
-									<span className='text-xs text-gray-500'>
+									<span className='text-xs text-muted-foreground'>
 										{t("voice.autoSynced")}
 									</span>
 								</div>
@@ -1299,94 +1303,94 @@ const LandingPage = () => {
 									].map((v, idx) => (
 										<div
 											key={idx}
-											className='flex items-center justify-between rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3'
+											className='flex items-center justify-between rounded-2xl border border-border bg-muted px-4 py-3'
 										>
 											<div>
-												<p className='text-sm font-semibold text-gray-900'>
+												<p className='text-sm font-semibold text-foreground'>
 													{v.lang} . {v.voice}
 												</p>
-												<p className='text-xs text-gray-600'>
+												<p className='text-xs text-muted-foreground'>
 													{v.note}
 												</p>
 											</div>
-											<div className='flex items-center gap-2 text-xs text-gray-700'>
-												<span className='px-2 py-1 rounded-lg border border-gray-200 bg-white'>
+											<div className='flex items-center gap-2 text-xs text-foreground'>
+												<span className='px-2 py-1 rounded-lg border border-border bg-card'>
 													{t("voice.play")}
 												</span>
-												<span className='px-2 py-1 rounded-lg border border-gray-200 bg-white'>
+												<span className='px-2 py-1 rounded-lg border border-border bg-card'>
 													{t("voice.swap")}
 												</span>
 											</div>
 										</div>
 									))}
 								</div>
-								<div className='rounded-2xl bg-black text-white px-4 py-3 flex items-center justify-between'>
+								<div className='rounded-2xl bg-foreground text-background px-4 py-3 flex items-center justify-between'>
 									<div>
 										<p className='text-sm font-semibold'>
 											{t("voice.naturalPacing")}
 										</p>
-										<p className='text-xs text-gray-200'>
+										<p className='text-xs text-background/80'>
 											{t("voice.breathPauses")}
 										</p>
 									</div>
-									<span className='text-xs border border-white/30 px-2 py-1 rounded-lg'>
+									<span className='text-xs border border-background/30 px-2 py-1 rounded-lg'>
 										ON
 									</span>
 								</div>
 
 								<div className='grid sm:grid-cols-2 gap-3'>
-									<div className='rounded-xl border border-gray-200 bg-gray-50 px-4 py-3'>
-										<p className='text-xs font-semibold text-gray-700 mb-1'>
+									<div className='rounded-xl border border-border bg-muted px-4 py-3'>
+										<p className='text-xs font-semibold text-foreground mb-1'>
 											{t("voice.tonePreset")}
 										</p>
-										<div className='flex items-center gap-2 text-xs text-gray-600 flex-wrap'>
-											<span className='px-2 py-1 rounded-lg bg-white border border-gray-200'>
+										<div className='flex items-center gap-2 text-xs text-muted-foreground flex-wrap'>
+											<span className='px-2 py-1 rounded-lg bg-card border border-border'>
 												{t("voice.cinematic")}
 											</span>
-											<span className='px-2 py-1 rounded-lg bg-white border border-gray-200'>
+											<span className='px-2 py-1 rounded-lg bg-card border border-border'>
 												{t("voice.narration")}
 											</span>
-											<span className='px-2 py-1 rounded-lg bg-white border border-gray-200'>
+											<span className='px-2 py-1 rounded-lg bg-card border border-border'>
 												{t("voice.drama")}
 											</span>
 										</div>
 									</div>
-									<div className='rounded-xl border border-gray-200 bg-gray-50 px-4 py-3'>
-										<p className='text-xs font-semibold text-gray-700 mb-1'>
+									<div className='rounded-xl border border-border bg-muted px-4 py-3'>
+										<p className='text-xs font-semibold text-foreground mb-1'>
 											{t("voice.speedPitch")}
 										</p>
-										<div className='flex items-center justify-between text-xs text-gray-600'>
+										<div className='flex items-center justify-between text-xs text-muted-foreground'>
 											<span>
 												{t("voice.speed")} 0.95x
 											</span>
 											<span>{t("voice.pitch")} +1</span>
 										</div>
-										<div className='mt-2 h-2 bg-white rounded-full overflow-hidden border border-gray-200'>
-											<div className='h-full bg-gradient-to-r from-purple-400 via-blue-400 to-amber-300 w-2/3'></div>
+										<div className='mt-2 h-2 bg-card rounded-full overflow-hidden border border-border'>
+											<div className='h-full bg-gradient-to-r from-purple-400 via-blue-400 to-amber-300 dark:from-purple-500 dark:via-blue-500 dark:to-amber-400 w-2/3'></div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div className='space-y-6 h-full flex flex-col justify-center md:justify-start'>
-							<div className='inline-flex items-center gap-2 text-sm font-semibold text-gray-700'>
+							<div className='inline-flex items-center gap-2 text-sm font-semibold text-foreground'>
 								<Mic className='w-4 h-4' />
 								<span>{t("voice.label")}</span>
 							</div>
-							<h3 className='text-4xl font-bold text-gray-900 leading-tight'>
+							<h3 className='text-4xl font-bold text-foreground leading-tight'>
 								{t("voice.title")}
 							</h3>
-							<p className='text-base text-gray-600 leading-relaxed'>
+							<p className='text-base text-muted-foreground leading-relaxed'>
 								{t("voice.description")}
 							</p>
 							<Button
 								variant='default'
-								className='bg-black text-white hover:bg-gray-800 w-full sm:w-auto px-7 h-12 text-lg'
+								className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background w-full sm:w-auto px-7 h-12 text-lg'
 								onClick={() => navigate("/register")}
 							>
 								{t("voice.cta")}
 							</Button>
-							<ul className='space-y-3 text-gray-700'>
+							<ul className='space-y-3 text-foreground'>
 								{(Array.isArray(getNested?.("voice.features"))
 									? (getNested("voice.features") as string[])
 									: []
@@ -1395,7 +1399,7 @@ const LandingPage = () => {
 										key={idx}
 										className='flex items-start gap-3'
 									>
-										<div className='w-2.5 h-2.5 mt-2 bg-black rounded-full'></div>
+										<div className='w-2.5 h-2.5 mt-2 bg-foreground rounded-full'></div>
 										<span>{feature}</span>
 									</li>
 								))}
@@ -1410,17 +1414,17 @@ const LandingPage = () => {
 				>
 					<div className='max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-start md:items-center'>
 						<div className='space-y-6'>
-							<div className='inline-flex items-center gap-2 text-sm font-semibold text-gray-700'>
+							<div className='inline-flex items-center gap-2 text-sm font-semibold text-foreground'>
 								<View className='w-4 h-4' />
 								<span>{t("quality.label")}</span>
 							</div>
-							<h3 className='text-4xl font-bold text-gray-900 leading-tight'>
+							<h3 className='text-4xl font-bold text-foreground leading-tight'>
 								{t("quality.title")}
 							</h3>
-							<p className='text-base text-gray-600 leading-relaxed'>
+							<p className='text-base text-muted-foreground leading-relaxed'>
 								{t("quality.description")}
 							</p>
-							<ul className='space-y-3 text-gray-700'>
+							<ul className='space-y-3 text-foreground'>
 								{(Array.isArray(getNested?.("quality.features"))
 									? (getNested(
 											"quality.features"
@@ -1431,7 +1435,7 @@ const LandingPage = () => {
 										key={idx}
 										className='flex items-start gap-3'
 									>
-										<div className='w-2.5 h-2.5 mt-2 bg-black rounded-full'></div>
+										<div className='w-2.5 h-2.5 mt-2 bg-foreground rounded-full'></div>
 										<span>{feature}</span>
 									</li>
 								))}
@@ -1439,78 +1443,78 @@ const LandingPage = () => {
 						</div>
 
 						<div className='relative'>
-							<div className='absolute inset-0 bg-gradient-to-br from-gray-100 via-white to-gray-200 rounded-[32px] blur-2xl'></div>
-							<div className='relative bg-white rounded-[28px] border border-gray-200 shadow-xl p-6 space-y-4'>
+							<div className='absolute inset-0 bg-gradient-to-br from-muted via-background to-muted rounded-[32px] blur-2xl'></div>
+							<div className='relative bg-card rounded-[28px] border border-border shadow-xl p-6 space-y-4'>
 								<div className='flex items-center justify-between'>
-									<p className='text-sm font-semibold text-gray-800'>
+									<p className='text-sm font-semibold text-foreground'>
 										{t("quality.exportSettings")}
 									</p>
-									<span className='text-xs text-gray-500'>
+									<span className='text-xs text-muted-foreground'>
 										{t("quality.preset")}{" "}
 										{t("quality.trailer")}
 									</span>
 								</div>
 
 								<div className='grid sm:grid-cols-2 gap-3'>
-									<div className='rounded-xl border border-gray-200 bg-gray-50 px-4 py-3'>
-										<p className='text-xs uppercase text-gray-500'>
+									<div className='rounded-xl border border-border bg-muted px-4 py-3'>
+										<p className='text-xs uppercase text-muted-foreground'>
 											{t("quality.resolution")}
 										</p>
-										<p className='text-lg font-semibold text-gray-900'>
+										<p className='text-lg font-semibold text-foreground'>
 											4K UHD
 										</p>
-										<p className='text-xs text-gray-600'>
+										<p className='text-xs text-muted-foreground'>
 											3840 x 2160
 										</p>
 									</div>
-									<div className='rounded-xl border border-gray-200 bg-gray-50 px-4 py-3'>
-										<p className='text-xs uppercase text-gray-500'>
+									<div className='rounded-xl border border-border bg-muted px-4 py-3'>
+										<p className='text-xs uppercase text-muted-foreground'>
 											{t("quality.aspect")}
 										</p>
-										<p className='text-lg font-semibold text-gray-900'>
+										<p className='text-lg font-semibold text-foreground'>
 											16:9
 										</p>
-										<p className='text-xs text-gray-600'>
+										<p className='text-xs text-muted-foreground'>
 											{t("quality.cinematicSafe")}
 										</p>
 									</div>
 								</div>
 
 								<div className='grid sm:grid-cols-2 gap-3'>
-									<div className='rounded-xl border border-gray-200 bg-gray-50 px-4 py-3'>
-										<p className='text-xs uppercase text-gray-500'>
+									<div className='rounded-xl border border-border bg-muted px-4 py-3'>
+										<p className='text-xs uppercase text-muted-foreground'>
 											{t("quality.bitrate")}
 										</p>
-										<p className='text-lg font-semibold text-gray-900'>
+										<p className='text-lg font-semibold text-foreground'>
 											{t("quality.auto")}
 										</p>
-										<p className='text-xs text-gray-600'>
+										<p className='text-xs text-muted-foreground'>
 											{t("quality.keepsSource")}
 										</p>
 									</div>
-									<div className='rounded-xl border border-gray-200 bg-gray-50 px-4 py-3'>
-										<p className='text-xs uppercase text-gray-500'>
+									<div className='rounded-xl border border-border bg-muted px-4 py-3'>
+										<p className='text-xs uppercase text-muted-foreground'>
 											{t("quality.captions")}
 										</p>
-										<p className='text-lg font-semibold text-gray-900'>
+										<p className='text-lg font-semibold text-foreground'>
 											{t("quality.cleanMaster")}
 										</p>
-										<p className='text-xs text-gray-600'>
+										<p className='text-xs text-muted-foreground'>
 											{t("quality.burnInOff")}
 										</p>
 									</div>
 								</div>
 
-								<div className='flex items-center justify-between rounded-xl border border-gray-200 bg-gray-50 px-4 py-3'>
+								<div className='flex items-center justify-between rounded-xl border border-border bg-muted px-4 py-3'>
 									<div>
-										<p className='text-sm font-semibold text-gray-900'>
+										<p className='text-sm font-semibold text-foreground'>
 											{t("quality.altAspect")}
 										</p>
-										<p className='text-xs text-gray-600'>
+										<p className='text-xs text-muted-foreground'>
 											{t("quality.alsoRender")}
 										</p>
 									</div>
-									<span className='text-xs px-2 py-1 rounded-lg border border-gray-200 bg-white'>
+									<span className='text-xs px-2 py-1 rounded-lg border border-border bg-card'>
 										{t("quality.enabled")}
 									</span>
 								</div>
@@ -1531,7 +1535,7 @@ const LandingPage = () => {
 						{isAuthenticated ? (
 							<>
 								<h3
-									className={`text-5xl md:text-5xl font-bold text-gray-900 mb-3 transition-all duration-700 ease-out ${
+									className={`text-5xl md:text-5xl font-bold text-foreground mb-3 transition-all duration-700 ease-out ${
 										ctaAnimationStep >= 1
 											? "opacity-100 translate-y-0"
 											: "opacity-0 translate-y-8"
@@ -1540,7 +1544,7 @@ const LandingPage = () => {
 									{t("footer.cta.authenticatedTitle")}
 								</h3>
 								<p
-									className={`text-gray-600 mb-8 text-lg transition-all duration-700 ease-out ${
+									className={`text-muted-foreground mb-8 text-lg transition-all duration-700 ease-out ${
 										ctaAnimationStep >= 2
 											? "opacity-100 translate-y-0"
 											: "opacity-0 translate-y-8"
@@ -1558,7 +1562,7 @@ const LandingPage = () => {
 									<Button
 										variant='default'
 										size='lg'
-										className='bg-black text-white hover:bg-gray-800 px-8'
+										className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background px-8'
 										onClick={() => navigate("/home")}
 									>
 										{t("footer.cta.authenticatedButton")}
@@ -1568,7 +1572,7 @@ const LandingPage = () => {
 						) : (
 							<>
 								<h3
-									className={`text-5xl md:text-5xl font-bold text-gray-900 mb-3 transition-all duration-700 ease-out ${
+									className={`text-5xl md:text-5xl font-bold text-foreground mb-3 transition-all duration-700 ease-out ${
 										ctaAnimationStep >= 1
 											? "opacity-100 translate-y-0"
 											: "opacity-0 translate-y-8"
@@ -1577,7 +1581,7 @@ const LandingPage = () => {
 									{t("footer.cta.title")}
 								</h3>
 								<p
-									className={`text-gray-600 mb-8 text-lg transition-all duration-700 ease-out ${
+									className={`text-muted-foreground mb-8 text-lg transition-all duration-700 ease-out ${
 										ctaAnimationStep >= 2
 											? "opacity-100 translate-y-0"
 											: "opacity-0 translate-y-8"
@@ -1603,7 +1607,7 @@ const LandingPage = () => {
 									<Button
 										variant='default'
 										size='lg'
-										className='bg-black text-white hover:bg-gray-800 px-8'
+										className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background px-8'
 										onClick={() => navigate("/register")}
 									>
 										{t("footer.cta.signUp")}

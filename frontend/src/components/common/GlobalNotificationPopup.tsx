@@ -26,17 +26,17 @@ const icons = {
 };
 
 const typeStyles = {
-	error: "border-l-4 border-[#ff4d4f]",
-	success: "border-l-4 border-[#52c41a]",
-	warning: "border-l-4 border-[#faad14]",
-	info: "border-l-4 border-[#1890ff]",
+	error: "border-l-4 border-[#ff4d4f] dark:border-red-400",
+	success: "border-l-4 border-[#52c41a] dark:border-green-400",
+	warning: "border-l-4 border-[#faad14] dark:border-yellow-400",
+	info: "border-l-4 border-[#1890ff] dark:border-blue-400",
 };
 
 const iconColors = {
-	error: "text-[#ff4d4f]",
-	success: "text-[#52c41a]",
-	warning: "text-[#faad14]",
-	info: "text-[#1890ff]",
+	error: "text-[#ff4d4f] dark:text-red-400",
+	success: "text-[#52c41a] dark:text-green-400",
+	warning: "text-[#faad14] dark:text-yellow-400",
+	info: "text-[#1890ff] dark:text-blue-400",
 };
 
 function PopupNotification({
@@ -51,18 +51,18 @@ function PopupNotification({
 	return (
 		<div className='mr-0 mb-0 pointer-events-auto'>
 			<div
-				className={`relative w-full min-w-[300px] max-w-[400px] py-4 px-5 rounded-xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.12)] flex items-center gap-3 animate-slideInRight pointer-events-auto ${typeStyles[type]}`}
+				className={`relative w-full min-w-[300px] max-w-[400px] py-4 px-5 rounded-xl bg-card shadow-[0_4px_20px_rgba(0,0,0,0.12)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.3)] flex items-center gap-3 animate-slideInRight pointer-events-auto ${typeStyles[type]}`}
 			>
 				<div
 					className={`text-[22px] shrink-0 [&_svg]:block ${iconColors[type]}`}
 				>
 					{icons[type]}
 				</div>
-				<p className='m-0 flex-grow text-sm leading-[1.6] text-[#333] font-medium'>
+				<p className='m-0 flex-grow text-sm leading-[1.6] text-foreground font-medium'>
 					{message}
 				</p>
 				<button
-					className='bg-transparent shadow-none border-none cursor-pointer mr-2 text-[#999] leading-none transition-all duration-200 rounded-[32px] w-6 h-6 flex items-center justify-center p-0 hover:text-[#666]'
+					className='bg-transparent shadow-none border-none cursor-pointer mr-2 text-muted-foreground leading-none transition-all duration-200 rounded-[32px] w-6 h-6 flex items-center justify-center p-0 hover:text-foreground'
 					onClick={onClose}
 				>
 					<AiFillCloseCircle size={24} />

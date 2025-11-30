@@ -15,6 +15,8 @@ export interface IUser extends Document {
 	resetPasswordExpires?: Date;
 	refreshToken?: string;
 	refreshTokenExpires?: Date;
+	theme?: "light" | "dark";
+	language?: "en" | "vi";
 	createdAt: Date;
 	updatedAt: Date;
 	comparePassword(candidatePassword: string): Promise<boolean>;
@@ -85,6 +87,16 @@ const UserSchema: Schema = new Schema(
 		},
 		refreshTokenExpires: {
 			type: Date,
+		},
+		theme: {
+			type: String,
+			enum: ["light", "dark"],
+			default: "light",
+		},
+		language: {
+			type: String,
+			enum: ["en", "vi"],
+			default: "en",
 		},
 	},
 	{

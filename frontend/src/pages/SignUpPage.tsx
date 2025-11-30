@@ -13,7 +13,7 @@ import {
 	getPasswordRules,
 	getPasswordStrengthColor,
 	validateRegister,
-} from "@/utils/utils";
+} from "@/utils";
 import type {RegisterData} from "@/types/AuthTypes";
 
 type SignUpPhase = "register" | "verification";
@@ -55,8 +55,8 @@ const SignUpPage: React.FC = () => {
 						key={idx}
 						className={`flex items-center gap-1 text-sm ${
 							rule.test
-								? "text-green-600 font-semibold"
-								: "text-red-500"
+								? "text-green-600 dark:text-green-400 font-semibold"
+								: "text-red-500 dark:text-red-400"
 						}`}
 					>
 						{rule.test ? (
@@ -170,10 +170,10 @@ const SignUpPage: React.FC = () => {
 	};
 
 	return (
-		<div className='relative flex flex-col justify-center items-center min-h-screen bg-gray-50 px-4 py-8'>
+		<div className='relative flex flex-col justify-center items-center min-h-screen bg-background px-4 py-8'>
 			<Button
 				size='sm'
-				className='absolute top-8 left-8 z-20 text-gray-400 hover:text-gray-600 hover:opacity-100 bg-transparent border-none shadow-none transition-colors duration-200'
+				className='absolute top-8 left-8 z-20 text-muted-foreground hover:text-foreground hover:opacity-100 bg-transparent border-none shadow-none transition-colors duration-200'
 				onClick={() => navigate("/")}
 				variant='text'
 			>
@@ -182,10 +182,10 @@ const SignUpPage: React.FC = () => {
 			</Button>
 
 			<div className='w-full max-w-md rounded-2xl p-8'>
-				<h1 className='text-3xl font-bold text-center mb-2 text-gray-900'>
+				<h1 className='text-3xl font-bold text-center mb-2 text-foreground'>
 					{phase === "register" ? title : verificationTitle}
 				</h1>
-				<p className='text-center text-gray-600 mb-8'>
+				<p className='text-center text-muted-foreground mb-8'>
 					{phase === "register" ? subtitle : verificationSubtitle}
 				</p>
 
@@ -301,7 +301,7 @@ const SignUpPage: React.FC = () => {
 							type='submit'
 							loading={isLoading}
 							disabled={score < 3}
-							className='w-full bg-black text-white hover:bg-gray-800'
+							className='w-full bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background'
 							size='lg'
 						>
 							{submit}
@@ -327,7 +327,7 @@ const SignUpPage: React.FC = () => {
 						<Button
 							type='submit'
 							loading={isLoading}
-							className='w-full bg-black text-white hover:bg-gray-800'
+							className='w-full bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background'
 							size='lg'
 						>
 							{verifySubmit}
@@ -346,11 +346,11 @@ const SignUpPage: React.FC = () => {
 
 				{phase === "register" && (
 					<div className='mt-6 text-center'>
-						<p className='text-sm text-gray-600'>
+						<p className='text-sm text-muted-foreground'>
 							{hasAccount}{" "}
 							<Link
 								to='/login'
-								className='text-blue-600 hover:text-blue-800 font-semibold hover:underline'
+								className='text-primary hover:text-primary/80 font-semibold hover:underline'
 							>
 								{signIn}
 							</Link>
