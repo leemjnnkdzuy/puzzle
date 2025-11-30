@@ -48,21 +48,21 @@ const TermsOfServicePage = () => {
 	};
 
 	return (
-		<div className='min-h-screen bg-white pt-24 pb-16'>
+		<div className='min-h-screen bg-background pt-24 pb-16 transition-colors duration-300'>
 			<div className='max-w-4xl mx-auto px-6 py-8'>
 				<div className='mb-8 flex items-start justify-between'>
 					<div>
-						<h1 className='text-4xl md:text-5xl font-bold text-gray-900 mb-4'>
+						<h1 className='text-4xl md:text-5xl font-bold text-foreground mb-4'>
 							{document.title}
 						</h1>
-						<p className='text-gray-600 text-sm'>
+						<p className='text-muted-foreground text-sm'>
 							{document.lastUpdated}{" "}
 							{formatDate(new Date("2025-11-28"))}
 						</p>
 					</div>
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<button className='flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors bg-transparent border border-gray-200 rounded-lg px-3 py-2 hover:bg-gray-50'>
+							<button className='flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors bg-transparent border border-border rounded-lg px-3 py-2 hover:bg-accent'>
 								<Globe className='w-4 h-4' />
 								<span>
 									{language === "en"
@@ -86,7 +86,7 @@ const TermsOfServicePage = () => {
 						</DropdownMenuTrigger>
 						<DropdownMenuContent
 							align='end'
-							className='bg-white border border-gray-200 min-w-[120px]'
+							className='bg-card border border-border min-w-[120px]'
 						>
 							<DropdownMenuItem
 								onSelect={() => setLanguage("en")}
@@ -103,7 +103,7 @@ const TermsOfServicePage = () => {
 				</div>
 
 				<div className='prose prose-lg max-w-none'>
-					<div className='mb-8 text-gray-700 leading-relaxed'>
+					<div className='mb-8 text-foreground leading-relaxed'>
 						<p
 							className='mb-4'
 							dangerouslySetInnerHTML={{
@@ -125,12 +125,12 @@ const TermsOfServicePage = () => {
 					</div>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["1"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["1"]["1.1"].title}
 								</h3>
 								<p
@@ -141,7 +141,7 @@ const TermsOfServicePage = () => {
 								/>
 							</div>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["1"]["1.2"].title}
 								</h3>
 								<p
@@ -152,7 +152,7 @@ const TermsOfServicePage = () => {
 								/>
 							</div>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["1"]["1.3"].title}
 								</h3>
 								<p
@@ -163,7 +163,7 @@ const TermsOfServicePage = () => {
 								/>
 							</div>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["1"]["1.4"].title}
 								</h3>
 								<p
@@ -174,7 +174,7 @@ const TermsOfServicePage = () => {
 								/>
 							</div>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["1"]["1.5"].title}
 								</h3>
 								<p
@@ -185,7 +185,7 @@ const TermsOfServicePage = () => {
 								/>
 							</div>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["1"]["1.6"].title}
 								</h3>
 								<p
@@ -199,12 +199,12 @@ const TermsOfServicePage = () => {
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["2"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["2"]["2.1"].title}
 								</h3>
 								<p className='mb-2'>
@@ -224,7 +224,7 @@ const TermsOfServicePage = () => {
 								</ul>
 							</div>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["2"]["2.2"].title}
 								</h3>
 								<p
@@ -238,12 +238,12 @@ const TermsOfServicePage = () => {
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["3"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["3"]["3.1"].title}
 								</h3>
 								<p
@@ -254,7 +254,7 @@ const TermsOfServicePage = () => {
 								/>
 							</div>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["3"]["3.2"].title}
 								</h3>
 								<p
@@ -268,37 +268,37 @@ const TermsOfServicePage = () => {
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["4"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["4"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["5"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["5"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["6"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["6"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["7"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							<p
 								dangerouslySetInnerHTML={{
 									__html: document.sections["7"].content,
@@ -308,10 +308,10 @@ const TermsOfServicePage = () => {
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["8"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							<p
 								dangerouslySetInnerHTML={{
 									__html: document.sections["8"].content,
@@ -321,12 +321,12 @@ const TermsOfServicePage = () => {
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["9"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["9"]["9.1"].title}
 								</h3>
 								<p
@@ -337,7 +337,7 @@ const TermsOfServicePage = () => {
 								/>
 							</div>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["9"]["9.2"].title}
 								</h3>
 								<p
@@ -348,7 +348,7 @@ const TermsOfServicePage = () => {
 								/>
 							</div>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["9"]["9.3"].title}
 								</h3>
 								<p
@@ -362,12 +362,12 @@ const TermsOfServicePage = () => {
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["10"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["10"]["10.1"].title}
 								</h3>
 								<p
@@ -378,7 +378,7 @@ const TermsOfServicePage = () => {
 								/>
 							</div>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["10"]["10.2"].title}
 								</h3>
 								<p
@@ -389,7 +389,7 @@ const TermsOfServicePage = () => {
 								/>
 							</div>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["10"]["10.3"].title}
 								</h3>
 								<p
@@ -400,7 +400,7 @@ const TermsOfServicePage = () => {
 								/>
 							</div>
 							<div>
-								<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+								<h3 className='text-lg font-semibold text-foreground mb-2'>
 									{document.sections["10"]["10.4"].title}
 								</h3>
 								<p
@@ -414,29 +414,29 @@ const TermsOfServicePage = () => {
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections.exhibitA.title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections.exhibitA.content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections.exhibitB.title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections.exhibitB.content)}
 						</div>
 					</section>
 
-					<div className='mt-12 pt-8 border-t border-gray-200'>
-						<p className='text-gray-600 text-sm'>
+					<div className='mt-12 pt-8 border-t border-border'>
+						<p className='text-muted-foreground text-sm'>
 							{document.contact.text}{" "}
 							<a
 								href={`mailto:${document.contact.email}`}
-								className='text-blue-600 hover:text-blue-800 underline'
+								className='text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline'
 							>
 								{document.contact.email}
 							</a>

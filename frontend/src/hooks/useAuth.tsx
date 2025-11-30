@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import {useAuthStore} from "@/stores/authStore";
-import type {LoginResponse} from "@/types/AuthTypes";
+import type {LoginResponse} from "@/services/AuthService";
 
 interface UseAuthReturn {
 	login: (username: string, password: string) => Promise<LoginResponse>;

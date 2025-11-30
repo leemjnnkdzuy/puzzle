@@ -33,12 +33,35 @@ const dropdownMenuItemVariants = cva(
 	}
 );
 
-import type {
-	DropdownMenuSubTriggerProps,
-	DropdownMenuItemProps,
-	DropdownMenuCheckboxItemProps,
-	DropdownMenuRadioItemProps,
-} from "@/types/DropdownMenuPropsType";
+export type DropdownMenuItemVariant = "default" | "destructive";
+
+export interface DropdownMenuSubTriggerProps
+	extends React.ComponentPropsWithoutRef<
+		typeof DropdownMenuPrimitive.SubTrigger
+	> {
+	variant?: DropdownMenuItemVariant;
+	inset?: boolean;
+}
+
+export interface DropdownMenuItemProps
+	extends React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> {
+	variant?: DropdownMenuItemVariant;
+	inset?: boolean;
+}
+
+export interface DropdownMenuCheckboxItemProps
+	extends React.ComponentPropsWithoutRef<
+		typeof DropdownMenuPrimitive.CheckboxItem
+	> {
+	variant?: DropdownMenuItemVariant;
+}
+
+export interface DropdownMenuRadioItemProps
+	extends React.ComponentPropsWithoutRef<
+		typeof DropdownMenuPrimitive.RadioItem
+	> {
+	variant?: DropdownMenuItemVariant;
+}
 
 const DropdownMenuSubTrigger = React.forwardRef<
 	React.ElementRef<typeof DropdownMenuPrimitive.SubTrigger>,

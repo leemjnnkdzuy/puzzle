@@ -1,5 +1,5 @@
 import {useCallback} from "react";
-import type {SocialLoginProvider} from "@/types/AuthTypes";
+import type {SocialLoginProvider} from "@/services/AuthService";
 
 interface UseSocialLoginReturn {
 	handleSocialLogin: (provider: SocialLoginProvider) => void;

@@ -2,7 +2,15 @@ import React, {useState} from "react";
 import {Eye, EyeOff, X} from "lucide-react";
 import {cn} from "@/utils";
 import Button from "./Button";
-import type {InputProps} from "@/types/InputPropsType";
+
+export interface InputProps
+	extends React.InputHTMLAttributes<HTMLInputElement> {
+	containerClassName?: string;
+	showPassword?: boolean;
+	onShowPasswordChange?: (show: boolean) => void;
+	showClearIcon?: boolean;
+	onClear?: () => void;
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
 	(

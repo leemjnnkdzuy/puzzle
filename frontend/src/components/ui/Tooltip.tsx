@@ -1,6 +1,18 @@
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
-import type {TooltipProps} from "@/types/TooltipPropsType";
+import type React from "react";
 import {cn} from "@/utils";
+
+export interface TooltipProps {
+	content: React.ReactNode;
+	children: React.ReactElement;
+	placement?: "top" | "bottom" | "left" | "right";
+	theme?: "light" | "dark";
+	arrow?: boolean;
+	plain?: boolean;
+	className?: string;
+	delay?: number | [number, number];
+	offset?: [number, number];
+}
 
 const themeClasses: Record<string, string> = {
 	light: "bg-white text-gray-900 shadow-lg border border-gray-300 backdrop-blur-sm",

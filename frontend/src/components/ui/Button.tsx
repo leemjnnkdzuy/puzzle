@@ -3,7 +3,22 @@ import {Slot} from "@radix-ui/react-slot";
 import {cva} from "class-variance-authority";
 import {cn} from "@/utils";
 import Loading from "@/components/ui/Loading";
-import type {ButtonProps} from "@/types/ButtonPropsType";
+
+export interface ButtonProps
+	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+	variant?:
+		| "default"
+		| "primary"
+		| "primary-gradient"
+		| "destructive"
+		| "outline"
+		| "secondary"
+		| "text"
+		| "link";
+	size?: "default" | "sm" | "lg" | "icon";
+	asChild?: boolean;
+	loading?: boolean;
+}
 
 const buttonVariants = cva(
 	"inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",

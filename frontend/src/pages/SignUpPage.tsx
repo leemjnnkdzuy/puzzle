@@ -14,7 +14,7 @@ import {
 	getPasswordStrengthColor,
 	validateRegister,
 } from "@/utils";
-import type {RegisterData} from "@/types/AuthTypes";
+import type {RegisterData} from "@/services/AuthService";
 
 type SignUpPhase = "register" | "verification";
 

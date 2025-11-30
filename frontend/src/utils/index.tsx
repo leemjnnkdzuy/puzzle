@@ -1,7 +1,7 @@
 import {clsx} from "clsx";
 import type {ClassValue} from "clsx";
 import {twMerge} from "tailwind-merge";
-import type {RegisterData} from "@/types/AuthTypes";
+import type {RegisterData} from "@/services/AuthService";
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));

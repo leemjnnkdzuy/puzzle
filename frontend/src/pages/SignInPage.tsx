@@ -7,7 +7,7 @@ import {useAuth} from "@/hooks/useAuth";
 import {useGlobalNotificationPopup} from "@/hooks/useGlobalNotificationPopup";
 import {useSocialLogin} from "@/hooks/useSocialLogin";
 import {useLanguage} from "@/hooks/useLanguage";
-import type {LoginData} from "@/types/AuthTypes";
+import type {LoginData} from "@/services/AuthService";
 
 const SignInPage: React.FC = () => {
 	const navigate = useNavigate();

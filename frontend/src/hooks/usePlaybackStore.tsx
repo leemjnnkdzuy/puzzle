@@ -1,6 +1,26 @@
 import {create} from "zustand";
 import {DEFAULT_FPS} from "@/configs/AppConfig";
-import type {PlaybackState} from "@/types/PlaybackStateType";
+
+export interface PlaybackState {
+	isPlaying: boolean;
+	currentTime: number;
+	duration: number;
+	volume: number;
+	muted: boolean;
+	previousVolume: number;
+	speed: number;
+	play: () => void;
+	pause: () => void;
+	toggle: () => void;
+	seek: (time: number) => void;
+	setVolume: (volume: number) => void;
+	setSpeed: (speed: number) => void;
+	setDuration: (duration: number) => void;
+	setCurrentTime: (time: number) => void;
+	mute: () => void;
+	unmute: () => void;
+	toggleMute: () => void;
+}
 
 let playBackTimer: number | null = null;
 

@@ -1,8 +1,12 @@
 import {createBrowserRouter} from "react-router-dom";
 import type {RouteObject} from "react-router-dom";
+import React from "react";
 
-// Types
-import type {RouteTypes} from "@/types/RouteTypes";
+export interface RouteTypes {
+	path: string;
+	component: React.ComponentType;
+	layout: React.ComponentType<{children: React.ReactNode}>;
+}
 
 // layouts
 import NotThingLayout from "@/components/layout/NotThingLayout";

@@ -60,13 +60,13 @@ const PrivacyPolicyPage = () => {
 	const renderTable = (table: {headers: string[]; rows: string[][]}) => {
 		return (
 			<div className='overflow-x-auto mb-6'>
-				<table className='min-w-full border border-gray-300'>
+				<table className='min-w-full border border-border'>
 					<thead>
-						<tr className='bg-gray-50'>
+						<tr className='bg-muted'>
 							{table.headers.map((header, idx) => (
 								<th
 									key={idx}
-									className='border border-gray-300 px-4 py-2 text-left text-sm font-semibold text-gray-900'
+									className='border border-border px-4 py-2 text-left text-sm font-semibold text-foreground'
 									dangerouslySetInnerHTML={{__html: header}}
 								/>
 							))}
@@ -74,11 +74,11 @@ const PrivacyPolicyPage = () => {
 					</thead>
 					<tbody>
 						{table.rows.map((row, rowIdx) => (
-							<tr key={rowIdx} className='bg-white'>
+							<tr key={rowIdx} className='bg-card'>
 								{row.map((cell, cellIdx) => (
 									<td
 										key={cellIdx}
-										className='border border-gray-300 px-4 py-2 text-sm text-gray-700'
+										className='border border-border px-4 py-2 text-sm text-foreground'
 										dangerouslySetInnerHTML={{__html: cell}}
 									/>
 								))}
@@ -91,21 +91,21 @@ const PrivacyPolicyPage = () => {
 	};
 
 	return (
-		<div className='min-h-screen bg-white pt-24 pb-16'>
+		<div className='min-h-screen bg-background pt-24 pb-16 transition-colors duration-300'>
 			<div className='max-w-4xl mx-auto px-6 py-8'>
 				<div className='mb-8 flex items-start justify-between'>
 					<div>
-						<h1 className='text-4xl md:text-5xl font-bold text-gray-900 mb-4'>
+						<h1 className='text-4xl md:text-5xl font-bold text-foreground mb-4'>
 							{document.title}
 						</h1>
-						<p className='text-gray-600 text-sm'>
+						<p className='text-muted-foreground text-sm'>
 							{document.lastUpdated}{" "}
 							{formatDate(new Date("2024-03-04"))}
 						</p>
 					</div>
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
-							<button className='flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors bg-transparent border border-gray-200 rounded-lg px-3 py-2 hover:bg-gray-50'>
+							<button className='flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors bg-transparent border border-border rounded-lg px-3 py-2 hover:bg-accent'>
 								<Globe className='w-4 h-4' />
 								<span>
 									{language === "en"
@@ -129,7 +129,7 @@ const PrivacyPolicyPage = () => {
 						</DropdownMenuTrigger>
 						<DropdownMenuContent
 							align='end'
-							className='bg-white border border-gray-200 min-w-[120px]'
+							className='bg-card border border-border min-w-[120px]'
 						>
 							<DropdownMenuItem
 								onSelect={() => setLanguage("en")}
@@ -146,24 +146,24 @@ const PrivacyPolicyPage = () => {
 				</div>
 
 				<div className='prose prose-lg max-w-none'>
-					<div className='mb-8 text-gray-700 leading-relaxed'>
+					<div className='mb-8 text-foreground leading-relaxed'>
 						{renderContent(document.intro)}
 					</div>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["1"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["1"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["2"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{document.sections["2"].table &&
 								renderTable(document.sections["2"].table)}
 							{renderContent(document.sections["2"].content)}
@@ -171,10 +171,10 @@ const PrivacyPolicyPage = () => {
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["3"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["3"].content)}
 							{document.sections["3"].subsections &&
 								Object.keys(
@@ -192,7 +192,7 @@ const PrivacyPolicyPage = () => {
 									)[key];
 									return (
 										<div key={key} className='mt-4'>
-											<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+											<h3 className='text-lg font-semibold text-foreground mb-2'>
 												{subsection.title}
 											</h3>
 											{renderContent(subsection.content)}
@@ -203,19 +203,19 @@ const PrivacyPolicyPage = () => {
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["4"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["4"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["5"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{document.sections["5"].items &&
 								renderList(document.sections["5"].items)}
 							{renderContent(document.sections["5"].content)}
@@ -223,100 +223,100 @@ const PrivacyPolicyPage = () => {
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["6"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["6"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["7"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["7"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["8"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["8"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["9"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["9"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["10"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["10"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["11"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["11"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["12"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["12"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["13"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["13"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["14"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["14"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["15"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["15"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["16"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["16"].content)}
 							{document.sections["16"].items &&
 								renderList(document.sections["16"].items)}
@@ -324,19 +324,19 @@ const PrivacyPolicyPage = () => {
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["17"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["17"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["18"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["18"].content)}
 							{document.sections["18"].items && (
 								<ul className='list-disc list-inside space-y-2 ml-4 mb-4'>
@@ -344,7 +344,7 @@ const PrivacyPolicyPage = () => {
 										(item, idx) => (
 											<li
 												key={idx}
-												className='text-gray-700'
+												className='text-foreground'
 											>
 												{item.label && (
 													<strong>
@@ -367,28 +367,28 @@ const PrivacyPolicyPage = () => {
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["19"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["19"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["20"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["20"].content)}
 						</div>
 					</section>
 
 					<section className='mb-10'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.sections["21"].title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.sections["21"].content)}
 							{document.sections["21"].subsections &&
 								Object.keys(
@@ -403,10 +403,10 @@ const PrivacyPolicyPage = () => {
 									)[key];
 									return (
 										<div key={key} className='mt-4'>
-											<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+											<h3 className='text-lg font-semibold text-foreground mb-2'>
 												{subsection.title}
 											</h3>
-											<div className='text-gray-700 whitespace-pre-line'>
+											<div className='text-foreground whitespace-pre-line'>
 												{subsection.content}
 											</div>
 										</div>
@@ -415,11 +415,11 @@ const PrivacyPolicyPage = () => {
 						</div>
 					</section>
 
-					<div className='mt-12 pt-8 border-t border-gray-200'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-4'>
+					<div className='mt-12 pt-8 border-t border-border'>
+						<h2 className='text-2xl font-bold text-foreground mb-4'>
 							{document.contact.title}
 						</h2>
-						<div className='space-y-4 text-gray-700 leading-relaxed'>
+						<div className='space-y-4 text-foreground leading-relaxed'>
 							{renderContent(document.contact.content)}
 							{document.contact.addresses &&
 								Object.keys(document.contact.addresses).length >
@@ -435,10 +435,10 @@ const PrivacyPolicyPage = () => {
 										)[key];
 										return (
 											<div key={key} className='mt-4'>
-												<h3 className='text-lg font-semibold text-gray-900 mb-2'>
+												<h3 className='text-lg font-semibold text-foreground mb-2'>
 													{address.title}
 												</h3>
-												<div className='text-gray-700 whitespace-pre-line'>
+												<div className='text-foreground whitespace-pre-line'>
 													{address.content}
 												</div>
 											</div>

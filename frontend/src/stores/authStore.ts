@@ -4,7 +4,7 @@ import axios from "axios";
 import {DEFAULT_API_URL} from "@/configs/AppConfig";
 import authService from "@/services/AuthService";
 import {safeExecute} from "@/handlers/errorHandler";
-import type {LoginResponse} from "@/types/AuthTypes";
+import type {LoginResponse} from "@/services/AuthService";
 
 interface AuthState {
 	user: unknown | null;

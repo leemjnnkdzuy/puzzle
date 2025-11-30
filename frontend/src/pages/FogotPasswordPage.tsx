@@ -6,7 +6,10 @@ import Input from "@/components/ui/Input";
 import authService from "@/services/AuthService";
 import {useGlobalNotificationPopup} from "@/hooks/useGlobalNotificationPopup";
 import {useLanguage} from "@/hooks/useLanguage";
-import type {ForgotPasswordData, ResetPasswordData} from "@/types/AuthTypes";
+import type {
+	ForgotPasswordData,
+	ResetPasswordData,
+} from "@/services/AuthService";
 
 type ForgotPasswordPhase = "forgotPassword" | "verification" | "resetPassword";
 

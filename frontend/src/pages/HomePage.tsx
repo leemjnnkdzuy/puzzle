@@ -10,7 +10,7 @@ import type {
 	RegisterData,
 	LoginData,
 	ForgotPasswordData,
-} from "@/types/AuthTypes";
+} from "@/services/AuthService";
 
 const HomePage: React.FC = () => {
 	const navigate = useNavigate();
@@ -23,7 +23,6 @@ const HomePage: React.FC = () => {
 	>(null);
 	const [isLoading, setIsLoading] = useState(false);
 
-	// Register form
 	const [registerData, setRegisterData] = useState<RegisterData>({
 		first_name: "",
 		last_name: "",
@@ -33,13 +32,11 @@ const HomePage: React.FC = () => {
 		confirmPassword: "",
 	});
 
-	// Login form
 	const [loginData, setLoginData] = useState<LoginData>({
 		username: "",
 		password: "",
 	});
 
-	// Forgot password form
 	const [forgotPasswordData, setForgotPasswordData] =
 		useState<ForgotPasswordData>({
 			email: "",

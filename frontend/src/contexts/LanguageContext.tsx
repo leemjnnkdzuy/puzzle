@@ -1,9 +1,16 @@
 import React, {useState, useEffect, useCallback, useRef} from "react";
 import type {ReactNode} from "react";
 import {createContext} from "react";
-import type {LanguageContextType} from "@/types/LanguageContextType";
-import type {Language} from "@/types/LanguageContextType";
 import {DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES} from "@/configs/AppConfig";
+
+export type Language = (typeof SUPPORTED_LANGUAGES)[number];
+
+export interface LanguageContextType {
+	language: Language;
+	setLanguage: (lang: Language) => void;
+	t: (key: string) => string;
+	getNested?: (key: string) => unknown;
+}
 import enTranslations from "@/lang/Global/en.json";
 import viTranslations from "@/lang/Global/vi.json";
 import userService from "@/services/UserService";
