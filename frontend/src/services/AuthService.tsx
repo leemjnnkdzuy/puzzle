@@ -1,5 +1,4 @@
 import apiClient from "@/utils/axiosInstance";
-import type {AxiosInstance, AxiosError} from "axios";
 
 export type AuthPhase =
 	| "login"
