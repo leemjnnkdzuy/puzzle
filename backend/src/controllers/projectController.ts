@@ -184,16 +184,15 @@ export const createProject = async (
 			updatedAt: specificProject.updatedAt,
 		};
 
-		// Create notification for project creation
 		try {
 			await createProjectNotification(
 				userId.toString(),
 				specificProject.title,
 				"created",
-				specificProjectId.toString()
+				specificProjectId.toString(),
+				type
 			);
 		} catch (notificationError) {
-			// Don't fail the request if notification creation fails
 			console.error("Failed to create notification:", notificationError);
 		}
 
@@ -242,7 +241,6 @@ export const createProject = async (
 					return;
 				}
 			} catch (retryError) {
-				// If retry also fails, continue to error handling
 			}
 		}
 

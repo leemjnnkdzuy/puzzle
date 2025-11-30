@@ -7,7 +7,8 @@ export const createProjectNotification = async (
 	userId: string,
 	projectTitle: string,
 	type: "created" | "updated" | "completed" | "failed",
-	projectId?: string
+	projectId?: string,
+	projectType?: "script_generation" | "script_voice" | "full_service"
 ) => {
 	const typeMap = {
 		created: {
@@ -33,9 +34,19 @@ export const createProjectNotification = async (
 	};
 
 	const notificationData = typeMap[type];
-	const link = projectId
-		? `/projects/${projectId}`
-		: undefined;
+
+	let link: string | undefined;
+	if (projectId && projectType) {
+		const routeMap = {
+			script_generation: "script-generation",
+			script_voice: "script-voice",
+			full_service: "full-service",
+		};
+		const routePrefix = routeMap[projectType];
+		if (routePrefix) {
+			link = `/${routePrefix}/${projectId}`;
+		}
+	}
 
 	await createNotification(
 		userId,
@@ -46,6 +57,7 @@ export const createProjectNotification = async (
 		{
 			projectId,
 			projectTitle,
+			projectType,
 			eventType: type,
 		}
 	);
@@ -61,4 +73,3 @@ export const createSystemNotification = async (
 ) => {
 	await createNotification(userId, title, message, type, link, metadata);
 };
-

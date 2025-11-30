@@ -28,6 +28,7 @@ import TermsOfServicePage from "@/pages/TermsOfServicePage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import AboutPage from "@/pages/AboutPage";
 import ProjectPageWrapper from "@/pages/ProjectPageWrapper";
+import ProfilePage from "@/pages/ProfilePage";
 
 const publicRoutes: RouteTypes[] = [
 	{
@@ -94,6 +95,16 @@ const privateRoutes: RouteTypes[] = [
 	{
 		path: "/home",
 		component: HomePage,
+		layout: SidebarLayout,
+	},
+	{
+		path: "/profile",
+		component: ProfilePage,
+		layout: SidebarLayout,
+	},
+	{
+		path: "/profile/:identifier",
+		component: ProfilePage,
 		layout: SidebarLayout,
 	},
 	{

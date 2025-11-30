@@ -8,6 +8,7 @@ export interface IUser extends Document {
 	first_name: string;
 	last_name: string;
 	avatar?: string;
+	bio?: string;
 	isEmailVerified: boolean;
 	verificationCode?: string;
 	verificationCodeExpires?: Date;
@@ -19,6 +20,18 @@ export interface IUser extends Document {
 	language?: "en" | "vi";
 	credit?: number;
 	project?: mongoose.Types.ObjectId;
+	notifications?: mongoose.Types.ObjectId[];
+	socialLinks?: Array<{
+		platform:
+			| "website"
+			| "facebook"
+			| "tiktok"
+			| "github"
+			| "instagram"
+			| "linkedin"
+			| "youtube";
+		url: string;
+	}>;
 	createdAt: Date;
 	updatedAt: Date;
 	comparePassword(candidatePassword: string): Promise<boolean>;
@@ -67,6 +80,11 @@ const UserSchema: Schema = new Schema(
 		avatar: {
 			type: String,
 		},
+		bio: {
+			type: String,
+			trim: true,
+			maxlength: [500, "Bio must not exceed 500 characters"],
+		},
 		isEmailVerified: {
 			type: Boolean,
 			default: false,
@@ -112,6 +130,32 @@ const UserSchema: Schema = new Schema(
 		notifications: {
 			type: [Schema.Types.ObjectId],
 			ref: "Notification",
+			default: [],
+		},
+		socialLinks: {
+			type: [
+				{
+					platform: {
+						type: String,
+						required: true,
+						trim: true,
+						enum: [
+							"website",
+							"facebook",
+							"tiktok",
+							"github",
+							"instagram",
+							"linkedin",
+							"youtube",
+						],
+					},
+					url: {
+						type: String,
+						required: true,
+						trim: true,
+					},
+				},
+			],
 			default: [],
 		},
 	},

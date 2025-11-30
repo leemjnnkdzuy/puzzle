@@ -1,6 +1,15 @@
 import apiConfig from "@/configs/AppConfig";
 import apiClient from "@/utils/axiosInstance";
 import type {AxiosError} from "axios";
+import ScriptGenerationService, {
+	type ScriptGenerationProject,
+} from "./ScriptGenerationService";
+import ScriptVoiceService, {
+	type ScriptVoiceProject,
+} from "./ScriptVoiceService";
+import FullServiceService, {
+	type FullServiceProject,
+} from "./FullServiceService";
 
 export interface Project {
 	id: string;
@@ -20,31 +29,73 @@ export interface CreateProjectData {
 	type: "script_generation" | "script_voice" | "full_service";
 }
 
-class ProjectService {
-	private baseUrl = `${apiConfig.apiBaseUrl}/projects`;
+// Helper function to transform specific project types to unified Project format
+const transformToProject = (
+	project: ScriptGenerationProject | ScriptVoiceProject | FullServiceProject,
+	type: "script_generation" | "script_voice" | "full_service"
+): Project => {
+	return {
+		id: project._id,
+		projectId: project._id,
+		title: project.title,
+		description: project.description,
+		thumbnail: project.thumbnail,
+		type,
+		status: project.status,
+		createdAt: project.createdAt,
+		updatedAt: project.updatedAt,
+	};
+};
 
+class ProjectService {
 	async getProjects(
 		type?: "all" | "script_generation" | "script_voice" | "full_service"
 	): Promise<Project[]> {
 		try {
-			const url =
-				type && type !== "all"
-					? `${this.baseUrl}?type=${type}`
-					: this.baseUrl;
+			const projectPromises: Promise<Project[]>[] = [];
 
-			const response = await apiClient.get<{
-				success: boolean;
-				data: Project[];
-				message?: string;
-			}>(url);
+			if (!type || type === "all" || type === "script_generation") {
+				projectPromises.push(
+					ScriptGenerationService.getProjects().then((projects) =>
+						projects.map((p) =>
+							transformToProject(p, "script_generation")
+						)
+					)
+				);
+			}
 
-			return response.data.data || [];
+			if (!type || type === "all" || type === "script_voice") {
+				projectPromises.push(
+					ScriptVoiceService.getProjects().then((projects) =>
+						projects.map((p) =>
+							transformToProject(p, "script_voice")
+						)
+					)
+				);
+			}
+
+			if (!type || type === "all" || type === "full_service") {
+				projectPromises.push(
+					FullServiceService.getProjects().then((projects) =>
+						projects.map((p) =>
+							transformToProject(p, "full_service")
+						)
+					)
+				);
+			}
+
+			const results = await Promise.all(projectPromises);
+			return results.flat().sort((a, b) => {
+				return (
+					new Date(b.createdAt).getTime() -
+					new Date(a.createdAt).getTime()
+				);
+			});
 		} catch (error) {
-			const axiosError = error as AxiosError<{message?: string}>;
 			const errorMessage =
-				axiosError.response?.data?.message ||
-				axiosError.message ||
-				"Failed to fetch projects";
+				error instanceof Error
+					? error.message
+					: "Failed to fetch projects";
 			throw new Error(errorMessage);
 		}
 	}
@@ -55,7 +106,7 @@ class ProjectService {
 				success: boolean;
 				data: Project;
 				message?: string;
-			}>(this.baseUrl, projectData);
+			}>(`${apiConfig.apiBaseUrl}/projects`, projectData);
 
 			return response.data.data;
 		} catch (error) {
@@ -68,59 +119,117 @@ class ProjectService {
 		}
 	}
 
-	async getProjectById(id: string): Promise<Project> {
+	async getProjectById(
+		id: string,
+		type: "script_generation" | "script_voice" | "full_service"
+	): Promise<Project> {
 		try {
-			const response = await apiClient.get<{
-				success: boolean;
-				data: Project;
-				message?: string;
-			}>(`${this.baseUrl}/${id}`);
+			let project:
+				| ScriptGenerationProject
+				| ScriptVoiceProject
+				| FullServiceProject;
 
-			return response.data.data;
+			switch (type) {
+				case "script_generation":
+					project = await ScriptGenerationService.getProjectById(id);
+					break;
+				case "script_voice":
+					project = await ScriptVoiceService.getProjectById(id);
+					break;
+				case "full_service":
+					project = await FullServiceService.getProjectById(id);
+					break;
+				default:
+					throw new Error("Invalid project type");
+			}
+
+			return transformToProject(project, type);
 		} catch (error) {
-			const axiosError = error as AxiosError<{message?: string}>;
 			const errorMessage =
-				axiosError.response?.data?.message ||
-				axiosError.message ||
-				"Failed to fetch project";
+				error instanceof Error
+					? error.message
+					: "Failed to fetch project";
 			throw new Error(errorMessage);
 		}
 	}
 
 	async updateProject(
 		id: string,
+		type: "script_generation" | "script_voice" | "full_service",
 		updateData: Partial<Project>
 	): Promise<Project> {
 		try {
-			const response = await apiClient.put<{
-				success: boolean;
-				data: Project;
-				message?: string;
-			}>(`${this.baseUrl}/${id}`, updateData);
+			let project:
+				| ScriptGenerationProject
+				| ScriptVoiceProject
+				| FullServiceProject;
 
-			return response.data.data;
+			const {title, description, thumbnail, status} = updateData;
+			const updatePayload: Partial<
+				Pick<Project, "title" | "description" | "thumbnail" | "status">
+			> = {
+				...(title && {title}),
+				...(description !== undefined && {description}),
+				...(thumbnail !== undefined && {thumbnail}),
+				...(status && {status}),
+			};
+
+			switch (type) {
+				case "script_generation":
+					project = await ScriptGenerationService.updateProject(
+						id,
+						updatePayload
+					);
+					break;
+				case "script_voice":
+					project = await ScriptVoiceService.updateProject(
+						id,
+						updatePayload
+					);
+					break;
+				case "full_service":
+					project = await FullServiceService.updateProject(
+						id,
+						updatePayload
+					);
+					break;
+				default:
+					throw new Error("Invalid project type");
+			}
+
+			return transformToProject(project, type);
 		} catch (error) {
-			const axiosError = error as AxiosError<{message?: string}>;
 			const errorMessage =
-				axiosError.response?.data?.message ||
-				axiosError.message ||
-				"Failed to update project";
+				error instanceof Error
+					? error.message
+					: "Failed to update project";
 			throw new Error(errorMessage);
 		}
 	}
 
-	async deleteProject(id: string): Promise<void> {
+	async deleteProject(
+		id: string,
+		type: "script_generation" | "script_voice" | "full_service"
+	): Promise<void> {
 		try {
-			await apiClient.delete<{
-				success: boolean;
-				message?: string;
-			}>(`${this.baseUrl}/${id}`);
+			switch (type) {
+				case "script_generation":
+					await ScriptGenerationService.deleteProject(id);
+					break;
+				case "script_voice":
+					await ScriptVoiceService.deleteProject(id);
+					break;
+				case "full_service":
+					await FullServiceService.deleteProject(id);
+					break;
+				default:
+					throw new Error("Invalid project type");
+			}
 		} catch (error) {
-			const axiosError = error as AxiosError<{message?: string}>;
 			const errorMessage =
-				axiosError.response?.data?.message ||
-				axiosError.message ||
-				"Failed to delete project";
+				error instanceof Error
+					? error.message
+					: "Failed to delete project";
 			throw new Error(errorMessage);
 		}
 	}

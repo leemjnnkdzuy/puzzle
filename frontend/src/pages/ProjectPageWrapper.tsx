@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {useParams} from "react-router-dom";
+import {useParams, useLocation} from "react-router-dom";
 import {Loader2} from "lucide-react";
 import ProjectService from "@/services/ProjectService";
 import ScriptGenerationServiceProjectPage from "./ScriptGenerationServiceProjectPage";
@@ -8,6 +8,7 @@ import FullServiceProjectPage from "./FullServiceProjectPage";
 
 const ProjectPageWrapper: React.FC = () => {
 	const {id} = useParams<{id: string}>();
+	const location = useLocation();
 	const [projectType, setProjectType] = useState<
 		"script_generation" | "script_voice" | "full_service" | null
 	>(null);
@@ -15,9 +16,30 @@ const ProjectPageWrapper: React.FC = () => {
 	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
-		const fetchProjectType = async () => {
+		const fetchProject = async () => {
 			if (!id) {
 				setError("Không tìm thấy ID dự án");
+				setLoading(false);
+				return;
+			}
+
+			const pathname = location.pathname;
+			let type:
+				| "script_generation"
+				| "script_voice"
+				| "full_service"
+				| null = null;
+
+			if (pathname.includes("/script-generation/")) {
+				type = "script_generation";
+			} else if (pathname.includes("/script-voice/")) {
+				type = "script_voice";
+			} else if (pathname.includes("/full-service/")) {
+				type = "full_service";
+			}
+
+			if (!type) {
+				setError("Không tìm thấy loại dự án");
 				setLoading(false);
 				return;
 			}
@@ -41,8 +63,8 @@ const ProjectPageWrapper: React.FC = () => {
 			try {
 				setLoading(true);
 				setError(null);
-				const project = await ProjectService.getProjectById(id);
-				setProjectType(project.type);
+				setProjectType(type);
+				await ProjectService.getProjectById(id, type);
 			} catch (err: unknown) {
 				setError(
 					err instanceof Error ? err.message : "Không thể tải dự án"
@@ -52,8 +74,8 @@ const ProjectPageWrapper: React.FC = () => {
 			}
 		};
 
-		fetchProjectType();
-	}, [id]);
+		fetchProject();
+	}, [id, location.pathname]);
 
 	if (loading) {
 		return (

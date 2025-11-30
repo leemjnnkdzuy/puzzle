@@ -156,6 +156,85 @@ class AuthService {
 		}>("/api/auth/me");
 		return response.data;
 	}
+
+	async updateProfile(data: {
+		bio?: string;
+		socialLinks?: Array<{
+			platform:
+				| "website"
+				| "facebook"
+				| "tiktok"
+				| "github"
+				| "instagram"
+				| "linkedin"
+				| "youtube";
+			url: string;
+		}>;
+	}): Promise<{
+		success: boolean;
+		message?: string;
+		data?: {
+			bio: string;
+			socialLinks: Array<{
+				platform: string;
+				url: string;
+			}>;
+		};
+	}> {
+		const response = await api.put<{
+			success: boolean;
+			message?: string;
+			data?: {
+				bio: string;
+				socialLinks: Array<{
+					platform: string;
+					url: string;
+				}>;
+			};
+		}>("/api/user/profile", data);
+		return response.data;
+	}
+
+	async getUserProfile(identifier: string): Promise<{
+		success: boolean;
+		message?: string;
+		data?: {
+			user: {
+				_id: string;
+				username: string;
+				first_name: string;
+				last_name: string;
+				avatar?: string;
+				bio: string;
+				socialLinks: Array<{
+					platform: string;
+					url: string;
+				}>;
+				createdAt: string;
+			};
+		};
+	}> {
+		const response = await api.get<{
+			success: boolean;
+			message?: string;
+			data?: {
+				user: {
+					_id: string;
+					username: string;
+					first_name: string;
+					last_name: string;
+					avatar?: string;
+					bio: string;
+					socialLinks: Array<{
+						platform: string;
+						url: string;
+					}>;
+					createdAt: string;
+				};
+			};
+		}>(`/api/user/profile/${identifier}`);
+		return response.data;
+	}
 }
 
 const authService = new AuthService();

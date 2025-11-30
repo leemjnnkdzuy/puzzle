@@ -296,7 +296,10 @@ const HomePage: React.FC = () => {
 		if (!projectToDelete) return;
 
 		try {
-			await ProjectService.deleteProject(projectToDelete.projectId);
+			await ProjectService.deleteProject(
+				projectToDelete.projectId,
+				projectToDelete.type
+			);
 
 			const allProjects = await ProjectService.getProjects();
 			setProjects(allProjects);

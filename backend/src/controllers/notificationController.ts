@@ -1,4 +1,5 @@
 import {Response, NextFunction} from "express";
+import mongoose from "mongoose";
 import Notification, {INotification} from "@/models/Notification";
 import User from "@/models/User";
 import {AuthRequest} from "@/middlewares/auth";
@@ -35,10 +36,23 @@ export const getNotifications = async (
 			read: false,
 		});
 
+		const transformedNotifications = notifications.map((notif) => ({
+			id: notif._id.toString(),
+			userId: notif.userId.toString(),
+			title: notif.title,
+			message: notif.message,
+			type: notif.type,
+			read: notif.read,
+			link: notif.link,
+			metadata: notif.metadata,
+			createdAt: notif.createdAt,
+			updatedAt: notif.updatedAt,
+		}));
+
 		res.status(200).json({
 			success: true,
 			data: {
-				notifications,
+				notifications: transformedNotifications,
 				total,
 				unreadCount,
 			},
@@ -89,6 +103,14 @@ export const markAsRead = async (
 			throw new AppError("Unauthorized", 401);
 		}
 
+		if (!id) {
+			throw new AppError("Notification ID is required", 400);
+		}
+
+		if (!mongoose.Types.ObjectId.isValid(id)) {
+			throw new AppError(`Invalid notification ID format: ${id}`, 400);
+		}
+
 		const notification = await Notification.findOneAndUpdate(
 			{_id: id, userId},
 			{read: true},
@@ -99,17 +121,29 @@ export const markAsRead = async (
 			throw new AppError("Notification not found", 404);
 		}
 
-		// Emit unread count update via SSE
 		const unreadCount = await Notification.countDocuments({
 			userId,
 			read: false,
 		});
 		sseServer.sendUnreadCount(userId.toString(), unreadCount);
 
+		const transformedNotification = {
+			id: notification._id.toString(),
+			userId: notification.userId.toString(),
+			title: notification.title,
+			message: notification.message,
+			type: notification.type,
+			read: notification.read,
+			link: notification.link,
+			metadata: notification.metadata,
+			createdAt: notification.createdAt,
+			updatedAt: notification.updatedAt,
+		};
+
 		res.status(200).json({
 			success: true,
 			message: "Notification marked as read",
-			data: notification,
+			data: transformedNotification,
 		});
 	} catch (error) {
 		next(error);
@@ -133,7 +167,6 @@ export const markAllAsRead = async (
 			{read: true}
 		);
 
-		// Emit unread count update via SSE (should be 0 now)
 		sseServer.sendUnreadCount(userId.toString(), 0);
 
 		res.status(200).json({
@@ -161,6 +194,14 @@ export const deleteNotification = async (
 			throw new AppError("Unauthorized", 401);
 		}
 
+		if (!id) {
+			throw new AppError("Notification ID is required", 400);
+		}
+
+		if (!mongoose.Types.ObjectId.isValid(id)) {
+			throw new AppError(`Invalid notification ID format: ${id}`, 400);
+		}
+
 		const notification = await Notification.findOneAndDelete({
 			_id: id,
 			userId,
@@ -170,12 +211,10 @@ export const deleteNotification = async (
 			throw new AppError("Notification not found", 404);
 		}
 
-		// Remove from user's notifications array
 		await User.findByIdAndUpdate(userId, {
 			$pull: {notifications: id},
 		});
 
-		// Update unread count via SSE
 		const unreadCount = await Notification.countDocuments({
 			userId,
 			read: false,
@@ -203,10 +242,8 @@ export const streamNotifications = async (
 			throw new AppError("Unauthorized", 401);
 		}
 
-		// Add client to SSE server
 		sseServer.addClient(userId.toString(), res);
 
-		// Send initial unread count
 		const unreadCount = await Notification.countDocuments({
 			userId,
 			read: false,
@@ -236,12 +273,10 @@ export const createNotification = async (
 
 	await notification.save();
 
-	// Add to user's notifications array
 	await User.findByIdAndUpdate(userId, {
 		$push: {notifications: notification._id},
 	});
 
-	// Emit realtime notification via SSE
 	const notificationData = {
 		id: notification._id.toString(),
 		userId: notification.userId.toString(),
@@ -257,7 +292,6 @@ export const createNotification = async (
 
 	sseServer.sendNotification(userId, notificationData);
 
-	// Also emit unread count update
 	const unreadCount = await Notification.countDocuments({
 		userId,
 		read: false,
