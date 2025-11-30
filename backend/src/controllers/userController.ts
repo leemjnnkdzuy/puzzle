@@ -1,10 +1,12 @@
-import {Response} from "express";
+import {Response, NextFunction} from "express";
 import User from "@/models/User";
 import {AuthRequest} from "@/middlewares/auth";
+import AppError from "@/utils/errors";
 
 export const getPreferences = async (
 	req: AuthRequest,
-	res: Response
+	res: Response,
+	next: NextFunction
 ): Promise<void> => {
 	try {
 		const user = await User.findById(req.user?._id).select(
@@ -12,11 +14,7 @@ export const getPreferences = async (
 		);
 
 		if (!user) {
-			res.status(404).json({
-				success: false,
-				message: "User not found",
-			});
-			return;
+			throw new AppError("User not found", 404);
 		}
 
 		res.status(200).json({
@@ -27,17 +25,14 @@ export const getPreferences = async (
 			},
 		});
 	} catch (error) {
-		console.error("Get preferences error:", error);
-		res.status(500).json({
-			success: false,
-			message: "Failed to get preferences",
-		});
+		next(error);
 	}
 };
 
 export const updatePreferences = async (
 	req: AuthRequest,
-	res: Response
+	res: Response,
+	next: NextFunction
 ): Promise<void> => {
 	try {
 		const {theme, language} = req.body;
@@ -46,33 +41,23 @@ export const updatePreferences = async (
 
 		if (theme !== undefined) {
 			if (theme !== "light" && theme !== "dark") {
-				res.status(400).json({
-					success: false,
-					message: "Theme must be 'light' or 'dark'",
-				});
-				return;
+				throw new AppError("Theme must be 'light' or 'dark'", 400);
 			}
 			updateData.theme = theme;
 		}
 
 		if (language !== undefined) {
 			if (language !== "en" && language !== "vi") {
-				res.status(400).json({
-					success: false,
-					message: "Language must be 'en' or 'vi'",
-				});
-				return;
+				throw new AppError("Language must be 'en' or 'vi'", 400);
 			}
 			updateData.language = language;
 		}
 
 		if (Object.keys(updateData).length === 0) {
-			res.status(400).json({
-				success: false,
-				message:
-					"At least one preference (theme or language) must be provided",
-			});
-			return;
+			throw new AppError(
+				"At least one preference (theme or language) must be provided",
+				400
+			);
 		}
 
 		const user = await User.findByIdAndUpdate(
@@ -82,11 +67,7 @@ export const updatePreferences = async (
 		).select("theme language");
 
 		if (!user) {
-			res.status(404).json({
-				success: false,
-				message: "User not found",
-			});
-			return;
+			throw new AppError("User not found", 404);
 		}
 
 		res.status(200).json({
@@ -98,10 +79,6 @@ export const updatePreferences = async (
 			},
 		});
 	} catch (error) {
-		console.error("Update preferences error:", error);
-		res.status(500).json({
-			success: false,
-			message: "Failed to update preferences",
-		});
+		next(error);
 	}
 };

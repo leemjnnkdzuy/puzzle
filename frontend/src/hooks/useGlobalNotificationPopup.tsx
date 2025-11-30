@@ -8,7 +8,6 @@ interface Notification {
 	type: NotificationType;
 }
 
-// Simple in-memory store for notifications
 let notifications: Notification[] = [];
 let listeners: Array<() => void> = [];
 
@@ -22,7 +21,6 @@ const addNotification = (message: string, type: NotificationType) => {
 	notifications = [...notifications, notification];
 	notify();
 
-	// Auto remove after 5 seconds
 	setTimeout(() => {
 		removeNotification(id);
 	}, 5000);
@@ -33,30 +31,23 @@ const removeNotification = (id: string) => {
 	notify();
 };
 
-// Export removeNotification for use in UI component
 export {removeNotification};
 
 export const useGlobalNotificationPopup = () => {
 	const showSuccess = useCallback((message: string) => {
 		addNotification(message, "success");
-		// Also log to console for development
-		console.log(`✅ ${message}`);
 	}, []);
 
 	const showError = useCallback((message: string) => {
 		addNotification(message, "error");
-		// Also log to console for development
-		console.error(`❌ ${message}`);
 	}, []);
 
 	const showInfo = useCallback((message: string) => {
 		addNotification(message, "info");
-		console.log(`ℹ️ ${message}`);
 	}, []);
 
 	const showWarning = useCallback((message: string) => {
 		addNotification(message, "warning");
-		console.warn(`⚠️ ${message}`);
 	}, []);
 
 	return {
@@ -67,7 +58,6 @@ export const useGlobalNotificationPopup = () => {
 	};
 };
 
-// Export notification store for potential UI component
 export const getNotifications = (): Notification[] => notifications;
 
 export const subscribe = (listener: () => void) => {

@@ -1,0 +1,54 @@
+import {CorsOptions} from "cors";
+
+const getAllowedOrigins = (): string[] => {
+	const corsOrigin = process.env.CORS_ORIGIN || "http://localhost:5173";
+
+	if (corsOrigin.includes(",")) {
+		return corsOrigin.split(",").map((origin) => origin.trim());
+	}
+
+	return [corsOrigin];
+};
+
+const isOriginAllowed = (origin: string | undefined): boolean => {
+	if (!origin) {
+		return true;
+	}
+
+	const allowedOrigins = getAllowedOrigins();
+
+	if (process.env.NODE_ENV === "development") {
+		return true;
+	}
+
+	return allowedOrigins.includes(origin);
+};
+
+export const corsOptions: CorsOptions = {
+	origin: (origin, callback) => {
+		if (isOriginAllowed(origin)) {
+			callback(null, true);
+		} else {
+			callback(new Error("Not allowed by CORS"));
+		}
+	},
+	credentials: true,
+	methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+	allowedHeaders: [
+		"Content-Type",
+		"Authorization",
+		"X-Requested-With",
+		"Accept",
+		"Origin",
+	],
+	exposedHeaders: ["Set-Cookie"],
+	optionsSuccessStatus: 200,
+};
+
+export const getCorsOrigin = (): string => {
+	return process.env.CORS_ORIGIN || "http://localhost:5173";
+};
+
+export const getAllowedOriginsList = (): string[] => {
+	return getAllowedOrigins();
+};

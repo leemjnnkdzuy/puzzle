@@ -65,10 +65,17 @@ const FogotPasswordPage: React.FC = () => {
 			const sendFailed = getNested?.(
 				"forgotPassword.errors.sendFailed"
 			) as string;
+			const emailNotFound = getNested?.(
+				"forgotPassword.errors.emailNotFound"
+			) as string;
 
 			if (result && result.success) {
-				showSuccess(sendSuccess);
-				setPhase("verification");
+				if (result.emailNotFound) {
+					showError(emailNotFound);
+				} else {
+					showSuccess(sendSuccess);
+					setPhase("verification");
+				}
 			} else {
 				showError(result?.message || sendFailed);
 			}
@@ -356,4 +363,5 @@ const FogotPasswordPage: React.FC = () => {
 };
 
 FogotPasswordPage.displayName = "FogotPasswordPage";
+
 export default FogotPasswordPage;

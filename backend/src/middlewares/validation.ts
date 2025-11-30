@@ -7,21 +7,28 @@ export const validate = (validations: ValidationChain[]) => {
 		res: Response,
 		next: NextFunction
 	): Promise<void> => {
-		await Promise.all(validations.map((validation) => validation.run(req)));
+		try {
+			await Promise.all(validations.map((validation) => validation.run(req)));
 
-		const errors = validationResult(req);
-		if (errors.isEmpty()) {
-			return next();
+			const errors = validationResult(req);
+			if (errors.isEmpty()) {
+				next();
+				return;
+			}
+
+			// Get first error message for better UX
+			const firstError = errors.array()[0];
+			const errorMessage = firstError?.msg || "Validation failed";
+
+			res.status(400).json({
+				success: false,
+				message: errorMessage,
+				errors: errors.array(),
+			});
+			// Don't call next() here because we've already sent a response
+		} catch (error) {
+			// If there's an error in the validation process itself, pass it to error handler
+			next(error);
 		}
-
-		// Get first error message for better UX
-		const firstError = errors.array()[0];
-		const errorMessage = firstError?.msg || "Validation failed";
-
-		res.status(400).json({
-			success: false,
-			message: errorMessage,
-			errors: errors.array(),
-		});
 	};
 };

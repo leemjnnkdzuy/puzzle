@@ -61,7 +61,7 @@
 		"choose": "Chọn gói này",
 		"scriptGeneration": {
 			"title": "Standard",
-			"subtitle": "Tạo Kịch bản",
+			"subtitle": "Tạo kịch bản",
 			"description": "Tạo ra kịch bản cho toàn bộ video recap, tóm tắt từ nguồn user tải lên.",
 			"features": [
 				"Tự động phân tích và tóm tắt nội dung",
@@ -263,6 +263,7 @@
 		"errors": {
 			"emailRequired": "Vui lòng nhập địa chỉ email của bạn.",
 			"emailInvalid": "Email không hợp lệ. Vui lòng nhập đúng định dạng email.",
+			"emailNotFound": "Email không tồn tại trong hệ thống.",
 			"sendSuccess": "Mã đặt lại đã được gửi đến email của bạn. Vui lòng kiểm tra hộp thư đến.",
 			"sendFailed": "Gửi mã đặt lại thất bại. Vui lòng thử lại."
 		}
@@ -369,5 +370,44 @@
 		"confirmMessage": "Bạn có chắc chắn muốn đăng xuất?",
 		"confirm": "Đăng xuất",
 		"cancel": "Hủy"
+	},
+	"home": {
+		"createProject": "Tạo dự án",
+		"notifications": "Thông báo",
+		"noNotifications": "Không có thông báo nào",
+		"myProjects": "Dự án của tôi",
+		"all": "Tổng quát",
+		"createFirstProject": "Tạo dự án đầu tiên",
+		"noProjects": "Bạn chưa có dự án nào",
+		"noProjectsOfType": "Không có dự án thuộc loại này",
+		"tryAgain": "Thử lại",
+		"updated": "Cập nhật:",
+		"created": "Tạo:",
+		"deleteProject": "Xóa dự án",
+		"selectServiceType": "Chọn loại dịch vụ",
+		"createNewProject": "Tạo dự án mới",
+		"close": "Đóng",
+		"serviceType": "Loại dịch vụ",
+		"projectName": "Tên dự án",
+		"projectNamePlaceholder": "Nhập tên dự án...",
+		"description": "Mô tả",
+		"descriptionPlaceholder": "Nhập mô tả dự án...",
+		"back": "Quay lại",
+		"creating": "Đang tạo...",
+		"createProjectButton": "Tạo dự án",
+		"errors": {
+			"projectNameRequired": "Vui lòng nhập tên dự án",
+			"createSuccess": "Tạo dự án thành công!",
+			"createFailed": "Không thể tạo dự án. Vui lòng thử lại.",
+			"deleteSuccess": "Đã xóa dự án thành công!",
+			"deleteFailed": "Không thể xóa dự án. Vui lòng thử lại."
+		},
+		"gridColumns": {
+			"3": "3 cột",
+			"4": "4 cột",
+			"5": "5 cột",
+			"6": "6 cột"
+		},
+		"markAllAsRead": "Đánh dấu tất cả đã đọc"
 	}
 }

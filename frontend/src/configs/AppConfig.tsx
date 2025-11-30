@@ -3,9 +3,14 @@ const DEFAULT_MEDIA_DURATION = 5;
 const DEFAULT_TEXT_DURATION = 3;
 
 const DEFAULT_API_URL = "http://localhost:5000";
+const apiBaseUrl = `${DEFAULT_API_URL}/api`;
 
 const DEFAULT_LANGUAGE = "en";
 const SUPPORTED_LANGUAGES = ["en", "vi"];
+
+const apiConfig = {
+	apiBaseUrl,
+};
 
 export {
 	DEFAULT_FPS,
@@ -14,4 +19,7 @@ export {
 	DEFAULT_API_URL,
 	DEFAULT_LANGUAGE,
 	SUPPORTED_LANGUAGES,
+	apiConfig,
 };
+
+export default apiConfig;

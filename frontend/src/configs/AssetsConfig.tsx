@@ -9,11 +9,18 @@ import instagramIcon from "@/assets/instagram_icon.png";
 import youkuIcon from "@/assets/youku_icon.png";
 import demoVideo from "@/assets/demo_video.mp4";
 import landingPagePoster from "@/assets/landing_page_poster.jpg";
-import appIcon from "@/assets/app_icon.png";
 import leemjnnkdzuy from "@/assets/leemjnnkdzuy.png";
 import TruongSoCute from "@/assets/TruongSoCute.png";
+import appIconGray from "@/assets/app_icon_gray.svg";
+import appIconWhite from "@/assets/app_icon_while.svg";
+import appIconGradient from "@/assets/app_icon_gradient.svg";
 
 const Assets = {
+	//App Icons
+	AppIconGray: appIconGray,
+	AppIconWhite: appIconWhite,
+	AppIconGradient: appIconGradient,
+
 	//Social Media Icons
 	YoutubeIcon: youtubeIcon,
 	FacebookIcon: facebookIcon,
@@ -28,7 +35,7 @@ const Assets = {
 	//LandingPage Assets
 	DemoVideo: demoVideo,
 	LandingPagePoster: landingPagePoster,
-	AppIcon: appIcon,
+	
 
 	//AboutPage Assets
 	Leemjnnkdzuy: leemjnnkdzuy,

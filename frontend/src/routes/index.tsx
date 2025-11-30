@@ -27,6 +27,7 @@ import NotFoundPage from "@/pages/NotFoundPage";
 import TermsOfServicePage from "@/pages/TermsOfServicePage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import AboutPage from "@/pages/AboutPage";
+import ProjectPageWrapper from "@/pages/ProjectPageWrapper";
 
 const publicRoutes: RouteTypes[] = [
 	{
@@ -94,6 +95,21 @@ const privateRoutes: RouteTypes[] = [
 		path: "/home",
 		component: HomePage,
 		layout: SidebarLayout,
+	},
+	{
+		path: "/script-generation/:id",
+		component: ProjectPageWrapper,
+		layout: NotThingLayout,
+	},
+	{
+		path: "/script-voice/:id",
+		component: ProjectPageWrapper,
+		layout: NotThingLayout,
+	},
+	{
+		path: "/full-service/:id",
+		component: ProjectPageWrapper,
+		layout: NotThingLayout,
 	},
 ];
 

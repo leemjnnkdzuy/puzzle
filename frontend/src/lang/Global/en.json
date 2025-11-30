@@ -263,6 +263,7 @@
 		"errors": {
 			"emailRequired": "Please enter your email address.",
 			"emailInvalid": "Invalid email. Please enter a valid email format.",
+			"emailNotFound": "Email does not exist in the system.",
 			"sendSuccess": "Reset code has been sent to your email. Please check your inbox.",
 			"sendFailed": "Failed to send reset code. Please try again."
 		}
@@ -369,5 +370,44 @@
 		"confirmMessage": "Are you sure you want to logout?",
 		"confirm": "Logout",
 		"cancel": "Cancel"
+	},
+	"home": {
+		"createProject": "Create Project",
+		"notifications": "Notifications",
+		"noNotifications": "No notifications",
+		"myProjects": "My Projects",
+		"all": "All",
+		"createFirstProject": "Create your first project",
+		"noProjects": "You don't have any projects yet",
+		"noProjectsOfType": "No projects of this type",
+		"tryAgain": "Try again",
+		"updated": "Updated:",
+		"created": "Created:",
+		"deleteProject": "Delete project",
+		"selectServiceType": "Select service type",
+		"createNewProject": "Create new project",
+		"close": "Close",
+		"serviceType": "Service type",
+		"projectName": "Project name",
+		"projectNamePlaceholder": "Enter project name...",
+		"description": "Description",
+		"descriptionPlaceholder": "Enter project description...",
+		"back": "Back",
+		"creating": "Creating...",
+		"createProjectButton": "Create project",
+		"errors": {
+			"projectNameRequired": "Please enter project name",
+			"createSuccess": "Project created successfully!",
+			"createFailed": "Failed to create project. Please try again.",
+			"deleteSuccess": "Project deleted successfully!",
+			"deleteFailed": "Failed to delete project. Please try again."
+		},
+		"gridColumns": {
+			"3": "3 columns",
+			"4": "4 columns",
+			"5": "5 columns",
+			"6": "6 columns"
+		},
+		"markAllAsRead": "Mark all as read"
 	}
 }

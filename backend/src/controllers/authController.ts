@@ -66,7 +66,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 				user.first_name
 			);
 		} catch (error) {
-			console.error("Failed to send verification email:", error);
+			// Email sending failed, but registration still succeeds
 		}
 
 		res.status(201).json({
@@ -79,8 +79,6 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 			},
 		});
 	} catch (error: any) {
-		console.error("Register error:", error);
-
 		if (error.name === "ValidationError") {
 			const errors = Object.values(error.errors).map(
 				(err: any) => err.message
@@ -122,18 +120,11 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
 		const normalizedUsername = username.trim().toLowerCase();
 
-		if (process.env.NODE_ENV === "development") {
-			console.log("Login attempt for:", normalizedUsername);
-		}
-
 		const user = await User.findOne({
 			$or: [{username: normalizedUsername}, {email: normalizedUsername}],
 		}).select("+password");
 
 		if (!user) {
-			if (process.env.NODE_ENV === "development") {
-				console.log("User not found:", normalizedUsername);
-			}
 			res.status(401).json({
 				success: false,
 				message: "Invalid credentials",
@@ -144,9 +135,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 		const isPasswordValid = await user.comparePassword(password);
 
 		if (!isPasswordValid) {
-			if (process.env.NODE_ENV === "development") {
-				console.log("Invalid password for user:", normalizedUsername);
-			}
 			res.status(401).json({
 				success: false,
 				message: "Invalid credentials",
@@ -206,7 +194,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 			},
 		});
 	} catch (error) {
-		console.error("Login error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Login failed",
@@ -227,6 +214,7 @@ export const forgotPassword = async (
 			res.status(200).json({
 				success: true,
 				message: "If email exists, reset code has been sent",
+				emailNotFound: true,
 			});
 			return;
 		}
@@ -243,7 +231,16 @@ export const forgotPassword = async (
 		try {
 			await sendResetCodeEmail(user.email, resetCode, user.first_name);
 		} catch (error) {
-			console.error("Failed to send reset code email:", error);
+			user.verificationCode = undefined;
+			user.verificationCodeExpires = undefined;
+			await user.save();
+
+			res.status(500).json({
+				success: false,
+				message:
+					"Failed to send reset code email. Please try again later.",
+			});
+			return;
 		}
 
 		res.status(200).json({
@@ -251,7 +248,6 @@ export const forgotPassword = async (
 			message: "Reset code has been sent to your email",
 		});
 	} catch (error) {
-		console.error("Forgot password error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Failed to send reset code",
@@ -333,7 +329,6 @@ export const refreshToken = async (
 			message: "Token refreshed successfully",
 		});
 	} catch (error) {
-		console.error("Refresh token error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Failed to refresh token",
@@ -378,7 +373,6 @@ export const logout = async (
 			message: "Logout successful",
 		});
 	} catch (error) {
-		console.error("Logout error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Logout failed",
@@ -410,7 +404,6 @@ export const getCurrentUser = async (
 			},
 		});
 	} catch (error) {
-		console.error("Get current user error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Failed to get user information",
@@ -449,7 +442,6 @@ export const getLoginHistory = async (
 			},
 		});
 	} catch (error) {
-		console.error("Get login history error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Failed to get login history",
@@ -492,7 +484,6 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
 			message: "Email verified successfully",
 		});
 	} catch (error) {
-		console.error("Verify error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Verification failed",
@@ -541,7 +532,6 @@ export const verifyResetPin = async (
 			resetToken,
 		});
 	} catch (error) {
-		console.error("Verify reset pin error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Verification failed",
@@ -593,7 +583,6 @@ export const resetPassword = async (
 			message: "Password reset successfully",
 		});
 	} catch (error) {
-		console.error("Reset password error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Password reset failed",

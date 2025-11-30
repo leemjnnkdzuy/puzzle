@@ -29,7 +29,6 @@ export const useAuth = (options?: UseAuthOptions): UseAuthReturn => {
 	const refreshToken = useAuthStore((state) => state.refreshToken);
 	const checkAuth = useAuthStore((state) => state.checkAuth);
 
-	// Initialize auth check on mount if needed
 	useEffect(() => {
 		if (!skipInitialCheck && !isInitialized) {
 			checkAuth();

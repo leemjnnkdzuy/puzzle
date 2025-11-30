@@ -1,5 +1,5 @@
-import axios, {type AxiosInstance, type AxiosError} from "axios";
-import {DEFAULT_API_URL} from "@/configs/AppConfig";
+import apiClient from "@/utils/axiosInstance";
+import type {AxiosInstance, AxiosError} from "axios";
 
 export type AuthPhase =
 	| "login"
@@ -71,39 +71,7 @@ export interface ResetPasswordRequest {
 
 export type SocialLoginProvider = "google" | "facebook";
 
-const createApiClient = (): AxiosInstance => {
-	const api = axios.create({
-		baseURL: DEFAULT_API_URL,
-		headers: {
-			"Content-Type": "application/json",
-		},
-		withCredentials: true,
-	});
-
-	api.interceptors.request.use(
-		(config) => {
-			return config;
-		},
-		(error) => {
-			return Promise.reject(error);
-		}
-	);
-
-	api.interceptors.response.use(
-		(response) => response,
-		(error: AxiosError<{message?: string}>) => {
-			const message =
-				error.response?.data?.message ||
-				error.message ||
-				"Đã xảy ra lỗi không xác định";
-			throw new Error(message);
-		}
-	);
-
-	return api;
-};
-
-const api = createApiClient();
+const api = apiClient;
 
 class AuthService {
 	async register(data: RegisterData): Promise<RegisterResponse> {
@@ -118,11 +86,12 @@ class AuthService {
 
 	async forgotPassword(
 		data: ForgotPasswordData
-	): Promise<{success: boolean; message?: string}> {
-		const response = await api.post<{success: boolean; message?: string}>(
-			"/api/auth/forgot-password",
-			data
-		);
+	): Promise<{success: boolean; message?: string; emailNotFound?: boolean}> {
+		const response = await api.post<{
+			success: boolean;
+			message?: string;
+			emailNotFound?: boolean;
+		}>("/api/auth/forgot-password", data);
 		return response.data;
 	}
 

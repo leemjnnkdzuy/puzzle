@@ -17,6 +17,8 @@ export interface IUser extends Document {
 	refreshTokenExpires?: Date;
 	theme?: "light" | "dark";
 	language?: "en" | "vi";
+	credit?: number;
+	project?: mongoose.Types.ObjectId;
 	createdAt: Date;
 	updatedAt: Date;
 	comparePassword(candidatePassword: string): Promise<boolean>;
@@ -97,6 +99,20 @@ const UserSchema: Schema = new Schema(
 			type: String,
 			enum: ["en", "vi"],
 			default: "en",
+		},
+		credit: {
+			type: Number,
+			default: 0,
+			min: 0,
+		},
+		project: {
+			type: Schema.Types.ObjectId,
+			ref: "Project",
+		},
+		notifications: {
+			type: [Schema.Types.ObjectId],
+			ref: "Notification",
+			default: [],
 		},
 	},
 	{

@@ -219,19 +219,62 @@ export const useAuthStore = create<AuthStore>()(
 	)
 );
 
+const TOKEN_REFRESH_INTERVAL = 14 * 60 * 1000;
+
+let refreshInterval: ReturnType<typeof setInterval> | null = null;
+
+const startAutoRefresh = () => {
+	if (refreshInterval) {
+		clearInterval(refreshInterval);
+	}
+
+	refreshInterval = setInterval(async () => {
+		const {isAuthenticated} = useAuthStore.getState();
+		if (isAuthenticated) {
+			await useAuthStore.getState().refreshToken();
+		}
+	}, TOKEN_REFRESH_INTERVAL);
+};
+
+const stopAutoRefresh = () => {
+	if (refreshInterval) {
+		clearInterval(refreshInterval);
+		refreshInterval = null;
+	}
+};
+
+let previousIsAuthenticated: boolean | undefined = undefined;
+useAuthStore.subscribe((state) => {
+	const isAuthenticated = state.isAuthenticated;
+	if (isAuthenticated !== previousIsAuthenticated) {
+		previousIsAuthenticated = isAuthenticated;
+		if (isAuthenticated) {
+			startAutoRefresh();
+		} else {
+			stopAutoRefresh();
+		}
+	}
+});
+
 if (typeof window !== "undefined") {
 	window.addEventListener("storage", (e) => {
 		if (e.key === STORAGE_KEY && e.newValue) {
-			try {
-				const newState = JSON.parse(e.newValue);
-				useAuthStore.setState({
-					isAuthenticated: newState.state?.isAuthenticated ?? false,
-					user: newState.state?.user ?? null,
-					isInitialized: newState.state?.isInitialized ?? false,
-				});
-			} catch {
-				// Sync error handled silently
-			}
+			safeExecute(
+				async () => {
+					const newState = JSON.parse(e.newValue || "{}");
+					useAuthStore.setState({
+						isAuthenticated:
+							newState.state?.isAuthenticated ?? false,
+						user: newState.state?.user ?? null,
+						isInitialized: newState.state?.isInitialized ?? false,
+					});
+				},
+				{silent: true}
+			);
 		}
 	});
+
+	if (useAuthStore.getState().isAuthenticated) {
+		startAutoRefresh();
+	}
 }

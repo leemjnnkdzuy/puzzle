@@ -52,9 +52,7 @@ export const sendVerificationEmail = async (
 		};
 
 		await transporter.sendMail(mailOptions);
-		console.log(`Verification email sent to ${email}`);
 	} catch (error) {
-		console.error("Error sending verification email:", error);
 		throw error;
 	}
 };
@@ -90,9 +88,7 @@ export const sendResetCodeEmail = async (
 		};
 
 		await transporter.sendMail(mailOptions);
-		console.log(`Reset code email sent to ${email}`);
 	} catch (error) {
-		console.error("Error sending reset code email:", error);
 		throw error;
 	}
 };

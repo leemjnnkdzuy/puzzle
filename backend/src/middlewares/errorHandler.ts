@@ -1,17 +1,36 @@
 import {Request, Response, NextFunction} from "express";
-
-export interface AppError extends Error {
-	statusCode?: number;
-}
+import AppError from "@/utils/errors";
+import mongoose from "mongoose";
 
 export const errorHandler = (
-	err: AppError,
+	err: Error | AppError,
 	req: Request,
 	res: Response,
 	next: NextFunction
 ): void => {
-	const statusCode = err.statusCode || 500;
-	const message = err.message || "Internal Server Error";
+	let statusCode = 500;
+	let message = "Internal Server Error";
+
+	if (err instanceof AppError) {
+		statusCode = err.statusCode;
+		message = err.message;
+	} else if ((err as any).code === 11000) {
+		const field = Object.keys((err as any).keyPattern || {})[0];
+		statusCode = 400;
+		message = `${field} already exists`;
+	} else if (err instanceof mongoose.Error.ValidationError) {
+		statusCode = 400;
+		const errors = Object.values(err.errors).map((e) => e.message);
+		message = errors.join(", ");
+	} else if (err instanceof mongoose.Error.CastError) {
+		statusCode = 400;
+		message = `Invalid ${err.path}`;
+	} else if (err instanceof Error) {
+		message = err.message;
+		if ((err as any).statusCode) {
+			statusCode = (err as any).statusCode;
+		}
+	}
 
 	console.error("Error:", err);
 
