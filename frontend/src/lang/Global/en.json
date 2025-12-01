@@ -409,5 +409,35 @@
 			"6": "6 columns"
 		},
 		"markAllAsRead": "Mark all as read"
+	},
+	"profile": {
+		"editInfo": "Edit information",
+		"bio": "Bio",
+		"bioPlaceholder": "Tell us about yourself...",
+		"noBio": "No bio yet",
+		"bioCharCount": "characters",
+		"socialLinks": "Social Links",
+		"addLink": "Add link",
+		"noLinks": "No links yet. Click \"Add link\" to add.",
+		"noSocialLinks": "No social links",
+		"saveChanges": "Save changes",
+		"cancel": "Cancel",
+		"copyUserId": "Copy User ID",
+		"copiedUserId": "User ID copied!",
+		"copyUserIdFailed": "Failed to copy User ID!",
+		"userNotFound": "User not found",
+		"updateSuccess": "Profile updated successfully!",
+		"updateFailed": "Failed to update profile!",
+		"cannotEditOthers": "You can only edit your own profile",
+		"loadingUser": "Loading user information...",
+		"platforms": {
+			"website": "Website",
+			"facebook": "Facebook",
+			"github": "GitHub",
+			"instagram": "Instagram",
+			"linkedin": "LinkedIn",
+			"youtube": "YouTube",
+			"tiktok": "TikTok"
+		}
 	}
 }

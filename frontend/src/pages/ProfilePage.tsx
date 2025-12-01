@@ -30,6 +30,7 @@ import {
 import {useGlobalNotificationPopup} from "@/hooks/useGlobalNotificationPopup";
 import authService from "@/services/AuthService";
 import {useAuthStore} from "@/stores/authStore";
+import {useLanguage} from "@/hooks/useLanguage";
 
 interface UserData {
 	_id?: string;
@@ -72,6 +73,39 @@ const ProfilePage: React.FC = () => {
 	const {user: currentUser, loading: authLoading} = useAuth();
 	const setUser = useAuthStore((state) => state.setUser);
 	const {showSuccess, showError} = useGlobalNotificationPopup();
+	const {getNested} = useLanguage();
+	const profile = getNested?.("profile") as
+		| {
+				editInfo?: string;
+				bio?: string;
+				bioPlaceholder?: string;
+				noBio?: string;
+				bioCharCount?: string;
+				socialLinks?: string;
+				addLink?: string;
+				noLinks?: string;
+				noSocialLinks?: string;
+				saveChanges?: string;
+				cancel?: string;
+				copyUserId?: string;
+				copiedUserId?: string;
+				copyUserIdFailed?: string;
+				userNotFound?: string;
+				updateSuccess?: string;
+				updateFailed?: string;
+				cannotEditOthers?: string;
+				loadingUser?: string;
+				platforms?: {
+					website?: string;
+					facebook?: string;
+					github?: string;
+					instagram?: string;
+					linkedin?: string;
+					youtube?: string;
+					tiktok?: string;
+				};
+		  }
+		| undefined;
 	const [isEditing, setIsEditing] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [userData, setUserData] = useState<UserData | null>(null);
@@ -112,14 +146,17 @@ const ProfilePage: React.FC = () => {
 						});
 					} else {
 						showError(
-							result.message || "Không tìm thấy người dùng"
+							result.message ||
+								profile?.userNotFound ||
+								"User not found"
 						);
 					}
 				} catch (error) {
 					const errorMessage =
 						error instanceof Error
 							? error.message
-							: "Không thể tải thông tin người dùng";
+							: profile?.loadingUser ||
+							  "Failed to load user information";
 					showError(errorMessage);
 				} finally {
 					setIsLoadingProfile(false);
@@ -128,7 +165,8 @@ const ProfilePage: React.FC = () => {
 		};
 
 		fetchUserProfile();
-	}, [identifier, currentUser, isOwnProfile, showError]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [identifier, currentUser, isOwnProfile]);
 
 	const handleInputChange = (field: keyof typeof formData, value: string) => {
 		setFormData((prev) => ({...prev, [field]: value}));
@@ -268,7 +306,9 @@ const ProfilePage: React.FC = () => {
 			});
 
 			if (response.success) {
-				showSuccess("Cập nhật thông tin thành công!");
+				showSuccess(
+					profile?.updateSuccess || "Profile updated successfully!"
+				);
 				setIsEditing(false);
 
 				const result = await authService.getCurrentUser();
@@ -282,7 +322,11 @@ const ProfilePage: React.FC = () => {
 					});
 				}
 			} else {
-				showError(response.message || "Cập nhật thông tin thất bại!");
+				showError(
+					response.message ||
+						profile?.updateFailed ||
+						"Failed to update profile!"
+				);
 			}
 		} catch (error) {
 			const errorMessage =
@@ -311,12 +355,12 @@ const ProfilePage: React.FC = () => {
 		try {
 			await navigator.clipboard.writeText(userData._id);
 			setCopied(true);
-			showSuccess("Đã sao chép User ID!");
+			showSuccess(profile?.copiedUserId || "User ID copied!");
 			setTimeout(() => {
 				setCopied(false);
 			}, 2000);
 		} catch {
-			showError("Không thể sao chép User ID!");
+			showError(profile?.copyUserIdFailed || "Failed to copy User ID!");
 		}
 	};
 
@@ -333,7 +377,7 @@ const ProfilePage: React.FC = () => {
 			<div className='flex items-center justify-center min-h-screen'>
 				<div className='text-center'>
 					<p className='text-muted-foreground'>
-						Không tìm thấy thông tin người dùng
+						{profile?.userNotFound || "User not found"}
 					</p>
 				</div>
 			</div>
@@ -390,7 +434,10 @@ const ProfilePage: React.FC = () => {
 											<button
 												onClick={handleCopyUserId}
 												className='p-0.5 hover:bg-accent rounded transition-colors'
-												title='Sao chép User ID'
+												title={
+													profile?.copyUserId ||
+													"Copy User ID"
+												}
 											>
 												{copied ? (
 													<Check className='w-3 h-3 text-green-600 dark:text-green-400' />
@@ -413,7 +460,7 @@ const ProfilePage: React.FC = () => {
 									className='gap-2'
 								>
 									<Edit2 className='w-4 h-4' />
-									Chỉnh sửa thông tin
+									{profile?.editInfo || "Edit information"}
 								</Button>
 							)}
 						</div>
@@ -422,7 +469,7 @@ const ProfilePage: React.FC = () => {
 					<div className='space-y-6 p-6'>
 						<div>
 							<label className='block text-sm font-medium text-foreground mb-2'>
-								Tiểu sử
+								{profile?.bio || "Bio"}
 							</label>
 							{isEditing && isOwnProfile ? (
 								<textarea
@@ -430,7 +477,10 @@ const ProfilePage: React.FC = () => {
 									onChange={(e) =>
 										handleInputChange("bio", e.target.value)
 									}
-									placeholder='Giới thiệu về bản thân...'
+									placeholder={
+										profile?.bioPlaceholder ||
+										"Tell us about yourself..."
+									}
 									className='w-full min-h-[120px] p-3 bg-background border border-input rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent'
 									maxLength={500}
 								/>
@@ -442,14 +492,15 @@ const ProfilePage: React.FC = () => {
 										</p>
 									) : (
 										<p className='text-muted-foreground italic'>
-											Chưa có tiểu sử
+											{profile?.noBio || "No bio yet"}
 										</p>
 									)}
 								</div>
 							)}
 							{isEditing && isOwnProfile && (
 								<p className='text-xs text-muted-foreground mt-1'>
-									{formData.bio.length}/500 ký tự
+									{formData.bio.length}/500{" "}
+									{profile?.bioCharCount || "characters"}
 								</p>
 							)}
 						</div>
@@ -457,7 +508,7 @@ const ProfilePage: React.FC = () => {
 						<div>
 							<div className='flex items-center justify-between mb-2'>
 								<label className='block text-sm font-medium text-foreground'>
-									Liên kết mạng xã hội
+									{profile?.socialLinks || "Social Links"}
 								</label>
 								{isEditing && isOwnProfile && (
 									<Button
@@ -467,7 +518,7 @@ const ProfilePage: React.FC = () => {
 										className='gap-2'
 									>
 										<Plus className='w-4 h-4' />
-										Thêm liên kết
+										{profile?.addLink || "Add link"}
 									</Button>
 								)}
 							</div>
@@ -523,7 +574,11 @@ const ProfilePage: React.FC = () => {
 															className='flex items-center gap-2'
 														>
 															<Globe className='w-4 h-4' />
-															<span>Website</span>
+															<span>
+																{getSocialPlatformName(
+																	"website"
+																)}
+															</span>
 														</DropdownMenuItem>
 														<DropdownMenuItem
 															onClick={() =>
@@ -537,7 +592,9 @@ const ProfilePage: React.FC = () => {
 														>
 															<FaFacebook className='w-4 h-4' />
 															<span>
-																Facebook
+																{getSocialPlatformName(
+																	"facebook"
+																)}
 															</span>
 														</DropdownMenuItem>
 														<DropdownMenuItem
@@ -551,7 +608,11 @@ const ProfilePage: React.FC = () => {
 															className='flex items-center gap-2'
 														>
 															<FaGithub className='w-4 h-4' />
-															<span>GitHub</span>
+															<span>
+																{getSocialPlatformName(
+																	"github"
+																)}
+															</span>
 														</DropdownMenuItem>
 														<DropdownMenuItem
 															onClick={() =>
@@ -565,7 +626,9 @@ const ProfilePage: React.FC = () => {
 														>
 															<FaInstagram className='w-4 h-4' />
 															<span>
-																Instagram
+																{getSocialPlatformName(
+																	"instagram"
+																)}
 															</span>
 														</DropdownMenuItem>
 														<DropdownMenuItem
@@ -580,7 +643,9 @@ const ProfilePage: React.FC = () => {
 														>
 															<FaLinkedin className='w-4 h-4' />
 															<span>
-																LinkedIn
+																{getSocialPlatformName(
+																	"linkedin"
+																)}
 															</span>
 														</DropdownMenuItem>
 														<DropdownMenuItem
@@ -594,7 +659,11 @@ const ProfilePage: React.FC = () => {
 															className='flex items-center gap-2'
 														>
 															<FaYoutube className='w-4 h-4' />
-															<span>YouTube</span>
+															<span>
+																{getSocialPlatformName(
+																	"youtube"
+																)}
+															</span>
 														</DropdownMenuItem>
 														<DropdownMenuItem
 															onClick={() =>
@@ -607,7 +676,11 @@ const ProfilePage: React.FC = () => {
 															className='flex items-center gap-2'
 														>
 															<FaTiktok className='w-4 h-4' />
-															<span>TikTok</span>
+															<span>
+																{getSocialPlatformName(
+																	"tiktok"
+																)}
+															</span>
 														</DropdownMenuItem>
 													</DropdownMenuContent>
 												</DropdownMenu>
@@ -675,7 +748,8 @@ const ProfilePage: React.FC = () => {
 										)
 									) : (
 										<p className='text-sm text-muted-foreground text-center py-4'>
-											Chưa có liên kết mạng xã hội
+											{profile?.noSocialLinks ||
+												"No social links"}
 										</p>
 									)}
 								</div>
@@ -692,7 +766,7 @@ const ProfilePage: React.FC = () => {
 								disabled={loading}
 								className='flex-1'
 							>
-								Lưu thay đổi
+								{profile?.saveChanges || "Save changes"}
 							</Button>
 							<Button
 								variant='outline'
@@ -700,7 +774,7 @@ const ProfilePage: React.FC = () => {
 								disabled={loading}
 								className='flex-1'
 							>
-								Hủy
+								{profile?.cancel || "Cancel"}
 							</Button>
 						</div>
 					)}

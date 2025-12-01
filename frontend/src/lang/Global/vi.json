@@ -409,5 +409,35 @@
 			"6": "6 cột"
 		},
 		"markAllAsRead": "Đánh dấu tất cả đã đọc"
+	},
+	"profile": {
+		"editInfo": "Chỉnh sửa thông tin",
+		"bio": "Tiểu sử",
+		"bioPlaceholder": "Giới thiệu về bản thân...",
+		"noBio": "Chưa có tiểu sử",
+		"bioCharCount": "ký tự",
+		"socialLinks": "Liên kết mạng xã hội",
+		"addLink": "Thêm liên kết",
+		"noLinks": "Chưa có liên kết nào. Nhấn \"Thêm liên kết\" để thêm.",
+		"noSocialLinks": "Chưa có liên kết mạng xã hội",
+		"saveChanges": "Lưu thay đổi",
+		"cancel": "Hủy",
+		"copyUserId": "Sao chép User ID",
+		"copiedUserId": "Đã sao chép User ID!",
+		"copyUserIdFailed": "Không thể sao chép User ID!",
+		"userNotFound": "Không tìm thấy thông tin người dùng",
+		"updateSuccess": "Cập nhật thông tin thành công!",
+		"updateFailed": "Cập nhật thông tin thất bại!",
+		"cannotEditOthers": "Bạn chỉ có thể chỉnh sửa profile của chính mình",
+		"loadingUser": "Đang tải thông tin người dùng...",
+		"platforms": {
+			"website": "Website",
+			"facebook": "Facebook",
+			"github": "GitHub",
+			"instagram": "Instagram",
+			"linkedin": "LinkedIn",
+			"youtube": "YouTube",
+			"tiktok": "TikTok"
+		}
 	}
 }
