@@ -38,8 +38,9 @@ import {
 	DropdownMenuSubTrigger,
 } from "@/components/ui/DropdownMenu";
 
-interface SidebarLayoutProps {
+interface DoubleSidebarLayoutProps {
 	children: React.ReactNode;
+	rightSidebar?: React.ReactNode;
 }
 
 interface MenuItem {
@@ -59,8 +60,12 @@ interface UserData {
 	avatar?: string;
 }
 
-const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
-	const [isCollapsed, setIsCollapsed] = useState(false);
+const DoubleSidebarLayout: React.FC<DoubleSidebarLayoutProps> = ({
+	children,
+	rightSidebar,
+}) => {
+	const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
+	const [isRightCollapsed, setIsRightCollapsed] = useState(false);
 	const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -164,7 +169,8 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
 	useEffect(() => {
 		const handleResize = () => {
 			const shouldCollapse = window.innerWidth < 1200;
-			setIsCollapsed(shouldCollapse);
+			setIsLeftCollapsed(shouldCollapse);
+			setIsRightCollapsed(shouldCollapse);
 		};
 
 		handleResize();
@@ -186,7 +192,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
 		const active = isActive(item.path);
 		const Icon = item.icon;
 
-		if (isCollapsed && hasChildren) {
+		if (isLeftCollapsed && hasChildren) {
 			return (
 				<div key={item.key}>
 					<div
@@ -209,7 +215,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
 			);
 		}
 
-		if (isCollapsed && !hasChildren) {
+		if (isLeftCollapsed && !hasChildren) {
 			return (
 				<div key={item.key}>
 					<div
@@ -306,25 +312,32 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
 	};
 
 	return (
-		<div className='flex h-screen overflow-hidden bg-background transition-colors duration-300'>
+		<div className='flex flex-col lg:flex-row h-screen overflow-hidden bg-background transition-colors duration-300'>
+			{/* Left Sidebar */}
 			<aside
 				className={cn(
 					"h-full flex flex-col overflow-hidden transition-all duration-300 background flex-shrink-0",
-					isCollapsed ? "w-16" : "w-64"
+					isLeftCollapsed ? "w-16" : "w-64",
+					"hidden lg:flex"
 				)}
 			>
-				<div className='flex-1 overflow-y-auto no-scrollbar'>
-					<div className={cn("p-4", isCollapsed && "px-2")}>
-						<div className={cn("mb-6", isCollapsed && "mb-4")}>
+				<div className='flex-1 overflow-hidden no-scrollbar'>
+					<div
+						className={cn(
+							"p-4 overflow-y-auto",
+							isLeftCollapsed && "px-2"
+						)}
+					>
+						<div className={cn("mb-6", isLeftCollapsed && "mb-4")}>
 							<div
 								className={cn(
 									"flex items-center cursor-pointer hover:opacity-80 transition-opacity",
-									isCollapsed ? "justify-center" : "gap-2"
+									isLeftCollapsed ? "justify-center" : "gap-2"
 								)}
 								onClick={() => navigate("/")}
 							>
 								<AppIcon className='w-8 h-8 object-contain' />
-								{!isCollapsed && (
+								{!isLeftCollapsed && (
 									<span className='text-xl font-semibold text-sidebar-foreground transition-colors duration-300'>
 										Puzzle
 									</span>
@@ -358,8 +371,8 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
 					<div
 						className={cn(
 							"px-4 pt-4 pb-2",
-							isCollapsed && "px-2",
-							!isCollapsed && "border-t border-sidebar-border"
+							isLeftCollapsed && "px-2",
+							!isLeftCollapsed && "border-t border-sidebar-border"
 						)}
 					>
 						<DropdownMenu>
@@ -367,11 +380,10 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
 								<button
 									className={cn(
 										"w-full flex items-center rounded-lg hover:bg-sidebar-accent transition-colors duration-300 text-left",
-										isCollapsed
+										isLeftCollapsed
 											? "justify-center px-0 py-2"
 											: "gap-3 px-3 py-2"
 									)}
-									type='button'
 								>
 									<div className='flex-shrink-0 w-10 h-10 rounded-full overflow-hidden border-2 border-sidebar-border transition-colors duration-300'>
 										{userAvatar ? (
@@ -388,7 +400,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
 											</div>
 										)}
 									</div>
-									{!isCollapsed && (
+									{!isLeftCollapsed && (
 										<div className='flex-1 min-w-0'>
 											<div className='text-sm font-medium text-sidebar-foreground truncate transition-colors duration-300'>
 												{userName}
@@ -398,7 +410,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
 											</div>
 										</div>
 									)}
-									{!isCollapsed && (
+									{!isLeftCollapsed && (
 										<div className='flex items-center gap-1.5 ml-2 flex-shrink-0'>
 											<CircleDollarSign className='w-3.5 h-3.5 text-green-500 dark:text-green-400' />
 											<span className='text-xs font-medium text-sidebar-foreground'>
@@ -537,27 +549,27 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
 				<div
 					className={cn(
 						"px-2 pt-1 pb-2 flex-shrink-0",
-						isCollapsed && "px-1 border-t border-sidebar-border"
+						isLeftCollapsed && "px-1 border-t border-sidebar-border"
 					)}
 				>
 					<button
-						onClick={() => setIsCollapsed(!isCollapsed)}
+						onClick={() => setIsLeftCollapsed(!isLeftCollapsed)}
 						className={cn(
 							"w-full flex items-center justify-center p-2 rounded-lg hover:bg-sidebar-accent transition-colors duration-300",
-							isCollapsed ? "px-0" : "gap-2"
+							isLeftCollapsed ? "px-0" : "gap-2"
 						)}
 						title={
-							isCollapsed
+							isLeftCollapsed
 								? (sidebar?.expand as string) || "Expand"
 								: (sidebar?.collapse as string) || "Collapse"
 						}
 					>
-						{isCollapsed ? (
+						{isLeftCollapsed ? (
 							<ChevronRight className='w-5 h-5 text-sidebar-foreground/80' />
 						) : (
 							<>
 								<ChevronLeft className='w-5 h-5 text-sidebar-foreground/80' />
-								{!isCollapsed && (
+								{!isLeftCollapsed && (
 									<span className='text-sm text-sidebar-foreground/80'>
 										{(sidebar?.collapse as string) ||
 											"Collapse"}
@@ -568,9 +580,161 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
 					</button>
 				</div>
 			</aside>
-			<main className='flex-1 overflow-y-auto bg-background transition-colors duration-300'>
-				<div className='h-full'>{children}</div>
+
+			{/* Main Content */}
+			<main className='flex-1 overflow-hidden bg-background transition-colors duration-300 order-2 lg:order-2'>
+				<div className='h-full overflow-y-auto'>{children}</div>
 			</main>
+
+			{/* Right Sidebar */}
+			{rightSidebar && (
+				<aside
+					className={cn(
+						"h-full flex flex-col overflow-hidden transition-all duration-300 background flex-shrink-0",
+						isRightCollapsed ? "w-16" : "w-64",
+						"hidden lg:flex order-3"
+					)}
+				>
+					<div className='flex-1 overflow-hidden no-scrollbar'>
+						<div
+							className={cn(
+								"p-4 overflow-y-auto",
+								isRightCollapsed && "px-2"
+							)}
+						>
+							{!isRightCollapsed ? (
+								rightSidebar
+							) : (
+								<div className='flex flex-col items-center space-y-4'>
+									{/* Collapsed view - can show icons or minimal content */}
+								</div>
+							)}
+						</div>
+					</div>
+
+					<div
+						className={cn(
+							"px-2 pt-1 pb-2 flex-shrink-0",
+							isRightCollapsed &&
+								"px-1 border-t border-sidebar-border"
+						)}
+					>
+						<button
+							onClick={() =>
+								setIsRightCollapsed(!isRightCollapsed)
+							}
+							className={cn(
+								"w-full flex items-center justify-center p-2 rounded-lg hover:bg-sidebar-accent transition-colors duration-300",
+								isRightCollapsed ? "px-0" : "gap-2"
+							)}
+							title={
+								isRightCollapsed
+									? (sidebar?.expand as string) || "Expand"
+									: (sidebar?.collapse as string) ||
+									  "Collapse"
+							}
+						>
+							{isRightCollapsed ? (
+								<ChevronLeft className='w-5 h-5 text-sidebar-foreground/80' />
+							) : (
+								<>
+									<ChevronRight className='w-5 h-5 text-sidebar-foreground/80' />
+									{!isRightCollapsed && (
+										<span className='text-sm text-sidebar-foreground/80'>
+											{(sidebar?.collapse as string) ||
+												"Collapse"}
+										</span>
+									)}
+								</>
+							)}
+						</button>
+					</div>
+				</aside>
+			)}
+
+			{/* Mobile: Show sidebars stacked */}
+			<div className='lg:hidden flex flex-col w-full order-1'>
+				{/* Mobile Left Sidebar */}
+				<aside className='w-full border-b border-sidebar-border'>
+					<div className='p-4'>
+						<div className='flex items-center justify-between mb-4'>
+							<div
+								className='flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity'
+								onClick={() => navigate("/")}
+							>
+								<AppIcon className='w-8 h-8 object-contain' />
+								<span className='text-xl font-semibold text-sidebar-foreground'>
+									Puzzle
+								</span>
+							</div>
+						</div>
+						<nav className='space-y-1'>
+							{menuItems.map((item) => {
+								if (item.children) {
+									return (
+										<div
+											key={item.key}
+											className='space-y-1'
+										>
+											{item.children.map((child) => (
+												<div
+													key={child.key}
+													className={cn(
+														"flex items-center gap-3 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300",
+														isActive(child.path)
+															? "bg-primary text-primary-foreground shadow-sm"
+															: "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+													)}
+													onClick={() => {
+														if (child.path) {
+															navigate(
+																child.path
+															);
+														}
+													}}
+												>
+													<child.icon className='w-5 h-5 flex-shrink-0' />
+													<span className='flex-1 text-sm font-medium'>
+														{child.label}
+													</span>
+												</div>
+											))}
+										</div>
+									);
+								}
+								return (
+									<div
+										key={item.key}
+										className={cn(
+											"flex items-center gap-3 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300",
+											isActive(item.path)
+												? "bg-primary text-primary-foreground shadow-sm"
+												: "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+										)}
+										onClick={() => {
+											if (item.path) {
+												navigate(item.path);
+											}
+										}}
+									>
+										<item.icon className='w-5 h-5 flex-shrink-0' />
+										<span className='flex-1 text-sm font-medium'>
+											{item.label}
+										</span>
+									</div>
+								);
+							})}
+						</nav>
+					</div>
+				</aside>
+			</div>
+
+			{/* Mobile: Right Sidebar */}
+			{rightSidebar && (
+				<div className='lg:hidden w-full border-t border-sidebar-border order-3'>
+					<div className='p-4'>{rightSidebar}</div>
+				</div>
+			)}
 
 			<ConfirmDialog
 				isOpen={showLogoutConfirm}
@@ -604,5 +768,5 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
 	);
 };
 
-SidebarLayout.displayName = "SidebarLayout";
-export default SidebarLayout;
+DoubleSidebarLayout.displayName = "DoubleSidebarLayout";
+export default DoubleSidebarLayout;

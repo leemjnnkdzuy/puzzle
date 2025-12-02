@@ -6,6 +6,13 @@ let failedQueue: Array<{
 	resolve: (value?: unknown) => void;
 	reject: (reason?: unknown) => void;
 }> = [];
+let isLoggingOut = false;
+
+export const setIsLoggingOut = (value: boolean) => {
+	isLoggingOut = value;
+};
+
+export const getIsLoggingOut = () => isLoggingOut;
 
 const processQueue = (error: unknown | null, token: string | null = null) => {
 	failedQueue.forEach((prom) => {
@@ -51,8 +58,26 @@ const createApiClient = (): AxiosInstance => {
 				!originalRequest.url?.includes("/api/auth/refresh-token") &&
 				!originalRequest.url?.includes("/api/auth/login") &&
 				!originalRequest.url?.includes("/api/auth/logout") &&
-				!originalRequest.url?.includes("/api/auth/register")
+				!originalRequest.url?.includes("/api/auth/register") &&
+				!originalRequest.url?.includes("/api/auth/validate-session")
 			) {
+				const errorMessage = error.response?.data?.message || "";
+				const isSessionRevoked =
+					errorMessage.includes("Session has been revoked") ||
+					errorMessage.includes("Session is not active") ||
+					errorMessage.includes("Token has been revoked");
+
+				if (isSessionRevoked) {
+					const {useAuthStore} = await import("@/stores/authStore");
+					useAuthStore.getState().silentLogout();
+					window.location.href = "/";
+					return Promise.reject(error);
+				}
+
+				if (isLoggingOut) {
+					return Promise.reject(error);
+				}
+
 				if (isRefreshing) {
 					return new Promise((resolve, reject) => {
 						failedQueue.push({resolve, reject});
@@ -83,6 +108,26 @@ const createApiClient = (): AxiosInstance => {
 					}
 				} catch (refreshError) {
 					processQueue(refreshError, null);
+					const refreshErrorMessage =
+						axios.isAxiosError(refreshError) &&
+						refreshError.response?.data?.message
+							? refreshError.response.data.message
+							: "";
+					const isRefreshSessionRevoked =
+						refreshErrorMessage.includes(
+							"Session has been revoked"
+						) ||
+						refreshErrorMessage.includes("Session is not active") ||
+						refreshErrorMessage.includes("A newer session exists");
+
+					if (isRefreshSessionRevoked) {
+						const {useAuthStore} = await import(
+							"@/stores/authStore"
+						);
+						useAuthStore.getState().silentLogout();
+						window.location.href = "/";
+					}
+
 					const message =
 						error.response?.data?.message ||
 						error.message ||

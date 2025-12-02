@@ -3,7 +3,6 @@ import {useParams, useNavigate} from "react-router-dom";
 import {
 	ArrowLeft,
 	Sparkles,
-	Loader2,
 	CheckCircle,
 	XCircle,
 	Clock,
@@ -12,6 +11,7 @@ import {
 	Video,
 } from "lucide-react";
 import Button from "@/components/ui/Button";
+import Loading from "@/components/ui/Loading";
 import FullServiceService, {
 	type FullServiceProject,
 } from "@/services/FullServiceService";
@@ -53,9 +53,7 @@ const FullServiceProjectPage: React.FC = () => {
 			case "failed":
 				return <XCircle className='w-5 h-5 text-red-500' />;
 			case "processing":
-				return (
-					<Loader2 className='w-5 h-5 text-blue-500 animate-spin' />
-				);
+				return <Loading size={20} color='text-blue-500' />;
 			default:
 				return <Clock className='w-5 h-5 text-yellow-500' />;
 		}
@@ -91,7 +89,7 @@ const FullServiceProjectPage: React.FC = () => {
 	if (loading) {
 		return (
 			<div className='min-h-screen bg-background flex items-center justify-center'>
-				<Loader2 className='w-8 h-8 animate-spin text-primary' />
+				<Loading size='lg' />
 			</div>
 		);
 	}
@@ -124,7 +122,6 @@ const FullServiceProjectPage: React.FC = () => {
 				</Button>
 
 				<div className='max-w-4xl mx-auto'>
-					{/* Header */}
 					<div className='mb-6'>
 						<div className='flex items-start justify-between gap-4 mb-4'>
 							<div className='flex-1'>
@@ -161,7 +158,6 @@ const FullServiceProjectPage: React.FC = () => {
 						</div>
 					</div>
 
-					{/* Processing Steps */}
 					{project.processingSteps && (
 						<div className='bg-card border border-border rounded-lg p-6 mb-6'>
 							<h2 className='text-xl font-semibold text-foreground mb-4'>
@@ -172,7 +168,11 @@ const FullServiceProjectPage: React.FC = () => {
 									<div className='flex items-center gap-2'>
 										<FileText className='w-4 h-4 text-blue-500' />
 										<span className='text-foreground'>
-											{getNested?.("packages.scriptGeneration.subtitle") as string}
+											{
+												getNested?.(
+													"packages.scriptGeneration.subtitle"
+												) as string
+											}
 										</span>
 									</div>
 									<span className='text-sm text-muted-foreground'>

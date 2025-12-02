@@ -3,13 +3,13 @@ import {useParams, useNavigate} from "react-router-dom";
 import {
 	ArrowLeft,
 	Mic,
-	Loader2,
 	CheckCircle,
 	XCircle,
 	Clock,
 	Volume2,
 } from "lucide-react";
 import Button from "@/components/ui/Button";
+import Loading from "@/components/ui/Loading";
 import ScriptVoiceService, {
 	type ScriptVoiceProject,
 } from "@/services/ScriptVoiceService";
@@ -49,9 +49,7 @@ const ScriptVoiceServiceProjectPage: React.FC = () => {
 			case "failed":
 				return <XCircle className='w-5 h-5 text-red-500' />;
 			case "processing":
-				return (
-					<Loader2 className='w-5 h-5 text-blue-500 animate-spin' />
-				);
+				return <Loading size={20} color='text-blue-500' />;
 			default:
 				return <Clock className='w-5 h-5 text-yellow-500' />;
 		}
@@ -73,7 +71,7 @@ const ScriptVoiceServiceProjectPage: React.FC = () => {
 	if (loading) {
 		return (
 			<div className='min-h-screen bg-background flex items-center justify-center'>
-				<Loader2 className='w-8 h-8 animate-spin text-primary' />
+				<Loading size='lg' />
 			</div>
 		);
 	}

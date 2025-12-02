@@ -3,6 +3,11 @@ import mongoose from "mongoose";
 import User from "@/models/User";
 import {AuthRequest} from "@/middlewares/auth";
 import AppError from "@/utils/errors";
+import {generateVerificationCode} from "@/utils/generateToken";
+import {
+	sendChangeEmailVerificationCode,
+	sendChangeUsernameVerificationCode,
+} from "@/helpers/sendMailHelper";
 
 export const getPreferences = async (
 	req: AuthRequest,
@@ -91,7 +96,7 @@ export const updateProfile = async (
 ): Promise<void> => {
 	try {
 		const userId = req.user?._id;
-		const {bio, socialLinks} = req.body;
+		const {bio, socialLinks, first_name, last_name} = req.body;
 
 		if (!userId) {
 			throw new AppError("Unauthorized", 401);
@@ -99,6 +104,8 @@ export const updateProfile = async (
 
 		const updateData: {
 			bio?: string;
+			first_name?: string;
+			last_name?: string;
 			socialLinks?: Array<{
 				platform:
 					| "website"
@@ -120,6 +127,38 @@ export const updateProfile = async (
 				throw new AppError("Bio must not exceed 500 characters", 400);
 			}
 			updateData.bio = bio.trim();
+		}
+
+		if (first_name !== undefined) {
+			if (typeof first_name !== "string") {
+				throw new AppError("First name must be a string", 400);
+			}
+			if (first_name.trim().length === 0) {
+				throw new AppError("First name cannot be empty", 400);
+			}
+			if (first_name.length > 50) {
+				throw new AppError(
+					"First name must not exceed 50 characters",
+					400
+				);
+			}
+			updateData.first_name = first_name.trim();
+		}
+
+		if (last_name !== undefined) {
+			if (typeof last_name !== "string") {
+				throw new AppError("Last name must be a string", 400);
+			}
+			if (last_name.trim().length === 0) {
+				throw new AppError("Last name cannot be empty", 400);
+			}
+			if (last_name.length > 50) {
+				throw new AppError(
+					"Last name must not exceed 50 characters",
+					400
+				);
+			}
+			updateData.last_name = last_name.trim();
 		}
 
 		if (socialLinks !== undefined) {
@@ -169,7 +208,7 @@ export const updateProfile = async (
 
 		if (Object.keys(updateData).length === 0) {
 			throw new AppError(
-				"At least one field (bio or socialLinks) must be provided",
+				"At least one field (bio, first_name, last_name, or socialLinks) must be provided",
 				400
 			);
 		}
@@ -189,6 +228,8 @@ export const updateProfile = async (
 			message: "Profile updated successfully",
 			data: {
 				bio: user.bio || "",
+				first_name: user.first_name || "",
+				last_name: user.last_name || "",
 				socialLinks: user.socialLinks || [],
 			},
 		});
@@ -241,6 +282,457 @@ export const getUserProfile = async (
 					socialLinks: user.socialLinks || [],
 					createdAt: user.createdAt,
 				},
+			},
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const changePassword = async (
+	req: AuthRequest,
+	res: Response,
+	next: NextFunction
+): Promise<void> => {
+	try {
+		const {currentPassword, newPassword} = req.body;
+		const userId = req.user?._id;
+
+		if (!userId) {
+			throw new AppError("Unauthorized", 401);
+		}
+
+		const user = await User.findById(userId).select("+password");
+
+		if (!user) {
+			throw new AppError("User not found", 404);
+		}
+
+		const isPasswordValid = await user.comparePassword(currentPassword);
+
+		if (!isPasswordValid) {
+			throw new AppError("Current password is incorrect", 400);
+		}
+
+		user.password = newPassword;
+		await user.save();
+
+		res.status(200).json({
+			success: true,
+			message: "Password changed successfully",
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const requestChangeEmailCurrent = async (
+	req: AuthRequest,
+	res: Response,
+	next: NextFunction
+): Promise<void> => {
+	try {
+		const userId = req.user?._id;
+
+		if (!userId) {
+			throw new AppError("Unauthorized", 401);
+		}
+
+		const user = await User.findById(userId);
+
+		if (!user) {
+			throw new AppError("User not found", 404);
+		}
+
+		const verificationCode = generateVerificationCode();
+		user.verificationCode = verificationCode;
+		user.verificationCodeExpires = new Date();
+		user.verificationCodeExpires.setHours(
+			user.verificationCodeExpires.getHours() + 1
+		);
+
+		await user.save();
+
+		try {
+			await sendChangeEmailVerificationCode(
+				user.email,
+				verificationCode,
+				user.first_name,
+				false
+			);
+		} catch (error) {
+			user.verificationCode = undefined;
+			user.verificationCodeExpires = undefined;
+			await user.save();
+
+			throw new AppError(
+				"Failed to send verification code. Please try again later.",
+				500
+			);
+		}
+
+		res.status(200).json({
+			success: true,
+			message: "Verification code has been sent to your current email",
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const verifyChangeEmailCurrent = async (
+	req: AuthRequest,
+	res: Response,
+	next: NextFunction
+): Promise<void> => {
+	try {
+		const {code} = req.body;
+		const userId = req.user?._id;
+
+		if (!userId) {
+			throw new AppError("Unauthorized", 401);
+		}
+
+		const user = await User.findById(userId);
+
+		if (!user) {
+			throw new AppError("User not found", 404);
+		}
+
+		if (
+			!user.verificationCode ||
+			user.verificationCode !== code ||
+			!user.verificationCodeExpires ||
+			user.verificationCodeExpires <= new Date()
+		) {
+			throw new AppError("Invalid or expired verification code", 400);
+		}
+
+		// Generate temp token for email change process
+		const tempToken = generateVerificationCode();
+		user.verificationCode = tempToken;
+		user.verificationCodeExpires = new Date();
+		user.verificationCodeExpires.setHours(
+			user.verificationCodeExpires.getHours() + 1
+		);
+
+		await user.save();
+
+		res.status(200).json({
+			success: true,
+			message: "Current email verified successfully",
+			data: {
+				tempToken,
+			},
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const requestChangeEmailNew = async (
+	req: AuthRequest,
+	res: Response,
+	next: NextFunction
+): Promise<void> => {
+	try {
+		const {newEmail, tempToken} = req.body;
+		const userId = req.user?._id;
+
+		if (!userId) {
+			throw new AppError("Unauthorized", 401);
+		}
+
+		const user = await User.findById(userId);
+
+		if (!user) {
+			throw new AppError("User not found", 404);
+		}
+
+		// Verify temp token
+		if (
+			!user.verificationCode ||
+			user.verificationCode !== tempToken ||
+			!user.verificationCodeExpires ||
+			user.verificationCodeExpires <= new Date()
+		) {
+			throw new AppError(
+				"Invalid or expired session. Please start over.",
+				400
+			);
+		}
+
+		const normalizedNewEmail = newEmail.toLowerCase().trim();
+
+		// Check if new email is already in use
+		const existingUser = await User.findOne({email: normalizedNewEmail});
+
+		if (existingUser) {
+			throw new AppError("Email is already in use", 400);
+		}
+
+		// Check if new email is same as current email
+		if (user.email.toLowerCase() === normalizedNewEmail) {
+			throw new AppError(
+				"New email must be different from current email",
+				400
+			);
+		}
+
+		const verificationCode = generateVerificationCode();
+		user.verificationCode = verificationCode;
+		user.verificationCodeExpires = new Date();
+		user.verificationCodeExpires.setHours(
+			user.verificationCodeExpires.getHours() + 1
+		);
+
+		// Store new email temporarily in a field (we'll use a metadata approach)
+		// For simplicity, we'll store it in verificationCode with a prefix
+		// Actually, let's use a better approach - store in a temp field
+		// Since we don't have a tempEmail field, we'll use a different approach
+		// We'll store it in the request body and pass it to verify-new
+		// Actually, let's add it to the user model temporarily or use metadata
+		// For now, we'll require it to be sent again in verify-new
+
+		await user.save();
+
+		try {
+			await sendChangeEmailVerificationCode(
+				normalizedNewEmail,
+				verificationCode,
+				user.first_name,
+				true
+			);
+		} catch (error) {
+			user.verificationCode = undefined;
+			user.verificationCodeExpires = undefined;
+			await user.save();
+
+			throw new AppError(
+				"Failed to send verification code. Please try again later.",
+				500
+			);
+		}
+
+		res.status(200).json({
+			success: true,
+			message: "Verification code has been sent to your new email",
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const verifyChangeEmailNew = async (
+	req: AuthRequest,
+	res: Response,
+	next: NextFunction
+): Promise<void> => {
+	try {
+		const {code, newEmail} = req.body;
+		const userId = req.user?._id;
+
+		if (!userId) {
+			throw new AppError("Unauthorized", 401);
+		}
+
+		const user = await User.findById(userId);
+
+		if (!user) {
+			throw new AppError("User not found", 404);
+		}
+
+		if (
+			!user.verificationCode ||
+			user.verificationCode !== code ||
+			!user.verificationCodeExpires ||
+			user.verificationCodeExpires <= new Date()
+		) {
+			throw new AppError("Invalid or expired verification code", 400);
+		}
+
+		const normalizedNewEmail = newEmail.toLowerCase().trim();
+
+		// Check if new email is already in use
+		const existingUser = await User.findOne({email: normalizedNewEmail});
+
+		if (existingUser) {
+			throw new AppError("Email is already in use", 400);
+		}
+
+		// Update email
+		user.email = normalizedNewEmail;
+		user.isEmailVerified = true;
+		user.verificationCode = undefined;
+		user.verificationCodeExpires = undefined;
+
+		await user.save();
+
+		res.status(200).json({
+			success: true,
+			message: "Email changed successfully",
+			data: {
+				email: user.email,
+			},
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const checkUsername = async (
+	req: AuthRequest,
+	res: Response,
+	next: NextFunction
+): Promise<void> => {
+	try {
+		const {username} = req.body;
+		const userId = req.user?._id;
+
+		if (!userId) {
+			throw new AppError("Unauthorized", 401);
+		}
+
+		const normalizedUsername = username.toLowerCase().trim();
+
+		const existingUser = await User.findOne({
+			username: normalizedUsername,
+		});
+
+		if (existingUser && existingUser._id.toString() !== userId.toString()) {
+			res.status(200).json({
+				success: true,
+				available: false,
+				message: "Username is already taken",
+			});
+			return;
+		}
+
+		// Check if it's the same as current username
+		const currentUser = await User.findById(userId);
+		if (currentUser && currentUser.username === normalizedUsername) {
+			res.status(200).json({
+				success: true,
+				available: false,
+				message: "This is your current username",
+			});
+			return;
+		}
+
+		res.status(200).json({
+			success: true,
+			available: true,
+			message: "Username is available",
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const requestChangeUsername = async (
+	req: AuthRequest,
+	res: Response,
+	next: NextFunction
+): Promise<void> => {
+	try {
+		const userId = req.user?._id;
+
+		if (!userId) {
+			throw new AppError("Unauthorized", 401);
+		}
+
+		const user = await User.findById(userId);
+
+		if (!user) {
+			throw new AppError("User not found", 404);
+		}
+
+		const verificationCode = generateVerificationCode();
+		user.verificationCode = verificationCode;
+		user.verificationCodeExpires = new Date();
+		user.verificationCodeExpires.setHours(
+			user.verificationCodeExpires.getHours() + 1
+		);
+
+		await user.save();
+
+		try {
+			await sendChangeUsernameVerificationCode(
+				user.email,
+				verificationCode,
+				user.first_name
+			);
+		} catch (error) {
+			user.verificationCode = undefined;
+			user.verificationCodeExpires = undefined;
+			await user.save();
+
+			throw new AppError(
+				"Failed to send verification code. Please try again later.",
+				500
+			);
+		}
+
+		res.status(200).json({
+			success: true,
+			message: "Verification code has been sent to your email",
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const verifyChangeUsername = async (
+	req: AuthRequest,
+	res: Response,
+	next: NextFunction
+): Promise<void> => {
+	try {
+		const {username, code} = req.body;
+		const userId = req.user?._id;
+
+		if (!userId) {
+			throw new AppError("Unauthorized", 401);
+		}
+
+		const user = await User.findById(userId);
+
+		if (!user) {
+			throw new AppError("User not found", 404);
+		}
+
+		if (
+			!user.verificationCode ||
+			user.verificationCode !== code ||
+			!user.verificationCodeExpires ||
+			user.verificationCodeExpires <= new Date()
+		) {
+			throw new AppError("Invalid or expired verification code", 400);
+		}
+
+		const normalizedUsername = username.toLowerCase().trim();
+
+		// Check if username is already in use
+		const existingUser = await User.findOne({
+			username: normalizedUsername,
+		});
+
+		if (existingUser && existingUser._id.toString() !== userId.toString()) {
+			throw new AppError("Username is already taken", 400);
+		}
+
+		// Update username
+		user.username = normalizedUsername;
+		user.verificationCode = undefined;
+		user.verificationCodeExpires = undefined;
+
+		await user.save();
+
+		res.status(200).json({
+			success: true,
+			message: "Username changed successfully",
+			data: {
+				username: user.username,
 			},
 		});
 	} catch (error) {

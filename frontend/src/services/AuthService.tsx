@@ -159,6 +159,8 @@ class AuthService {
 
 	async updateProfile(data: {
 		bio?: string;
+		first_name?: string;
+		last_name?: string;
 		socialLinks?: Array<{
 			platform:
 				| "website"
@@ -175,6 +177,8 @@ class AuthService {
 		message?: string;
 		data?: {
 			bio: string;
+			first_name: string;
+			last_name: string;
 			socialLinks: Array<{
 				platform: string;
 				url: string;
@@ -186,6 +190,8 @@ class AuthService {
 			message?: string;
 			data?: {
 				bio: string;
+				first_name: string;
+				last_name: string;
 				socialLinks: Array<{
 					platform: string;
 					url: string;
@@ -233,6 +239,124 @@ class AuthService {
 				};
 			};
 		}>(`/api/user/profile/${identifier}`);
+		return response.data;
+	}
+
+	async getLoginHistory(params?: {page?: number; limit?: number}): Promise<{
+		success: boolean;
+		message?: string;
+		data?: {
+			loginHistory: Array<{
+				_id: string;
+				deviceInfo: {
+					userAgent: string;
+					platform?: string;
+					browser?: string;
+					device?: string;
+					os?: string;
+				};
+				ipAddress: string;
+				location?: {
+					country?: string;
+					city?: string;
+				};
+				loginAt: string;
+				logoutAt?: string;
+				isActive: boolean;
+				sessionId?: string;
+			}>;
+			pagination: {
+				page: number;
+				limit: number;
+				total: number;
+				pages: number;
+			};
+		};
+	}> {
+		const queryParams = new URLSearchParams();
+		if (params?.page) queryParams.append("page", params.page.toString());
+		if (params?.limit) queryParams.append("limit", params.limit.toString());
+
+		const response = await api.get<{
+			success: boolean;
+			message?: string;
+			data?: {
+				loginHistory: Array<{
+					_id: string;
+					deviceInfo: {
+						userAgent: string;
+						platform?: string;
+						browser?: string;
+						device?: string;
+						os?: string;
+					};
+					ipAddress: string;
+					location?: {
+						country?: string;
+						city?: string;
+					};
+					loginAt: string;
+					logoutAt?: string;
+					isActive: boolean;
+				}>;
+				pagination: {
+					page: number;
+					limit: number;
+					total: number;
+					pages: number;
+				};
+			};
+		}>(`/api/auth/login-history?${queryParams.toString()}`);
+		return response.data;
+	}
+
+	async logoutSession(sessionId: string): Promise<{
+		success: boolean;
+		message?: string;
+	}> {
+		const response = await api.post<{
+			success: boolean;
+			message?: string;
+		}>("/api/auth/logout-session", {sessionId});
+		return response.data;
+	}
+
+	async logoutAllSessions(): Promise<{
+		success: boolean;
+		message?: string;
+	}> {
+		const response = await api.post<{
+			success: boolean;
+			message?: string;
+		}>("/api/auth/logout-all");
+		return response.data;
+	}
+
+	async validateSession(): Promise<{
+		success: boolean;
+		valid: boolean;
+		sessionId?: string;
+		message?: string;
+	}> {
+		const response = await api.get<{
+			success: boolean;
+			valid: boolean;
+			sessionId?: string;
+			message?: string;
+		}>("/api/auth/validate-session");
+		return response.data;
+	}
+
+	async getSSEToken(): Promise<{
+		success: boolean;
+		data?: {token: string};
+		message?: string;
+	}> {
+		const response = await api.get<{
+			success: boolean;
+			data?: {token: string};
+			message?: string;
+		}>("/api/auth/sse-token");
 		return response.data;
 	}
 }

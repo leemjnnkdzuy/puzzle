@@ -8,6 +8,7 @@ import connectDatabase from "./src/utils/connectDB";
 import apiConfig from "./src/configs/apiConfig";
 import {errorHandler, notFound} from "./src/middlewares/errorHandler";
 import {corsOptions} from "./src/configs/corsConfig";
+import {startTransactionCleanupScheduler} from "./src/utils/transactionCleanup";
 
 dotenv.config();
 
@@ -39,6 +40,8 @@ app.use(errorHandler);
 const startServer = async () => {
 	try {
 		await connectDatabase();
+
+		startTransactionCleanupScheduler();
 
 		app.listen(PORT, () => {
 			console.log(`Server is running on port ${PORT}`);

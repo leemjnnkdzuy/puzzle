@@ -55,7 +55,6 @@ const FullServiceProjectSchema: Schema = new Schema(
 			type: Schema.Types.ObjectId,
 			ref: "User",
 			required: [true, "User ID is required"],
-			index: true,
 		},
 		status: {
 			type: String,

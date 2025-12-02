@@ -5,7 +5,7 @@ import {
 	Bell,
 	Grid3x3,
 	List,
-	Coins,
+	CircleDollarSign,
 	FileText,
 	Mic,
 	Sparkles,
@@ -20,7 +20,6 @@ import {
 } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
-import {useAuth} from "@/hooks/useAuth";
 import Assets from "@/configs/AssetsConfig";
 import Overlay from "@/components/ui/Overlay";
 import {
@@ -32,9 +31,10 @@ import {
 } from "@/components/ui/DropdownMenu";
 import ProjectService from "@/services/ProjectService";
 import {useGlobalNotificationPopup} from "@/hooks/useGlobalNotificationPopup";
-import DeleteProjectConfirmDialog from "@/components/common/DeleteProjectConfirmDialog";
+import ConfirmDialog from "@/components/common/ConfirmDialog";
 import {useLanguage} from "@/hooks/useLanguage";
 import {useNotifications} from "@/hooks/useNotifications";
+import {useCreditStore} from "@/stores/creditStore";
 
 interface Project {
 	id: string;
@@ -45,15 +45,6 @@ interface Project {
 	type: "script_generation" | "script_voice" | "full_service";
 	createdAt: string;
 	updatedAt: string;
-}
-
-interface UserData {
-	credit?: number;
-	username?: string;
-	first_name?: string;
-	last_name?: string;
-	email?: string;
-	avatar?: string;
 }
 
 const getProjectTypeInfo = (
@@ -99,7 +90,6 @@ const getProjectTypeInfo = (
 };
 
 const HomePage: React.FC = () => {
-	const {user} = useAuth();
 	const navigate = useNavigate();
 	const {showError, showWarning, showSuccess} = useGlobalNotificationPopup();
 	const showErrorRef = useRef(showError);
@@ -138,8 +128,7 @@ const HomePage: React.FC = () => {
 		null
 	);
 
-	const userData = user as UserData | null;
-	const userCredit = userData?.credit ?? 0;
+	const userCredit = useCreditStore((state) => state.credit);
 
 	useEffect(() => {
 		const fetchProjects = async () => {
@@ -269,8 +258,8 @@ const HomePage: React.FC = () => {
 			if (link) {
 				navigate(link);
 			}
-		} catch (error) {
-			console.error("Failed to mark notification as read:", error);
+		} catch {
+			void 0;
 		}
 	};
 
@@ -347,6 +336,19 @@ const HomePage: React.FC = () => {
 						)}
 
 						<div className='flex items-center gap-3 sm:gap-4 ml-auto'>
+							<div
+								className='flex items-center gap-2 px-3 h-7 rounded-md bg-card border border-green-500 dark:border-green-400 hover:border-cyan-500 transition-all duration-200 cursor-pointer group'
+								onClick={() => navigate("/recharge")}
+							>
+								<div className='relative w-4 h-4'>
+									<CircleDollarSign className='w-4 h-4 text-green-500 dark:text-green-400 absolute inset-0 transition-opacity duration-200 group-hover:opacity-0 group-hover:scale-90' />
+									<Plus className='w-4 h-4 text-cyan-500 dark:text-cyan-400 absolute inset-0 transition-opacity duration-200 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100' />
+								</div>
+								<span className='text-sm font-medium text-foreground'>
+									{userCredit.toLocaleString()}
+								</span>
+							</div>
+
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
 									<button className='inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-7 w-7 border border-input bg-transparent text-foreground shadow-xs hover:opacity-75 transition-opacity hover:text-accent-foreground relative'>
@@ -374,11 +376,8 @@ const HomePage: React.FC = () => {
 													e.stopPropagation();
 													try {
 														await markAllAsRead();
-													} catch (error) {
-														console.error(
-															"Failed to mark all as read:",
-															error
-														);
+													} catch {
+														void 0;
 													}
 												}}
 												className='text-xs text-blue-600 dark:text-blue-400 hover:underline'
@@ -417,11 +416,8 @@ const HomePage: React.FC = () => {
 																		await deleteNotification(
 																			notification.id
 																		);
-																	} catch (error) {
-																		console.error(
-																			"Failed to delete notification:",
-																			error
-																		);
+																	} catch {
+																		void 0;
 																	}
 																}}
 																className='absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive'
@@ -488,13 +484,6 @@ const HomePage: React.FC = () => {
 									</div>
 								</DropdownMenuContent>
 							</DropdownMenu>
-
-							<div className='flex items-center gap-2 px-3 h-7 rounded-md bg-card border border-yellow-500'>
-								<Coins className='w-4 h-4 text-yellow-500' />
-								<span className='text-sm font-medium text-foreground'>
-									{userCredit.toLocaleString()}
-								</span>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -1290,14 +1279,35 @@ const HomePage: React.FC = () => {
 				</div>
 			</Overlay>
 
-			<DeleteProjectConfirmDialog
+			<ConfirmDialog
 				isOpen={isDeleteDialogOpen}
 				onClose={() => {
 					setIsDeleteDialogOpen(false);
 					setProjectToDelete(null);
 				}}
-				onConfirm={handleDeleteConfirm}
-				projectTitle={projectToDelete?.title}
+				onConfirm={async () => {
+					await handleDeleteConfirm();
+					setIsDeleteDialogOpen(false);
+					setProjectToDelete(null);
+				}}
+				title={
+					(getNested?.("home.deleteConfirmTitle") as string) ||
+					"Delete Project"
+				}
+				message={(
+					(getNested?.("home.deleteConfirmMessage") as string) ||
+					'Are you sure you want to delete the project "{projectTitle}"? This action cannot be undone.'
+				).replace("{projectTitle}", projectToDelete?.title || "này")}
+				confirmText={
+					(getNested?.("home.deleteConfirm") as string) || "Delete"
+				}
+				cancelText={(getNested?.("home.cancel") as string) || "Cancel"}
+				confirmVariant='destructive'
+				icon={
+					<div className='w-12 h-12 rounded-full bg-destructive/10 flex items-center justify-center'>
+						<Trash2 className='w-6 h-6 text-destructive' />
+					</div>
+				}
 			/>
 		</div>
 	);

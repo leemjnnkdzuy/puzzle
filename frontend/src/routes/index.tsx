@@ -12,6 +12,7 @@ export interface RouteTypes {
 import NotThingLayout from "@/components/layout/NotThingLayout";
 import HeaderFooterLayout from "@/components/layout/HeaderFooterLayout";
 import SidebarLayout from "@/components/layout/SidebarLayout";
+import DoubleSidebarLayout from "@/components/layout/DoubleSidebarLayout";
 
 // Components
 import AppLoader, {PublicRoute} from "@/components/common/AppLoader";
@@ -29,6 +30,9 @@ import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import AboutPage from "@/pages/AboutPage";
 import ProjectPageWrapper from "@/pages/ProjectPageWrapper";
 import ProfilePage from "@/pages/ProfilePage";
+import SettingsPage from "@/pages/SettingsPage";
+import RechargePage, {RechargePageRightSidebar} from "@/pages/RechargePage";
+import TransactionHistoryPage from "@/pages/TransactionHistoryPage";
 
 const publicRoutes: RouteTypes[] = [
 	{
@@ -105,6 +109,21 @@ const privateRoutes: RouteTypes[] = [
 	{
 		path: "/profile/:identifier",
 		component: ProfilePage,
+		layout: SidebarLayout,
+	},
+	{
+		path: "/settings",
+		component: SettingsPage,
+		layout: SidebarLayout,
+	},
+	{
+		path: "/recharge",
+		component: RechargePage,
+		layout: DoubleSidebarLayout,
+	},
+	{
+		path: "/transaction-history",
+		component: TransactionHistoryPage,
 		layout: SidebarLayout,
 	},
 	{
@@ -193,6 +212,29 @@ const router = createBrowserRouter(
 			privateRoutes.map((route) => {
 				const Page = route.component;
 				const Layout = route.layout;
+
+				if (
+					route.path === "/recharge" &&
+					Layout === DoubleSidebarLayout
+				) {
+					return {
+						path: route.path,
+						element: (
+							<RootWrapper>
+								<AppLoader>
+									<DoubleSidebarLayout
+										rightSidebar={
+											<RechargePageRightSidebar />
+										}
+									>
+										<Page />
+									</DoubleSidebarLayout>
+								</AppLoader>
+							</RootWrapper>
+						),
+					} as RouteObject;
+				}
+
 				return {
 					path: route.path,
 					element: (

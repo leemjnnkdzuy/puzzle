@@ -72,12 +72,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		const isDisabled = disabled || loading;
 
 		const getLoadingColor = () => {
-			if (
-				variant === "default" ||
-				variant === "primary" ||
-				variant === "primary-gradient"
-			) {
+			if (variant === "primary" || variant === "primary-gradient") {
 				return "#ffffff";
+			}
+			if (variant === "default") {
+				return "rgb(var(--background))";
 			}
 			return undefined;
 		};

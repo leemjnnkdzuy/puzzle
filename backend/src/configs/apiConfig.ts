@@ -6,6 +6,7 @@ import scriptGenerationRoutes from "@/routes/scriptGenerationRoutes";
 import scriptVoiceRoutes from "@/routes/scriptVoiceRoutes";
 import fullServiceRoutes from "@/routes/fullServiceRoutes";
 import notificationRoutes from "@/routes/notificationRoutes";
+import paymentRoutes from "@/routes/paymentRoutes";
 
 const apiConfig = express.Router();
 
@@ -16,5 +17,6 @@ apiConfig.use("/script-generation", scriptGenerationRoutes);
 apiConfig.use("/script-voice", scriptVoiceRoutes);
 apiConfig.use("/full-service", fullServiceRoutes);
 apiConfig.use("/notifications", notificationRoutes);
+apiConfig.use("/payments", paymentRoutes);
 
 export default apiConfig;

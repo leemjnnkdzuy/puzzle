@@ -34,7 +34,7 @@ class SSEServer {
 				clearInterval(heartbeat);
 				this.removeClient(userId, res);
 			}
-		}, 30000);
+		}, 15000);
 
 		res.on("close", () => {
 			clearInterval(heartbeat);
@@ -79,6 +79,62 @@ class SSEServer {
 			const data = JSON.stringify({
 				type: "unread-count",
 				data: {count},
+			});
+			userClients.forEach((client) => {
+				try {
+					client.response.write(`data: ${data}\n\n`);
+				} catch (error) {
+					this.removeClient(userId, client.response);
+				}
+			});
+		}
+	}
+
+	sendLogoutEvent(userId: string, sessionId?: string): void {
+		const userClients = this.clients.get(userId);
+		if (userClients && userClients.length > 0) {
+			const data = JSON.stringify({
+				type: "logout",
+				data: {sessionId, reason: "Session revoked"},
+			});
+			userClients.forEach((client) => {
+				try {
+					client.response.write(`data: ${data}\n\n`);
+				} catch (error) {
+					this.removeClient(userId, client.response);
+				}
+			});
+		}
+	}
+
+	sendTransactionEvent(
+		userId: string,
+		transactionId: string,
+		status: "pending" | "paid" | "completed" | "failed"
+	): void {
+		const userClients = this.clients.get(userId);
+		if (userClients && userClients.length > 0) {
+			const data = JSON.stringify({
+				type: "transaction",
+				data: {transactionId, status},
+			});
+			userClients.forEach((client) => {
+				try {
+					client.response.write(`data: ${data}\n\n`);
+				} catch (error) {
+					this.removeClient(userId, client.response);
+				}
+			});
+		}
+	}
+
+	sendBalanceEvent(userId: string, credit: number, message?: string): void {
+		const userClients = this.clients.get(userId);
+
+		if (userClients && userClients.length > 0) {
+			const data = JSON.stringify({
+				type: "balance",
+				data: {credit, message},
 			});
 			userClients.forEach((client) => {
 				try {

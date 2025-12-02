@@ -2,7 +2,7 @@ import {useState, useEffect, useCallback} from "react";
 import NotificationService, {
 	type Notification,
 } from "@/services/NotificationService";
-import {useSSE} from "./useSSE";
+import {useSSE, type SSEMessage} from "./useSSE";
 
 interface UseNotificationsReturn {
 	notifications: Notification[];
@@ -65,12 +65,8 @@ export const useNotifications = (
 		}
 	}, [fetchNotifications, fetchUnreadCount, autoRefresh]);
 
-	// Listen for realtime notifications via SSE
 	useEffect(() => {
-		const handleSSEMessage = (message: {
-			type: "notification" | "unread-count";
-			data: Notification | {count: number};
-		}) => {
+		const handleSSEMessage = (message: SSEMessage) => {
 			if (message.type === "notification") {
 				const notification = message.data as Notification;
 				setNotifications((prev) => [notification, ...prev]);

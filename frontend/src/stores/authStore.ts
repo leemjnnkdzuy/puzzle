@@ -16,7 +16,9 @@ interface AuthState {
 interface AuthActions {
 	login: (username: string, password: string) => Promise<LoginResponse>;
 	logout: () => Promise<void>;
+	silentLogout: () => void;
 	setUser: (user: unknown | null) => void;
+	updateUserCredit: (credit: number) => void;
 	checkAuth: () => Promise<void>;
 	refreshToken: () => Promise<boolean>;
 	setLoading: (loading: boolean) => void;
@@ -45,6 +47,20 @@ export const useAuthStore = create<AuthStore>()(
 
 			setUser: (user: unknown | null) => {
 				set({user, isAuthenticated: user !== null});
+			},
+
+			updateUserCredit: (credit: number) => {
+				const currentUser = get().user;
+				if (currentUser && typeof currentUser === "object") {
+					set({
+						user: {
+							...currentUser,
+							credit: credit,
+						},
+					});
+				} else {
+					console.warn("Cannot update credit: user is not available");
+				}
 			},
 
 			login: async (username: string, password: string) => {
@@ -105,6 +121,9 @@ export const useAuthStore = create<AuthStore>()(
 			},
 
 			logout: async () => {
+				if (isLoggingOut) {
+					return;
+				}
 				await safeExecute(() => authService.logout(), {silent: true});
 				set({
 					user: null,
@@ -112,6 +131,29 @@ export const useAuthStore = create<AuthStore>()(
 					loading: false,
 					isInitialized: true,
 				});
+			},
+
+			silentLogout: () => {
+				if (isLoggingOut) {
+					return;
+				}
+				isLoggingOut = true;
+				stopAutoRefresh();
+				import("@/utils/axiosInstance").then((module) => {
+					module.setIsLoggingOut(true);
+				});
+				set({
+					user: null,
+					isAuthenticated: false,
+					loading: false,
+					isInitialized: true,
+				});
+				setTimeout(() => {
+					isLoggingOut = false;
+					import("@/utils/axiosInstance").then((module) => {
+						module.setIsLoggingOut(false);
+					});
+				}, 1000);
 			},
 
 			refreshToken: async (): Promise<boolean> => {
@@ -222,6 +264,7 @@ export const useAuthStore = create<AuthStore>()(
 const TOKEN_REFRESH_INTERVAL = 14 * 60 * 1000;
 
 let refreshInterval: ReturnType<typeof setInterval> | null = null;
+let isLoggingOut = false;
 
 const startAutoRefresh = () => {
 	if (refreshInterval) {
@@ -229,6 +272,9 @@ const startAutoRefresh = () => {
 	}
 
 	refreshInterval = setInterval(async () => {
+		if (isLoggingOut) {
+			return;
+		}
 		const {isAuthenticated} = useAuthStore.getState();
 		if (isAuthenticated) {
 			await useAuthStore.getState().refreshToken();

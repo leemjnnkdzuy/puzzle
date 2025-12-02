@@ -7,6 +7,7 @@ import {
 	generateVerificationCode,
 	verifyRefreshToken,
 	verifyAccessToken,
+	generateSSEToken,
 } from "@/utils/generateToken";
 import {AuthRequest} from "@/middlewares/auth";
 import {
@@ -15,6 +16,9 @@ import {
 } from "@/helpers/sendMailHelper";
 import {getDeviceInfo, getIpAddress} from "@/helpers/deviceHelper";
 import defaultAvatar from "@/data/defualtAvatar.json";
+import tokenBlacklist from "@/utils/tokenBlacklist";
+import sseServer from "@/utils/sseServer";
+import {randomUUID} from "crypto";
 
 export const register = async (req: Request, res: Response): Promise<void> => {
 	try {
@@ -142,8 +146,38 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 			return;
 		}
 
-		const accessToken = generateAccessToken(user._id.toString());
-		const refreshToken = generateRefreshToken(user._id.toString());
+		const deviceInfo = getDeviceInfo(req);
+		const ipAddress = getIpAddress(req);
+		const sessionId = randomUUID();
+
+		await LoginHistory.updateMany(
+			{
+				user: user._id,
+				isActive: true,
+			},
+			{
+				$set: {
+					isActive: false,
+					logoutAt: new Date(),
+				},
+			}
+		);
+
+		const loginHistory = new LoginHistory({
+			user: user._id,
+			deviceInfo,
+			ipAddress,
+			loginAt: new Date(),
+			isActive: true,
+			sessionId,
+		});
+
+		await loginHistory.save();
+
+		const refreshToken = generateRefreshToken(
+			user._id.toString(),
+			sessionId
+		);
 
 		const refreshTokenExpires = new Date();
 		refreshTokenExpires.setDate(refreshTokenExpires.getDate() + 7);
@@ -152,18 +186,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 		user.refreshTokenExpires = refreshTokenExpires;
 		await user.save();
 
-		const deviceInfo = getDeviceInfo(req);
-		const ipAddress = getIpAddress(req);
-
-		const loginHistory = new LoginHistory({
-			user: user._id,
-			deviceInfo,
-			ipAddress,
-			loginAt: new Date(),
-			isActive: true,
-		});
-
-		await loginHistory.save();
+		const accessToken = generateAccessToken(user._id.toString(), sessionId);
 
 		const isProduction = process.env.NODE_ENV === "production";
 		const cookieOptions = {
@@ -270,7 +293,7 @@ export const refreshToken = async (
 			return;
 		}
 
-		let decoded: {userId: string; type: string};
+		let decoded: {userId: string; type: string; sessionId?: string};
 
 		try {
 			decoded = verifyRefreshToken(token);
@@ -314,7 +337,72 @@ export const refreshToken = async (
 			return;
 		}
 
-		const accessToken = generateAccessToken(user._id.toString());
+		let sessionId = decoded.sessionId;
+		if (sessionId) {
+			const isSessionBlacklisted =
+				await tokenBlacklist.isSessionBlacklisted(
+					sessionId,
+					user._id.toString()
+				);
+			if (isSessionBlacklisted) {
+				user.refreshToken = undefined;
+				user.refreshTokenExpires = undefined;
+				await user.save();
+
+				res.status(401).json({
+					success: false,
+					message: "Session has been revoked",
+				});
+				return;
+			}
+
+			const session = await LoginHistory.findOne({
+				sessionId,
+				user: user._id,
+			});
+			if (!session || !session.isActive) {
+				user.refreshToken = undefined;
+				user.refreshTokenExpires = undefined;
+				await user.save();
+
+				res.status(401).json({
+					success: false,
+					message: "Session is not active",
+				});
+				return;
+			}
+
+			// Kiểm tra xem có session nào mới hơn không
+			const latestSession = await LoginHistory.findOne({
+				user: user._id,
+				isActive: true,
+			})
+				.sort({loginAt: -1})
+				.limit(1);
+
+			if (
+				latestSession &&
+				latestSession.sessionId !== sessionId &&
+				latestSession.loginAt > session.loginAt
+			) {
+				// Có session mới hơn, vô hiệu hóa session hiện tại
+				session.isActive = false;
+				session.logoutAt = new Date();
+				await session.save();
+
+				user.refreshToken = undefined;
+				user.refreshTokenExpires = undefined;
+				await user.save();
+
+				res.status(401).json({
+					success: false,
+					message: "A newer session exists. Please login again.",
+				});
+				return;
+			}
+		}
+
+		const accessToken = generateAccessToken(user._id.toString(), sessionId);
 
 		const isProduction = process.env.NODE_ENV === "production";
 		res.cookie("accessToken", accessToken, {
@@ -445,6 +533,360 @@ export const getLoginHistory = async (
 		res.status(500).json({
 			success: false,
 			message: "Failed to get login history",
+		});
+	}
+};
+
+export const validateSession = async (
+	req: AuthRequest,
+	res: Response
+): Promise<void> => {
+	try {
+		const userId = req.user?._id;
+
+		if (!userId) {
+			res.status(401).json({
+				success: false,
+				valid: false,
+				message: "Unauthorized",
+			});
+			return;
+		}
+
+		const token =
+			req.cookies?.accessToken ||
+			req.headers.authorization?.replace("Bearer ", "");
+
+		if (!token) {
+			res.status(401).json({
+				success: false,
+				valid: false,
+				message: "Token is required",
+			});
+			return;
+		}
+
+		let decoded: {userId: string; type: string; sessionId?: string};
+		try {
+			decoded = verifyAccessToken(token);
+		} catch (error) {
+			res.status(401).json({
+				success: false,
+				valid: false,
+				message: "Invalid token",
+			});
+			return;
+		}
+
+		if (decoded.userId !== userId.toString()) {
+			res.status(401).json({
+				success: false,
+				valid: false,
+				message: "Token user mismatch",
+			});
+			return;
+		}
+
+		const isTokenBlacklisted = await tokenBlacklist.isTokenBlacklisted(
+			token
+		);
+		if (isTokenBlacklisted) {
+			res.status(200).json({
+				success: true,
+				valid: false,
+				message: "Token has been revoked",
+			});
+			return;
+		}
+
+		if (decoded.sessionId) {
+			const isSessionBlacklisted =
+				await tokenBlacklist.isSessionBlacklisted(
+					decoded.sessionId,
+					userId.toString()
+				);
+			if (isSessionBlacklisted) {
+				res.status(200).json({
+					success: true,
+					valid: false,
+					message: "Session has been revoked",
+				});
+				return;
+			}
+
+			const session = await LoginHistory.findOne({
+				sessionId: decoded.sessionId,
+				user: userId,
+			});
+
+			if (!session || !session.isActive) {
+				res.status(200).json({
+					success: true,
+					valid: false,
+					message: "Session is not active",
+				});
+				return;
+			}
+		}
+
+		res.status(200).json({
+			success: true,
+			valid: true,
+			sessionId: decoded.sessionId,
+		});
+	} catch (error) {
+		res.status(500).json({
+			success: false,
+			valid: false,
+			message: "Failed to validate session",
+		});
+	}
+};
+
+export const getSSEToken = async (
+	req: AuthRequest,
+	res: Response
+): Promise<void> => {
+	try {
+		const userId = req.user?._id;
+
+		if (!userId) {
+			res.status(401).json({
+				success: false,
+				message: "Unauthorized",
+			});
+			return;
+		}
+
+		// Get sessionId from current access token
+		const token =
+			req.cookies?.accessToken ||
+			req.headers.authorization?.replace("Bearer ", "");
+
+		let sessionId: string | undefined;
+		if (token) {
+			try {
+				const decoded = verifyAccessToken(token);
+				sessionId = decoded.sessionId;
+			} catch (error) {
+				// If access token is invalid, continue without sessionId
+			}
+		}
+
+		// Generate SSE token
+		const sseToken = generateSSEToken(userId.toString(), sessionId);
+
+		res.status(200).json({
+			success: true,
+			data: {
+				token: sseToken,
+			},
+		});
+	} catch (error) {
+		res.status(500).json({
+			success: false,
+			message: "Failed to generate SSE token",
+		});
+	}
+};
+
+export const logoutSession = async (
+	req: AuthRequest,
+	res: Response
+): Promise<void> => {
+	try {
+		const userId = req.user?._id;
+		const {sessionId} = req.body;
+
+		if (!userId) {
+			res.status(401).json({
+				success: false,
+				message: "Unauthorized",
+			});
+			return;
+		}
+
+		if (!sessionId) {
+			res.status(400).json({
+				success: false,
+				message: "Session ID is required",
+			});
+			return;
+		}
+
+		const session = await LoginHistory.findOne({
+			_id: sessionId,
+			user: userId,
+		});
+
+		if (!session) {
+			res.status(404).json({
+				success: false,
+				message: "Session not found",
+			});
+			return;
+		}
+
+		const updatedSession = await LoginHistory.findByIdAndUpdate(
+			sessionId,
+			{
+				$set: {
+					logoutAt: new Date(),
+					isActive: false,
+				},
+			},
+			{new: true}
+		);
+
+		if (updatedSession?.sessionId) {
+			await tokenBlacklist.addSession(
+				updatedSession.sessionId,
+				userId.toString(),
+				7 * 24 * 60 * 60
+			);
+
+			const token =
+				req.cookies?.accessToken ||
+				req.headers.authorization?.replace("Bearer ", "");
+			if (token) {
+				try {
+					const decoded = verifyAccessToken(token);
+					if (decoded.sessionId === updatedSession.sessionId) {
+						await tokenBlacklist.addToken(
+							token,
+							userId.toString(),
+							15 * 60
+						);
+					}
+				} catch (error) {
+					console.error("Error invalidating access token:", error);
+				}
+			}
+
+			const sessionUser = await User.findById(userId).select(
+				"+refreshToken"
+			);
+			if (sessionUser?.refreshToken) {
+				try {
+					const decoded = verifyRefreshToken(
+						sessionUser.refreshToken
+					);
+					if (decoded.sessionId === updatedSession.sessionId) {
+						await tokenBlacklist.addToken(
+							sessionUser.refreshToken,
+							userId.toString(),
+							7 * 24 * 60 * 60
+						);
+						sessionUser.refreshToken = undefined;
+						sessionUser.refreshTokenExpires = undefined;
+						await sessionUser.save();
+					}
+				} catch (error) {
+					console.error("Error invalidating refresh token:", error);
+				}
+			}
+
+			sseServer.sendLogoutEvent(
+				userId.toString(),
+				updatedSession.sessionId
+			);
+		}
+
+		res.status(200).json({
+			success: true,
+			message: "Session logged out successfully",
+		});
+	} catch (error) {
+		res.status(500).json({
+			success: false,
+			message: "Failed to logout session",
+		});
+	}
+};
+
+export const logoutAllSessions = async (
+	req: AuthRequest,
+	res: Response
+): Promise<void> => {
+	try {
+		const userId = req.user?._id;
+
+		if (!userId) {
+			res.status(401).json({
+				success: false,
+				message: "Unauthorized",
+			});
+			return;
+		}
+
+		const activeSessions = await LoginHistory.find({
+			user: userId,
+			isActive: true,
+		});
+
+		await LoginHistory.updateMany(
+			{
+				user: userId,
+				isActive: true,
+			},
+			{
+				$set: {
+					logoutAt: new Date(),
+					isActive: false,
+				},
+			}
+		);
+
+		const token =
+			req.cookies?.accessToken ||
+			req.headers.authorization?.replace("Bearer ", "");
+		if (token) {
+			try {
+				const decoded = verifyAccessToken(token);
+				if (decoded.sessionId) {
+					await tokenBlacklist.addToken(
+						token,
+						userId.toString(),
+						15 * 60
+					);
+				}
+			} catch (error) {
+				console.error("Error invalidating access token:", error);
+			}
+		}
+
+		for (const session of activeSessions) {
+			if (session.sessionId) {
+				await tokenBlacklist.addSession(
+					session.sessionId,
+					userId.toString(),
+					7 * 24 * 60 * 60
+				);
+			}
+		}
+
+		const user = await User.findById(userId).select("+refreshToken");
+		if (user && user.refreshToken) {
+			await tokenBlacklist.addToken(
+				user.refreshToken,
+				userId.toString(),
+				7 * 24 * 60 * 60
+			);
+			user.refreshToken = undefined;
+			user.refreshTokenExpires = undefined;
+			await user.save();
+		}
+
+		sseServer.sendLogoutEvent(userId.toString());
+
+		res.status(200).json({
+			success: true,
+			message: "All sessions logged out successfully",
+		});
+	} catch (error) {
+		res.status(500).json({
+			success: false,
+			message: "Failed to logout all sessions",
 		});
 	}
 };

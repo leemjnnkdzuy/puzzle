@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {useParams, useLocation} from "react-router-dom";
-import {Loader2} from "lucide-react";
 import ProjectService from "@/services/ProjectService";
+import Loading from "@/components/ui/Loading";
 import ScriptGenerationServiceProjectPage from "./ScriptGenerationServiceProjectPage";
 import ScriptVoiceServiceProjectPage from "./ScriptVoiceServiceProjectPage";
 import FullServiceProjectPage from "./FullServiceProjectPage";
@@ -80,7 +80,7 @@ const ProjectPageWrapper: React.FC = () => {
 	if (loading) {
 		return (
 			<div className='min-h-screen bg-background flex items-center justify-center'>
-				<Loader2 className='w-8 h-8 animate-spin text-primary' />
+				<Loading size='lg' />
 			</div>
 		);
 	}

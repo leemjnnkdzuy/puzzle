@@ -92,3 +92,90 @@ export const sendResetCodeEmail = async (
 		throw error;
 	}
 };
+
+export const sendChangeEmailVerificationCode = async (
+	email: string,
+	verificationCode: string,
+	firstName?: string,
+	isNewEmail: boolean = false
+): Promise<void> => {
+	try {
+		const transporter = createTransporter();
+		const appName = process.env.APP_NAME || "Puzzle";
+
+		const mailOptions = {
+			from: `"${appName}" <${process.env.SMTP_USER}>`,
+			to: email,
+			subject: isNewEmail
+				? "Verify Your New Email Address"
+				: "Verify Your Current Email Address",
+			html: `
+				<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+					<h2 style="color: #333;">${
+						isNewEmail
+							? "New Email Verification"
+							: "Email Change Verification"
+					}</h2>
+					<p>Hello ${firstName || "there"},</p>
+					<p>You requested to ${
+						isNewEmail
+							? "change your email address"
+							: "verify your current email address"
+					} for your ${appName} account.</p>
+					<p>Please use the following verification code to ${
+						isNewEmail
+							? "complete the email change"
+							: "verify your current email"
+					}:</p>
+					<div style="background-color: #f4f4f4; padding: 20px; text-align: center; margin: 20px 0;">
+						<h1 style="color: #007bff; margin: 0; font-size: 32px; letter-spacing: 5px;">${verificationCode}</h1>
+					</div>
+					<p>This code will expire in 1 hour.</p>
+					<p>If you didn't request this change, please ignore this email or contact support if you have concerns.</p>
+					<hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+					<p style="color: #666; font-size: 12px;">This is an automated message, please do not reply.</p>
+				</div>
+			`,
+		};
+
+		await transporter.sendMail(mailOptions);
+	} catch (error) {
+		throw error;
+	}
+};
+
+export const sendChangeUsernameVerificationCode = async (
+	email: string,
+	verificationCode: string,
+	firstName?: string
+): Promise<void> => {
+	try {
+		const transporter = createTransporter();
+		const appName = process.env.APP_NAME || "Puzzle";
+
+		const mailOptions = {
+			from: `"${appName}" <${process.env.SMTP_USER}>`,
+			to: email,
+			subject: "Verify Your Username Change",
+			html: `
+				<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+					<h2 style="color: #333;">Username Change Verification</h2>
+					<p>Hello ${firstName || "there"},</p>
+					<p>You requested to change your username for your ${appName} account.</p>
+					<p>Please use the following verification code to complete the username change:</p>
+					<div style="background-color: #f4f4f4; padding: 20px; text-align: center; margin: 20px 0;">
+						<h1 style="color: #007bff; margin: 0; font-size: 32px; letter-spacing: 5px;">${verificationCode}</h1>
+					</div>
+					<p>This code will expire in 1 hour.</p>
+					<p>If you didn't request this change, please ignore this email or contact support if you have concerns.</p>
+					<hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+					<p style="color: #666; font-size: 12px;">This is an automated message, please do not reply.</p>
+				</div>
+			`,
+		};
+
+		await transporter.sendMail(mailOptions);
+	} catch (error) {
+		throw error;
+	}
+};

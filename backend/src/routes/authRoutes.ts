@@ -7,6 +7,10 @@ import {
 	logout,
 	getCurrentUser,
 	getLoginHistory,
+	validateSession,
+	getSSEToken,
+	logoutSession,
+	logoutAllSessions,
 	verify,
 	verifyResetPin,
 	resetPassword,
@@ -44,5 +48,9 @@ router.post("/refresh-token", validate(refreshTokenValidator), refreshToken);
 router.post("/logout", authenticate, logout);
 router.get("/me", authenticate, getCurrentUser);
 router.get("/login-history", authenticate, getLoginHistory);
+router.get("/validate-session", authenticate, validateSession);
+router.get("/sse-token", authenticate, getSSEToken);
+router.post("/logout-session", authenticate, logoutSession);
+router.post("/logout-all", authenticate, logoutAllSessions);
 
 export default router;

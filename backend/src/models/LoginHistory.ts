@@ -17,6 +17,7 @@ export interface ILoginHistory extends Document {
 	loginAt: Date;
 	logoutAt?: Date;
 	isActive: boolean;
+	sessionId?: string;
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -70,6 +71,10 @@ const LoginHistorySchema: Schema = new Schema(
 		isActive: {
 			type: Boolean,
 			default: true,
+			index: true,
+		},
+		sessionId: {
+			type: String,
 			index: true,
 		},
 	},

@@ -37,6 +37,9 @@ const Overlay: React.FC<OverlayProps> = ({
 		}
 	};
 
+	const hasMaxWidth = contentClassName.includes("max-w-");
+	const maxWidthClass = hasMaxWidth ? "" : "max-w-md";
+
 	return (
 		<div
 			className='fixed inset-0 z-[9999] flex items-center justify-center p-4'
@@ -47,7 +50,7 @@ const Overlay: React.FC<OverlayProps> = ({
 			/>
 
 			<div
-				className={`relative z-10 w-full max-w-md bg-card border border-border rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.3),0_0_0_1px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05)] animate-overlay-fade-in ${contentClassName}`}
+				className={`relative z-10 w-full ${maxWidthClass} bg-card border border-border rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.3),0_0_0_1px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.05)] animate-overlay-fade-in ${contentClassName}`}
 				onClick={(e) => e.stopPropagation()}
 			>
 				{children}

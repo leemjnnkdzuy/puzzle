@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
 import {useAuth} from "@/hooks/useAuth";
 import {
-	Loader2,
 	Edit2,
 	Copy,
 	Check,
@@ -21,6 +20,7 @@ import {
 } from "react-icons/fa";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+import Loading from "@/components/ui/Loading";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -367,7 +367,7 @@ const ProfilePage: React.FC = () => {
 	if (authLoading || isLoadingProfile) {
 		return (
 			<div className='flex items-center justify-center min-h-screen'>
-				<Loader2 className='w-8 h-8 animate-spin text-primary' />
+				<Loading size='lg' />
 			</div>
 		);
 	}
@@ -401,9 +401,9 @@ const ProfilePage: React.FC = () => {
 
 	return (
 		<div className='min-h-screen bg-background p-4 md:p-8'>
-			<div className='max-w-4xl mx-auto'>
-				<div className='bg-card rounded-lg shadow-sm'>
-					<div className='sticky top-0 z-10 bg-card flex flex-col md:flex-row items-center gap-6 mb-8 pb-8 border-b border-input pt-4'>
+			<div className='max-w-6xl mx-auto'>
+				<div className='rounded-lg shadow-sm'>
+					<div className='sticky top-0 z-10 flex flex-col md:flex-row items-center gap-6 mb-8 pb-8 border-b border-input pt-4'>
 						<div className='relative'>
 							{userData.avatar ? (
 								<img
@@ -528,7 +528,7 @@ const ProfilePage: React.FC = () => {
 									{formData.socialLinks.map((link, index) => (
 										<div
 											key={index}
-											className='flex gap-2 items-start p-3 bg-accent/50 rounded-md border border-input'
+											className='flex gap-2 items-start sidebar-muted rounded-md'
 										>
 											<div className='flex-1 grid grid-cols-[3fr_1fr] gap-2'>
 												<Input
@@ -716,7 +716,7 @@ const ProfilePage: React.FC = () => {
 													href={link.url}
 													target='_blank'
 													rel='noopener noreferrer'
-													className={`flex items-center gap-3 p-3 bg-accent/50 rounded-md border border-input transition-colors group ${getSocialLinkHoverClasses(
+													className={`flex items-center gap-3 p-3 sidebar-muted rounded-md border border-input dark:border-input/70 transition-colors group ${getSocialLinkHoverClasses(
 														link.platform
 													)}`}
 												>

@@ -1,53 +1,59 @@
 import React from "react";
+import {Loader2} from "lucide-react";
+import {cn} from "@/utils";
 
 interface LoadingProps {
-	size?: number | string | boolean;
+	size?: number | string | "sm" | "md" | "lg";
+	className?: string;
 	color?: string;
 }
 
 const Loading = React.forwardRef<HTMLDivElement, LoadingProps>(
-	({size, color}, ref) => {
-		let width = "40px";
-		let height = "40px";
-		let borderWidth = "3px";
+	({size, className, color}, ref) => {
+		const colorStyle =
+			color && (color.startsWith("#") || color.startsWith("rgb"))
+				? {color}
+				: undefined;
+		const colorClass =
+			color && !colorStyle
+				? color
+				: !colorStyle
+				? "text-primary"
+				: undefined;
 
 		if (typeof size === "number") {
-			width = `${size}px`;
-			height = `${size}px`;
-			borderWidth = size < 30 ? "2px" : "3px";
-		} else if (typeof size === "string") {
-			width = size;
-			height = size;
-			borderWidth = "3px";
-		} else if (size === true) {
-			width = "20px";
-			height = "20px";
-			borderWidth = "2px";
+			return (
+				<div ref={ref} className={cn("inline-block", className)}>
+					<Loader2
+						className={cn("animate-spin", colorClass)}
+						style={{
+							width: `${size}px`,
+							height: `${size}px`,
+							...colorStyle,
+						}}
+					/>
+				</div>
+			);
 		}
 
-		const borderColor = color || "rgb(17, 24, 39)";
+		let sizeClass = "w-5 h-5";
+		if (typeof size === "string") {
+			if (size === "sm") {
+				sizeClass = "w-4 h-4";
+			} else if (size === "md") {
+				sizeClass = "w-6 h-6";
+			} else if (size === "lg") {
+				sizeClass = "w-8 h-8";
+			} else {
+				sizeClass = size;
+			}
+		}
 
 		return (
-			<div
-				ref={ref}
-				style={{
-					display: "inline-block",
-					width: width,
-					height: height,
-					minWidth: width,
-					minHeight: height,
-				}}
-			>
-				<div
-					style={{
-						width: "100%",
-						height: "100%",
-						border: `${borderWidth} solid transparent`,
-						borderTopColor: borderColor,
-						borderRightColor: borderColor,
-						borderRadius: "50%",
-						animation: "spin 0.8s linear infinite",
-					}}
+			<div ref={ref} className={cn("inline-block", className)}>
+				<Loader2
+					className={cn(sizeClass, "animate-spin", colorClass)}
+					style={colorStyle}
 				/>
 			</div>
 		);
