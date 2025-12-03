@@ -489,56 +489,86 @@ const LandingPage = () => {
 
 				<div className='max-w-[1200px] mx-auto'>
 					<div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-						{categories.map((category, index) => (
-							<div
-								key={category.key}
-								onMouseEnter={() => setHoveredCategory(index)}
-								onMouseLeave={() => setHoveredCategory(null)}
-								className={`relative overflow-hidden rounded-xl border border-border bg-card shadow-lg transition-transform duration-300 ease-in-out ${
-									hoveredCategory === index
-										? "scale-110 z-20"
-										: hoveredCategory !== null
-										? "scale-90"
-										: "scale-100"
-								}`}
-							>
-								<div className='aspect-[2/3] w-full overflow-hidden'>
-									<img
-										src={category.poster}
-										alt={t(category.titleKey)}
-										className='w-full h-full object-cover'
-									/>
-								</div>
+						{categories.map((category, index) => {
+							const isMiddleCard = index === 1;
+							const isLeftHovered = hoveredCategory === 0;
+							const isRightHovered = hoveredCategory === 2;
+
+							return (
 								<div
-									className={`absolute inset-0 bg-black/60 flex items-center justify-center transition-opacity duration-300 ${
+									key={category.key}
+									onMouseEnter={() =>
+										setHoveredCategory(index)
+									}
+									onMouseLeave={() =>
+										setHoveredCategory(null)
+									}
+									className={`relative overflow-hidden rounded-xl border border-border bg-card shadow-lg transition-transform duration-300 ease-in-out ${
 										hoveredCategory === index
-											? "opacity-100"
-											: "opacity-0"
+											? "scale-110 z-20"
+											: hoveredCategory !== null
+											? "scale-90"
+											: "scale-100"
+									} ${
+										isMiddleCard && isLeftHovered
+											? "translate-x-8"
+											: isMiddleCard && isRightHovered
+											? "-translate-x-8"
+											: ""
 									}`}
 								>
-									<Button
-										onClick={() => navigate("/home")}
-										variant='default'
-										className={`bg-muted text-muted-foreground hover:bg-white hover:text-black transition-all duration-300 ${
+									<div className='aspect-[2/3] w-full overflow-hidden'>
+										<img
+											src={category.poster}
+											alt={t(category.titleKey)}
+											className='w-full h-full object-cover'
+										/>
+									</div>
+									<div
+										className={`absolute inset-0 bg-black/60 flex items-center justify-center transition-opacity duration-300 ${
 											hoveredCategory === index
-												? "opacity-100 translate-y-0"
-												: "opacity-0 translate-y-4"
+												? "opacity-100"
+												: "opacity-0"
 										}`}
 									>
-										<Play className='w-4 h-4 mr-2' />
-										{t("home.createProject")}
-									</Button>
+										<Button
+											onClick={() => navigate("/home")}
+											variant='default'
+											className={`bg-muted text-muted-foreground dark:bg-[rgb(249,250,251)] dark:text-[rgb(107,114,128)] hover:bg-white hover:text-black dark:hover:text-black transition-all duration-300 ${
+												hoveredCategory === index
+													? "opacity-100 translate-y-0"
+													: "opacity-0 translate-y-4"
+											}`}
+										>
+											<Play className='w-4 h-4 mr-2' />
+											{t("home.createProject")}
+										</Button>
+									</div>
+									<div className='absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/80 to-transparent p-4'>
+										<h3 className='text-lg font-semibold text-white mb-2'>
+											{t(category.titleKey)}
+										</h3>
+										<div
+											className={`overflow-hidden transition-[max-height] duration-500 ease-in-out ${
+												hoveredCategory === index
+													? "max-h-[500px]"
+													: "max-h-[3rem]"
+											}`}
+										>
+											<p
+												className={`text-sm text-white/90 leading-relaxed ${
+													hoveredCategory === index
+														? "line-clamp-none"
+														: "line-clamp-2"
+												}`}
+											>
+												{t(category.descriptionKey)}
+											</p>
+										</div>
+									</div>
 								</div>
-								<div className='absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/80 to-transparent p-4'>
-									<h3 className='text-lg font-semibold text-white mb-2'>
-										{t(category.titleKey)}
-									</h3>
-									<p className='text-sm text-white/90 leading-relaxed line-clamp-3'>
-										{t(category.descriptionKey)}
-									</p>
-								</div>
-							</div>
-						))}
+							);
+						})}
 					</div>
 				</div>
 			</section>
