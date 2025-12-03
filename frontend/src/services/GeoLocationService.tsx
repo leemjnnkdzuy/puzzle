@@ -5,8 +5,9 @@ export interface GeoLocationResponse {
 
 class GeoLocationService {
 	private getIPApiUrl(ip: string): string {
-		return `http://ip-api.com/json/${ip}?fields=status,country,countryCode`;
+		return `https://ipinfo.io/${ip}/json`;
 	}
+
 	private readonly IPIFY_URL = "https://api.ipify.org?format=json";
 	private readonly cacheKey = "geo_location_cache";
 	private readonly ipCacheKey = "client_ip_cache";
@@ -62,15 +63,37 @@ class GeoLocationService {
 		}
 	}
 
+	private parseResponse(data: unknown): GeoLocationResponse | null {
+		if (!data || typeof data !== "object") {
+			return null;
+		}
+
+		const obj = data as Record<string, unknown>;
+		const countryCode = obj.country as string;
+		const city = obj.city as string;
+		const region = obj.region as string;
+
+		if (countryCode && countryCode.length === 2) {
+			const countryName = city || region || countryCode;
+
+			return {
+				countryCode: countryCode.toUpperCase(),
+				country: countryName,
+			};
+		}
+
+		return null;
+	}
+
 	async getLocationFromIP(ip: string): Promise<GeoLocationResponse | null> {
-		const ipApiUrl = this.getIPApiUrl(ip);
 		const cached = this.getCachedLocation();
 		if (cached) {
 			return cached;
 		}
 
 		try {
-			const response = await fetch(ipApiUrl, {
+			const apiUrl = this.getIPApiUrl(ip);
+			const response = await fetch(apiUrl, {
 				method: "GET",
 				headers: {
 					Accept: "application/json",
@@ -82,13 +105,9 @@ class GeoLocationService {
 			}
 
 			const data = await response.json();
+			const location = this.parseResponse(data);
 
-			if (data.status === "success" && data.countryCode) {
-				const location: GeoLocationResponse = {
-					countryCode: data.countryCode,
-					country: data.country,
-				};
-
+			if (location) {
 				this.setCachedLocation(location);
 				return location;
 			}
