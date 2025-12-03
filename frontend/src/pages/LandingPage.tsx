@@ -6,6 +6,7 @@ import {
 	Sparkles,
 	Share2,
 	Plus,
+	Play,
 	Cpu,
 	Bot,
 	Languages,
@@ -18,13 +19,13 @@ import {
 	ChevronDown,
 } from "lucide-react";
 import Button from "@/components/ui/Button";
-import Input from "@/components/ui/Input";
 import VideoPlayer from "@/components/ui/VideoPlayer";
 import Tooltip from "@/components/ui/Tooltip";
 import Assets from "@/configs/AssetsConfig";
 import {useLanguage} from "@/hooks/useLanguage";
 import {usePlaybackStore} from "@/hooks/usePlaybackStore";
 import {useAuth} from "@/hooks/useAuth";
+import CrescentBackground from "@/components/common/CrescentBackground";
 
 const platforms = [
 	{
@@ -62,6 +63,27 @@ const platforms = [
 	{
 		name: "Bilibili",
 		icon: Assets.BilibiliIcon,
+	},
+];
+
+const categories = [
+	{
+		key: "animeMovie",
+		poster: Assets.AnimeMoviePoster,
+		titleKey: "platforms.animeMovieTitle",
+		descriptionKey: "platforms.animeMovieDescription",
+	},
+	{
+		key: "animeSeries",
+		poster: Assets.AnimeSeriesPoster,
+		titleKey: "platforms.animeSeriesTitle",
+		descriptionKey: "platforms.animeSeriesDescription",
+	},
+	{
+		key: "movie",
+		poster: Assets.MoviePoster,
+		titleKey: "platforms.movieTitle",
+		descriptionKey: "platforms.movieDescription",
 	},
 ];
 
@@ -104,6 +126,8 @@ const LandingPage = () => {
 	const [expandedPackages, setExpandedPackages] = useState<{
 		[key: number]: boolean;
 	}>({});
+	const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
+	const [buttonHovered, setButtonHovered] = useState(false);
 	const hasAnimatedRef = useRef(false);
 	const demoRef = useRef<HTMLDivElement>(null);
 	const demoVideoRef = useRef<HTMLVideoElement | null>(null);
@@ -318,53 +342,7 @@ const LandingPage = () => {
 
 	return (
 		<div className='min-h-screen bg-background relative overflow-hidden'>
-			<div className='parallax-bg absolute inset-0 pointer-events-none'>
-				<div className='absolute top-20 left-10 w-32 h-32 bg-blue-100 opacity-50'></div>
-				<div className='absolute left-4 bottom-14 w-48 h-48 border-2 border-purple-200 rounded-full spin-slower opacity-70'></div>
-				<div
-					className='absolute bottom-6 left-12 w-64 h-32 bg-gradient-to-r from-teal-100 via-blue-100 to-transparent rotate-6 rounded-3xl opacity-80'
-					style={{boxShadow: "0 24px 70px rgba(59, 130, 246, 0.18)"}}
-				></div>
-
-				<div className='absolute top-32 right-20 grid grid-cols-3 gap-2'>
-					{[...Array(9)].map((_, i) => (
-						<div
-							key={i}
-							className='w-16 h-16 border border-border bg-card'
-							style={{
-								backgroundImage:
-									i % 3 === 0
-										? "repeating-linear-gradient(45deg, transparent, transparent 2px, #e5e7eb 2px, #e5e7eb 4px)"
-										: "none",
-							}}
-						></div>
-					))}
-				</div>
-
-				<div className='absolute bottom-24 right-14 w-56 h-56 bg-gradient-to-br from-indigo-100 via-blue-100 to-transparent blur-2xl opacity-70'></div>
-				<div
-					className='absolute right-10 bottom-8 w-32 h-32 opacity-60 float-slow'
-					style={{
-						backgroundImage:
-							"radial-gradient(#e5e7eb 1px, transparent 1px)",
-						backgroundSize: "10px 10px",
-					}}
-				></div>
-
-				<span className='glow-dot absolute top-10 left-24 w-3 h-3 rounded-full bg-background/70 blur-sm'></span>
-				<span
-					className='glow-dot absolute top-28 right-32 w-3 h-3 rounded-full bg-amber-200/80 blur-sm'
-					style={{animationDelay: "0.8s"}}
-				></span>
-				<span
-					className='glow-dot absolute bottom-16 left-1/3 w-3 h-3 rounded-full bg-blue-200/80 blur-sm'
-					style={{animationDelay: "1.4s"}}
-				></span>
-				<span
-					className='glow-dot absolute bottom-10 right-1/4 w-3 h-3 rounded-full bg-pink-200/80 blur-sm'
-					style={{animationDelay: "2s"}}
-				></span>
-			</div>
+			<div className='parallax-bg absolute inset-0 pointer-events-none z-0'></div>
 
 			<div
 				className={`z-50 fixed left-6 top-1/2 -translate-y-1/2 flex-col gap-3 transition-opacity duration-300 nav-menu-1400-only ${
@@ -387,72 +365,178 @@ const LandingPage = () => {
 				))}
 			</div>
 
-			<main className='relative z-10 w-full min-h-screen flex items-center justify-center px-4 sm:px-6 pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20'>
-				<div className='max-w-4xl mx-auto text-center px-2'>
-					<h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground mb-4 sm:mb-5 md:mb-6 leading-tight animate-fade-in'>
-						{t("hero.title")}
-						{t("hero.titlePlatform") && (
-							<>
-								{" "}
-								<span className='text-muted-foreground text-3xl sm:text-4xl md:text-5xl lg:text-6xl'>
-									{t("hero.titlePlatform")}
-								</span>
-							</>
-						)}
-					</h1>
+			<section className='relative z-100 w-full min-h-[85vh] flex items-center justify-center px-4 sm:px-6 pt-12 sm:pt-16 pb-8 sm:pb-12 overflow-visible'>
+				<div
+					className='absolute bottom-0 left-0 right-0 w-full pointer-events-none'
+					style={{zIndex: 5, height: "400px"}}
+				>
+					<CrescentBackground intenseShadow={buttonHovered} />
+				</div>
 
-					<div className='space-y-1.5 sm:space-y-2 mb-6 sm:mb-8 md:mb-10 text-base sm:text-lg text-muted-foreground animate-fade-in-delay px-2'>
-						<p>{t("hero.subtitle")}</p>
-						<p>{t("hero.subtitle2")}</p>
-					</div>
+				<div className='relative max-w-7xl mx-auto w-full z-10'>
+					<div className='flex flex-col items-center'>
+						<div className='space-y-4 sm:space-y-5 text-center'>
+							<h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-tight animate-fade-in'>
+								{t("hero.title")}
+								{t("hero.titlePlatform") && (
+									<>
+										{" "}
+										<span className='text-muted-foreground text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl'>
+											{t("hero.titlePlatform")}
+										</span>
+									</>
+								)}
+							</h1>
 
-					<div className='flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-2xl w-full mx-auto justify-center px-2'>
-						<Input
-							type='email'
-							placeholder={t("hero.emailPlaceholder")}
-							className='flex-1 h-11 sm:h-12 px-4 sm:px-5 py-3 text-base sm:text-lg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-foreground'
-						/>
-						<Button
-							variant='default'
-							size='lg'
-							className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background w-full sm:w-auto px-6 sm:px-7 h-11 sm:h-12 text-base sm:text-lg'
-							onClick={() => navigate("/register")}
-						>
-							{t("hero.cta")}
-						</Button>
+							<div className='space-y-2 sm:space-y-2 mb-6 sm:mb-8 text-sm sm:text-base md:text-lg text-muted-foreground animate-fade-in-delay'>
+								<p>{t("hero.subtitle")}</p>
+								<p>{t("hero.subtitle2")}</p>
+							</div>
+
+							<div className='flex justify-center animate-fade-in-delay'>
+								<Button
+									variant='default'
+									size='lg'
+									className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background w-full sm:w-auto px-6 sm:px-8 h-11 sm:h-12 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200'
+									onMouseEnter={() => setButtonHovered(true)}
+									onMouseLeave={() => setButtonHovered(false)}
+									onClick={() =>
+										navigate(
+											isAuthenticated ? "/home" : "/login"
+										)
+									}
+								>
+									{isAuthenticated
+										? t("nav.goHome")
+										: "Bắt đầu miễn phí"}
+								</Button>
+							</div>
+						</div>
 					</div>
 				</div>
-			</main>
+			</section>
 
-			<section className='relative z-10 w-full px-6 py-16 mb-32 border-t border-border overflow-hidden'>
-				<div className='container mx-auto mb-8'>
-					<h2 className='text-center text-2xl font-semibold text-foreground mb-2'>
+			<div
+				className='relative w-full'
+				style={{
+					zIndex: 50,
+					marginTop: "-80px",
+					marginBottom: "2rem",
+				}}
+			>
+				<div className='max-w-[1400px] mx-auto px-6'>
+					<p
+						className='text-center text-muted-foreground relative'
+						style={{zIndex: 50}}
+					>
 						{t("platforms.trusted")}
+					</p>
+				</div>
+			</div>
+
+			<section className='relative z-0 w-full py-10 overflow-hidden'>
+				<div className='relative max-w-[1400px] mx-auto px-6 bg-transparent'>
+					<div
+						className='absolute inset-0 pointer-events-none z-10 bg-transparent'
+						style={{
+							background: `linear-gradient(to right, 
+								rgb(var(--background)) 0%, 
+								rgb(var(--background)) 5%,
+								transparent 10%,
+								transparent 90%,
+								rgb(var(--background)) 95%,
+								rgb(var(--background)) 100%)`,
+						}}
+					/>
+
+					<div className='relative overflow-hidden'>
+						<div className='marquee-track flex items-center gap-8 w-max'>
+							{[...platforms, ...platforms].map(
+								(platform, index) => (
+									<div
+										key={`${platform.name}-${index}`}
+										className='flex items-center gap-3 px-6 min-w-[200px]'
+									>
+										<div
+											className={`w-10 h-10 rounded-lg flex items-center justify-center`}
+										>
+											<img
+												src={platform.icon}
+												alt={platform.name}
+												className='w-8 h-8 object-contain'
+											/>
+										</div>
+										<span className='text-lg font-semibold text-foreground'>
+											{platform.name}
+										</span>
+									</div>
+								)
+							)}
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section className='relative z-10 w-full px-6 py-16 mb-32'>
+				<div className='max-w-[1200px] mx-auto mb-8'>
+					<h2 className='text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4'>
+						{t("platforms.categories")}
 					</h2>
-					<p className='text-center text-muted-foreground'>
-						{t("platforms.support")}
+					<p className='text-center text-muted-foreground max-w-3xl mx-auto leading-relaxed mt-2'>
+						{t("platforms.categoriesDescription")}
 					</p>
 				</div>
 
-				<div className='relative'>
-					<div className='marquee-track flex items-center gap-8 w-max'>
-						{[...platforms, ...platforms].map((platform, index) => (
+				<div className='max-w-[1200px] mx-auto'>
+					<div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+						{categories.map((category, index) => (
 							<div
-								key={`${platform.name}-${index}`}
-								className='cursor-pointer group flex items-center gap-3 px-6 py-3 bg-card rounded-lg shadow-sm border border-border min-w-[200px] transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg hover:border-border'
+								key={category.key}
+								onMouseEnter={() => setHoveredCategory(index)}
+								onMouseLeave={() => setHoveredCategory(null)}
+								className={`relative overflow-hidden rounded-xl border border-border bg-card shadow-lg transition-transform duration-300 ease-in-out ${
+									hoveredCategory === index
+										? "scale-110 z-20"
+										: hoveredCategory !== null
+										? "scale-90"
+										: "scale-100"
+								}`}
 							>
-								<div
-									className={`w-10 h-10 rounded-lg flex items-center justify-center`}
-								>
+								<div className='aspect-[2/3] w-full overflow-hidden'>
 									<img
-										src={platform.icon}
-										alt={platform.name}
-										className='w-8 h-8 object-contain transition-transform duration-200 group-hover:scale-105'
+										src={category.poster}
+										alt={t(category.titleKey)}
+										className='w-full h-full object-cover'
 									/>
 								</div>
-								<span className='text-lg font-semibold text-foreground'>
-									{platform.name}
-								</span>
+								<div
+									className={`absolute inset-0 bg-black/60 flex items-center justify-center transition-opacity duration-300 ${
+										hoveredCategory === index
+											? "opacity-100"
+											: "opacity-0"
+									}`}
+								>
+									<Button
+										onClick={() => navigate("/home")}
+										variant='default'
+										className={`bg-muted text-muted-foreground hover:bg-white hover:text-black transition-all duration-300 ${
+											hoveredCategory === index
+												? "opacity-100 translate-y-0"
+												: "opacity-0 translate-y-4"
+										}`}
+									>
+										<Play className='w-4 h-4 mr-2' />
+										{t("home.createProject")}
+									</Button>
+								</div>
+								<div className='absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/80 to-transparent p-4'>
+									<h3 className='text-lg font-semibold text-white mb-2'>
+										{t(category.titleKey)}
+									</h3>
+									<p className='text-sm text-white/90 leading-relaxed line-clamp-3'>
+										{t(category.descriptionKey)}
+									</p>
+								</div>
 							</div>
 						))}
 					</div>
@@ -464,12 +548,12 @@ const LandingPage = () => {
 				ref={featuresSectionRef}
 				className='relative z-11 w-full px-4 sm:px-6 mb-12 sm:mb-16 md:mb-24'
 			>
-				<div className='max-w-8xl mx-auto text-center mb-8 sm:mb-10 md:mb-14'>
+				<div className='max-w-[1200px] mx-auto text-center mb-8 sm:mb-10 md:mb-14'>
 					<h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground px-2'>
 						{t("features.title")}
 					</h2>
 				</div>
-				<div className='max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6'>
+				<div className='max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6'>
 					{[
 						{key: "movieRecap", Icon: Clapperboard},
 						{key: "autoSubs", Icon: FileText},
@@ -519,7 +603,7 @@ const LandingPage = () => {
 
 			<div
 				ref={demoRef}
-				className='max-w-[1400px] mx-auto min-h-[400px] px-4 sm:px-6 mt-16 sm:mt-24 md:mt-[200px] mb-16 sm:mb-24 md:mb-[250px]'
+				className='max-w-[1200px] mx-auto min-h-[400px] px-4 sm:px-6 mt-16 sm:mt-24 md:mt-[200px] mb-16 sm:mb-24 md:mb-[250px]'
 			>
 				<div className='relative flex flex-col lg:block'>
 					<div
@@ -794,7 +878,7 @@ const LandingPage = () => {
 				ref={packagesSectionRef}
 				className='relative z-10 w-full px-4 sm:px-6 py-12 sm:py-16 md:py-24 mb-12 sm:mb-16 md:mb-20'
 			>
-				<div className='max-w-7xl mx-auto'>
+				<div className='max-w-[1200px] mx-auto'>
 					<div className='text-center mb-8 sm:mb-12 md:mb-16 px-2'>
 						<h2
 							className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 ${
@@ -1035,7 +1119,7 @@ const LandingPage = () => {
 					id='workflow'
 					className='relative z-10 w-full px-6 py-20 scroll-mt-32'
 				>
-					<div className='max-w-6xl mx-auto'>
+					<div className='max-w-[1200px] mx-auto'>
 						<div className='grid md:grid-cols-2 gap-10 items-center'>
 							<div className='relative flex justify-center'>
 								<div className='absolute inset-0 bg-muted rounded-3xl blur-2xl scale-105'></div>
@@ -1155,7 +1239,7 @@ const LandingPage = () => {
 					id='models'
 					className='relative z-10 w-full px-6 py-20 scroll-mt-32'
 				>
-					<div className='max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center'>
+					<div className='max-w-[1200px] mx-auto grid md:grid-cols-2 gap-10 items-center'>
 						<div className='space-y-5'>
 							<div className='flex items-center gap-2 text-sm font-semibold text-foreground'>
 								<Layers className='w-4 h-4' />
@@ -1270,7 +1354,7 @@ const LandingPage = () => {
 					id='voice'
 					className='relative z-10 w-full px-6 py-20 scroll-mt-32'
 				>
-					<div className='max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-start md:items-stretch'>
+					<div className='max-w-[1200px] mx-auto grid md:grid-cols-2 gap-10 items-start md:items-stretch'>
 						<div className='relative h-full'>
 							<div className='absolute inset-0 bg-gradient-to-br from-purple-100 via-blue-50 to-indigo-100 dark:from-purple-900/20 dark:via-blue-900/20 dark:to-indigo-900/20 rounded-[32px] blur-2xl'></div>
 							<div className='relative bg-card rounded-[28px] border border-border shadow-xl p-7 space-y-5 h-full flex flex-col'>
@@ -1412,7 +1496,7 @@ const LandingPage = () => {
 					id='quality'
 					className='relative z-10 w-full px-6 py-20 scroll-mt-32'
 				>
-					<div className='max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-start md:items-center'>
+					<div className='max-w-[1200px] mx-auto grid md:grid-cols-2 gap-10 items-start md:items-center'>
 						<div className='space-y-6'>
 							<div className='inline-flex items-center gap-2 text-sm font-semibold text-foreground'>
 								<View className='w-4 h-4' />
@@ -1530,7 +1614,7 @@ const LandingPage = () => {
 					!showNav ? "opacity-100" : "opacity-0"
 				}`}
 			>
-				<div className='max-w-7xl mx-auto px-6 py-16 md:py-48 mb-36'>
+				<div className='max-w-[1200px] mx-auto px-6 py-16 md:py-48 mb-36'>
 					<div className='max-w-4xl mx-auto text-center'>
 						{isAuthenticated ? (
 							<>

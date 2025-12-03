@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {FaTwitter, FaDiscord, FaGithub, FaEnvelope} from "react-icons/fa";
-import {FileText, Mic, Sparkles} from "lucide-react";
+import {FileText, Mic, Sparkles, User, Settings, Palette, LogOut, Sun, Moon, Wallet, CircleDollarSign} from "lucide-react";
 import Button from "@/components/ui/Button";
 import AppIcon from "@/components/common/AppIcon";
 import {
@@ -9,10 +9,20 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
+	DropdownMenuSeparator,
+	DropdownMenuSub,
+	DropdownMenuSubContent,
+	DropdownMenuSubTrigger,
 } from "@/components/ui/DropdownMenu";
 import {useLanguage} from "@/hooks/useLanguage";
 import {Globe} from "lucide-react";
 import {useAuth} from "@/hooks/useAuth";
+import {useTheme} from "@/hooks/useTheme";
+import {useLogoutListener} from "@/hooks/useLogoutListener";
+import {useCreditStore} from "@/stores/creditStore";
+import {formatCurrency} from "@/utils";
+import ConfirmDialog from "@/components/common/ConfirmDialog";
+import {cn} from "@/utils";
 
 interface HeaderFooterLayoutProps {
 	children: React.ReactNode;
@@ -24,10 +34,64 @@ const servicePackages = [
 	{key: "fullService", Icon: Sparkles},
 ];
 
+interface UserData {
+	username?: string;
+	email?: string;
+	first_name?: string;
+	last_name?: string;
+	avatar?: string;
+}
+
 const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 	const navigate = useNavigate();
-	const {language, setLanguage, t} = useLanguage();
-	const {isAuthenticated} = useAuth();
+	const {language, setLanguage, t, getNested} = useLanguage();
+	const {isAuthenticated, user, logout} = useAuth();
+	const {theme, setTheme} = useTheme();
+	const credit = useCreditStore((state) => state.credit);
+	const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+	useLogoutListener();
+
+	const userData = user as UserData | null;
+	const userName =
+		userData && userData.first_name && userData.last_name
+			? `${userData.first_name} ${userData.last_name}`.trim()
+			: userData?.username || "User";
+	const userEmail = userData?.email || "";
+	const userAvatar = userData?.avatar || "";
+
+	const sidebar = getNested?.("sidebar") as
+		| {
+				home: string;
+				api: string;
+				voice: string;
+				tts: string;
+				stt: string;
+				projects: string;
+				templates: string;
+				shared: string;
+				about: string;
+				viewProfile: string;
+				recharge: string;
+				settings: string;
+				theme: string;
+				language: string;
+				logout: string;
+				light: string;
+				dark: string;
+				collapse: string;
+				expand: string;
+		  }
+		| undefined;
+
+	const handleLogoutClick = () => {
+		setShowLogoutConfirm(true);
+	};
+
+	const handleLogout = async () => {
+		await logout();
+		navigate("/");
+	};
 
 	return (
 		<div className='min-h-screen bg-background relative overflow-hidden'>
@@ -163,14 +227,157 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 						</nav>
 
 						<div className='flex items-center gap-4'>
-							{isAuthenticated ? (
-								<Button
-									variant='default'
-									className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background'
-									onClick={() => navigate("/home")}
-								>
-									{t("nav.goHome")}
-								</Button>
+							{isAuthenticated && userData ? (
+								<>
+									<div className='flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-card/50'>
+										<CircleDollarSign className='w-4 h-4 text-green-500 dark:text-green-400' />
+										<span className='text-sm font-medium text-foreground'>
+											{formatCurrency(credit)}
+										</span>
+									</div>
+									<DropdownMenu>
+										<DropdownMenuTrigger asChild>
+											<button
+												className='flex items-center gap-2 rounded-full hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2'
+												type='button'
+											>
+												<div className='flex-shrink-0 w-10 h-10 rounded-full overflow-hidden border-2 border-border transition-colors duration-300'>
+													{userAvatar ? (
+														<img
+															src={userAvatar}
+															alt={userName}
+															className='w-full h-full object-cover'
+														/>
+													) : (
+														<div className='w-full h-full bg-primary flex items-center justify-center text-primary-foreground font-semibold'>
+															{userName.charAt(0).toUpperCase()}
+														</div>
+													)}
+												</div>
+											</button>
+										</DropdownMenuTrigger>
+									<DropdownMenuContent
+										align='end'
+										className='w-56 shadow-lg border bg-card border-border'
+									>
+										<div className='px-3 py-2 border-b border-border'>
+											<div className='flex items-center gap-3'>
+												<div className='flex-shrink-0 w-10 h-10 rounded-full overflow-hidden border-2 border-border'>
+													{userAvatar ? (
+														<img
+															src={userAvatar}
+															alt={userName}
+															className='w-full h-full object-cover'
+														/>
+													) : (
+														<div className='w-full h-full bg-primary flex items-center justify-center text-primary-foreground font-semibold'>
+															{userName.charAt(0).toUpperCase()}
+														</div>
+													)}
+												</div>
+												<div className='flex-1 min-w-0'>
+													<div className='text-sm font-medium text-card-foreground truncate'>
+														{userName}
+													</div>
+													<div className='text-xs text-muted-foreground truncate'>
+														{userEmail}
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<DropdownMenuItem
+											onClick={() => navigate("/profile")}
+											className='cursor-pointer'
+										>
+											<User className='w-4 h-4 mr-2' />
+											{sidebar?.viewProfile || "Xem hồ sơ"}
+										</DropdownMenuItem>
+
+										<DropdownMenuItem
+											onClick={() => navigate("/recharge")}
+											className='cursor-pointer'
+										>
+											<Wallet className='w-4 h-4 mr-2' />
+											{sidebar?.recharge || "Nạp tiền"}
+										</DropdownMenuItem>
+
+										<DropdownMenuItem
+											onClick={() => navigate("/settings")}
+											className='cursor-pointer'
+										>
+											<Settings className='w-4 h-4 mr-2' />
+											{sidebar?.settings}
+										</DropdownMenuItem>
+
+										<DropdownMenuSub>
+											<DropdownMenuSubTrigger>
+												<Palette className='w-4 h-4 mr-2' />
+												{sidebar?.theme}
+											</DropdownMenuSubTrigger>
+											<DropdownMenuSubContent>
+												<DropdownMenuItem
+													onSelect={() => setTheme("light")}
+													className={cn(
+														"cursor-pointer",
+														theme === "light" && "bg-accent"
+													)}
+												>
+													<Sun className='w-4 h-4 mr-2' />
+													{sidebar?.light}
+												</DropdownMenuItem>
+												<DropdownMenuItem
+													onSelect={() => setTheme("dark")}
+													className={cn(
+														"cursor-pointer",
+														theme === "dark" && "bg-accent"
+													)}
+												>
+													<Moon className='w-4 h-4 mr-2' />
+													{sidebar?.dark}
+												</DropdownMenuItem>
+											</DropdownMenuSubContent>
+										</DropdownMenuSub>
+
+										<DropdownMenuSub>
+											<DropdownMenuSubTrigger>
+												<Globe className='w-4 h-4 mr-2' />
+												{sidebar?.language}
+											</DropdownMenuSubTrigger>
+											<DropdownMenuSubContent>
+												<DropdownMenuItem
+													onSelect={() => setLanguage("vi")}
+													className={cn(
+														"cursor-pointer",
+														language === "vi" && "bg-accent"
+													)}
+												>
+													Tiếng Việt
+												</DropdownMenuItem>
+												<DropdownMenuItem
+													onSelect={() => setLanguage("en")}
+													className={cn(
+														"cursor-pointer",
+														language === "en" && "bg-accent"
+													)}
+												>
+													English
+												</DropdownMenuItem>
+											</DropdownMenuSubContent>
+										</DropdownMenuSub>
+
+										<DropdownMenuSeparator />
+
+										<DropdownMenuItem
+											onClick={handleLogoutClick}
+											className='cursor-pointer text-muted-foreground hover:text-foreground'
+										>
+											<LogOut className='w-4 h-4 mr-2' />
+											{sidebar?.logout || "Đăng xuất"}
+										</DropdownMenuItem>
+									</DropdownMenuContent>
+								</DropdownMenu>
+								</>
 							) : (
 								<>
 									<Button
@@ -453,6 +660,35 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 					</div>
 				</div>
 			</footer>
+
+			<ConfirmDialog
+				isOpen={showLogoutConfirm}
+				onClose={() => setShowLogoutConfirm(false)}
+				onConfirm={async () => {
+					await handleLogout();
+					setShowLogoutConfirm(false);
+				}}
+				title={
+					(getNested?.("logout.confirmTitle") as string) ||
+					"Confirm Logout"
+				}
+				message={
+					(getNested?.("logout.confirmMessage") as string) ||
+					"Are you sure you want to logout?"
+				}
+				confirmText={
+					(getNested?.("logout.confirm") as string) || "Logout"
+				}
+				cancelText={
+					(getNested?.("logout.cancel") as string) || "Cancel"
+				}
+				confirmVariant='destructive'
+				icon={
+					<div className='w-12 h-12 rounded-full bg-destructive/10 flex items-center justify-center'>
+						<LogOut className='w-6 h-6 text-destructive' />
+					</div>
+				}
+			/>
 		</div>
 	);
 };

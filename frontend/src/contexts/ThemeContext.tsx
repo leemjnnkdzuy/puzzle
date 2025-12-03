@@ -65,6 +65,27 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
 	const isSyncingRef = useRef(false);
 
 	useEffect(() => {
+		const handleThemeUpdate = (event: CustomEvent<Theme>) => {
+			const newTheme = event.detail;
+			if (newTheme === "light" || newTheme === "dark") {
+				setThemeState(newTheme);
+			}
+		};
+
+		window.addEventListener(
+			"themeUpdated",
+			handleThemeUpdate as EventListener
+		);
+
+		return () => {
+			window.removeEventListener(
+				"themeUpdated",
+				handleThemeUpdate as EventListener
+			);
+		};
+	}, []);
+
+	useEffect(() => {
 		if (isAuthenticated) {
 			const loadThemeFromServer = async () => {
 				if (isSyncingRef.current) return;

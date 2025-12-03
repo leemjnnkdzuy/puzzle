@@ -14,6 +14,9 @@ import TruongSoCute from "@/assets/TruongSoCute.png";
 import appIconGray from "@/assets/app_icon_gray.svg";
 import appIconWhite from "@/assets/app_icon_while.svg";
 import appIconGradient from "@/assets/app_icon_gradient.svg";
+import animeMoviePoster from "@/assets/anime_movie_poster.png";
+import animeSeriesPoster from "@/assets/anime_series_poster.png";
+import moviePoster from "@/assets/movie_poster.png";
 
 const Assets = {
 	//App Icons
@@ -35,7 +38,9 @@ const Assets = {
 	//LandingPage Assets
 	DemoVideo: demoVideo,
 	LandingPagePoster: landingPagePoster,
-	
+	AnimeMoviePoster: animeMoviePoster,
+	AnimeSeriesPoster: animeSeriesPoster,
+	MoviePoster: moviePoster,
 
 	//AboutPage Assets
 	Leemjnnkdzuy: leemjnnkdzuy,

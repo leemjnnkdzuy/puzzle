@@ -165,11 +165,8 @@
 	}
 }
 .marquee-track {
-	animation: marquee 28s linear infinite;
+	animation: marquee 45s linear infinite;
 	will-change: transform;
-}
-.marquee-track:hover {
-	animation-play-state: paused;
 }
 @keyframes float {
 	0% {
@@ -229,6 +226,36 @@
 .animate-fade-in-delay {
 	opacity: 0;
 	animation: fadeIn 0.8s ease-out 0.3s forwards;
+}
+
+@keyframes slideInRight {
+	from {
+		opacity: 0;
+		transform: translateX(50px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+.animate-slide-in-right {
+	opacity: 0;
+	animation: slideInRight 0.8s ease-out forwards;
+}
+
+@keyframes slideInRightDelay {
+	from {
+		opacity: 0;
+		transform: translateX(50px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+.animate-slide-in-right-delay {
+	opacity: 0;
+	animation: slideInRightDelay 0.8s ease-out 0.3s forwards;
 }
 
 @keyframes overlayFadeIn {
@@ -301,4 +328,44 @@
 	.nav-menu-1400-only {
 		display: flex;
 	}
+}
+
+.crescent-shape {
+	background: radial-gradient(
+		ellipse 90% 40% at 50% 100%,
+		rgba(0, 0, 0, 0.15) 0%,
+		rgba(0, 0, 0, 0.08) 30%,
+		rgba(0, 0, 0, 0.03) 50%,
+		transparent 70%
+	);
+	filter: blur(30px);
+}
+
+.dark .crescent-shape {
+	background: radial-gradient(
+		ellipse 90% 40% at 50% 100%,
+		rgba(255, 255, 255, 0.4) 0%,
+		rgba(255, 255, 255, 0.25) 30%,
+		rgba(255, 255, 255, 0.12) 50%,
+		rgba(255, 255, 255, 0.05) 65%,
+		transparent 75%
+	);
+	filter: blur(35px);
+}
+
+/* SVG crescent styles */
+.crescent-ellipse {
+	display: block;
+}
+
+.dark .crescent-ellipse {
+	display: none;
+}
+
+.crescent-ellipse-dark {
+	display: none;
+}
+
+.dark .crescent-ellipse-dark {
+	display: block;
 }

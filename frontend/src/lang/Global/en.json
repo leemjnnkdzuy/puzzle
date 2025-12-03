@@ -18,8 +18,17 @@
 		"cta": "See Puzzle"
 	},
 	"platforms": {
-		"trusted": "Trusted by creators worldwide",
-		"support": "Support all major video platforms"
+		"trusted": "Support all major video platforms",
+		"support": "Support all major video platforms",
+		"categories": "Content Types We Support for Summarization",
+		"categoriesSubtitle": "Explore different content types",
+		"categoriesDescription": "Our AI automatically analyzes and intelligently summarizes movies, helping you save time and quickly grasp content. The system uses plot recognition technology, detects important scenes, and creates detailed summaries for all movie genres.",
+		"animeMovieTitle": "Anime Movie",
+		"animeMovieDescription": "AI analyzes anime movies, automatically detecting important scenes, analyzing plot and characters to create concise yet comprehensive summaries.",
+		"animeSeriesTitle": "Anime Series",
+		"animeSeriesDescription": "Process entire anime series with multiple episodes, AI automatically creates timelines, divides chapters and summarizes each arc, helping you easily grasp the entire story.",
+		"movieTitle": "Movie",
+		"movieDescription": "Deep analysis of feature films, AI understands complex plots, character development and important highlights to create professional and easy-to-understand summaries."
 	},
 	"features": {
 		"title": "All-in-one platform for film & anime recaps",

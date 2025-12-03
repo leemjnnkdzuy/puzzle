@@ -18,8 +18,17 @@
 		"cta": "Xem Puzzle"
 	},
 	"platforms": {
-		"trusted": "Được tin tưởng bởi các nhà sáng tạo trên toàn thế giới",
-		"support": "Hỗ trợ tất cả các nền tảng video lớn"
+		"trusted": "Hỗ trợ tất cả các nền tảng video lớn",
+		"support": "Hỗ trợ tất cả các nền tảng video lớn",
+		"categories": "Các thể loại chúng tôi hỗ trợ tóm tắt",
+		"categoriesSubtitle": "Khám phá các loại nội dung khác nhau",
+		"categoriesDescription": "AI của chúng tôi tự động phân tích và tóm tắt phim một cách thông minh, giúp bạn tiết kiệm thời gian và nắm bắt nội dung nhanh chóng. Hệ thống sử dụng công nghệ nhận diện cốt truyện, phát hiện cảnh quan trọng và tạo tóm tắt chi tiết cho mọi thể loại phim.",
+		"animeMovieTitle": "Anime Movie",
+		"animeMovieDescription": "AI phân tích phim anime, tự động phát hiện các cảnh quan trọng, phân tích cốt truyện và nhân vật để tạo ra bản tóm tắt ngắn gọn nhưng đầy đủ thông tin.",
+		"animeSeriesTitle": "Anime Series",
+		"animeSeriesDescription": "Xử lý toàn bộ series anime với nhiều tập, AI tự động tạo timeline, chia chapter và tóm tắt từng cung phim, giúp bạn nắm bắt toàn bộ câu chuyện một cách dễ dàng.",
+		"movieTitle": "Movie",
+		"movieDescription": "Phân tích sâu các bộ phim điện ảnh, AI hiểu được cốt truyện phức tạp, phát triển nhân vật và các điểm nhấn quan trọng để tạo ra bản tóm tắt chuyên nghiệp và dễ hiểu."
 	},
 	"features": {
 		"title": "Nền tảng tất cả trong một cho tóm tắt phim & anime",

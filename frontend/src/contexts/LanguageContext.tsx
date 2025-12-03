@@ -79,19 +79,34 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
 			if (saved && SUPPORTED_LANGUAGES.includes(saved)) {
 				return saved as Language;
 			}
-			const defaultLang: Language = DEFAULT_LANGUAGE as Language;
-			try {
-				localStorage.setItem("language", defaultLang);
-			} catch (e) {
-				console.warn("Could not save language to localStorage:", e);
-			}
-			return defaultLang;
+			return DEFAULT_LANGUAGE as Language;
 		} catch (e) {
 			console.warn("Could not access localStorage:", e);
 			return DEFAULT_LANGUAGE as Language;
 		}
 	});
 	const isSyncingRef = useRef(false);
+
+	useEffect(() => {
+		const handleLanguageUpdate = (event: CustomEvent<Language>) => {
+			const newLanguage = event.detail;
+			if (SUPPORTED_LANGUAGES.includes(newLanguage)) {
+				setLanguageState(newLanguage);
+			}
+		};
+
+		window.addEventListener(
+			"languageUpdated",
+			handleLanguageUpdate as EventListener
+		);
+
+		return () => {
+			window.removeEventListener(
+				"languageUpdated",
+				handleLanguageUpdate as EventListener
+			);
+		};
+	}, []);
 
 	useEffect(() => {
 		if (isAuthenticated) {
@@ -140,7 +155,6 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
 		async (lang: Language) => {
 			setLanguageState(lang);
 
-			// Sync to server if authenticated
 			if (isAuthenticated) {
 				try {
 					await userService.updatePreferences({
@@ -148,7 +162,6 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
 					});
 				} catch (error) {
 					console.warn("Failed to sync language to server:", error);
-					// Continue with local language
 				}
 			}
 		},
