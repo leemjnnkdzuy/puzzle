@@ -337,7 +337,7 @@ const HomePage: React.FC = () => {
 
 						<div className='flex items-center gap-3 sm:gap-4 ml-auto'>
 							<div
-								className='flex items-center gap-2 px-3 h-7 rounded-md bg-card border border-green-500 dark:border-green-400 hover:border-cyan-500 transition-all duration-200 cursor-pointer group'
+								className='flex items-center gap-2 px-3 h-7 rounded-md bg-card border border-green-500 dark:border-green-400 group-hover:border-cyan-500 dark:group-hover:border-cyan-400 transition-all duration-200 cursor-pointer group'
 								onClick={() => navigate("/recharge")}
 							>
 								<div className='relative w-4 h-4'>

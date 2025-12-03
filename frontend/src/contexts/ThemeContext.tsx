@@ -34,7 +34,7 @@ const getInitialTheme = (): Theme => {
 		console.warn("Could not access localStorage:", e);
 	}
 
-	return "light";
+	return "dark";
 };
 
 const applyTheme = (theme: Theme) => {
