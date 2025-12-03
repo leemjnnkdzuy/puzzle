@@ -652,5 +652,47 @@
 			"close": "Close",
 			"scanQRToComplete": "Scan QR to complete transaction"
 		}
+	},
+	"tts": {
+		"title": "Text-to-Speech",
+		"description": "Convert text to natural speech with advanced AI technology",
+		"textInput": "Enter text",
+		"textPlaceholder": "Enter the text you want to convert to speech...",
+		"voice": "Select voice",
+		"language": "Language",
+		"speed": "Speed",
+		"pitch": "Pitch",
+		"generate": "Generate speech",
+		"clear": "Clear",
+		"play": "Play",
+		"pause": "Pause",
+		"stop": "Stop",
+		"download": "Download",
+		"history": "History",
+		"noHistory": "No history yet",
+		"charCount": "Characters",
+		"estimatedCost": "Estimated cost",
+		"loading": "Generating speech...",
+		"error": {
+			"textRequired": "Please enter text",
+			"textTooLong": "Text is too long. Maximum {max} characters",
+			"voiceRequired": "Please select a voice",
+			"generateFailed": "Failed to generate speech. Please try again",
+			"loadVoicesFailed": "Failed to load voices",
+			"loadHistoryFailed": "Failed to load history",
+			"deleteFailed": "Failed to delete item"
+		},
+		"success": {
+			"generated": "Speech generated successfully",
+			"deleted": "Deleted successfully"
+		},
+		"noVoiceSelected": "No voice selected",
+		"selectVoice": "Select voice",
+		"selectLanguage": "Select language",
+		"characters": "characters",
+		"credits": "credits",
+		"deleteConfirm": "Are you sure you want to delete this item?",
+		"delete": "Delete",
+		"cancel": "Cancel"
 	}
 }

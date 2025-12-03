@@ -161,6 +161,7 @@ class AuthService {
 		bio?: string;
 		first_name?: string;
 		last_name?: string;
+		avatar?: string;
 		socialLinks?: Array<{
 			platform:
 				| "website"
@@ -179,6 +180,7 @@ class AuthService {
 			bio: string;
 			first_name: string;
 			last_name: string;
+			avatar?: string;
 			socialLinks: Array<{
 				platform: string;
 				url: string;
@@ -192,6 +194,7 @@ class AuthService {
 				bio: string;
 				first_name: string;
 				last_name: string;
+				avatar?: string;
 				socialLinks: Array<{
 					platform: string;
 					url: string;

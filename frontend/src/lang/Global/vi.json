@@ -652,5 +652,47 @@
 			"close": "Đóng",
 			"scanQRToComplete": "Quét QR để hoàn tất giao dịch"
 		}
+	},
+	"tts": {
+		"title": "Text-to-Speech",
+		"description": "Chuyển đổi văn bản thành giọng nói tự nhiên với công nghệ AI tiên tiến",
+		"textInput": "Nhập văn bản",
+		"textPlaceholder": "Nhập văn bản bạn muốn chuyển đổi thành giọng nói...",
+		"voice": "Chọn giọng nói",
+		"language": "Ngôn ngữ",
+		"speed": "Tốc độ",
+		"pitch": "Cao độ",
+		"generate": "Tạo giọng nói",
+		"clear": "Xóa",
+		"play": "Phát",
+		"pause": "Tạm dừng",
+		"stop": "Dừng",
+		"download": "Tải xuống",
+		"history": "Lịch sử",
+		"noHistory": "Chưa có lịch sử",
+		"charCount": "Số ký tự",
+		"estimatedCost": "Chi phí ước tính",
+		"loading": "Đang tạo giọng nói...",
+		"error": {
+			"textRequired": "Vui lòng nhập văn bản",
+			"textTooLong": "Văn bản quá dài. Tối đa {max} ký tự",
+			"voiceRequired": "Vui lòng chọn giọng nói",
+			"generateFailed": "Không thể tạo giọng nói. Vui lòng thử lại",
+			"loadVoicesFailed": "Không thể tải danh sách giọng nói",
+			"loadHistoryFailed": "Không thể tải lịch sử",
+			"deleteFailed": "Không thể xóa mục này"
+		},
+		"success": {
+			"generated": "Tạo giọng nói thành công",
+			"deleted": "Đã xóa thành công"
+		},
+		"noVoiceSelected": "Chưa chọn giọng nói",
+		"selectVoice": "Chọn giọng nói",
+		"selectLanguage": "Chọn ngôn ngữ",
+		"characters": "ký tự",
+		"credits": "tín dụng",
+		"deleteConfirm": "Bạn có chắc muốn xóa mục này?",
+		"delete": "Xóa",
+		"cancel": "Hủy"
 	}
 }

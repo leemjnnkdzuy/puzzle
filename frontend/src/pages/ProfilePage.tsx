@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {useParams} from "react-router-dom";
 import {useAuth} from "@/hooks/useAuth";
 import {
@@ -9,6 +9,7 @@ import {
 	Trash2,
 	Globe,
 	ChevronDown,
+	Camera,
 } from "lucide-react";
 import {
 	FaFacebook,
@@ -31,6 +32,7 @@ import {useGlobalNotificationPopup} from "@/hooks/useGlobalNotificationPopup";
 import authService from "@/services/AuthService";
 import {useAuthStore} from "@/stores/authStore";
 import {useLanguage} from "@/hooks/useLanguage";
+import {compressImage} from "@/utils";
 
 interface UserData {
 	_id?: string;
@@ -111,9 +113,13 @@ const ProfilePage: React.FC = () => {
 	const [userData, setUserData] = useState<UserData | null>(null);
 	const [copied, setCopied] = useState(false);
 	const [isLoadingProfile, setIsLoadingProfile] = useState(false);
+	const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+	const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const [formData, setFormData] = useState({
 		bio: "",
+		avatar: "",
 		socialLinks: [] as Array<{platform: SocialPlatform; url: string}>,
 	});
 
@@ -129,8 +135,10 @@ const ProfilePage: React.FC = () => {
 					setUserData(data);
 					setFormData({
 						bio: data.bio || "",
+						avatar: "",
 						socialLinks: data.socialLinks || [],
 					});
+					setAvatarPreview(null);
 				}
 			} else {
 				// Viewing other user's profile
@@ -142,8 +150,10 @@ const ProfilePage: React.FC = () => {
 						setUserData(profileUser);
 						setFormData({
 							bio: profileUser.bio || "",
+							avatar: "",
 							socialLinks: profileUser.socialLinks || [],
 						});
+						setAvatarPreview(null);
 					} else {
 						showError(
 							result.message ||
@@ -170,6 +180,63 @@ const ProfilePage: React.FC = () => {
 
 	const handleInputChange = (field: keyof typeof formData, value: string) => {
 		setFormData((prev) => ({...prev, [field]: value}));
+	};
+
+	const handleAvatarClick = () => {
+		if (isOwnProfile && isEditing && fileInputRef.current) {
+			fileInputRef.current.click();
+		}
+	};
+
+	const handleAvatarChange = async (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		const file = event.target.files?.[0];
+		if (!file) return;
+
+		if (!file.type.startsWith("image/")) {
+			showError("Please select a valid image file");
+			return;
+		}
+
+		const maxSize = 5 * 1024 * 1024;
+		if (file.size > maxSize) {
+			showError("Image size must be less than 5MB");
+			return;
+		}
+
+		try {
+			setIsUploadingAvatar(true);
+			const maxBase64Size = 500 * 1024;
+			let base64String = await compressImage(file, 600, 600, 0.75);
+
+			if (base64String.length > maxBase64Size) {
+				base64String = await compressImage(file, 500, 500, 0.7);
+			}
+
+			if (base64String.length > maxBase64Size) {
+				base64String = await compressImage(file, 400, 400, 0.65);
+			}
+
+			if (base64String.length > maxBase64Size) {
+				base64String = await compressImage(file, 300, 300, 0.6);
+			}
+
+			setFormData((prev) => ({...prev, avatar: base64String}));
+			setAvatarPreview(base64String);
+			setIsUploadingAvatar(false);
+		} catch (error) {
+			const errorMessage =
+				error instanceof Error
+					? error.message
+					: "Failed to process image";
+			showError(errorMessage);
+			setIsUploadingAvatar(false);
+		}
+
+		if (fileInputRef.current) {
+			fileInputRef.current.value = "";
+		}
 	};
 
 	const handleSocialLinkChange = (
@@ -300,10 +367,21 @@ const ProfilePage: React.FC = () => {
 				(link) => link.url.trim() !== ""
 			);
 
-			const response = await authService.updateProfile({
+			const updatePayload: {
+				bio?: string;
+				avatar?: string;
+				socialLinks?: Array<{platform: SocialPlatform; url: string}>;
+			} = {
 				bio: formData.bio,
 				socialLinks: validSocialLinks,
-			});
+			};
+
+			// Only include avatar if it was changed
+			if (formData.avatar) {
+				updatePayload.avatar = formData.avatar;
+			}
+
+			const response = await authService.updateProfile(updatePayload);
 
 			if (response.success) {
 				showSuccess(
@@ -318,8 +396,10 @@ const ProfilePage: React.FC = () => {
 					setUserData(updatedUser);
 					setFormData({
 						bio: updatedUser.bio || "",
+						avatar: "",
 						socialLinks: updatedUser.socialLinks || [],
 					});
+					setAvatarPreview(null);
 				}
 			} else {
 				showError(
@@ -343,9 +423,11 @@ const ProfilePage: React.FC = () => {
 		if (userData) {
 			setFormData({
 				bio: userData.bio || "",
+				avatar: "",
 				socialLinks: userData.socialLinks || [],
 			});
 		}
+		setAvatarPreview(null);
 		setIsEditing(false);
 	};
 
@@ -405,19 +487,46 @@ const ProfilePage: React.FC = () => {
 				<div className='rounded-lg shadow-sm'>
 					<div className='sticky top-0 z-10 flex flex-col md:flex-row items-center gap-6 mb-8 pb-8 border-b border-input pt-4'>
 						<div className='relative'>
-							{userData.avatar ? (
-								<img
-									src={userData.avatar}
-									alt={fullName}
-									className='w-24 h-24 rounded-full object-cover border-2 border-primary'
-								/>
-							) : (
-								<div className='w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center border-2 border-primary'>
-									<span className='text-3xl font-semibold text-primary'>
-										{getInitials()}
-									</span>
-								</div>
-							)}
+							<input
+								ref={fileInputRef}
+								type='file'
+								accept='image/*'
+								onChange={handleAvatarChange}
+								className='hidden'
+							/>
+							<div
+								onClick={handleAvatarClick}
+								className={`relative ${
+									isOwnProfile && isEditing
+										? "cursor-pointer group"
+										: ""
+								}`}
+							>
+								{avatarPreview || userData.avatar ? (
+									<img
+										src={avatarPreview || userData.avatar}
+										alt={fullName}
+										className='w-24 h-24 rounded-full object-cover border-2 border-primary'
+									/>
+								) : (
+									<div className='w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center border-2 border-primary'>
+										<span className='text-3xl font-semibold text-primary'>
+											{getInitials()}
+										</span>
+									</div>
+								)}
+								{isOwnProfile && isEditing && (
+									<>
+										<div className='absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center'>
+											{isUploadingAvatar ? (
+												<Loading size='sm' />
+											) : (
+												<Camera className='w-6 h-6 text-white' />
+											)}
+										</div>
+									</>
+								)}
+							</div>
 						</div>
 						<div className='flex-1 flex flex-col md:flex-row items-center md:items-center justify-between gap-4 w-full'>
 							<div className='text-center md:text-left'>

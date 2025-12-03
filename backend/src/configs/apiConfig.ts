@@ -7,6 +7,7 @@ import scriptVoiceRoutes from "@/routes/scriptVoiceRoutes";
 import fullServiceRoutes from "@/routes/fullServiceRoutes";
 import notificationRoutes from "@/routes/notificationRoutes";
 import paymentRoutes from "@/routes/paymentRoutes";
+import ttsRoutes from "@/routes/ttsRoutes";
 
 const apiConfig = express.Router();
 
@@ -18,5 +19,6 @@ apiConfig.use("/script-voice", scriptVoiceRoutes);
 apiConfig.use("/full-service", fullServiceRoutes);
 apiConfig.use("/notifications", notificationRoutes);
 apiConfig.use("/payments", paymentRoutes);
+apiConfig.use("/tts", ttsRoutes);
 
 export default apiConfig;

@@ -116,12 +116,6 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
 			icon: Mic,
 			children: [
 				{
-					key: "voice",
-					label: sidebar?.voice || "Voice",
-					icon: Mic,
-					path: "/api/voice",
-				},
-				{
 					key: "tts",
 					label: sidebar?.tts || "Text-to-Speech",
 					icon: Volume2,

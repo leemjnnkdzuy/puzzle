@@ -33,6 +33,7 @@ import ProfilePage from "@/pages/ProfilePage";
 import SettingsPage from "@/pages/SettingsPage";
 import RechargePage, {RechargePageRightSidebar} from "@/pages/RechargePage";
 import TransactionHistoryPage from "@/pages/TransactionHistoryPage";
+import TextToSpeechPage from "@/pages/TextToSpeechPage";
 
 const publicRoutes: RouteTypes[] = [
 	{
@@ -124,6 +125,11 @@ const privateRoutes: RouteTypes[] = [
 	{
 		path: "/transaction-history",
 		component: TransactionHistoryPage,
+		layout: SidebarLayout,
+	},
+	{
+		path: "/api/tts",
+		component: TextToSpeechPage,
 		layout: SidebarLayout,
 	},
 	{

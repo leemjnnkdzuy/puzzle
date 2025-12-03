@@ -96,7 +96,7 @@ export const updateProfile = async (
 ): Promise<void> => {
 	try {
 		const userId = req.user?._id;
-		const {bio, socialLinks, first_name, last_name} = req.body;
+		const {bio, socialLinks, first_name, last_name, avatar} = req.body;
 
 		if (!userId) {
 			throw new AppError("Unauthorized", 401);
@@ -106,6 +106,7 @@ export const updateProfile = async (
 			bio?: string;
 			first_name?: string;
 			last_name?: string;
+			avatar?: string;
 			socialLinks?: Array<{
 				platform:
 					| "website"
@@ -161,6 +162,20 @@ export const updateProfile = async (
 			updateData.last_name = last_name.trim();
 		}
 
+		if (avatar !== undefined) {
+			if (typeof avatar !== "string") {
+				throw new AppError("Avatar must be a string", 400);
+			}
+			// Validate base64 image format: data:image/...;base64,...
+			if (!avatar.match(/^data:image\/(jpeg|jpg|png|gif|webp);base64,/)) {
+				throw new AppError(
+					"Avatar must be a valid base64 image string (format: data:image/...;base64,...)",
+					400
+				);
+			}
+			updateData.avatar = avatar;
+		}
+
 		if (socialLinks !== undefined) {
 			if (!Array.isArray(socialLinks)) {
 				throw new AppError("Social links must be an array", 400);
@@ -208,7 +223,7 @@ export const updateProfile = async (
 
 		if (Object.keys(updateData).length === 0) {
 			throw new AppError(
-				"At least one field (bio, first_name, last_name, or socialLinks) must be provided",
+				"At least one field (bio, first_name, last_name, avatar, or socialLinks) must be provided",
 				400
 			);
 		}
@@ -230,6 +245,7 @@ export const updateProfile = async (
 				bio: user.bio || "",
 				first_name: user.first_name || "",
 				last_name: user.last_name || "",
+				avatar: user.avatar,
 				socialLinks: user.socialLinks || [],
 			},
 		});
