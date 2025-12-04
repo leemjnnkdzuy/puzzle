@@ -72,12 +72,7 @@ export const useAppInitStore = create<AppInitStore>((set, get) => ({
 			const isAuthenticated = useAuthStore.getState().isAuthenticated;
 
 			try {
-				const savedLanguage = localStorage.getItem("language");
-
-				if (
-					!savedLanguage ||
-					!SUPPORTED_LANGUAGES.includes(savedLanguage)
-				) {
+				if (!isAuthenticated) {
 					const detectedLang =
 						await geoLocationService.detectLanguageFromIP();
 
@@ -99,6 +94,36 @@ export const useAppInitStore = create<AppInitStore>((set, get) => ({
 								detail: defaultLang,
 							})
 						);
+					}
+				} else {
+					const savedLanguage = localStorage.getItem("language");
+
+					if (
+						!savedLanguage ||
+						!SUPPORTED_LANGUAGES.includes(savedLanguage)
+					) {
+						const detectedLang =
+							await geoLocationService.detectLanguageFromIP();
+
+						if (
+							detectedLang &&
+							SUPPORTED_LANGUAGES.includes(detectedLang)
+						) {
+							localStorage.setItem("language", detectedLang);
+							window.dispatchEvent(
+								new CustomEvent("languageUpdated", {
+									detail: detectedLang,
+								})
+							);
+						} else {
+							const defaultLang = DEFAULT_LANGUAGE as Language;
+							localStorage.setItem("language", defaultLang);
+							window.dispatchEvent(
+								new CustomEvent("languageUpdated", {
+									detail: defaultLang,
+								})
+							);
+						}
 					}
 				}
 			} catch (error) {

@@ -358,7 +358,7 @@
 	},
 	"sidebar": {
 		"home": "Home",
-		"api": "API",
+		"service": "Service",
 		"voice": "Voice",
 		"tts": "Text-to-Speech",
 		"stt": "Speech-to-Text",

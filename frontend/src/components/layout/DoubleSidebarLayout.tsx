@@ -1,63 +1,12 @@
 import React, {useState, useEffect} from "react";
-import {useNavigate, useLocation} from "react-router-dom";
-import {
-	Home,
-	Mic,
-	Volume2,
-	MessageSquare,
-	FolderOpen,
-	Share2,
-	User,
-	Settings,
-	Palette,
-	Globe,
-	LogOut,
-	Sun,
-	Moon,
-	ChevronLeft,
-	ChevronRight,
-	Wallet,
-	CircleDollarSign,
-} from "lucide-react";
+import {ChevronLeft, ChevronRight} from "lucide-react";
 import {useLanguage} from "@/hooks/useLanguage";
-import {useAuth} from "@/hooks/useAuth";
-import {useTheme} from "@/hooks/useTheme";
-import {useLogoutListener} from "@/hooks/useLogoutListener";
-import {useCreditStore} from "@/stores/creditStore";
-import {cn, formatCurrency} from "@/utils";
-import AppIcon from "@/components/common/AppIcon";
-import ConfirmDialog from "@/components/common/ConfirmDialog";
-import {
-	DropdownMenu,
-	DropdownMenuTrigger,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
-} from "@/components/ui/DropdownMenu";
+import {cn} from "@/utils";
+import GlobalSidebar from "@/components/common/GlobalSidebar";
 
 interface DoubleSidebarLayoutProps {
 	children: React.ReactNode;
 	rightSidebar?: React.ReactNode;
-}
-
-interface MenuItem {
-	key: string;
-	label: string;
-	icon: React.ComponentType<{className?: string}>;
-	path?: string;
-	children?: MenuItem[];
-}
-
-interface UserData {
-	_id?: string;
-	username?: string;
-	email?: string;
-	first_name?: string;
-	last_name?: string;
-	avatar?: string;
 }
 
 const DoubleSidebarLayout: React.FC<DoubleSidebarLayoutProps> = ({
@@ -66,99 +15,14 @@ const DoubleSidebarLayout: React.FC<DoubleSidebarLayoutProps> = ({
 }) => {
 	const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
 	const [isRightCollapsed, setIsRightCollapsed] = useState(false);
-	const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-	const navigate = useNavigate();
-	const location = useLocation();
-	const {getNested, language, setLanguage} = useLanguage();
-	const {user, logout} = useAuth();
-	const {theme, setTheme} = useTheme();
-	const credit = useCreditStore((state) => state.credit);
-
-	useLogoutListener();
-
-	const userData = user as UserData | null;
-	const userName =
-		userData && userData.first_name && userData.last_name
-			? `${userData.first_name} ${userData.last_name}`.trim()
-			: userData?.username || "User";
-	const userEmail = userData?.email || "";
-	const userAvatar = userData?.avatar || "";
+	const {getNested} = useLanguage();
 
 	const sidebar = getNested?.("sidebar") as
 		| {
-				home: string;
-				api: string;
-				voice: string;
-				tts: string;
-				stt: string;
-				projects: string;
-				templates: string;
-				shared: string;
-				about: string;
-				viewProfile: string;
-				recharge: string;
-				settings: string;
-				theme: string;
-				language: string;
-				logout: string;
-				light: string;
-				dark: string;
 				collapse: string;
 				expand: string;
 		  }
 		| undefined;
-
-	const menuItems: MenuItem[] = [
-		{
-			key: "home",
-			label: sidebar?.home || "Trang chủ",
-			icon: Home,
-			path: "/home",
-		},
-		{
-			key: "api",
-			label: sidebar?.api || "API",
-			icon: Mic,
-			children: [
-				{
-					key: "tts",
-					label: sidebar?.tts || "Text-to-Speech",
-					icon: Volume2,
-					path: "/api/tts",
-				},
-				{
-					key: "stt",
-					label: sidebar?.stt || "Speech-to-Text",
-					icon: MessageSquare,
-					path: "/api/stt",
-				},
-			],
-		},
-		{
-			key: "projects",
-			label: sidebar?.projects || "Dự án",
-			icon: FolderOpen,
-			children: [
-				{
-					key: "templates",
-					label: sidebar?.templates || "Mẫu",
-					icon: FolderOpen,
-					path: "/projects/templates",
-				},
-				{
-					key: "shared",
-					label: sidebar?.shared || "Dự án được chia sẻ",
-					icon: Share2,
-					path: "/projects/shared",
-				},
-			],
-		},
-	];
-
-	const isActive = (path?: string) => {
-		if (!path) return false;
-		return location.pathname === path;
-	};
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -176,411 +40,22 @@ const DoubleSidebarLayout: React.FC<DoubleSidebarLayoutProps> = ({
 		};
 	}, []);
 
-	const renderMenuItem = (
-		item: MenuItem,
-		level = 0,
-		isLastItemWithChildren = false,
-		isFirstItemWithChildren = false
-	) => {
-		const hasChildren = item.children && item.children.length > 0;
-		const active = isActive(item.path);
-		const Icon = item.icon;
-
-		if (isLeftCollapsed && hasChildren) {
-			return (
-				<div key={item.key}>
-					<div
-						className={cn(
-							"flex items-center justify-center py-2.5 transition-all duration-300",
-							level === 0 &&
-								isFirstItemWithChildren &&
-								"border-t border-sidebar-border",
-							level === 0 ? "mt-2 pt-2" : "mb-0.5"
-						)}
-					>
-						<div className='w-8 h-px bg-sidebar-border' />
-					</div>
-					<div className='space-y-0.5'>
-						{item.children?.map((child) =>
-							renderMenuItem(child, level + 1)
-						)}
-					</div>
-				</div>
-			);
-		}
-
-		if (isLeftCollapsed && !hasChildren) {
-			return (
-				<div key={item.key}>
-					<div
-						className={cn(
-							"flex items-center justify-center py-2.5 rounded-lg cursor-pointer transition-all duration-300",
-							level === 0 ? "mb-1" : "mb-0.5",
-							active
-								? "bg-primary text-primary-foreground shadow-sm"
-								: "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground"
-						)}
-						onClick={() => {
-							if (item.path) {
-								navigate(item.path);
-							}
-						}}
-						title={item.label}
-					>
-						<Icon
-							className={cn(
-								"w-5 h-5 flex-shrink-0",
-								active
-									? "text-primary-foreground"
-									: "text-sidebar-muted"
-							)}
-						/>
-					</div>
-				</div>
-			);
-		}
-
-		return (
-			<div key={item.key}>
-				{!hasChildren && (
-					<div
-						className={cn(
-							"flex items-center gap-3 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300",
-							level === 0 ? "mb-1" : "mb-0.5",
-							active
-								? "bg-primary text-primary-foreground shadow-sm"
-								: "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground",
-							level > 0 && "ml-4"
-						)}
-						onClick={() => {
-							if (item.path) {
-								navigate(item.path);
-							}
-						}}
-					>
-						<Icon
-							className={cn(
-								"w-5 h-5 flex-shrink-0",
-								active
-									? "text-primary-foreground"
-									: "text-sidebar-muted"
-							)}
-						/>
-						<span className='flex-1 text-sm font-medium'>
-							{item.label}
-						</span>
-					</div>
-				)}
-				{hasChildren && (
-					<>
-						<div
-							className={cn(
-								"flex items-center px-4 py-2.5 transition-all duration-300",
-								level === 0 ? "mt-2 pt-2" : "mb-0.5",
-								!isLastItemWithChildren &&
-									"border-t border-sidebar-border",
-								"text-sidebar-foreground/80 font-medium"
-							)}
-						>
-							<span className='text-sm font-medium'>
-								{item.label}
-							</span>
-						</div>
-						<div className='space-y-0.5'>
-							{item.children?.map((child) =>
-								renderMenuItem(child, level + 1)
-							)}
-						</div>
-					</>
-				)}
-			</div>
-		);
-	};
-
-	const handleLogout = async () => {
-		await logout();
-	};
-
-	const handleLogoutClick = () => {
-		setShowLogoutConfirm(true);
-	};
-
 	return (
 		<div className='flex flex-col lg:flex-row h-screen overflow-hidden bg-background transition-colors duration-300'>
-			{/* Left Sidebar */}
-			<aside
-				className={cn(
-					"h-full flex flex-col overflow-hidden transition-all duration-300 background flex-shrink-0",
-					isLeftCollapsed ? "w-16" : "w-64",
-					"hidden lg:flex"
-				)}
-			>
-				<div className='flex-1 overflow-hidden no-scrollbar'>
-					<div
-						className={cn(
-							"p-4 overflow-y-auto",
-							isLeftCollapsed && "px-2"
-						)}
-					>
-						<div className={cn("mb-6", isLeftCollapsed && "mb-4")}>
-							<div
-								className={cn(
-									"flex items-center cursor-pointer hover:opacity-80 transition-opacity",
-									isLeftCollapsed ? "justify-center" : "gap-2"
-								)}
-								onClick={() => navigate("/")}
-							>
-								<AppIcon className='w-8 h-8 object-contain' />
-								{!isLeftCollapsed && (
-									<span className='text-xl font-semibold text-sidebar-foreground transition-colors duration-300'>
-										Puzzle
-									</span>
-								)}
-							</div>
-						</div>
-						<nav className='space-y-1'>
-							{menuItems.map((item, index) => {
-								const isLastItemWithChildren =
-									item.children &&
-									index === menuItems.length - 1;
-								const isFirstItemWithChildren =
-									item.children &&
-									index ===
-										menuItems.findIndex(
-											(i) => i.children
-										) &&
-									index > 0;
-								return renderMenuItem(
-									item,
-									0,
-									isLastItemWithChildren,
-									isFirstItemWithChildren
-								);
-							})}
-						</nav>
-					</div>
-				</div>
+			<div className='hidden lg:flex'>
+				<GlobalSidebar
+					isCollapsed={isLeftCollapsed}
+					onToggleCollapse={() =>
+						setIsLeftCollapsed(!isLeftCollapsed)
+					}
+					className={isLeftCollapsed ? "w-16" : "w-64"}
+				/>
+			</div>
 
-				{userData && (
-					<div
-						className={cn(
-							"px-4 pt-4 pb-2",
-							isLeftCollapsed && "px-2",
-							!isLeftCollapsed && "border-t border-sidebar-border"
-						)}
-					>
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<button
-									className={cn(
-										"w-full flex items-center rounded-lg hover:bg-sidebar-accent transition-colors duration-300 text-left",
-										isLeftCollapsed
-											? "justify-center px-0 py-2"
-											: "gap-3 px-3 py-2"
-									)}
-								>
-									<div className='flex-shrink-0 w-10 h-10 rounded-full overflow-hidden border-2 border-sidebar-border transition-colors duration-300'>
-										{userAvatar ? (
-											<img
-												src={userAvatar}
-												alt={userName}
-												className='w-full h-full object-cover'
-											/>
-										) : (
-											<div className='w-full h-full bg-primary flex items-center justify-center text-primary-foreground font-semibold'>
-												{userName
-													.charAt(0)
-													.toUpperCase()}
-											</div>
-										)}
-									</div>
-									{!isLeftCollapsed && (
-										<div className='flex-1 min-w-0'>
-											<div className='text-sm font-medium text-sidebar-foreground truncate transition-colors duration-300'>
-												{userName}
-											</div>
-											<div className='text-xs text-sidebar-muted truncate transition-colors duration-300'>
-												{userEmail}
-											</div>
-										</div>
-									)}
-									{!isLeftCollapsed && (
-										<div className='flex items-center gap-1.5 ml-2 flex-shrink-0'>
-											<CircleDollarSign className='w-3.5 h-3.5 text-green-500 dark:text-green-400' />
-											<span className='text-xs font-medium text-sidebar-foreground'>
-												{formatCurrency(credit)}
-											</span>
-										</div>
-									)}
-								</button>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent
-								align='end'
-								className='w-56 shadow-lg border bg-card border-border'
-							>
-								<div className='px-3 py-2 border-b border-border'>
-									<div className='flex items-center gap-3'>
-										<div className='flex-shrink-0 w-10 h-10 rounded-full overflow-hidden border-2 border-border'>
-											{userAvatar ? (
-												<img
-													src={userAvatar}
-													alt={userName}
-													className='w-full h-full object-cover'
-												/>
-											) : (
-												<div className='w-full h-full bg-primary flex items-center justify-center text-primary-foreground font-semibold'>
-													{userName
-														.charAt(0)
-														.toUpperCase()}
-												</div>
-											)}
-										</div>
-										<div className='flex-1 min-w-0'>
-											<div className='text-sm font-medium text-card-foreground truncate'>
-												{userName}
-											</div>
-											<div className='text-xs text-muted-foreground truncate'>
-												{userEmail}
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<DropdownMenuItem
-									onClick={() => navigate("/profile")}
-									className='cursor-pointer'
-								>
-									<User className='w-4 h-4 mr-2' />
-									{sidebar?.viewProfile || "Xem hồ sơ"}
-								</DropdownMenuItem>
-
-								<DropdownMenuItem
-									onClick={() => navigate("/recharge")}
-									className='cursor-pointer'
-								>
-									<Wallet className='w-4 h-4 mr-2' />
-									{sidebar?.recharge || "Nạp tiền"}
-								</DropdownMenuItem>
-
-								<DropdownMenuItem
-									onClick={() => navigate("/settings")}
-									className='cursor-pointer'
-								>
-									<Settings className='w-4 h-4 mr-2' />
-									{sidebar?.settings}
-								</DropdownMenuItem>
-
-								<DropdownMenuSub>
-									<DropdownMenuSubTrigger>
-										<Palette className='w-4 h-4 mr-2' />
-										{sidebar?.theme}
-									</DropdownMenuSubTrigger>
-									<DropdownMenuSubContent>
-										<DropdownMenuItem
-											onSelect={() => setTheme("light")}
-											className={cn(
-												"cursor-pointer",
-												theme === "light" && "bg-accent"
-											)}
-										>
-											<Sun className='w-4 h-4 mr-2' />
-											{sidebar?.light}
-										</DropdownMenuItem>
-										<DropdownMenuItem
-											onSelect={() => setTheme("dark")}
-											className={cn(
-												"cursor-pointer",
-												theme === "dark" && "bg-accent"
-											)}
-										>
-											<Moon className='w-4 h-4 mr-2' />
-											{sidebar?.dark}
-										</DropdownMenuItem>
-									</DropdownMenuSubContent>
-								</DropdownMenuSub>
-
-								<DropdownMenuSub>
-									<DropdownMenuSubTrigger>
-										<Globe className='w-4 h-4 mr-2' />
-										{sidebar?.language}
-									</DropdownMenuSubTrigger>
-									<DropdownMenuSubContent>
-										<DropdownMenuItem
-											onSelect={() => setLanguage("vi")}
-											className={cn(
-												"cursor-pointer",
-												language === "vi" && "bg-accent"
-											)}
-										>
-											Tiếng Việt
-										</DropdownMenuItem>
-										<DropdownMenuItem
-											onSelect={() => setLanguage("en")}
-											className={cn(
-												"cursor-pointer",
-												language === "en" && "bg-accent"
-											)}
-										>
-											English
-										</DropdownMenuItem>
-									</DropdownMenuSubContent>
-								</DropdownMenuSub>
-
-								<DropdownMenuSeparator />
-
-								<DropdownMenuItem
-									onClick={handleLogoutClick}
-									className='cursor-pointer text-muted-foreground hover:text-foreground'
-								>
-									<LogOut className='w-4 h-4 mr-2' />
-									{sidebar?.logout || "Đăng xuất"}
-								</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
-					</div>
-				)}
-
-				<div
-					className={cn(
-						"px-2 pt-1 pb-2 flex-shrink-0",
-						isLeftCollapsed && "px-1 border-t border-sidebar-border"
-					)}
-				>
-					<button
-						onClick={() => setIsLeftCollapsed(!isLeftCollapsed)}
-						className={cn(
-							"w-full flex items-center justify-center p-2 rounded-lg hover:bg-sidebar-accent transition-colors duration-300",
-							isLeftCollapsed ? "px-0" : "gap-2"
-						)}
-						title={
-							isLeftCollapsed
-								? (sidebar?.expand as string) || "Expand"
-								: (sidebar?.collapse as string) || "Collapse"
-						}
-					>
-						{isLeftCollapsed ? (
-							<ChevronRight className='w-5 h-5 text-sidebar-foreground/80' />
-						) : (
-							<>
-								<ChevronLeft className='w-5 h-5 text-sidebar-foreground/80' />
-								{!isLeftCollapsed && (
-									<span className='text-sm text-sidebar-foreground/80'>
-										{(sidebar?.collapse as string) ||
-											"Collapse"}
-									</span>
-								)}
-							</>
-						)}
-					</button>
-				</div>
-			</aside>
-
-			{/* Main Content */}
 			<main className='flex-1 overflow-hidden bg-background transition-colors duration-300 order-2 lg:order-2'>
 				<div className='h-full overflow-y-auto'>{children}</div>
 			</main>
 
-			{/* Right Sidebar */}
 			{rightSidebar && (
 				<aside
 					className={cn(
@@ -646,118 +121,21 @@ const DoubleSidebarLayout: React.FC<DoubleSidebarLayoutProps> = ({
 				</aside>
 			)}
 
-			{/* Mobile: Show sidebars stacked */}
 			<div className='lg:hidden flex flex-col w-full order-1'>
-				{/* Mobile Left Sidebar */}
-				<aside className='w-full border-b border-sidebar-border'>
-					<div className='p-4'>
-						<div className='flex items-center justify-between mb-4'>
-							<div
-								className='flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity'
-								onClick={() => navigate("/")}
-							>
-								<AppIcon className='w-8 h-8 object-contain' />
-								<span className='text-xl font-semibold text-sidebar-foreground'>
-									Puzzle
-								</span>
-							</div>
-						</div>
-						<nav className='space-y-1'>
-							{menuItems.map((item) => {
-								if (item.children) {
-									return (
-										<div
-											key={item.key}
-											className='space-y-1'
-										>
-											{item.children.map((child) => (
-												<div
-													key={child.key}
-													className={cn(
-														"flex items-center gap-3 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300",
-														isActive(child.path)
-															? "bg-primary text-primary-foreground shadow-sm"
-															: "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground"
-													)}
-													onClick={() => {
-														if (child.path) {
-															navigate(
-																child.path
-															);
-														}
-													}}
-												>
-													<child.icon className='w-5 h-5 flex-shrink-0' />
-													<span className='flex-1 text-sm font-medium'>
-														{child.label}
-													</span>
-												</div>
-											))}
-										</div>
-									);
-								}
-								return (
-									<div
-										key={item.key}
-										className={cn(
-											"flex items-center gap-3 px-4 py-2.5 rounded-lg cursor-pointer transition-all duration-300",
-											isActive(item.path)
-												? "bg-primary text-primary-foreground shadow-sm"
-												: "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground"
-										)}
-										onClick={() => {
-											if (item.path) {
-												navigate(item.path);
-											}
-										}}
-									>
-										<item.icon className='w-5 h-5 flex-shrink-0' />
-										<span className='flex-1 text-sm font-medium'>
-											{item.label}
-										</span>
-									</div>
-								);
-							})}
-						</nav>
-					</div>
-				</aside>
+				<div className='w-full border-b border-sidebar-border'>
+					<GlobalSidebar
+						isCollapsed={false}
+						onToggleCollapse={() => {}}
+						className='w-full'
+					/>
+				</div>
 			</div>
 
-			{/* Mobile: Right Sidebar */}
 			{rightSidebar && (
 				<div className='lg:hidden w-full border-t border-sidebar-border order-3'>
 					<div className='p-4'>{rightSidebar}</div>
 				</div>
 			)}
-
-			<ConfirmDialog
-				isOpen={showLogoutConfirm}
-				onClose={() => setShowLogoutConfirm(false)}
-				onConfirm={async () => {
-					await handleLogout();
-					setShowLogoutConfirm(false);
-				}}
-				title={
-					(getNested?.("logout.confirmTitle") as string) ||
-					"Confirm Logout"
-				}
-				message={
-					(getNested?.("logout.confirmMessage") as string) ||
-					"Are you sure you want to logout?"
-				}
-				confirmText={
-					(getNested?.("logout.confirm") as string) || "Logout"
-				}
-				cancelText={
-					(getNested?.("logout.cancel") as string) || "Cancel"
-				}
-				confirmVariant='destructive'
-				icon={
-					<div className='w-12 h-12 rounded-full bg-destructive/10 flex items-center justify-center'>
-						<LogOut className='w-6 h-6 text-destructive' />
-					</div>
-				}
-			/>
 		</div>
 	);
 };
