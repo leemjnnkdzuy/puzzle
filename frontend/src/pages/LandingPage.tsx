@@ -374,7 +374,7 @@ const LandingPage = () => {
 				))}
 			</div>
 
-			<section className='relative z-100 w-full min-h-[85vh] flex items-center justify-center px-4 sm:px-6 pt-12 sm:pt-16 pb-8 sm:pb-12 overflow-visible'>
+			<section className='relative z-100 w-full min-h-[85vh] flex items-center justify-center px-4 sm:px-6 2k:px-8 4k:px-12 pt-12 sm:pt-16 2k:pt-20 4k:pt-24 pb-8 sm:pb-12 2k:pb-16 4k:pb-20 overflow-visible'>
 				<div
 					className='absolute bottom-0 left-0 right-0 w-full pointer-events-none'
 					style={{zIndex: 5, height: "400px"}}
@@ -382,22 +382,22 @@ const LandingPage = () => {
 					<CrescentBackground intenseShadow={buttonHovered} />
 				</div>
 
-				<div className='relative max-w-7xl mx-auto w-full z-10'>
+				<div className='relative max-w-7xl 2k:max-w-[1600px] 4k:max-w-[2000px] mx-auto w-full z-10'>
 					<div className='flex flex-col items-center'>
 						<div className='space-y-4 sm:space-y-5 text-center'>
-							<h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground leading-tight animate-fade-in'>
+							<h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2k:text-7xl 4k:text-8xl font-bold text-foreground leading-tight animate-fade-in'>
 								{t("hero.title")}
 								{t("hero.titlePlatform") && (
 									<>
 										{" "}
-										<span className='text-muted-foreground text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl'>
+										<span className='text-muted-foreground text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2k:text-7xl 4k:text-8xl'>
 											{t("hero.titlePlatform")}
 										</span>
 									</>
 								)}
 							</h1>
 
-							<div className='space-y-2 sm:space-y-2 mb-6 sm:mb-8 text-sm sm:text-base md:text-lg text-muted-foreground animate-fade-in-delay'>
+							<div className='space-y-2 sm:space-y-2 mb-6 sm:mb-8 text-sm sm:text-base md:text-lg 2k:text-xl 4k:text-2xl text-muted-foreground animate-fade-in-delay'>
 								<p>{t("hero.subtitle")}</p>
 								<p>{t("hero.subtitle2")}</p>
 							</div>
@@ -406,7 +406,7 @@ const LandingPage = () => {
 								<Button
 									variant='default'
 									size='lg'
-									className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background w-full sm:w-auto px-6 sm:px-8 h-11 sm:h-12 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200'
+									className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background w-full sm:w-auto px-6 sm:px-8 2k:px-10 4k:px-12 h-11 sm:h-12 2k:h-14 4k:h-16 text-sm sm:text-base 2k:text-lg 4k:text-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200'
 									onMouseEnter={() => setButtonHovered(true)}
 									onMouseLeave={() => setButtonHovered(false)}
 									onClick={() =>
@@ -432,7 +432,7 @@ const LandingPage = () => {
 					marginTop: "-40px",
 				}}
 			>
-				<div className='max-w-[1400px] mx-auto'>
+				<div className='max-w-[1400px] 2k:max-w-[1800px] 4k:max-w-[2200px] mx-auto'>
 					<p
 						className='text-center text-muted-foreground relative'
 						style={{zIndex: 50}}
@@ -500,7 +500,7 @@ const LandingPage = () => {
 
 			<section className='relative z-10 w-full px-6 py-16 mb-32'>
 				<div className='max-w-[1200px] mx-auto mb-8'>
-					<h2 className='text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4'>
+					<h2 className='text-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl 2k:text-6xl 4k:text-7xl font-bold text-foreground mb-3 sm:mb-4 2k:mb-6 4k:mb-8'>
 						{t("platforms.categories")}
 					</h2>
 					<p className='text-center text-muted-foreground max-w-3xl mx-auto leading-relaxed mt-2'>
@@ -508,7 +508,7 @@ const LandingPage = () => {
 					</p>
 				</div>
 
-				<div className='max-w-[1200px] mx-auto'>
+				<div className='max-w-[1200px] 2k:max-w-[1600px] 4k:max-w-[2000px] mx-auto'>
 					<div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
 						{categories.map((category, index) => {
 							const isMiddleCard = index === 1;
@@ -596,12 +596,12 @@ const LandingPage = () => {
 
 			<section
 				ref={packagesSectionRef}
-				className='relative z-10 w-full px-4 sm:px-6 py-12 sm:py-16 md:py-24 mb-12 sm:mb-16 md:mb-20'
+				className='relative z-10 w-full px-4 sm:px-6 2k:px-8 4k:px-12 py-12 sm:py-16 md:py-24 2k:py-32 4k:py-40 mb-12 sm:mb-16 md:mb-20 2k:mb-24 4k:mb-32'
 			>
-				<div className='max-w-[1200px] mx-auto'>
+				<div className='max-w-[1200px] 2k:max-w-[1600px] 4k:max-w-[2000px] mx-auto'>
 					<div className='text-center mb-8 sm:mb-12 md:mb-16 px-2'>
 						<h2
-							className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 ${
+							className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl 2k:text-6xl 4k:text-7xl font-bold text-foreground mb-3 sm:mb-4 2k:mb-6 4k:mb-8 ${
 								packagesAnimated
 									? "opacity-100 translate-y-0"
 									: "opacity-0 translate-y-8"
@@ -636,7 +636,7 @@ const LandingPage = () => {
 						</p>
 					</div>
 
-					<div className='grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-4'>
+					<div className='grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-4 2k:gap-8 4k:gap-10'>
 						{servicePackages.map((pkg, index) => {
 							const Icon = pkg.Icon;
 							const isPopular = pkg.Peak;
@@ -830,7 +830,7 @@ const LandingPage = () => {
 
 			<div
 				ref={demoRef}
-				className='max-w-[1200px] mx-auto min-h-[400px] px-4 sm:px-6 mt-16 sm:mt-24 md:mt-[200px] mb-16 sm:mb-24 md:mb-[250px]'
+				className='max-w-[1200px] 2k:max-w-[1600px] 4k:max-w-[2000px] mx-auto min-h-[400px] 2k:min-h-[500px] 4k:min-h-[600px] px-4 sm:px-6 2k:px-8 4k:px-12 mt-16 sm:mt-24 md:mt-[200px] 2k:mt-[250px] 4k:mt-[300px] mb-16 sm:mb-24 md:mb-[250px] 2k:mb-[300px] 4k:mb-[350px]'
 			>
 				<div className='relative flex flex-col lg:block'>
 					<div
@@ -1143,7 +1143,7 @@ const LandingPage = () => {
 					id='workflow'
 					className='relative z-10 w-full px-6 py-20 scroll-mt-32'
 				>
-					<div className='max-w-[1200px] mx-auto'>
+					<div className='max-w-[1200px] 2k:max-w-[1600px] 4k:max-w-[2000px] mx-auto'>
 						<div className='grid md:grid-cols-2 gap-10 items-center'>
 							<div className='relative flex justify-center'>
 								<div className='absolute inset-0 bg-muted rounded-3xl blur-2xl scale-105'></div>

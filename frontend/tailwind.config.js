@@ -6,6 +6,8 @@ export default {
 		extend: {
 			screens: {
 				"nav-menu-1400": "1400px",
+				"2k": "2560px",
+				"4k": "3840px",
 			},
 			colors: {
 				foreground: "rgb(var(--foreground) / <alpha-value>)",
