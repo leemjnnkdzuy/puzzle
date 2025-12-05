@@ -32,21 +32,29 @@
 	},
 	"features": {
 		"title": "All-in-one platform for film & anime recaps",
-		"movieRecap": {
+		"cardRewards": {
 			"title": "Movie & Series Recap",
-			"description": "Compress full-length movies and multi-episode arcs into tight recaps with beats, chapters, and timelines the fandom can jump through instantly."
+			"description": "Compress full-length movies and multi-episode arcs into tight recaps with beats, chapters, and timelines."
 		},
-		"autoSubs": {
+		"manageCards": {
 			"title": "Auto Subs & Summaries",
-			"description": "Generate subtitles plus concise summaries for anime, K-drama, Hollywood, or local films - ready to share or embed in wikis and threads."
+			"description": "Generate subtitles plus concise summaries for anime, K-drama, Hollywood, or local films."
 		},
-		"highlightScenes": {
+		"setGoals": {
 			"title": "Highlight Scenes",
-			"description": "Detect standout scenes automatically - battles, plot twists, OST drops - then clip and caption them for shorts and reels."
+			"description": "Detect standout scenes automatically - battles, plot twists, OST drops - then clip and caption them."
 		},
-		"multiPlatform": {
+		"lounges": {
 			"title": "Multi-platform Exports",
-			"description": "Export once for YouTube, TikTok, Instagram, and Facebook with subs burned in and aspect ratios tuned for trailers, teasers, and episodic recaps."
+			"description": "Export once for YouTube, TikTok, Instagram, and Facebook with subs burned in and aspect ratios tuned."
+		},
+		"cardStrategy": {
+			"title": "AI-Powered Analysis",
+			"description": "Deep analysis with plot recognition, character development tracking, and intelligent scene detection."
+		},
+		"compareApply": {
+			"title": "Smart Timeline",
+			"description": "Auto-transcribe, build plot chapters, tag character moments, and create ready-to-share clips."
 		}
 	},
 	"demo": {

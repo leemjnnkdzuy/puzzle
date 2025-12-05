@@ -1,23 +1,35 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {
-	Clapperboard,
-	FileText,
-	Sparkles,
-	Share2,
-	Plus,
 	Play,
-	Cpu,
+	Volume2,
+	VolumeX,
+	RotateCcw,
+	ChevronDown,
+	Maximize2,
+	Minimize2,
+	Sparkles,
+	FileText,
 	Bot,
 	Languages,
 	Mic,
 	View,
 	Layers,
-	Volume2,
-	VolumeX,
-	RotateCcw,
-	ChevronDown,
+	Cpu,
 } from "lucide-react";
+import {
+	SiYoutube,
+	SiVimeo,
+	SiInstagram,
+	SiTiktok,
+	SiFacebook,
+	SiX,
+	SiBilibili,
+	SiTwitch,
+	SiDailymotion,
+	SiNetflix,
+	SiAmazonprime,
+} from "react-icons/si";
 import Button from "@/components/ui/Button";
 import VideoPlayer from "@/components/ui/VideoPlayer";
 import Tooltip from "@/components/ui/Tooltip";
@@ -26,43 +38,68 @@ import {useLanguage} from "@/hooks/useLanguage";
 import {usePlaybackStore} from "@/hooks/usePlaybackStore";
 import {useAuth} from "@/hooks/useAuth";
 import CrescentBackground from "@/components/common/CrescentBackground";
+import Marquee from "react-fast-marquee";
 
 const platforms = [
 	{
+		name: "TikTok",
+		Icon: SiTiktok,
+		showTitle: true,
+	},
+	{
 		name: "YouTube",
-		icon: Assets.YoutubeIcon,
+		Icon: SiYoutube,
+		showTitle: true,
 	},
 	{
 		name: "Vimeo",
-		icon: Assets.VimeoIcon,
+		Icon: SiVimeo,
+		showTitle: true,
 	},
 	{
 		name: "Instagram",
-		icon: Assets.InstagramIcon,
-	},
-	{
-		name: "TikTok",
-		icon: Assets.TiktokIcon,
-	},
-	{
-		name: "Youku",
-		icon: Assets.YoukuIcon,
+		Icon: SiInstagram,
+		showTitle: true,
 	},
 	{
 		name: "Douyin",
-		icon: Assets.DouyinIcon,
+		Icon: SiTiktok,
+		showTitle: true,
 	},
 	{
 		name: "Facebook",
-		icon: Assets.FacebookIcon,
+		Icon: SiFacebook,
+		showTitle: true,
 	},
 	{
 		name: "X",
-		icon: Assets.XIcon,
+		Icon: SiX,
+		showTitle: true,
 	},
 	{
 		name: "Bilibili",
-		icon: Assets.BilibiliIcon,
+		Icon: SiBilibili,
+		showTitle: true,
+	},
+	{
+		name: "Twitch",
+		Icon: SiTwitch,
+		showTitle: true,
+	},
+	{
+		name: "Dailymotion",
+		Icon: SiDailymotion,
+		showTitle: true,
+	},
+	{
+		name: "Netflix",
+		Icon: SiNetflix,
+		showTitle: true,
+	},
+	{
+		name: "Amazon Prime",
+		Icon: SiAmazonprime,
+		showTitle: false,
 	},
 ];
 
@@ -119,9 +156,9 @@ const LandingPage = () => {
 	const [demoOverlay, setDemoOverlay] = useState(false);
 	const [demoShrink, setDemoShrink] = useState(false);
 	const [audioOn, setAudioOn] = useState(false);
+	const [hoverOverlay, setHoverOverlay] = useState(false);
 	const [showVolumeSlider, setShowVolumeSlider] = useState(false);
 	const [ctaAnimationStep, setCtaAnimationStep] = useState(0);
-	const [featuresAnimated, setFeaturesAnimated] = useState(false);
 	const [packagesAnimated, setPackagesAnimated] = useState(false);
 	const [expandedPackages, setExpandedPackages] = useState<{
 		[key: number]: boolean;
@@ -132,11 +169,9 @@ const LandingPage = () => {
 	const demoRef = useRef<HTMLDivElement>(null);
 	const demoVideoRef = useRef<HTMLVideoElement | null>(null);
 	const ctaSectionRef = useRef<HTMLElement>(null);
-	const featuresSectionRef = useRef<HTMLElement>(null);
 	const packagesSectionRef = useRef<HTMLElement>(null);
 	const prevDemoShrinkRef = useRef(false);
 	const prevShowNavRef = useRef(false);
-	const featuresAnimatingRef = useRef(false);
 	const packagesAnimatingRef = useRef(false);
 	const {
 		play,
@@ -239,6 +274,10 @@ const LandingPage = () => {
 		}
 	};
 
+	const handleToggleZoom = () => {
+		setDemoShrink(!demoShrink);
+	};
+
 	useEffect(() => {
 		if (!ctaSectionRef.current) return;
 
@@ -278,36 +317,6 @@ const LandingPage = () => {
 		observer.observe(ctaSectionRef.current);
 		return () => observer.disconnect();
 	}, [showNav]);
-
-	useEffect(() => {
-		if (!featuresSectionRef.current) return;
-
-		const isMobile = window.innerWidth < 768;
-		const observer = new IntersectionObserver(
-			([entry]) => {
-				if (entry.isIntersecting) {
-					if (!featuresAnimatingRef.current) {
-						featuresAnimatingRef.current = true;
-						setFeaturesAnimated(true);
-						setTimeout(() => {
-							featuresAnimatingRef.current = false;
-						}, 900);
-					}
-				} else {
-					if (!featuresAnimatingRef.current && !isMobile) {
-						setFeaturesAnimated(false);
-					}
-				}
-			},
-			{
-				threshold: isMobile ? 0.1 : 0.5,
-				rootMargin: isMobile ? "0px" : "-100px",
-			}
-		);
-
-		observer.observe(featuresSectionRef.current);
-		return () => observer.disconnect();
-	}, []);
 
 	useEffect(() => {
 		if (!packagesSectionRef.current) return;
@@ -420,11 +429,10 @@ const LandingPage = () => {
 				className='relative w-full'
 				style={{
 					zIndex: 50,
-					marginTop: "-80px",
-					marginBottom: "2rem",
+					marginTop: "-40px",
 				}}
 			>
-				<div className='max-w-[1400px] mx-auto px-6'>
+				<div className='max-w-[1400px] mx-auto'>
 					<p
 						className='text-center text-muted-foreground relative'
 						style={{zIndex: 50}}
@@ -434,7 +442,7 @@ const LandingPage = () => {
 				</div>
 			</div>
 
-			<section className='relative z-0 w-full py-10 overflow-hidden'>
+			<section className='relative z-0 w-full mb-10 overflow-hidden'>
 				<div className='relative max-w-[1400px] mx-auto px-6 bg-transparent'>
 					<div
 						className='absolute inset-0 pointer-events-none z-10 bg-transparent'
@@ -450,29 +458,42 @@ const LandingPage = () => {
 					/>
 
 					<div className='relative overflow-hidden'>
-						<div className='marquee-track flex items-center gap-8 w-max'>
-							{[...platforms, ...platforms].map(
-								(platform, index) => (
+						<Marquee
+							speed={30}
+							gradient={false}
+							pauseOnHover={false}
+							className='overflow-hidden flex items-center'
+						>
+							{platforms.map((platform, index) => (
+								<div
+									key={`${platform.name}-${index}`}
+									className={`flex items-center gap-2 px-14 ${
+										platform.showTitle
+											? "min-w-[150px]"
+											: ""
+									}`}
+								>
 									<div
-										key={`${platform.name}-${index}`}
-										className='flex items-center gap-3 px-6 min-w-[200px]'
+										className={`${
+											platform.showTitle ? "w-8 h-8" : ""
+										} rounded-lg flex items-center justify-center`}
 									>
-										<div
-											className={`w-10 h-10 rounded-lg flex items-center justify-center`}
-										>
-											<img
-												src={platform.icon}
-												alt={platform.name}
-												className='w-8 h-8 object-contain'
-											/>
-										</div>
-										<span className='text-lg font-semibold text-foreground'>
+										<platform.Icon
+											className={`${
+												platform.showTitle
+													? "w-6 h-6"
+													: "w-32 h-32"
+											} text-foreground`}
+										/>
+									</div>
+									{platform.showTitle && (
+										<span className='text-sm font-semibold text-foreground'>
 											{platform.name}
 										</span>
-									</div>
-								)
-							)}
-						</div>
+									)}
+								</div>
+							))}
+						</Marquee>
 					</div>
 				</div>
 			</section>
@@ -503,17 +524,17 @@ const LandingPage = () => {
 									onMouseLeave={() =>
 										setHoveredCategory(null)
 									}
-									className={`relative overflow-hidden rounded-xl border border-border bg-card shadow-lg transition-transform duration-300 ease-in-out ${
+									className={`relative overflow-hidden rounded-xl bg-card shadow-lg transition-transform duration-300 ease-in-out ${
 										hoveredCategory === index
-											? "scale-110 z-20"
+											? "scale-105 z-20"
 											: hoveredCategory !== null
 											? "scale-90"
 											: "scale-100"
 									} ${
 										isMiddleCard && isLeftHovered
-											? "translate-x-8"
+											? "translate-x-4"
 											: isMiddleCard && isRightHovered
-											? "-translate-x-8"
+											? "-translate-x-4"
 											: ""
 									}`}
 								>
@@ -534,7 +555,7 @@ const LandingPage = () => {
 										<Button
 											onClick={() => navigate("/home")}
 											variant='default'
-											className={`bg-muted text-muted-foreground dark:bg-[rgb(249,250,251)] dark:text-[rgb(107,114,128)] hover:bg-white hover:text-black dark:hover:text-black transition-all duration-300 ${
+											className={`bg-muted text-muted-foreground dark:bg-[rgb(249,250,251)] dark:text-[rgb(107,114,128)] hover:bg-white hover:text-black dark:hover:text-black hover:scale-95 transition-all duration-300 ${
 												hoveredCategory === index
 													? "opacity-100 translate-y-0"
 													: "opacity-0 translate-y-4"
@@ -573,64 +594,6 @@ const LandingPage = () => {
 				</div>
 			</section>
 
-			<section
-				id='features'
-				ref={featuresSectionRef}
-				className='relative z-11 w-full px-4 sm:px-6 mb-12 sm:mb-16 md:mb-24'
-			>
-				<div className='max-w-[1200px] mx-auto text-center mb-8 sm:mb-10 md:mb-14'>
-					<h2 className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground px-2'>
-						{t("features.title")}
-					</h2>
-				</div>
-				<div className='max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6'>
-					{[
-						{key: "movieRecap", Icon: Clapperboard},
-						{key: "autoSubs", Icon: FileText},
-						{key: "highlightScenes", Icon: Sparkles},
-						{key: "multiPlatform", Icon: Share2},
-					].map(({key, Icon}, index) => (
-						<div
-							key={key}
-							className={`group cursor-pointer relative border border-border rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col gap-5 sm:gap-6 md:gap-8 bg-card hover:shadow-lg hover:-translate-y-1 transition-all duration-200 ${
-								featuresAnimated
-									? "opacity-100 translate-y-0"
-									: "opacity-100 translate-y-0 sm:opacity-0 sm:translate-y-8"
-							}`}
-							style={{
-								transitionDelay: featuresAnimated
-									? `${index * 100}ms`
-									: "0ms",
-								transitionDuration: "600ms",
-								transitionTimingFunction:
-									"cubic-bezier(0.4, 0, 0.2, 1)",
-							}}
-						>
-							<div className='flex items-start justify-between'>
-								<div className='w-12 h-12 md:w-14 md:h-14 border border-border rounded-lg sm:rounded-xl flex items-center justify-center shrink-0'>
-									<Icon
-										className='w-6 h-6 sm:w-6 md:w-7 md:h-7 text-foreground'
-										strokeWidth={2}
-									/>
-								</div>
-								<Plus
-									className='w-5 h-5 sm:w-5 md:w-6 md:h-6 text-foreground transition-all duration-200 group-hover:rotate-90 group-hover:opacity-20 shrink-0'
-									strokeWidth={2}
-								/>
-							</div>
-							<div className='space-y-2 sm:space-y-3 md:space-y-3 min-w-0'>
-								<h3 className='text-lg sm:text-xl font-semibold text-foreground text-left leading-tight break-words'>
-									{t(`features.${key}.title`)}
-								</h3>
-								<p className='text-xs sm:text-sm text-muted-foreground text-left leading-relaxed break-words overflow-wrap-anywhere'>
-									{t(`features.${key}.description`)}
-								</p>
-							</div>
-						</div>
-					))}
-				</div>
-			</section>
-
 			<div
 				ref={demoRef}
 				className='max-w-[1200px] mx-auto min-h-[400px] px-4 sm:px-6 mt-16 sm:mt-24 md:mt-[200px] mb-16 sm:mb-24 md:mb-[250px]'
@@ -666,7 +629,11 @@ const LandingPage = () => {
 							contain: "layout style",
 						}}
 					>
-						<div className='relative rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden shadow-xl border border-border bg-foreground aspect-[16/9]'>
+						<div
+							className='relative rounded-xl sm:rounded-2xl lg:rounded-3xl overflow-hidden shadow-xl border border-border bg-foreground aspect-[16/9]'
+							onMouseEnter={() => setHoverOverlay(true)}
+							onMouseLeave={() => setHoverOverlay(false)}
+						>
 							<VideoPlayer
 								src={demoVideoDetail.videoSrc}
 								poster={demoVideoDetail.thumbnail}
@@ -692,11 +659,132 @@ const LandingPage = () => {
 									</Button>
 								</div>
 							</div>
+							<button
+								onClick={handleToggleZoom}
+								className={`absolute bottom-4 right-4 p-2 rounded-full bg-white/20 hover:bg-white/30 dark:bg-white/10 dark:hover:bg-white/20 text-white transition-all duration-200 flex items-center justify-center z-10 ${
+									hoverOverlay
+										? "opacity-100 scale-100"
+										: "opacity-0 scale-95 pointer-events-none"
+								}`}
+								aria-label={demoShrink ? "Phóng to" : "Thu nhỏ"}
+							>
+								{demoShrink ? (
+									<Maximize2 className='w-5 h-5' />
+								) : (
+									<Minimize2 className='w-5 h-5' />
+								)}
+							</button>
+							<div
+								className={`absolute bottom-4 left-4 flex flex-wrap gap-3 z-10 transition-all duration-200 ${
+									hoverOverlay
+										? "opacity-100 scale-100"
+										: "opacity-0 scale-95 pointer-events-none"
+								}`}
+							>
+								<div
+									className='relative'
+									onMouseEnter={() =>
+										setShowVolumeSlider(true)
+									}
+									onMouseLeave={() =>
+										setShowVolumeSlider(false)
+									}
+								>
+									<div className='flex items-center border border-border bg-card rounded-full transition-colors duration-200'>
+										<Button
+											variant='outline'
+											size='icon'
+											className='border-none bg-card text-foreground hover:bg-muted rounded-full w-10 h-10 shrink-0 shadow-none'
+											onClick={() => {
+												const next = !audioOn;
+												setAudioOn(next);
+												if (next) {
+													unmute?.();
+												} else {
+													mute?.();
+												}
+											}}
+										>
+											{audioOn ? (
+												<Volume2 className='w-4 h-4' />
+											) : (
+												<VolumeX className='w-4 h-4' />
+											)}
+										</Button>
+
+										<div
+											className={`flex items-center h-10 overflow-hidden transition-[width,opacity] duration-250 ease-out ${
+												showVolumeSlider
+													? "w-24 opacity-100"
+													: "w-0 opacity-0"
+											}`}
+										>
+											<input
+												type='range'
+												min='0'
+												max='100'
+												value={volume * 100}
+												onChange={(e) => {
+													const val =
+														parseInt(
+															e.target.value
+														) / 100;
+													setVolume(val);
+													if (val > 0 && !audioOn) {
+														setAudioOn(true);
+														unmute?.();
+													} else if (
+														val === 0 &&
+														audioOn
+													) {
+														setAudioOn(false);
+														mute?.();
+													}
+												}}
+												className='mx-[10px] w-full h-1 my-0 bg-secondary rounded-lg appearance-none cursor-pointer align-middle [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-background [&::-moz-range-thumb]:cursor-pointer'
+												onMouseEnter={() =>
+													setShowVolumeSlider(true)
+												}
+												onMouseLeave={() =>
+													setShowVolumeSlider(false)
+												}
+											/>
+										</div>
+									</div>
+								</div>
+
+								<Tooltip
+									content={t("demo.replay")}
+									placement='right'
+									delay={[100, 0]}
+									offset={[8, 0]}
+									plain
+								>
+									<Button
+										variant='default'
+										size='icon'
+										className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background rounded-full w-10 h-10 shrink-0'
+										onClick={() => {
+											setCurrentTime(0);
+											seek?.(0);
+											play();
+											if (demoVideoRef.current) {
+												demoVideoRef.current.currentTime = 0;
+												demoVideoRef.current
+													.play()
+													.catch(() => {});
+											}
+										}}
+									>
+										<RotateCcw className='w-4 h-4' />
+									</Button>
+								</Tooltip>
+							</div>
 						</div>
 					</div>
 
 					<div
-						className='video-panel-smooth relative lg:absolute lg:right-0 lg:top-0 mt-6 lg:mt-0 w-full lg:w-auto'
+						className='video-panel-smooth relative lg:absolute lg:right-0 lg:top-1/2 mt-6 lg:mt-0 w-full lg:w-auto'
 						style={{
 							width: demoShrink
 								? window.innerWidth >= 1024
@@ -716,9 +804,11 @@ const LandingPage = () => {
 								? 0
 								: 1,
 							transform: demoShrink
-								? "translateX(0)"
+								? window.innerWidth >= 1024
+									? "translateX(0) translateY(-50%)"
+									: "translateX(0)"
 								: window.innerWidth >= 1024
-								? "translateX(24px)"
+								? "translateX(24px) translateY(-50%)"
 								: "translateX(0)",
 							pointerEvents: demoShrink
 								? "auto"
@@ -803,102 +893,6 @@ const LandingPage = () => {
 									{t("demo.masterReels")}
 								</p>
 							</div>
-						</div>
-
-						<div className='mt-6 flex flex-wrap gap-3'>
-							<div
-								className='relative'
-								onMouseEnter={() => setShowVolumeSlider(true)}
-								onMouseLeave={() => setShowVolumeSlider(false)}
-							>
-								<div className='flex items-center border border-border bg-card rounded-full transition-colors duration-200'>
-									<Button
-										variant='outline'
-										size='icon'
-										className='border-none bg-card text-foreground hover:bg-muted rounded-full w-10 h-10 shrink-0 shadow-none'
-										onClick={() => {
-											const next = !audioOn;
-											setAudioOn(next);
-											if (next) {
-												unmute?.();
-											} else {
-												mute?.();
-											}
-										}}
-									>
-										{audioOn ? (
-											<Volume2 className='w-4 h-4' />
-										) : (
-											<VolumeX className='w-4 h-4' />
-										)}
-									</Button>
-
-									<div
-										className={`flex items-center h-10 overflow-hidden transition-[width,opacity] duration-250 ease-out ${
-											showVolumeSlider
-												? "w-24 opacity-100"
-												: "w-0 opacity-0"
-										}`}
-									>
-										<input
-											type='range'
-											min='0'
-											max='100'
-											value={volume * 100}
-											onChange={(e) => {
-												const val =
-													parseInt(e.target.value) /
-													100;
-												setVolume(val);
-												if (val > 0 && !audioOn) {
-													setAudioOn(true);
-													unmute?.();
-												} else if (
-													val === 0 &&
-													audioOn
-												) {
-													setAudioOn(false);
-													mute?.();
-												}
-											}}
-											className='mx-[10px] w-full h-1 my-0 bg-secondary rounded-lg appearance-none cursor-pointer align-middle [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-background [&::-moz-range-thumb]:cursor-pointer'
-											onMouseEnter={() =>
-												setShowVolumeSlider(true)
-											}
-											onMouseLeave={() =>
-												setShowVolumeSlider(false)
-											}
-										/>
-									</div>
-								</div>
-							</div>
-
-							<Tooltip
-								content={t("demo.replay")}
-								placement='right'
-								delay={[100, 0]}
-								offset={[8, 0]}
-								plain
-							>
-								<Button
-									variant='default'
-									size='icon'
-									className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background rounded-full w-10 h-10 shrink-0'
-									onClick={() => {
-										setCurrentTime(0);
-										seek?.(0);
-										play();
-										if (demoVideoRef.current) {
-											demoVideoRef.current.currentTime = 0;
-											demoVideoRef.current
-												.play()
-												.catch(() => {});
-										}
-									}}
-								>
-									<RotateCcw className='w-4 h-4' />
-								</Button>
-							</Tooltip>
 						</div>
 					</div>
 				</div>

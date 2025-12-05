@@ -32,21 +32,29 @@
 	},
 	"features": {
 		"title": "Nền tảng tất cả trong một cho tóm tắt phim & anime",
-		"movieRecap": {
+		"cardRewards": {
 			"title": "Tóm tắt Phim & Series",
-			"description": "Nén các bộ phim dài và các cung nhiều tập thành các bản tóm tắt ngắn gọn với các nhịp điệu, chương và dòng thời gian mà người hâm mộ có thể xem ngay lập tức."
+			"description": "Nén các bộ phim dài và các cung nhiều tập thành các bản tóm tắt ngắn gọn với nhịp điệu, chương và dòng thời gian."
 		},
-		"autoSubs": {
+		"manageCards": {
 			"title": "Phụ đề & Tóm tắt Tự động",
-			"description": "Tạo phụ đề cùng với tóm tắt ngắn gọn cho anime, K-drama, phim Hollywood hoặc phim địa phương - sẵn sàng chia sẻ hoặc nhúng vào wiki và diễn đàn."
+			"description": "Tạo phụ đề cùng với tóm tắt ngắn gọn cho anime, K-drama, phim Hollywood hoặc phim địa phương."
 		},
-		"highlightScenes": {
+		"setGoals": {
 			"title": "Cảnh Nổi bật",
-			"description": "Tự động phát hiện các cảnh nổi bật - trận chiến, bước ngoặt cốt truyện, nhạc nền - sau đó cắt và thêm phụ đề cho shorts và reels."
+			"description": "Tự động phát hiện các cảnh nổi bật - trận chiến, bước ngoặt cốt truyện, nhạc nền - sau đó cắt và thêm phụ đề."
 		},
-		"multiPlatform": {
+		"lounges": {
 			"title": "Xuất Đa Nền tảng",
-			"description": "Xuất một lần cho YouTube, TikTok, Instagram và Facebook với phụ đề được đốt cháy và tỷ lệ khung hình được điều chỉnh cho trailer, teaser và tóm tắt theo tập."
+			"description": "Xuất một lần cho YouTube, TikTok, Instagram và Facebook với phụ đề được đốt cháy và tỷ lệ khung hình được điều chỉnh."
+		},
+		"cardStrategy": {
+			"title": "Phân tích AI",
+			"description": "Phân tích sâu với nhận dạng cốt truyện, theo dõi phát triển nhân vật và phát hiện cảnh thông minh."
+		},
+		"compareApply": {
+			"title": "Timeline Thông minh",
+			"description": "Tự động chuyển văn bản, xây dựng chương cốt truyện, gắn thẻ khoảnh khắc nhân vật và tạo clip sẵn sàng chia sẻ."
 		}
 	},
 	"demo": {
