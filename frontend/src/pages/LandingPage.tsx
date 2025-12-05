@@ -594,6 +594,240 @@ const LandingPage = () => {
 				</div>
 			</section>
 
+			<section
+				ref={packagesSectionRef}
+				className='relative z-10 w-full px-4 sm:px-6 py-12 sm:py-16 md:py-24 mb-12 sm:mb-16 md:mb-20'
+			>
+				<div className='max-w-[1200px] mx-auto'>
+					<div className='text-center mb-8 sm:mb-12 md:mb-16 px-2'>
+						<h2
+							className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 ${
+								packagesAnimated
+									? "opacity-100 translate-y-0"
+									: "opacity-0 translate-y-8"
+							}`}
+							style={{
+								transitionDelay: packagesAnimated
+									? "0ms"
+									: "0ms",
+								transitionDuration: "600ms",
+								transitionTimingFunction:
+									"cubic-bezier(0.4, 0, 0.2, 1)",
+							}}
+						>
+							{t("packages.title")}
+						</h2>
+						<p
+							className={`text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto ${
+								packagesAnimated
+									? "opacity-100 translate-y-0"
+									: "opacity-0 translate-y-8"
+							}`}
+							style={{
+								transitionDelay: packagesAnimated
+									? "100ms"
+									: "0ms",
+								transitionDuration: "600ms",
+								transitionTimingFunction:
+									"cubic-bezier(0.4, 0, 0.2, 1)",
+							}}
+						>
+							{t("packages.subtitle")}
+						</p>
+					</div>
+
+					<div className='grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-4'>
+						{servicePackages.map((pkg, index) => {
+							const Icon = pkg.Icon;
+							const isPopular = pkg.Peak;
+							const featuresRaw = getNested?.(
+								`packages.${pkg.key}.features`
+							);
+							const features = Array.isArray(featuresRaw)
+								? (featuresRaw as string[])
+								: [];
+							return (
+								<div
+									key={index}
+									className={`group relative rounded-xl sm:rounded-2xl lg:rounded-3xl p-5 sm:p-6 md:p-8 flex flex-col overflow-visible ${
+										isPopular
+											? "lg:-mt-4 border-2 border-foreground bg-card shadow-xl hover:shadow-2xl"
+											: "border border-border bg-card hover:shadow-lg"
+									} ${
+										packagesAnimated
+											? "opacity-100 translate-y-0"
+											: "opacity-0 translate-y-8"
+									}`}
+									style={{
+										transitionDelay: packagesAnimated
+											? `${(index + 2) * 100}ms`
+											: "0ms",
+										transitionDuration: "600ms",
+										transitionTimingFunction:
+											"cubic-bezier(0.4, 0, 0.2, 1)",
+										willChange: packagesAnimated
+											? "transform, opacity"
+											: "auto",
+										boxShadow: isPopular
+											? "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 40px -10px rgba(0, 0, 0, 0.15)"
+											: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+									}}
+									onMouseEnter={(e) => {
+										e.currentTarget.style.transition =
+											"box-shadow 100ms ease-out";
+										if (isPopular) {
+											e.currentTarget.style.boxShadow =
+												"0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 60px -15px rgba(0, 0, 0, 0.2)";
+										} else {
+											e.currentTarget.style.boxShadow =
+												"0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 30px -10px rgba(0, 0, 0, 0.1)";
+										}
+									}}
+									onMouseLeave={(e) => {
+										e.currentTarget.style.transition =
+											"box-shadow 100ms ease-out";
+										if (isPopular) {
+											e.currentTarget.style.boxShadow =
+												"0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 40px -10px rgba(0, 0, 0, 0.15)";
+										} else {
+											e.currentTarget.style.boxShadow =
+												"0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)";
+										}
+									}}
+								>
+									{isPopular && (
+										<div className='absolute -top-3 sm:-top-4 left-1/2 -translate-x-1/2'>
+											<span className='inline-flex items-center gap-1 text-[10px] sm:text-xs font-semibold text-background bg-foreground px-3 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-lg'>
+												<Sparkles className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
+												{t("packages.popular")}
+											</span>
+										</div>
+									)}
+
+									<div className='mb-4 sm:mb-5 md:mb-6'>
+										<div className='flex items-center gap-3 sm:gap-4 mb-2 sm:mb-3'>
+											<div
+												className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 transition-all duration-200 ${
+													isPopular
+														? "bg-gradient-to-br from-foreground to-foreground/80 text-background shadow-lg"
+														: "border border-border bg-muted group-hover:bg-muted/80"
+												}`}
+											>
+												<Icon
+													className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 ${
+														isPopular
+															? "text-background"
+															: "text-foreground"
+													}`}
+													strokeWidth={2}
+												/>
+											</div>
+											<h3
+												className={`text-lg sm:text-xl md:text-2xl font-bold flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 flex-1 ${
+													isPopular
+														? "text-foreground"
+														: "text-foreground"
+												}`}
+											>
+												<span>
+													{t(
+														`packages.${pkg.key}.title`
+													)}
+												</span>
+												<span className='text-xs sm:text-sm font-normal text-muted-foreground'>
+													{t(
+														`packages.${pkg.key}.subtitle`
+													)}
+												</span>
+											</h3>
+											<button
+												onClick={() => {
+													setExpandedPackages(
+														(prev) => ({
+															...prev,
+															[index]:
+																!prev[index],
+														})
+													);
+												}}
+												className='sm:hidden flex items-center justify-center w-8 h-8 rounded-lg hover:bg-muted transition-colors duration-200 shrink-0'
+												aria-label={
+													expandedPackages[index]
+														? "Thu gọn"
+														: "Mở rộng"
+												}
+											>
+												<ChevronDown
+													className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${
+														expandedPackages[index]
+															? "rotate-180"
+															: ""
+													}`}
+													strokeWidth={2}
+												/>
+											</button>
+										</div>
+										<p className='text-muted-foreground leading-relaxed text-xs sm:text-sm'>
+											{t(
+												`packages.${pkg.key}.description`
+											)}
+										</p>
+									</div>
+
+									<div
+										className={`flex-grow mb-4 sm:mb-5 md:mb-6 overflow-hidden transition-all duration-300 ${
+											expandedPackages[index]
+												? "max-h-[1000px] opacity-100"
+												: "max-h-0 opacity-0 sm:max-h-[1000px] sm:opacity-100"
+										}`}
+									>
+										<ul className='space-y-2 sm:space-y-2.5 md:space-y-3'>
+											{(Array.isArray(features)
+												? features
+												: []
+											).map(
+												(
+													feature: string,
+													idx: number
+												) => (
+													<li
+														key={idx}
+														className='flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-foreground'
+													>
+														<div
+															className={`w-1.5 h-1.5 sm:w-2 sm:h-2 mt-1.5 sm:mt-2 rounded-full shrink-0 ${
+																isPopular
+																	? "bg-foreground"
+																	: "bg-muted-foreground"
+															}`}
+														></div>
+														<span className='leading-relaxed'>
+															{feature}
+														</span>
+													</li>
+												)
+											)}
+										</ul>
+									</div>
+
+									<Button
+										variant='default'
+										className={`w-full mt-auto transition-all duration-200 ${
+											isPopular
+												? "bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background h-11 sm:h-12 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg"
+												: "bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background h-10 sm:h-11 text-sm sm:text-base"
+										}`}
+										onClick={() => navigate("/register")}
+									>
+										{t("packages.choose")}
+									</Button>
+								</div>
+							);
+						})}
+					</div>
+				</div>
+			</section>
+
 			<div
 				ref={demoRef}
 				className='max-w-[1200px] mx-auto min-h-[400px] px-4 sm:px-6 mt-16 sm:mt-24 md:mt-[200px] mb-16 sm:mb-24 md:mb-[250px]'
@@ -897,240 +1131,6 @@ const LandingPage = () => {
 					</div>
 				</div>
 			</div>
-
-			<section
-				ref={packagesSectionRef}
-				className='relative z-10 w-full px-4 sm:px-6 py-12 sm:py-16 md:py-24 mb-12 sm:mb-16 md:mb-20'
-			>
-				<div className='max-w-[1200px] mx-auto'>
-					<div className='text-center mb-8 sm:mb-12 md:mb-16 px-2'>
-						<h2
-							className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-3 sm:mb-4 ${
-								packagesAnimated
-									? "opacity-100 translate-y-0"
-									: "opacity-0 translate-y-8"
-							}`}
-							style={{
-								transitionDelay: packagesAnimated
-									? "0ms"
-									: "0ms",
-								transitionDuration: "600ms",
-								transitionTimingFunction:
-									"cubic-bezier(0.4, 0, 0.2, 1)",
-							}}
-						>
-							{t("packages.title")}
-						</h2>
-						<p
-							className={`text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto ${
-								packagesAnimated
-									? "opacity-100 translate-y-0"
-									: "opacity-0 translate-y-8"
-							}`}
-							style={{
-								transitionDelay: packagesAnimated
-									? "100ms"
-									: "0ms",
-								transitionDuration: "600ms",
-								transitionTimingFunction:
-									"cubic-bezier(0.4, 0, 0.2, 1)",
-							}}
-						>
-							{t("packages.subtitle")}
-						</p>
-					</div>
-
-					<div className='grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-4'>
-						{servicePackages.map((pkg, index) => {
-							const Icon = pkg.Icon;
-							const isPopular = pkg.Peak;
-							const featuresRaw = getNested?.(
-								`packages.${pkg.key}.features`
-							);
-							const features = Array.isArray(featuresRaw)
-								? (featuresRaw as string[])
-								: [];
-							return (
-								<div
-									key={index}
-									className={`group relative rounded-xl sm:rounded-2xl lg:rounded-3xl p-5 sm:p-6 md:p-8 flex flex-col overflow-visible ${
-										isPopular
-											? "lg:-mt-4 border-2 border-foreground bg-card shadow-xl hover:shadow-2xl"
-											: "border border-border bg-card hover:shadow-lg"
-									} ${
-										packagesAnimated
-											? "opacity-100 translate-y-0"
-											: "opacity-0 translate-y-8"
-									}`}
-									style={{
-										transitionDelay: packagesAnimated
-											? `${(index + 2) * 100}ms`
-											: "0ms",
-										transitionDuration: "600ms",
-										transitionTimingFunction:
-											"cubic-bezier(0.4, 0, 0.2, 1)",
-										willChange: packagesAnimated
-											? "transform, opacity"
-											: "auto",
-										boxShadow: isPopular
-											? "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 40px -10px rgba(0, 0, 0, 0.15)"
-											: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
-									}}
-									onMouseEnter={(e) => {
-										e.currentTarget.style.transition =
-											"box-shadow 100ms ease-out";
-										if (isPopular) {
-											e.currentTarget.style.boxShadow =
-												"0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 60px -15px rgba(0, 0, 0, 0.2)";
-										} else {
-											e.currentTarget.style.boxShadow =
-												"0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 30px -10px rgba(0, 0, 0, 0.1)";
-										}
-									}}
-									onMouseLeave={(e) => {
-										e.currentTarget.style.transition =
-											"box-shadow 100ms ease-out";
-										if (isPopular) {
-											e.currentTarget.style.boxShadow =
-												"0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 40px -10px rgba(0, 0, 0, 0.15)";
-										} else {
-											e.currentTarget.style.boxShadow =
-												"0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)";
-										}
-									}}
-								>
-									{isPopular && (
-										<div className='absolute -top-3 sm:-top-4 left-1/2 -translate-x-1/2'>
-											<span className='inline-flex items-center gap-1 text-[10px] sm:text-xs font-semibold text-background bg-foreground px-3 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-lg'>
-												<Sparkles className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
-												{t("packages.popular")}
-											</span>
-										</div>
-									)}
-
-									<div className='mb-4 sm:mb-5 md:mb-6'>
-										<div className='flex items-center gap-3 sm:gap-4 mb-2 sm:mb-3'>
-											<div
-												className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 transition-all duration-200 ${
-													isPopular
-														? "bg-gradient-to-br from-foreground to-foreground/80 text-background shadow-lg"
-														: "border border-border bg-muted group-hover:bg-muted/80"
-												}`}
-											>
-												<Icon
-													className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 ${
-														isPopular
-															? "text-background"
-															: "text-foreground"
-													}`}
-													strokeWidth={2}
-												/>
-											</div>
-											<h3
-												className={`text-lg sm:text-xl md:text-2xl font-bold flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 flex-1 ${
-													isPopular
-														? "text-foreground"
-														: "text-foreground"
-												}`}
-											>
-												<span>
-													{t(
-														`packages.${pkg.key}.title`
-													)}
-												</span>
-												<span className='text-xs sm:text-sm font-normal text-muted-foreground'>
-													{t(
-														`packages.${pkg.key}.subtitle`
-													)}
-												</span>
-											</h3>
-											<button
-												onClick={() => {
-													setExpandedPackages(
-														(prev) => ({
-															...prev,
-															[index]:
-																!prev[index],
-														})
-													);
-												}}
-												className='sm:hidden flex items-center justify-center w-8 h-8 rounded-lg hover:bg-muted transition-colors duration-200 shrink-0'
-												aria-label={
-													expandedPackages[index]
-														? "Thu gọn"
-														: "Mở rộng"
-												}
-											>
-												<ChevronDown
-													className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${
-														expandedPackages[index]
-															? "rotate-180"
-															: ""
-													}`}
-													strokeWidth={2}
-												/>
-											</button>
-										</div>
-										<p className='text-muted-foreground leading-relaxed text-xs sm:text-sm'>
-											{t(
-												`packages.${pkg.key}.description`
-											)}
-										</p>
-									</div>
-
-									<div
-										className={`flex-grow mb-4 sm:mb-5 md:mb-6 overflow-hidden transition-all duration-300 ${
-											expandedPackages[index]
-												? "max-h-[1000px] opacity-100"
-												: "max-h-0 opacity-0 sm:max-h-[1000px] sm:opacity-100"
-										}`}
-									>
-										<ul className='space-y-2 sm:space-y-2.5 md:space-y-3'>
-											{(Array.isArray(features)
-												? features
-												: []
-											).map(
-												(
-													feature: string,
-													idx: number
-												) => (
-													<li
-														key={idx}
-														className='flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-foreground'
-													>
-														<div
-															className={`w-1.5 h-1.5 sm:w-2 sm:h-2 mt-1.5 sm:mt-2 rounded-full shrink-0 ${
-																isPopular
-																	? "bg-foreground"
-																	: "bg-muted-foreground"
-															}`}
-														></div>
-														<span className='leading-relaxed'>
-															{feature}
-														</span>
-													</li>
-												)
-											)}
-										</ul>
-									</div>
-
-									<Button
-										variant='default'
-										className={`w-full mt-auto transition-all duration-200 ${
-											isPopular
-												? "bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background h-11 sm:h-12 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg"
-												: "bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background h-10 sm:h-11 text-sm sm:text-base"
-										}`}
-										onClick={() => navigate("/register")}
-									>
-										{t("packages.choose")}
-									</Button>
-								</div>
-							);
-						})}
-					</div>
-				</div>
-			</section>
 
 			<div className='space-y-20 mb-32'>
 				<h2
