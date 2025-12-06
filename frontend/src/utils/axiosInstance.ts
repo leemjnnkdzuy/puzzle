@@ -1,18 +1,12 @@
 import axios, {type AxiosInstance, type AxiosError} from "axios";
 import {DEFAULT_API_URL} from "@/configs/AppConfig";
+import {getIsLoggingOut} from "@/utils";
 
 let isRefreshing = false;
 let failedQueue: Array<{
 	resolve: (value?: unknown) => void;
 	reject: (reason?: unknown) => void;
 }> = [];
-let isLoggingOut = false;
-
-export const setIsLoggingOut = (value: boolean) => {
-	isLoggingOut = value;
-};
-
-export const getIsLoggingOut = () => isLoggingOut;
 
 const processQueue = (error: unknown | null, token: string | null = null) => {
 	failedQueue.forEach((prom) => {
@@ -74,7 +68,7 @@ const createApiClient = (): AxiosInstance => {
 					return Promise.reject(error);
 				}
 
-				if (isLoggingOut) {
+				if (getIsLoggingOut()) {
 					return Promise.reject(error);
 				}
 

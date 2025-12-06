@@ -6,6 +6,7 @@ import authService from "@/services/AuthService";
 import {safeExecute} from "@/handlers/errorHandler";
 import type {LoginResponse} from "@/services/AuthService";
 import geoLocationService from "@/services/GeoLocationService";
+import {setIsLoggingOut, getIsLoggingOut} from "@/utils";
 
 interface AuthState {
 	user: unknown | null;
@@ -132,7 +133,7 @@ export const useAuthStore = create<AuthStore>()(
 			},
 
 			logout: async () => {
-				if (isLoggingOut) {
+				if (getIsLoggingOut()) {
 					return;
 				}
 				await safeExecute(() => authService.logout(), {silent: true});
@@ -145,14 +146,11 @@ export const useAuthStore = create<AuthStore>()(
 			},
 
 			silentLogout: () => {
-				if (isLoggingOut) {
+				if (getIsLoggingOut()) {
 					return;
 				}
-				isLoggingOut = true;
+				setIsLoggingOut(true);
 				stopAutoRefresh();
-				import("@/utils/axiosInstance").then((module) => {
-					module.setIsLoggingOut(true);
-				});
 				set({
 					user: null,
 					isAuthenticated: false,
@@ -160,10 +158,7 @@ export const useAuthStore = create<AuthStore>()(
 					isInitialized: true,
 				});
 				setTimeout(() => {
-					isLoggingOut = false;
-					import("@/utils/axiosInstance").then((module) => {
-						module.setIsLoggingOut(false);
-					});
+					setIsLoggingOut(false);
 				}, 1000);
 			},
 
@@ -275,7 +270,6 @@ export const useAuthStore = create<AuthStore>()(
 const TOKEN_REFRESH_INTERVAL = 14 * 60 * 1000;
 
 let refreshInterval: ReturnType<typeof setInterval> | null = null;
-let isLoggingOut = false;
 
 const startAutoRefresh = () => {
 	if (refreshInterval) {
@@ -283,7 +277,7 @@ const startAutoRefresh = () => {
 	}
 
 	refreshInterval = setInterval(async () => {
-		if (isLoggingOut) {
+		if (getIsLoggingOut()) {
 			return;
 		}
 		const {isAuthenticated} = useAuthStore.getState();
