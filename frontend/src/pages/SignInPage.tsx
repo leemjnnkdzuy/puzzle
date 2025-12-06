@@ -12,7 +12,7 @@ import type {LoginData} from "@/services/AuthService";
 const SignInPage: React.FC = () => {
 	const navigate = useNavigate();
 	const {login, isAuthenticated} = useAuth();
-	const {showError, showSuccess} = useGlobalNotificationPopup();
+	const {showError} = useGlobalNotificationPopup();
 	const {handleSocialLogin} = useSocialLogin();
 	const {getNested} = useLanguage();
 	const [loginData, setLoginData] = useState<LoginData>({
