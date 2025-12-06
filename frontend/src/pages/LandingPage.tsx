@@ -687,7 +687,7 @@ const LandingPage = () => {
 						</p>
 					</div>
 
-					<div className='grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-4 2k:gap-8 4k:gap-10'>
+					<div className='grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-4 2k:gap-8 4k:gap-10 items-stretch'>
 						{servicePackages.map((pkg, index) => {
 							const Icon = pkg.Icon;
 							const isPopular = pkg.Peak;
@@ -700,10 +700,8 @@ const LandingPage = () => {
 							return (
 								<div
 									key={index}
-									className={`group relative rounded-xl sm:rounded-2xl lg:rounded-3xl p-5 sm:p-6 md:p-8 flex flex-col overflow-visible ${
-										isPopular
-											? "lg:-mt-4 border-2 border-foreground bg-card shadow-xl hover:shadow-2xl"
-											: "border border-border bg-card hover:shadow-lg"
+									className={`group relative overflow-visible ${
+										isPopular ? "lg:-mt-4" : ""
 									} ${
 										packagesAnimated
 											? "opacity-100 translate-y-0"
@@ -719,159 +717,296 @@ const LandingPage = () => {
 										willChange: packagesAnimated
 											? "transform, opacity"
 											: "auto",
-										boxShadow: isPopular
-											? "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 40px -10px rgba(0, 0, 0, 0.15)"
-											: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
-									}}
-									onMouseEnter={(e) => {
-										e.currentTarget.style.transition =
-											"box-shadow 100ms ease-out";
-										if (isPopular) {
-											e.currentTarget.style.boxShadow =
-												"0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 60px -15px rgba(0, 0, 0, 0.2)";
-										} else {
-											e.currentTarget.style.boxShadow =
-												"0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 30px -10px rgba(0, 0, 0, 0.1)";
-										}
-									}}
-									onMouseLeave={(e) => {
-										e.currentTarget.style.transition =
-											"box-shadow 100ms ease-out";
-										if (isPopular) {
-											e.currentTarget.style.boxShadow =
-												"0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 40px -10px rgba(0, 0, 0, 0.15)";
-										} else {
-											e.currentTarget.style.boxShadow =
-												"0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)";
-										}
 									}}
 								>
-									{isPopular && (
-										<div className='absolute -top-3 sm:-top-4 left-1/2 -translate-x-1/2'>
-											<span className='inline-flex items-center gap-1 text-[10px] sm:text-xs font-semibold text-background bg-foreground px-3 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-lg'>
-												<Sparkles className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
-												{t("packages.popular")}
-											</span>
-										</div>
-									)}
-
-									<div className='mb-4 sm:mb-5 md:mb-6'>
-										<div className='flex items-center gap-3 sm:gap-4 mb-2 sm:mb-3'>
+									{isPopular ? (
+										<div className='bg-gradient-to-r from-[#22d3ee] to-[#3b82f6] p-[2px] rounded-xl sm:rounded-2xl lg:rounded-3xl h-full'>
 											<div
-												className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 transition-all duration-200 ${
-													isPopular
-														? "bg-gradient-to-br from-foreground to-foreground/80 text-background shadow-lg"
-														: "border border-border bg-muted group-hover:bg-muted/80"
-												}`}
-											>
-												<Icon
-													className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 ${
-														isPopular
-															? "text-background"
-															: "text-foreground"
-													}`}
-													strokeWidth={2}
-												/>
-											</div>
-											<h3
-												className={`text-lg sm:text-xl md:text-2xl font-bold flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 flex-1 ${
-													isPopular
-														? "text-foreground"
-														: "text-foreground"
-												}`}
-											>
-												<span>
-													{t(
-														`packages.${pkg.key}.title`
-													)}
-												</span>
-												<span className='text-xs sm:text-sm font-normal text-muted-foreground'>
-													{t(
-														`packages.${pkg.key}.subtitle`
-													)}
-												</span>
-											</h3>
-											<button
-												onClick={() => {
-													setExpandedPackages(
-														(prev) => ({
-															...prev,
-															[index]:
-																!prev[index],
-														})
-													);
+												className='bg-card rounded-xl sm:rounded-2xl lg:rounded-3xl p-5 sm:p-6 md:p-8 flex flex-col h-full shadow-xl hover:shadow-2xl transition-shadow duration-200'
+												style={{
+													boxShadow:
+														"0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 40px -10px rgba(0, 0, 0, 0.15)",
 												}}
-												className='sm:hidden flex items-center justify-center w-8 h-8 rounded-lg hover:bg-muted transition-colors duration-200 shrink-0'
-												aria-label={
+												onMouseEnter={(e) => {
+													e.currentTarget.style.transition =
+														"box-shadow 100ms ease-out";
+													e.currentTarget.style.boxShadow =
+														"0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 60px -15px rgba(0, 0, 0, 0.2)";
+												}}
+												onMouseLeave={(e) => {
+													e.currentTarget.style.transition =
+														"box-shadow 100ms ease-out";
+													e.currentTarget.style.boxShadow =
+														"0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05), 0 0 40px -10px rgba(0, 0, 0, 0.15)";
+												}}
+											>
+												{isPopular && (
+													<div className='absolute -top-3 sm:-top-4 left-1/2 -translate-x-1/2'>
+														<span className='inline-flex items-center gap-1 text-[10px] sm:text-xs font-semibold bg-gradient-to-r from-[#22d3ee] to-[#3b82f6] px-[2px] py-[2px] rounded-full shadow-lg'>
+															<span className='inline-flex items-center gap-1 bg-background/90 backdrop-blur-sm px-3 sm:px-4 py-1 sm:py-1.5 rounded-full'>
+																<Sparkles className='w-2.5 h-2.5 sm:w-3 sm:h-3 text-cyan-500' />
+																<span className='bg-gradient-to-r from-[#22d3ee] to-[#3b82f6] bg-clip-text text-transparent'>
+																	{t(
+																		"packages.popular"
+																	)}
+																</span>
+															</span>
+														</span>
+													</div>
+												)}
+
+												<div className='mb-4 sm:mb-5 md:mb-6'>
+													<div className='flex items-center gap-3 sm:gap-4 mb-2 sm:mb-3'>
+														<div
+															className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 transition-all duration-200 ${
+																isPopular
+																	? "bg-gradient-to-br from-foreground to-foreground/80 text-background shadow-lg"
+																	: "border border-border bg-muted group-hover:bg-muted/80"
+															}`}
+														>
+															<Icon
+																className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 ${
+																	isPopular
+																		? "text-background"
+																		: "text-foreground"
+																}`}
+																strokeWidth={2}
+															/>
+														</div>
+														<h3
+															className={`text-lg sm:text-xl md:text-2xl font-bold flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 flex-1 ${
+																isPopular
+																	? "text-foreground"
+																	: "text-foreground"
+															}`}
+														>
+															<span>
+																{t(
+																	`packages.${pkg.key}.title`
+																)}
+															</span>
+															<span className='text-xs sm:text-sm font-normal text-muted-foreground'>
+																{t(
+																	`packages.${pkg.key}.subtitle`
+																)}
+															</span>
+														</h3>
+														<button
+															onClick={() => {
+																setExpandedPackages(
+																	(prev) => ({
+																		...prev,
+																		[index]:
+																			!prev[
+																				index
+																			],
+																	})
+																);
+															}}
+															className='sm:hidden flex items-center justify-center w-8 h-8 rounded-lg hover:bg-muted transition-colors duration-200 shrink-0'
+															aria-label={
+																expandedPackages[
+																	index
+																]
+																	? "Thu gọn"
+																	: "Mở rộng"
+															}
+														>
+															<ChevronDown
+																className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${
+																	expandedPackages[
+																		index
+																	]
+																		? "rotate-180"
+																		: ""
+																}`}
+																strokeWidth={2}
+															/>
+														</button>
+													</div>
+													<p className='text-muted-foreground leading-relaxed text-xs sm:text-sm'>
+														{t(
+															`packages.${pkg.key}.description`
+														)}
+													</p>
+												</div>
+
+												<div
+													className={`flex-grow mb-4 sm:mb-5 md:mb-6 overflow-hidden transition-all duration-300 ${
+														expandedPackages[index]
+															? "max-h-[1000px] opacity-100"
+															: "max-h-0 opacity-0 sm:max-h-[1000px] sm:opacity-100"
+													}`}
+												>
+													<ul className='space-y-2 sm:space-y-2.5 md:space-y-3'>
+														{(Array.isArray(
+															features
+														)
+															? features
+															: []
+														).map(
+															(
+																feature: string,
+																idx: number
+															) => (
+																<li
+																	key={idx}
+																	className='flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-foreground'
+																>
+																	<div
+																		className={`w-1.5 h-1.5 sm:w-2 sm:h-2 mt-1.5 sm:mt-2 rounded-full shrink-0 ${
+																			isPopular
+																				? "bg-foreground"
+																				: "bg-muted-foreground"
+																		}`}
+																	></div>
+																	<span className='leading-relaxed'>
+																		{
+																			feature
+																		}
+																	</span>
+																</li>
+															)
+														)}
+													</ul>
+												</div>
+
+												<Button
+													variant='default'
+													className={`w-full mt-auto transition-all duration-200 ${
+														isPopular
+															? "bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background h-11 sm:h-12 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg"
+															: "bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background h-10 sm:h-11 text-sm sm:text-base"
+													}`}
+													onClick={() =>
+														navigate("/register")
+													}
+												>
+													{t("packages.choose")}
+												</Button>
+											</div>
+										</div>
+									) : (
+										<div
+											className='border border-border bg-card rounded-xl sm:rounded-2xl lg:rounded-3xl p-5 sm:p-6 md:p-8 flex flex-col h-full hover:shadow-lg transition-shadow duration-200'
+											style={{
+												boxShadow:
+													"0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+											}}
+											onMouseEnter={(e) => {
+												e.currentTarget.style.transition =
+													"box-shadow 100ms ease-out";
+												e.currentTarget.style.boxShadow =
+													"0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 30px -10px rgba(0, 0, 0, 0.1)";
+											}}
+											onMouseLeave={(e) => {
+												e.currentTarget.style.transition =
+													"box-shadow 100ms ease-out";
+												e.currentTarget.style.boxShadow =
+													"0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)";
+											}}
+										>
+											<div className='mb-4 sm:mb-5 md:mb-6'>
+												<div className='flex items-center gap-3 sm:gap-4 mb-2 sm:mb-3'>
+													<div className='w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 transition-all duration-200 border border-border bg-muted group-hover:bg-muted/80'>
+														<Icon
+															className='w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-foreground'
+															strokeWidth={2}
+														/>
+													</div>
+													<h3 className='text-lg sm:text-xl md:text-2xl font-bold flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 flex-1 text-foreground'>
+														<span>
+															{t(
+																`packages.${pkg.key}.title`
+															)}
+														</span>
+														<span className='text-xs sm:text-sm font-normal text-muted-foreground'>
+															{t(
+																`packages.${pkg.key}.subtitle`
+															)}
+														</span>
+													</h3>
+													<button
+														onClick={() => {
+															setExpandedPackages(
+																(prev) => ({
+																	...prev,
+																	[index]:
+																		!prev[
+																			index
+																		],
+																})
+															);
+														}}
+														className='sm:hidden flex items-center justify-center w-8 h-8 rounded-lg hover:bg-muted transition-colors duration-200 shrink-0'
+														aria-label={
+															expandedPackages[
+																index
+															]
+																? "Thu gọn"
+																: "Mở rộng"
+														}
+													>
+														<ChevronDown
+															className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${
+																expandedPackages[
+																	index
+																]
+																	? "rotate-180"
+																	: ""
+															}`}
+															strokeWidth={2}
+														/>
+													</button>
+												</div>
+												<p className='text-muted-foreground leading-relaxed text-xs sm:text-sm'>
+													{t(
+														`packages.${pkg.key}.description`
+													)}
+												</p>
+											</div>
+
+											<div
+												className={`flex-grow mb-4 sm:mb-5 md:mb-6 overflow-hidden transition-all duration-300 ${
 													expandedPackages[index]
-														? "Thu gọn"
-														: "Mở rộng"
+														? "max-h-[1000px] opacity-100"
+														: "max-h-0 opacity-0 sm:max-h-[1000px] sm:opacity-100"
+												}`}
+											>
+												<ul className='space-y-2 sm:space-y-2.5 md:space-y-3'>
+													{(Array.isArray(features)
+														? features
+														: []
+													).map(
+														(
+															feature: string,
+															idx: number
+														) => (
+															<li
+																key={idx}
+																className='flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-foreground'
+															>
+																<div className='w-1.5 h-1.5 sm:w-2 sm:h-2 mt-1.5 sm:mt-2 rounded-full shrink-0 bg-muted-foreground'></div>
+																<span className='leading-relaxed'>
+																	{feature}
+																</span>
+															</li>
+														)
+													)}
+												</ul>
+											</div>
+
+											<Button
+												variant='default'
+												className='w-full mt-auto transition-all duration-200 bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background h-10 sm:h-11 text-sm sm:text-base'
+												onClick={() =>
+													navigate("/register")
 												}
 											>
-												<ChevronDown
-													className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${
-														expandedPackages[index]
-															? "rotate-180"
-															: ""
-													}`}
-													strokeWidth={2}
-												/>
-											</button>
+												{t("packages.choose")}
+											</Button>
 										</div>
-										<p className='text-muted-foreground leading-relaxed text-xs sm:text-sm'>
-											{t(
-												`packages.${pkg.key}.description`
-											)}
-										</p>
-									</div>
-
-									<div
-										className={`flex-grow mb-4 sm:mb-5 md:mb-6 overflow-hidden transition-all duration-300 ${
-											expandedPackages[index]
-												? "max-h-[1000px] opacity-100"
-												: "max-h-0 opacity-0 sm:max-h-[1000px] sm:opacity-100"
-										}`}
-									>
-										<ul className='space-y-2 sm:space-y-2.5 md:space-y-3'>
-											{(Array.isArray(features)
-												? features
-												: []
-											).map(
-												(
-													feature: string,
-													idx: number
-												) => (
-													<li
-														key={idx}
-														className='flex items-start gap-2 sm:gap-3 text-xs sm:text-sm text-foreground'
-													>
-														<div
-															className={`w-1.5 h-1.5 sm:w-2 sm:h-2 mt-1.5 sm:mt-2 rounded-full shrink-0 ${
-																isPopular
-																	? "bg-foreground"
-																	: "bg-muted-foreground"
-															}`}
-														></div>
-														<span className='leading-relaxed'>
-															{feature}
-														</span>
-													</li>
-												)
-											)}
-										</ul>
-									</div>
-
-									<Button
-										variant='default'
-										className={`w-full mt-auto transition-all duration-200 ${
-											isPopular
-												? "bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background h-11 sm:h-12 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg"
-												: "bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background h-10 sm:h-11 text-sm sm:text-base"
-										}`}
-										onClick={() => navigate("/register")}
-									>
-										{t("packages.choose")}
-									</Button>
+									)}
 								</div>
 							);
 						})}
@@ -1351,9 +1486,11 @@ const LandingPage = () => {
 				>
 					<div className='max-w-[1200px] 2k:max-w-[1600px] 4k:max-w-[2000px] mx-auto'>
 						<div className='text-center mb-12 md:mb-16'>
-							<div className='flex items-center justify-center gap-2 text-sm font-semibold text-foreground mb-4'>
-								<Layers className='w-4 h-4' />
-								<span>{t("models.label")}</span>
+							<div className='flex items-center justify-center gap-2 text-sm font-semibold mb-4'>
+								<Layers className='w-4 h-4 text-cyan-500' />
+								<span className='bg-gradient-to-r from-[#22d3ee] to-[#3b82f6] bg-clip-text text-transparent'>
+									{t("models.label")}
+								</span>
 							</div>
 							<h3 className='text-3xl sm:text-4xl md:text-5xl 2k:text-6xl 4k:text-7xl font-bold text-foreground leading-tight mb-4'>
 								{t("models.title")}
@@ -1373,7 +1510,7 @@ const LandingPage = () => {
 									descriptionKey: "models.llm.description",
 									capabilitiesKey: "models.llm.capabilities",
 									gradient:
-										"from-purple-500 via-purple-600 to-indigo-600",
+										"from-purple-300 via-purple-400 to-indigo-400 dark:from-purple-500 dark:via-purple-600 dark:to-indigo-600",
 									bgGradient:
 										"from-purple-50 via-purple-100/50 to-indigo-50 dark:from-purple-900/20 dark:via-purple-800/20 dark:to-indigo-900/20",
 								},
@@ -1386,7 +1523,7 @@ const LandingPage = () => {
 									capabilitiesKey:
 										"models.vision.capabilities",
 									gradient:
-										"from-blue-500 via-blue-600 to-cyan-600",
+										"from-blue-300 via-blue-400 to-cyan-400 dark:from-blue-500 dark:via-blue-600 dark:to-cyan-600",
 									bgGradient:
 										"from-blue-50 via-blue-100/50 to-cyan-50 dark:from-blue-900/20 dark:via-blue-800/20 dark:to-cyan-900/20",
 								},
@@ -1398,7 +1535,7 @@ const LandingPage = () => {
 									descriptionKey: "models.asr.description",
 									capabilitiesKey: "models.asr.capabilities",
 									gradient:
-										"from-amber-500 via-amber-600 to-orange-600",
+										"from-amber-300 via-amber-400 to-orange-400 dark:from-amber-500 dark:via-amber-600 dark:to-orange-600",
 									bgGradient:
 										"from-amber-50 via-amber-100/50 to-orange-50 dark:from-amber-900/20 dark:via-amber-800/20 dark:to-orange-900/20",
 								},
@@ -1426,35 +1563,32 @@ const LandingPage = () => {
 												: "0ms",
 										}}
 									>
-										{/* Background gradient */}
 										<div
 											className={`absolute inset-0 bg-gradient-to-br ${model.bgGradient} opacity-50 group-hover:opacity-70 transition-opacity duration-300`}
 										></div>
 
 										<div className='relative p-6 md:p-8'>
-											{/* Icon */}
-											<div
-												className={`w-14 h-14 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br ${model.gradient} flex items-center justify-center shadow-lg mb-4 group-hover:scale-110 transition-transform duration-300`}
-											>
-												<Icon className='w-7 h-7 md:w-8 md:h-8 text-white' />
+											<div className='flex items-center gap-4 mb-3'>
+												<div
+													className={`w-14 h-14 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br ${model.gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 shrink-0`}
+												>
+													<Icon className='w-7 h-7 md:w-8 md:h-8 text-white' />
+												</div>
+
+												<div>
+													<h4 className='text-xl md:text-2xl font-bold text-foreground mb-1'>
+														{t(model.nameKey)}
+													</h4>
+													<p className='text-xs md:text-sm text-muted-foreground uppercase tracking-wide'>
+														{t(model.typeKey)}
+													</p>
+												</div>
 											</div>
 
-											{/* Model name and type */}
-											<div className='mb-3'>
-												<h4 className='text-xl md:text-2xl font-bold text-foreground mb-1'>
-													{t(model.nameKey)}
-												</h4>
-												<p className='text-xs md:text-sm text-muted-foreground uppercase tracking-wide'>
-													{t(model.typeKey)}
-												</p>
-											</div>
-
-											{/* Description */}
 											<p className='text-sm md:text-base text-muted-foreground leading-relaxed mb-4'>
 												{t(model.descriptionKey)}
 											</p>
 
-											{/* Capabilities */}
 											<div className='space-y-2'>
 												<p className='text-xs font-semibold text-foreground uppercase tracking-wide mb-2'>
 													{t("models.capabilities")}
@@ -1490,7 +1624,12 @@ const LandingPage = () => {
 					<div className='max-w-[1200px] mx-auto grid md:grid-cols-2 gap-10 items-start md:items-stretch'>
 						<div className='relative h-full'>
 							<div className='absolute inset-0 bg-gradient-to-br from-purple-100 via-blue-50 to-indigo-100 dark:from-purple-900/20 dark:via-blue-900/20 dark:to-indigo-900/20 rounded-[32px] blur-2xl'></div>
-							<div className='relative bg-card rounded-[28px] border border-border shadow-xl p-7 space-y-5 h-full flex flex-col'>
+							<div
+								className='relative bg-card rounded-[28px] border border-border p-7 space-y-5 h-full flex flex-col voice-track-shadow'
+								style={{
+									position: "relative",
+								}}
+							>
 								<div className='flex items-center justify-between'>
 									<div className='flex items-center gap-2 text-sm font-semibold text-foreground'>
 										<Languages className='w-4 h-4' />
@@ -1590,9 +1729,11 @@ const LandingPage = () => {
 							</div>
 						</div>
 						<div className='space-y-6 h-full flex flex-col justify-center md:justify-start'>
-							<div className='inline-flex items-center gap-2 text-sm font-semibold text-foreground'>
-								<Mic className='w-4 h-4' />
-								<span>{t("voice.label")}</span>
+							<div className='inline-flex items-center gap-2 text-sm font-semibold'>
+								<Mic className='w-4 h-4 text-cyan-500' />
+								<span className='bg-gradient-to-r from-[#22d3ee] to-[#3b82f6] bg-clip-text text-transparent'>
+									{t("voice.label")}
+								</span>
 							</div>
 							<h3 className='text-4xl font-bold text-foreground leading-tight'>
 								{t("voice.title")}
@@ -1631,9 +1772,11 @@ const LandingPage = () => {
 				>
 					<div className='max-w-[1200px] mx-auto grid md:grid-cols-2 gap-10 items-start md:items-center'>
 						<div className='space-y-6'>
-							<div className='inline-flex items-center gap-2 text-sm font-semibold text-foreground'>
-								<View className='w-4 h-4' />
-								<span>{t("quality.label")}</span>
+							<div className='inline-flex items-center gap-2 text-sm font-semibold'>
+								<View className='w-4 h-4 text-cyan-500' />
+								<span className='bg-gradient-to-r from-[#22d3ee] to-[#3b82f6] bg-clip-text text-transparent'>
+									{t("quality.label")}
+								</span>
 							</div>
 							<h3 className='text-4xl font-bold text-foreground leading-tight'>
 								{t("quality.title")}

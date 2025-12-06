@@ -1061,8 +1061,12 @@ const SettingsPage: React.FC = () => {
 												history.loginAt
 											);
 											const formatDate = (date: Date) => {
+												const locale =
+													language === "vi"
+														? "vi-VN"
+														: "en-US";
 												return new Intl.DateTimeFormat(
-													"en-US",
+													locale,
 													{
 														year: "numeric",
 														month: "short",

@@ -368,3 +368,42 @@
 .dark .crescent-ellipse-dark {
 	display: block;
 }
+
+@keyframes gradientShadowRotate {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.voice-track-shadow {
+	position: relative;
+}
+
+.voice-track-shadow::before {
+	content: "";
+	position: absolute;
+	inset: -4px;
+	border-radius: 32px;
+	background: linear-gradient(
+		45deg,
+		#22d3ee,
+		#3b82f6,
+		#22d3ee,
+		#3b82f6
+	);
+	background-size: 300% 300%;
+	animation: gradientShadowRotate 4s ease infinite;
+	z-index: -1;
+	filter: blur(20px);
+	opacity: 0.6;
+}
+
+.dark .voice-track-shadow::before {
+	opacity: 0.4;
+}

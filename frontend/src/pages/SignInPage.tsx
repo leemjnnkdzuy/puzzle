@@ -59,15 +59,11 @@ const SignInPage: React.FC = () => {
 
 		try {
 			const result = await login(loginData.username, loginData.password);
-			const loginSuccess = getNested?.(
-				"signIn.errors.loginSuccess"
-			) as string;
 			const loginFailed = getNested?.(
 				"signIn.errors.loginFailed"
 			) as string;
 
 			if (result && result.success) {
-				showSuccess(loginSuccess);
 				// Navigation will be handled by useEffect when isAuthenticated changes
 			} else {
 				showError(result?.message || loginFailed);

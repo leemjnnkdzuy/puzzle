@@ -1,14 +1,11 @@
+import {IPIFY_API_URL, IPINFO_API_URL} from "@/configs/AppConfig";
+
 export interface GeoLocationResponse {
 	countryCode: string;
 	country: string;
 }
 
 class GeoLocationService {
-	private getIPApiUrl(ip: string): string {
-		return `https://ipinfo.io/${ip}/json`;
-	}
-
-	private readonly IPIFY_URL = "https://api.ipify.org/?format=json";
 	private readonly cacheKey = "geo_location_cache";
 	private readonly ipCacheKey = "client_ip_cache";
 	private readonly cacheExpiry = 24 * 60 * 60 * 1000;
@@ -27,7 +24,7 @@ class GeoLocationService {
 		}
 
 		try {
-			const response = await fetch(this.IPIFY_URL, {
+			const response = await fetch(IPIFY_API_URL, {
 				method: "GET",
 				headers: {
 					Accept: "application/json",
@@ -92,7 +89,7 @@ class GeoLocationService {
 		}
 
 		try {
-			const apiUrl = this.getIPApiUrl(ip);
+			const apiUrl = IPINFO_API_URL(ip);
 			const response = await fetch(apiUrl, {
 				method: "GET",
 				headers: {

@@ -5,6 +5,8 @@ import {
 	ChevronRight,
 	ChevronDown,
 	LogOut,
+	Copy,
+	Check,
 } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
@@ -42,7 +44,7 @@ type LoginHistoryItem = {
 };
 
 const LoginHistoryPage: React.FC = () => {
-	const {getNested} = useLanguage();
+	const {getNested, language} = useLanguage();
 	const {showError, showSuccess} = useGlobalNotificationPopup();
 
 	const loginHistoryPage = getNested?.("loginHistoryPage") as {
@@ -106,6 +108,7 @@ const LoginHistoryPage: React.FC = () => {
 	const [searchQuery, setSearchQuery] = useState<string>("");
 	const [showLogoutAllDialog, setShowLogoutAllDialog] =
 		useState<boolean>(false);
+	const [copiedIp, setCopiedIp] = useState<string | null>(null);
 
 	const limit = 20;
 
@@ -236,7 +239,8 @@ const LoginHistoryPage: React.FC = () => {
 
 	const formatDate = (dateString: string) => {
 		const date = new Date(dateString);
-		return new Intl.DateTimeFormat("en-US", {
+		const locale = language === "vi" ? "vi-VN" : "en-US";
+		return new Intl.DateTimeFormat(locale, {
 			year: "numeric",
 			month: "short",
 			day: "numeric",
@@ -275,6 +279,18 @@ const LoginHistoryPage: React.FC = () => {
 		if (lowerBrowser.includes("safari")) return "Safari";
 		if (lowerBrowser.includes("edge")) return "Edge";
 		return browser;
+	};
+
+	const handleCopyIP = async (ip: string) => {
+		try {
+			await navigator.clipboard.writeText(ip);
+			setCopiedIp(ip);
+			setTimeout(() => {
+				setCopiedIp(null);
+			}, 2000);
+		} catch (error) {
+			console.error("Failed to copy IP:", error);
+		}
 	};
 
 	const handleLogoutSession = async (sessionId: string) => {
@@ -561,10 +577,6 @@ const LoginHistoryPage: React.FC = () => {
 												"IP Address"}
 										</th>
 										<th className='px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider'>
-											{loginHistoryPage?.location ||
-												"Location"}
-										</th>
-										<th className='px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider'>
 											{loginHistoryPage?.loginDate ||
 												"Login Date"}
 										</th>
@@ -591,13 +603,27 @@ const LoginHistoryPage: React.FC = () => {
 													` • ${history.deviceInfo.device}`}
 											</td>
 											<td className='px-6 py-4 whitespace-nowrap text-sm font-mono'>
-												{history.ipAddress}
-											</td>
-											<td className='px-6 py-4 whitespace-nowrap text-sm'>
-												{history.location?.city &&
-												history.location?.country
-													? `${history.location.city}, ${history.location.country}`
-													: "-"}
+												<div className='flex items-center gap-2'>
+													<span>
+														{history.ipAddress}
+													</span>
+													<button
+														onClick={() =>
+															handleCopyIP(
+																history.ipAddress
+															)
+														}
+														className='p-1 hover:bg-muted rounded transition-colors'
+														title='Copy IP address'
+													>
+														{copiedIp ===
+														history.ipAddress ? (
+															<Check className='w-3 h-3 text-green-600 dark:text-green-400' />
+														) : (
+															<Copy className='w-3 h-3 text-muted-foreground hover:text-foreground' />
+														)}
+													</button>
+												</div>
 											</td>
 											<td className='px-6 py-4 whitespace-nowrap text-sm'>
 												{formatDate(history.loginAt)}
@@ -648,28 +674,33 @@ const LoginHistoryPage: React.FC = () => {
 													` • ${history.deviceInfo.device}`}
 											</span>
 										</div>
-										<div className='flex justify-between'>
+										<div className='flex justify-between items-center'>
 											<span className='text-muted-foreground'>
 												{loginHistoryPage?.ipAddress ||
 													"IP Address"}
 												:
 											</span>
-											<span className='font-mono text-xs'>
-												{history.ipAddress}
-											</span>
-										</div>
-										<div className='flex justify-between'>
-											<span className='text-muted-foreground'>
-												{loginHistoryPage?.location ||
-													"Location"}
-												:
-											</span>
-											<span>
-												{history.location?.city &&
-												history.location?.country
-													? `${history.location.city}, ${history.location.country}`
-													: "-"}
-											</span>
+											<div className='flex items-center gap-2'>
+												<span className='font-mono text-xs'>
+													{history.ipAddress}
+												</span>
+												<button
+													onClick={() =>
+														handleCopyIP(
+															history.ipAddress
+														)
+													}
+													className='p-1 hover:bg-muted rounded transition-colors'
+													title='Copy IP address'
+												>
+													{copiedIp ===
+													history.ipAddress ? (
+														<Check className='w-3 h-3 text-green-600 dark:text-green-400' />
+													) : (
+														<Copy className='w-3 h-3 text-muted-foreground hover:text-foreground' />
+													)}
+												</button>
+											</div>
 										</div>
 										<div className='flex justify-between'>
 											<span className='text-muted-foreground'>
