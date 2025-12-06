@@ -8,12 +8,12 @@ class GeoLocationService {
 		return `https://ipinfo.io/${ip}/json`;
 	}
 
-	private readonly IPIFY_URL = "https://api.ipify.org?format=json";
+	private readonly IPIFY_URL = "https://api.ipify.org/?format=json";
 	private readonly cacheKey = "geo_location_cache";
 	private readonly ipCacheKey = "client_ip_cache";
 	private readonly cacheExpiry = 24 * 60 * 60 * 1000;
 
-	private async getClientIP(): Promise<string | null> {
+	async getClientIP(): Promise<string | null> {
 		try {
 			const cachedIP = localStorage.getItem(this.ipCacheKey);
 			if (cachedIP) {

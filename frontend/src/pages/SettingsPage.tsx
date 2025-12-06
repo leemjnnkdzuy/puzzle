@@ -13,7 +13,9 @@ import {
 	ChevronDown,
 	Clock,
 	LogOut,
+	ArrowRight,
 } from "lucide-react";
+import {useNavigate} from "react-router-dom";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Overlay from "@/components/ui/Overlay";
@@ -54,6 +56,7 @@ const SettingsPage: React.FC = () => {
 	const {language, setLanguage} = useLanguage();
 	const {showSuccess, showError} = useGlobalNotificationPopup();
 	const {getNested} = useLanguage();
+	const navigate = useNavigate();
 
 	const userData = user as UserData | null;
 
@@ -109,6 +112,7 @@ const SettingsPage: React.FC = () => {
 				changeNameSuccess?: string;
 				changeNameFailed?: string;
 				loginHistory?: string;
+				viewAllLoginHistory?: string;
 				logoutAll?: string;
 				currentDevice?: string;
 				active?: string;
@@ -221,8 +225,6 @@ const SettingsPage: React.FC = () => {
 		}>
 	>([]);
 	const [loginHistoryLoading, setLoginHistoryLoading] = useState(false);
-	const [loginHistoryPage, setLoginHistoryPage] = useState(1);
-	const [loginHistoryTotal, setLoginHistoryTotal] = useState(0);
 	const [showLogoutAllDialog, setShowLogoutAllDialog] = useState(false);
 	const [logoutAllLoading, setLogoutAllLoading] = useState(false);
 
@@ -657,12 +659,11 @@ const SettingsPage: React.FC = () => {
 			setLoginHistoryLoading(true);
 			try {
 				const result = await authService.getLoginHistory({
-					page: loginHistoryPage,
+					page: 1,
 					limit: 10,
 				});
 				if (result.success && result.data) {
 					setLoginHistory(result.data.loginHistory);
-					setLoginHistoryTotal(result.data.pagination.total);
 				}
 			} catch (error) {
 				console.error("Failed to fetch login history:", error);
@@ -674,7 +675,7 @@ const SettingsPage: React.FC = () => {
 		if (user) {
 			fetchLoginHistory();
 		}
-	}, [user, loginHistoryPage]);
+	}, [user]);
 
 	const handleLogoutSession = async (sessionId: string) => {
 		try {
@@ -685,12 +686,11 @@ const SettingsPage: React.FC = () => {
 						"Session logged out successfully"
 				);
 				const result = await authService.getLoginHistory({
-					page: loginHistoryPage,
+					page: 1,
 					limit: 10,
 				});
 				if (result.success && result.data) {
 					setLoginHistory(result.data.loginHistory);
-					setLoginHistoryTotal(result.data.pagination.total);
 				}
 			} else {
 				showError(
@@ -1052,187 +1052,172 @@ const SettingsPage: React.FC = () => {
 								</p>
 							</div>
 						) : (
-							<div className='space-y-4'>
-								{loginHistory.map((history) => {
-									const loginDate = new Date(history.loginAt);
-									const formatDate = (date: Date) => {
-										return new Intl.DateTimeFormat(
-											"en-US",
-											{
-												year: "numeric",
-												month: "short",
-												day: "numeric",
-												hour: "2-digit",
-												minute: "2-digit",
-											}
-										).format(date);
-									};
+							<>
+								<div className='space-y-4 relative'>
+									{loginHistory
+										.slice(0, 3)
+										.map((history, index) => {
+											const loginDate = new Date(
+												history.loginAt
+											);
+											const formatDate = (date: Date) => {
+												return new Intl.DateTimeFormat(
+													"en-US",
+													{
+														year: "numeric",
+														month: "short",
+														day: "numeric",
+														hour: "2-digit",
+														minute: "2-digit",
+													}
+												).format(date);
+											};
 
-									return (
-										<div
-											key={history._id}
-											className='p-4 rounded-md border border-input bg-accent/50'
-										>
-											<div className='flex items-start justify-between mb-2'>
-												<div className='flex-1'>
-													<div className='flex items-center gap-2 mb-1'>
-														<span className='text-sm font-medium text-foreground'>
-															{history.deviceInfo
-																.browser ||
-																history
-																	.deviceInfo
-																	.platform ||
-																settings?.unknownBrowser ||
-																"Unknown Browser"}
-														</span>
-														{history.isActive &&
-															(!currentDevice ||
-																currentDevice._id !==
-																	history._id) && (
-																<span className='px-2 py-0.5 text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded'>
-																	{settings?.active ||
-																		"Active"}
-																</span>
-															)}
-														{history.logoutAt &&
-															!history.isActive && (
-																<span className='px-2 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded'>
-																	{settings?.loggedOut ||
-																		"Logged out"}
-																</span>
-															)}
-														{currentDevice &&
-															currentDevice._id ===
-																history._id && (
-																<span className='px-2 py-0.5 text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded'>
-																	{settings?.currentDevice ||
-																		"Current Device"}
-																</span>
-															)}
-														{history.isActive &&
-															(!currentDevice ||
-																currentDevice._id !==
-																	history._id) && (
-																<Button
-																	variant='text'
-																	size='sm'
-																	onClick={() =>
-																		handleLogoutSession(
-																			history._id
-																		)
-																	}
-																	className='h-6 px-2 text-xs text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300'
-																>
-																	<LogOut className='w-3 h-3 mr-1' />
-																	{settings?.logout ||
-																		"Logout"}
-																</Button>
-															)}
-													</div>
-													<div className='text-xs text-muted-foreground space-y-1'>
-														{history.deviceInfo
-															.os && (
-															<div>
-																{
-																	history
+											const isLastOfThree =
+												index === 2 &&
+												loginHistory.length > 3;
+
+											return (
+												<div
+													key={history._id}
+													className={cn(
+														"p-4 rounded-md border border-input bg-accent/50 relative",
+														isLastOfThree &&
+															"opacity-50"
+													)}
+												>
+													{isLastOfThree && (
+														<div className='absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent pointer-events-none rounded-md' />
+													)}
+													<div className='flex items-start justify-between mb-2'>
+														<div className='flex-1'>
+															<div className='flex items-center gap-2 mb-1'>
+																<span className='text-sm font-medium text-foreground'>
+																	{history
 																		.deviceInfo
-																		.os
-																}
+																		.browser ||
+																		history
+																			.deviceInfo
+																			.platform ||
+																		settings?.unknownBrowser ||
+																		"Unknown Browser"}
+																</span>
+																{history.isActive &&
+																	(!currentDevice ||
+																		currentDevice._id !==
+																			history._id) && (
+																		<span className='px-2 py-0.5 text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded'>
+																			{settings?.active ||
+																				"Active"}
+																		</span>
+																	)}
+																{history.logoutAt &&
+																	!history.isActive && (
+																		<span className='px-2 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded'>
+																			{settings?.loggedOut ||
+																				"Logged out"}
+																		</span>
+																	)}
+																{currentDevice &&
+																	currentDevice._id ===
+																		history._id && (
+																		<span className='px-2 py-0.5 text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded'>
+																			{settings?.currentDevice ||
+																				"Current Device"}
+																		</span>
+																	)}
+																{history.isActive &&
+																	(!currentDevice ||
+																		currentDevice._id !==
+																			history._id) && (
+																		<Button
+																			variant='text'
+																			size='sm'
+																			onClick={() =>
+																				handleLogoutSession(
+																					history._id
+																				)
+																			}
+																			className='h-6 px-2 text-xs text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300'
+																		>
+																			<LogOut className='w-3 h-3 mr-1' />
+																			{settings?.logout ||
+																				"Logout"}
+																		</Button>
+																	)}
+															</div>
+															<div className='text-xs text-muted-foreground space-y-1'>
 																{history
 																	.deviceInfo
-																	.device &&
-																	` • ${history.deviceInfo.device}`}
+																	.os && (
+																	<div>
+																		{
+																			history
+																				.deviceInfo
+																				.os
+																		}
+																		{history
+																			.deviceInfo
+																			.device &&
+																			` • ${history.deviceInfo.device}`}
+																	</div>
+																)}
+																<div>
+																	{settings?.ipAddress ||
+																		"IP"}
+																	:{" "}
+																	{
+																		history.ipAddress
+																	}
+																	{history
+																		.location
+																		?.city &&
+																		history
+																			.location
+																			?.country &&
+																		` • ${history.location.city}, ${history.location.country}`}
+																</div>
 															</div>
-														)}
-														<div>
-															{settings?.ipAddress ||
-																"IP"}
-															:{" "}
-															{history.ipAddress}
-															{history.location
-																?.city &&
-																history.location
-																	?.country &&
-																` • ${history.location.city}, ${history.location.country}`}
 														</div>
-													</div>
-												</div>
-												<div className='text-right'>
-													<div className='text-sm font-medium text-foreground'>
-														{formatDate(loginDate)}
-													</div>
-													{history.logoutAt && (
-														<div className='text-xs text-muted-foreground mt-1'>
-															{settings?.loggedOutAt ||
-																"Logged out"}
-															:{" "}
-															{formatDate(
-																new Date(
-																	history.logoutAt
-																)
+														<div className='text-right'>
+															<div className='text-sm font-medium text-foreground'>
+																{formatDate(
+																	loginDate
+																)}
+															</div>
+															{history.logoutAt && (
+																<div className='text-xs text-muted-foreground mt-1'>
+																	{settings?.loggedOutAt ||
+																		"Logged out"}
+																	:{" "}
+																	{formatDate(
+																		new Date(
+																			history.logoutAt
+																		)
+																	)}
+																</div>
 															)}
 														</div>
-													)}
+													</div>
 												</div>
-											</div>
-										</div>
-									);
-								})}
-								{loginHistoryTotal > 10 && (
-									<div className='flex items-center justify-between pt-4 border-t border-input'>
-										<span className='text-sm text-muted-foreground'>
-											{settings?.showing || "Showing"}{" "}
-											{Math.min(
-												(loginHistoryPage - 1) * 10 + 1,
-												loginHistoryTotal
-											)}
-											-
-											{Math.min(
-												loginHistoryPage * 10,
-												loginHistoryTotal
-											)}{" "}
-											{settings?.of || "of"}{" "}
-											{loginHistoryTotal}
-										</span>
-										<div className='flex gap-2'>
-											<Button
-												variant='outline'
-												size='sm'
-												onClick={() =>
-													setLoginHistoryPage(
-														(prev) =>
-															Math.max(
-																1,
-																prev - 1
-															)
-													)
-												}
-												disabled={
-													loginHistoryPage === 1
-												}
-											>
-												{settings?.previous ||
-													"Previous"}
-											</Button>
-											<Button
-												variant='outline'
-												size='sm'
-												onClick={() =>
-													setLoginHistoryPage(
-														(prev) => prev + 1
-													)
-												}
-												disabled={
-													loginHistoryPage * 10 >=
-													loginHistoryTotal
-												}
-											>
-												{settings?.next || "Next"}
-											</Button>
-										</div>
-									</div>
+											);
+										})}
+								</div>
+								{loginHistory.length > 3 && (
+									<Button
+										variant='outline'
+										size='sm'
+										className='w-full mt-4 group'
+										onClick={() =>
+											navigate("/login-history")
+										}
+									>
+										{settings?.viewAllLoginHistory ||
+											"View All Login History"}
+										<ArrowRight className='w-4 h-4 ml-2 transition-transform duration-200 group-hover:translate-x-1' />
+									</Button>
 								)}
-							</div>
+							</>
 						)}
 					</div>
 				</div>

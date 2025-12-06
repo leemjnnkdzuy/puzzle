@@ -15,7 +15,8 @@ import {
 	Mic,
 	View,
 	Layers,
-	Cpu,
+	Upload,
+	Scissors,
 } from "lucide-react";
 import {
 	SiYoutube,
@@ -165,11 +166,17 @@ const LandingPage = () => {
 	}>({});
 	const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
 	const [buttonHovered, setButtonHovered] = useState(false);
+	const [workflowStepsAnimated, setWorkflowStepsAnimated] = useState<{
+		[key: number]: boolean;
+	}>({});
+	const [modelsAnimated, setModelsAnimated] = useState(false);
 	const hasAnimatedRef = useRef(false);
 	const demoRef = useRef<HTMLDivElement>(null);
 	const demoVideoRef = useRef<HTMLVideoElement | null>(null);
 	const ctaSectionRef = useRef<HTMLElement>(null);
 	const packagesSectionRef = useRef<HTMLElement>(null);
+	const workflowSectionRef = useRef<HTMLElement>(null);
+	const modelsSectionRef = useRef<HTMLElement>(null);
 	const prevDemoShrinkRef = useRef(false);
 	const prevShowNavRef = useRef(false);
 	const packagesAnimatingRef = useRef(false);
@@ -223,9 +230,9 @@ const LandingPage = () => {
 						}
 					}
 
-					const target = document.getElementById("engine-anchor");
-					const threshold = target
-						? target.offsetTop - window.innerHeight * 0.2
+					const threshold = workflowSectionRef.current
+						? workflowSectionRef.current.offsetTop -
+						  window.innerHeight * 0.2
 						: 300;
 
 					let shouldShowNav = window.scrollY >= threshold;
@@ -341,6 +348,50 @@ const LandingPage = () => {
 		return () => observer.disconnect();
 	}, []);
 
+	useEffect(() => {
+		if (!workflowSectionRef.current) return;
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						const stepIndex = parseInt(
+							entry.target.getAttribute("data-step-index") || "0"
+						);
+						setWorkflowStepsAnimated((prev) => ({
+							...prev,
+							[stepIndex]: true,
+						}));
+					}
+				});
+			},
+			{threshold: 0.2, rootMargin: "-50px"}
+		);
+
+		const stepElements =
+			workflowSectionRef.current.querySelectorAll("[data-step-index]");
+		stepElements.forEach((el) => observer.observe(el));
+
+		return () => observer.disconnect();
+	}, []);
+
+	useEffect(() => {
+		if (!modelsSectionRef.current) return;
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					setModelsAnimated(true);
+					observer.disconnect();
+				}
+			},
+			{threshold: 0.2, rootMargin: "-50px"}
+		);
+
+		observer.observe(modelsSectionRef.current);
+		return () => observer.disconnect();
+	}, []);
+
 	const handleNavClick = (id: string) => {
 		const el = document.getElementById(id);
 		if (el) {
@@ -362,7 +413,7 @@ const LandingPage = () => {
 					<button
 						key={id}
 						onClick={() => handleNavClick(id)}
-						className='group flex items-center gap-3 rounded-full border border-border bg-card/90 px-3 py-2 shadow-sm hover:shadow-md hover:-translate-y-[2px] transition-all duration-200'
+						className='group flex items-center gap-3 rounded-full border border-border bg-card/90 px-3 py-2 shadow-sm hover:shadow-md hover:-translate-y-[2px] hover:border-cyan-500 transition-all duration-200'
 					>
 						<span className='w-9 h-9 rounded-full bg-foreground text-background flex items-center justify-center shadow'>
 							<Icon className='w-4 h-4' />
@@ -1133,243 +1184,301 @@ const LandingPage = () => {
 			</div>
 
 			<div className='space-y-20 mb-32'>
-				<h2
-					id='engine-anchor'
-					className='text-4xl md:text-5xl font-bold text-foreground text-center'
-				>
-					{t("engine.title")}
-				</h2>
 				<section
+					ref={workflowSectionRef}
 					id='workflow'
 					className='relative z-10 w-full px-6 py-20 scroll-mt-32'
 				>
 					<div className='max-w-[1200px] 2k:max-w-[1600px] 4k:max-w-[2000px] mx-auto'>
-						<div className='grid md:grid-cols-2 gap-10 items-center'>
-							<div className='relative flex justify-center'>
-								<div className='absolute inset-0 bg-muted rounded-3xl blur-2xl scale-105'></div>
-								<div className='relative w-full max-w-xl bg-card border border-border rounded-3xl shadow-xl overflow-hidden'>
-									<div className='flex items-center justify-between px-5 py-4 border-b border-border bg-muted'>
-										<div>
-											<p className='text-xs uppercase tracking-wide text-muted-foreground'>
-												{t("workflow.workspace")}
-											</p>
-											<p className='text-sm font-semibold text-foreground'>
-												{t("workflow.cinemaAnime")}
-											</p>
-										</div>
-										<span className='text-xs text-muted-foreground'>
-											{t("workflow.autoSaved")}
-										</span>
-									</div>
+						<div className='text-center mb-12 md:mb-16'>
+							<div className='flex items-center justify-center gap-2 text-sm font-semibold mb-4'>
+								<Sparkles className='w-4 h-4 text-cyan-500' />
+								<span className='bg-gradient-to-r from-[#22d3ee] to-[#3b82f6] bg-clip-text text-transparent'>
+									{t("workflow.label")}
+								</span>
+							</div>
+							<h3 className='text-3xl sm:text-4xl md:text-5xl 2k:text-6xl 4k:text-7xl font-bold text-foreground leading-tight mb-4'>
+								{t("workflow.title")}
+							</h3>
+							<p className='text-base md:text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto'>
+								{t("workflow.description")}
+							</p>
+						</div>
 
-									<div className='grid grid-cols-2 text-sm font-medium text-muted-foreground border-b border-border'>
-										<div className='px-5 py-3 bg-card'>
-											{t("workflow.clips")} 8
-										</div>
-										<div className='px-5 py-3 bg-muted text-right text-muted-foreground'>
-											{t("workflow.drafts")} 1
-										</div>
-									</div>
+						<div className='relative max-w-4xl mx-auto'>
+							{/* Timeline line */}
+							<div className='absolute left-8 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-foreground via-foreground/50 to-foreground/20 hidden md:block'></div>
 
-									<div className='p-5 space-y-4 bg-gradient-to-b from-card via-muted to-card'>
-										{[
-											{
-												title: "Episode 5: Final battle reveal",
-												meta: "12:08 - kept automatically",
-											},
-											{
-												title: "Season arc recap: Romance subplot",
-												meta: "04:31 - captioned for TikTok",
-											},
-											{
-												title: "Movie trailer beats: Opening hook",
-												meta: "00:42 - auto-trimmed",
-											},
-											{
-												title: "Anime OP highlight: S2 remix",
-												meta: "02:10 - captioned for reels",
-											},
-											{
-												title: "Behind the scenes: Director notes",
-												meta: "15:04 - translated EN/KR",
-											},
-										].map((item, idx) => (
-											<div
-												key={idx}
-												className='flex items-start gap-3 rounded-2xl border border-border bg-card px-4 py-3 shadow-sm'
+							{/* Workflow steps */}
+							<div className='space-y-8 md:space-y-12'>
+								{[
+									{
+										step: 1,
+										icon: Upload,
+										titleKey: "workflow.step1.title",
+										descriptionKey:
+											"workflow.step1.description",
+										highlightKey:
+											"workflow.step1.highlight",
+									},
+									{
+										step: 2,
+										icon: FileText,
+										titleKey: "workflow.step2.title",
+										descriptionKey:
+											"workflow.step2.description",
+										highlightKey:
+											"workflow.step2.highlight",
+									},
+									{
+										step: 3,
+										icon: Mic,
+										titleKey: "workflow.step3.title",
+										descriptionKey:
+											"workflow.step3.description",
+										highlightKey:
+											"workflow.step3.highlight",
+									},
+									{
+										step: 4,
+										icon: Scissors,
+										titleKey: "workflow.step4.title",
+										descriptionKey:
+											"workflow.step4.description",
+										highlightKey:
+											"workflow.step4.highlight",
+									},
+								].map((stepData, index) => {
+									const Icon = stepData.icon;
+									const isAnimated =
+										workflowStepsAnimated[stepData.step] ||
+										false;
+									const isEven = index % 2 === 1;
+
+									return (
+										<div
+											key={stepData.step}
+											data-step-index={stepData.step}
+											className={`relative flex items-start gap-6 md:gap-8 ${
+												isEven
+													? "md:flex-row-reverse"
+													: "md:flex-row"
+											}`}
+										>
+											{/* Timeline dot - visible on desktop */}
+											<Tooltip
+												content={t(
+													stepData.highlightKey
+												)}
+												placement={
+													isEven ? "right" : "left"
+												}
+												delay={[100, 0]}
+												offset={[8, 0]}
+												plain
 											>
-												<div className='w-10 h-10 rounded-xl bg-foreground flex items-center justify-center text-background font-semibold text-xs'>
-													{idx + 1}
+												<div
+													className='hidden md:flex absolute left-1/2 -translate-x-1/2 top-6 z-10 cursor-pointer'
+													tabIndex={0}
+												>
+													<div className='w-16 h-16 rounded-full bg-background border-4 border-foreground flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl focus-within:outline-none focus-within:ring-4 focus-within:ring-foreground/20 focus-within:ring-offset-2 focus:outline-none focus:ring-4 focus:ring-foreground/20 focus:ring-offset-2'>
+														<div className='w-8 h-8 rounded-full bg-foreground flex items-center justify-center transition-transform duration-300 hover:scale-110'>
+															<Icon className='w-4 h-4 text-background' />
+														</div>
+													</div>
 												</div>
-												<div className='flex-1'>
-													<p className='text-sm font-semibold text-foreground'>
-														{item.title}
+											</Tooltip>
+
+											{/* Step number - visible on mobile */}
+											<div className='md:hidden flex-shrink-0 w-12 h-12 rounded-full bg-foreground text-background flex items-center justify-center font-bold text-lg shadow-lg'>
+												{stepData.step}
+											</div>
+
+											{/* Step content card */}
+											<div
+												className={`flex-1 rounded-2xl md:rounded-3xl border border-border bg-card shadow-lg hover:shadow-xl transition-all duration-500 p-6 md:p-8 relative overflow-hidden group ${
+													isAnimated
+														? "opacity-100 translate-y-0"
+														: "opacity-0 translate-y-8"
+												} ${
+													isEven
+														? "md:mr-auto md:max-w-[45%]"
+														: "md:ml-auto md:max-w-[45%]"
+												}`}
+												style={{
+													transitionDelay: isAnimated
+														? `${index * 150}ms`
+														: "0ms",
+												}}
+											>
+												{/* Gradient background overlay */}
+												<div className='absolute inset-0 bg-gradient-to-br from-[#22d3ee]/5 via-[#3b82f6]/5 to-[#22d3ee]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none'></div>
+												<div className='relative z-10'>
+													<div className='mb-4'>
+														<div className='flex items-center gap-2 mb-2'>
+															<span className='text-xs font-semibold bg-gradient-to-r from-[#22d3ee] to-[#3b82f6] bg-clip-text text-transparent uppercase tracking-wide'>
+																{t(
+																	"workflow.stepLabel"
+																)}{" "}
+																{stepData.step}
+															</span>
+														</div>
+														<h4 className='text-xl md:text-2xl font-bold text-foreground leading-tight'>
+															{t(
+																stepData.titleKey
+															)}
+														</h4>
+													</div>
+													<p className='text-sm md:text-base text-muted-foreground leading-relaxed'>
+														{t(
+															stepData.descriptionKey
+														)}
 													</p>
-													<p className='text-xs text-muted-foreground'>
-														{item.meta}
-													</p>
-												</div>
-												<div className='text-xs text-muted-foreground border border-border px-2 py-1 rounded-lg'>
-													{t("workflow.export")}
 												</div>
 											</div>
-										))}
-									</div>
-								</div>
-							</div>
-
-							<div className='space-y-6 h-full flex flex-col justify-center md:justify-start'>
-								<div className='flex items-center gap-2 text-sm font-semibold text-foreground'>
-									<Sparkles className='w-4 h-4' />
-									<span>{t("workflow.label")}</span>
-								</div>
-								<h3 className='text-4xl font-bold text-foreground leading-tight'>
-									{t("workflow.title")}
-								</h3>
-								<p className='text-base text-muted-foreground leading-relaxed'>
-									{t("workflow.description")}
-								</p>
-								<Button
-									variant='default'
-									className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background w-full sm:w-auto px-7 h-12 text-lg'
-									onClick={() => navigate("/register")}
-								>
-									{t("workflow.cta")}
-								</Button>
-								<ul className='space-y-3 text-foreground'>
-									{(Array.isArray(
-										getNested?.("workflow.features")
-									)
-										? (getNested(
-												"workflow.features"
-										  ) as string[])
-										: []
-									).map((feature: string, idx: number) => (
-										<li
-											key={idx}
-											className='flex items-start gap-3'
-										>
-											<div className='w-2.5 h-2.5 mt-2 bg-foreground rounded-full'></div>
-											<span>{feature}</span>
-										</li>
-									))}
-								</ul>
+										</div>
+									);
+								})}
 							</div>
 						</div>
 					</div>
 				</section>
 
 				<section
+					ref={modelsSectionRef}
 					id='models'
 					className='relative z-10 w-full px-6 py-20 scroll-mt-32'
 				>
-					<div className='max-w-[1200px] mx-auto grid md:grid-cols-2 gap-10 items-center'>
-						<div className='space-y-5'>
-							<div className='flex items-center gap-2 text-sm font-semibold text-foreground'>
+					<div className='max-w-[1200px] 2k:max-w-[1600px] 4k:max-w-[2000px] mx-auto'>
+						<div className='text-center mb-12 md:mb-16'>
+							<div className='flex items-center justify-center gap-2 text-sm font-semibold text-foreground mb-4'>
 								<Layers className='w-4 h-4' />
 								<span>{t("models.label")}</span>
 							</div>
-							<h3 className='text-4xl font-bold text-foreground leading-tight'>
+							<h3 className='text-3xl sm:text-4xl md:text-5xl 2k:text-6xl 4k:text-7xl font-bold text-foreground leading-tight mb-4'>
 								{t("models.title")}
 							</h3>
-							<p className='text-base text-muted-foreground leading-relaxed'>
+							<p className='text-base md:text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto'>
 								{t("models.description")}
 							</p>
-							<Button
-								variant='default'
-								className='bg-foreground text-background hover:opacity-90 dark:bg-foreground dark:text-background w-full sm:w-auto px-7 h-12 text-lg'
-								onClick={() => navigate("/register")}
-							>
-								{t("models.cta")}
-							</Button>
-							<ul className='space-y-3 text-foreground'>
-								{(Array.isArray(getNested?.("models.features"))
-									? (getNested("models.features") as string[])
-									: []
-								).map((feature: string, idx: number) => (
-									<li
-										key={idx}
-										className='flex items-start gap-3'
-									>
-										<div className='w-2.5 h-2.5 mt-2 bg-foreground rounded-full'></div>
-										<span>{feature}</span>
-									</li>
-								))}
-							</ul>
 						</div>
-						<div className='relative'>
-							<div className='absolute inset-0 bg-gradient-to-br from-indigo-100 via-purple-100 to-blue-50 rounded-[32px]'></div>
-							<div className='relative rounded-[32px] p-8 space-y-4'>
-								<div className='inline-flex items-center gap-2 text-xs font-semibold text-purple-700 dark:text-purple-400 bg-card/60 px-3 py-1 rounded-full shadow-sm'>
-									<Cpu className='w-4 h-4' />
-									<span>{t("models.stack")}</span>
-								</div>
 
-								<div className='space-y-4 bg-card rounded-2xl p-4 shadow'>
-									<p className='text-xs font-semibold text-purple-800 dark:text-purple-300'>
-										{t("models.editTimeline")}
-									</p>
-									<div className='flex h-3 w-full overflow-hidden rounded-full bg-muted'>
-										<div className='bg-purple-500 dark:bg-purple-400 w-2/5'></div>
-										<div className='bg-blue-400 dark:bg-blue-300 w-1/5'></div>
-										<div className='bg-amber-400 dark:bg-amber-300 w-1/6'></div>
-										<div className='bg-muted-foreground/30 flex-1'></div>
-									</div>
-									<div className='space-y-2 text-sm text-foreground'>
-										<div className='flex items-center gap-3'>
-											<span className='text-xs px-2 py-1 rounded-lg bg-purple-50 text-purple-800 border border-purple-100'>
-												00:00
-											</span>
-											<span className='font-semibold'>
-												Intro trimmed to 12s
-											</span>
-										</div>
-										<div className='flex items-center gap-3'>
-											<span className='text-xs px-2 py-1 rounded-lg bg-blue-50 text-blue-800 border border-blue-100'>
-												02:10
-											</span>
-											<span className='font-semibold'>
-												OP highlight locked in
-											</span>
-										</div>
-										<div className='flex items-center gap-3'>
-											<span className='text-xs px-2 py-1 rounded-lg bg-amber-50 text-amber-800 border border-amber-100'>
-												15:04
-											</span>
-											<span className='font-semibold'>
-												Director notes clipped
-											</span>
-										</div>
-										<p className='text-xs text-muted-foreground mt-2'>
-											{t("models.appliedDirectly")}
-										</p>
-									</div>
-								</div>
+						<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8'>
+							{[
+								{
+									key: "llm",
+									icon: Bot,
+									nameKey: "models.llm.name",
+									typeKey: "models.llm.type",
+									descriptionKey: "models.llm.description",
+									capabilitiesKey: "models.llm.capabilities",
+									gradient:
+										"from-purple-500 via-purple-600 to-indigo-600",
+									bgGradient:
+										"from-purple-50 via-purple-100/50 to-indigo-50 dark:from-purple-900/20 dark:via-purple-800/20 dark:to-indigo-900/20",
+								},
+								{
+									key: "vision",
+									icon: View,
+									nameKey: "models.vision.name",
+									typeKey: "models.vision.type",
+									descriptionKey: "models.vision.description",
+									capabilitiesKey:
+										"models.vision.capabilities",
+									gradient:
+										"from-blue-500 via-blue-600 to-cyan-600",
+									bgGradient:
+										"from-blue-50 via-blue-100/50 to-cyan-50 dark:from-blue-900/20 dark:via-blue-800/20 dark:to-cyan-900/20",
+								},
+								{
+									key: "asr",
+									icon: Mic,
+									nameKey: "models.asr.name",
+									typeKey: "models.asr.type",
+									descriptionKey: "models.asr.description",
+									capabilitiesKey: "models.asr.capabilities",
+									gradient:
+										"from-amber-500 via-amber-600 to-orange-600",
+									bgGradient:
+										"from-amber-50 via-amber-100/50 to-orange-50 dark:from-amber-900/20 dark:via-amber-800/20 dark:to-orange-900/20",
+								},
+							].map((model, index) => {
+								const Icon = model.icon;
+								const capabilities = Array.isArray(
+									getNested?.(model.capabilitiesKey)
+								)
+									? (getNested(
+											model.capabilitiesKey
+									  ) as string[])
+									: [];
 
-								<div className='bg-card rounded-2xl p-4 shadow flex items-center justify-between'>
-									<div>
-										<p className='text-xs uppercase text-muted-foreground'>
-											{t("models.llm")}
-										</p>
-										<p className='text-sm font-semibold text-foreground'>
-											{t("models.plotAware")}
-										</p>
-									</div>
-									<Bot className='w-5 h-5 text-foreground' />
-								</div>
+								return (
+									<div
+										key={model.key}
+										className={`relative rounded-2xl md:rounded-3xl border border-border bg-card shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden group ${
+											modelsAnimated
+												? "opacity-100 translate-y-0"
+												: "opacity-0 translate-y-8"
+										}`}
+										style={{
+											transitionDelay: modelsAnimated
+												? `${index * 150}ms`
+												: "0ms",
+										}}
+									>
+										{/* Background gradient */}
+										<div
+											className={`absolute inset-0 bg-gradient-to-br ${model.bgGradient} opacity-50 group-hover:opacity-70 transition-opacity duration-300`}
+										></div>
 
-								<div className='bg-card rounded-2xl p-4 shadow flex items-center justify-between'>
-									<div>
-										<p className='text-xs uppercase text-muted-foreground'>
-											{t("models.asr")}
-										</p>
-										<p className='text-sm font-semibold text-foreground'>
-											{t("models.dualSubs")}
-										</p>
+										<div className='relative p-6 md:p-8'>
+											{/* Icon */}
+											<div
+												className={`w-14 h-14 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-gradient-to-br ${model.gradient} flex items-center justify-center shadow-lg mb-4 group-hover:scale-110 transition-transform duration-300`}
+											>
+												<Icon className='w-7 h-7 md:w-8 md:h-8 text-white' />
+											</div>
+
+											{/* Model name and type */}
+											<div className='mb-3'>
+												<h4 className='text-xl md:text-2xl font-bold text-foreground mb-1'>
+													{t(model.nameKey)}
+												</h4>
+												<p className='text-xs md:text-sm text-muted-foreground uppercase tracking-wide'>
+													{t(model.typeKey)}
+												</p>
+											</div>
+
+											{/* Description */}
+											<p className='text-sm md:text-base text-muted-foreground leading-relaxed mb-4'>
+												{t(model.descriptionKey)}
+											</p>
+
+											{/* Capabilities */}
+											<div className='space-y-2'>
+												<p className='text-xs font-semibold text-foreground uppercase tracking-wide mb-2'>
+													{t("models.capabilities")}
+												</p>
+												<div className='flex flex-wrap gap-2'>
+													{capabilities.map(
+														(
+															capability: string,
+															idx: number
+														) => (
+															<span
+																key={idx}
+																className='text-xs px-3 py-1.5 rounded-full bg-foreground/10 text-foreground border border-foreground/20 font-medium'
+															>
+																{capability}
+															</span>
+														)
+													)}
+												</div>
+											</div>
+										</div>
 									</div>
-									<Cpu className='w-5 h-5 text-foreground' />
-								</div>
-							</div>
+								);
+							})}
 						</div>
 					</div>
 				</section>

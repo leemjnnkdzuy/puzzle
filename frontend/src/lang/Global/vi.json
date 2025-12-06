@@ -112,38 +112,70 @@
 	},
 	"workflow": {
 		"label": "Workflow",
-		"title": "Mọi bộ phim. Mọi tập phim. Tóm tắt ở khắp mọi nơi.",
-		"description": "Đưa mọi bộ phim, tập anime và phim truyền hình vào một chế độ xem. Puzzle tự động chuyển văn bản, xây dựng các chương cốt truyện, gắn thẻ các khoảnh khắc nhân vật và gửi các clip sẵn sàng cho feed mạng xã hội và cộng đồng người hâm mộ của bạn.",
-		"cta": "Tìm hiểu về tóm tắt phim",
-		"workspace": "Workspace",
-		"cinemaAnime": "Cinema & Anime Recaps",
-		"autoSaved": "Auto-saved",
-		"clips": "Clips",
-		"drafts": "Drafts",
-		"export": "Export",
-		"features": [
-			"Đồng bộ upload từ Netflix rips, Blu-ray dumps hoặc studio screeners và tìm kiếm trong phụ đề ngay lập tức.",
-			"Các chương, điểm nổi bật và reels được tạo với phụ đề - không cần cắt thủ công hoặc mã thời gian cho phim dài.",
-			"Xuất một lần cho YouTube, TikTok, Instagram và Facebook với tỷ lệ khung hình được điều chỉnh cho teaser, trailer và tóm tắt theo tập."
-		]
+		"title": "Quy trình hoàn toàn tự động từ đầu đến cuối",
+		"description": "Từ video nguồn đến video recap chất lượng cao - tất cả được xử lý tự động bởi các model AI hiện đại đã được fine-tuned. Linh hoạt, nhanh chóng và hoàn toàn tự động.",
+		"cta": "Bắt đầu dự án đầu tiên",
+		"stepLabel": "Bước",
+		"step1": {
+			"title": "Tạo dự án & Tải lên tài nguyên",
+			"description": "Tạo dự án mới, tải lên video nguồn (phim, anime series, movie...) và cấu hình các thiết lập cho dự án. Hệ thống tự động nhận diện loại nội dung và tối ưu hóa xử lý.",
+			"highlight": "Linh hoạt"
+		},
+		"step2": {
+			"title": "Tạo kịch bản tự động",
+			"description": "Sử dụng các model LLM hiện đại đã fine-tuned để phân tích video và tạo kịch bản recap phù hợp với từng loại nội dung (movie, anime series, drama...). Kịch bản được tối ưu cho từng định dạng.",
+			"highlight": "Model hiện đại"
+		},
+		"step3": {
+			"title": "Lồng tiếng tự động",
+			"description": "Từ kịch bản đã tạo, hệ thống tự động tạo bản lồng tiếng chất lượng cao cho video recap. Hỗ trợ đa ngôn ngữ với giọng đọc tự nhiên, phù hợp với ngữ cảnh.",
+			"highlight": "Tự động"
+		},
+		"step4": {
+			"title": "Cắt ghép & Hoàn thiện",
+			"description": "Tự động cắt ghép, chỉnh sửa và đồng bộ video với lồng tiếng để tạo ra video recap chất lượng cuối cùng. Xuất video sẵn sàng sử dụng với nhiều tỷ lệ khung hình.",
+			"highlight": "Hoàn toàn tự động"
+		}
 	},
 	"models": {
 		"label": "Models",
-		"title": "Làm việc nhanh hơn với các mô hình được điều chỉnh cho phim, anime và phim truyền hình.",
-		"description": "Puzzle kết hợp LLM nhận biết cốt truyện, ASR đa ngôn ngữ và mô hình thị giác để phát hiện cảnh, hiểu cung nhân vật và hiển thị các nhịp điệu mà người hâm mộ quan tâm. Xuất các clip sẵn sàng chia sẻ với phụ đề và ngữ cảnh được tích hợp sẵn.",
+		"title": "Các mô hình AI tiên tiến được fine-tuned cho Puzzle",
+		"description": "Puzzle sử dụng các mô hình AI hiện đại đã được fine-tuned chuyên biệt để xử lý video, phân tích nội dung và tạo recap chất lượng cao. Mỗi mô hình được tối ưu hóa cho các tác vụ cụ thể trong quy trình xử lý video.",
 		"cta": "Tìm hiểu về mô hình Puzzle",
-		"stack": "Puzzle Model Stack",
-		"editTimeline": "Edit timeline",
-		"appliedDirectly": "Applied directly to timeline.",
-		"llm": "LLM",
-		"plotAware": "Plot-aware recap",
-		"asr": "ASR",
-		"dualSubs": "JP/EN dual subs",
-		"features": [
-			"Mô hình thị giác gắn thẻ các trận chiến, nụ hôn, tiết lộ và nhạc nền như các cảnh cho reels tức thì.",
-			"ASR đa ngôn ngữ giữ phụ đề JP/EN/VI/KR được căn chỉnh cho khán giả toàn cầu.",
-			"LLM nhận biết cốt truyện viết tóm tắt, cung tập phim và nhịp điệu nhân vật mà bạn có thể thả vào wiki."
-		]
+		"capabilities": "Khả năng:",
+		"llm": {
+			"name": "LLM",
+			"type": "Large Language Model",
+			"description": "Mô hình ngôn ngữ lớn được fine-tuned để hiểu và tạo kịch bản recap dựa trên cốt truyện, nhân vật và ngữ cảnh của video.",
+			"capabilities": [
+				"Plot-aware recap generation",
+				"Character arc analysis",
+				"Scene understanding",
+				"Multi-format script writing"
+			]
+		},
+		"vision": {
+			"name": "Vision Models",
+			"type": "Computer Vision AI",
+			"description": "Mô hình thị giác máy tính phát hiện và phân tích cảnh, nhận diện nhân vật, và gắn thẻ các khoảnh khắc quan trọng trong video.",
+			"capabilities": [
+				"Scene detection",
+				"Character recognition",
+				"Action tagging",
+				"Visual analysis"
+			]
+		},
+		"asr": {
+			"name": "ASR",
+			"type": "Automatic Speech Recognition",
+			"description": "Hệ thống nhận diện giọng nói đa ngôn ngữ tự động chuyển đổi lời thoại thành văn bản với độ chính xác cao.",
+			"capabilities": [
+				"Multilingual recognition",
+				"JP/EN/VI/KR support",
+				"High accuracy transcription",
+				"Auto subtitle generation"
+			]
+		}
 	},
 	"voice": {
 		"label": "Voice",
@@ -520,6 +552,7 @@
 		"cancel": "Hủy",
 		"loading": "Đang tải...",
 		"loginHistory": "Lịch sử đăng nhập",
+		"viewAllLoginHistory": "Xem toàn bộ lịch sử đăng nhập",
 		"logoutAll": "Đăng xuất tất cả",
 		"currentDevice": "Thiết bị hiện tại",
 		"active": "Đang hoạt động",
@@ -659,6 +692,42 @@
 			"transactionDate": "Ngày giao dịch",
 			"close": "Đóng",
 			"scanQRToComplete": "Quét QR để hoàn tất giao dịch"
+		}
+	},
+	"loginHistoryPage": {
+		"title": "Lịch sử đăng nhập",
+		"noLoginHistory": "Không tìm thấy lịch sử đăng nhập",
+		"status": {
+			"all": "Tất cả trạng thái",
+			"active": "Đang hoạt động",
+			"loggedOut": "Đã đăng xuất"
+		},
+		"device": "Thiết bị",
+		"browser": "Trình duyệt",
+		"ipAddress": "Địa chỉ IP",
+		"location": "Vị trí",
+		"loginDate": "Ngày đăng nhập",
+		"logoutDate": "Đã đăng xuất",
+		"statusLabel": "Trạng thái",
+		"filterByStatus": "Trạng thái",
+		"filterByDevice": "Thiết bị",
+		"allStatuses": "Tất cả trạng thái",
+		"allDevices": "Tất cả thiết bị",
+		"search": "Tìm kiếm",
+		"searchPlaceholder": "Tìm kiếm theo IP, thiết bị, vị trí...",
+		"page": "Trang",
+		"of": "của",
+		"previous": "Trước",
+		"next": "Sau",
+		"loading": "Đang tải...",
+		"logoutAll": "Đăng xuất tất cả",
+		"logout": "Đăng xuất",
+		"currentDevice": "Thiết bị hiện tại",
+		"active": "Đang hoạt động",
+		"loggedOut": "Đã đăng xuất",
+		"unknownBrowser": "Không xác định",
+		"errors": {
+			"loadFailed": "Không thể tải lịch sử đăng nhập. Vui lòng thử lại."
 		}
 	},
 	"tts": {

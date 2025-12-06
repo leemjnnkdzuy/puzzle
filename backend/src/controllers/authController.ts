@@ -112,7 +112,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
 export const login = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const {username, password} = req.body;
+		const {username, password, clientIP} = req.body;
 
 		if (!username || !password) {
 			res.status(400).json({
@@ -147,7 +147,10 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 		}
 
 		const deviceInfo = getDeviceInfo(req);
-		const ipAddress = getIpAddress(req);
+		const ipAddress =
+			clientIP && typeof clientIP === "string" && clientIP.trim()
+				? clientIP.trim()
+				: getIpAddress(req);
 		const sessionId = randomUUID();
 
 		await LoginHistory.updateMany(

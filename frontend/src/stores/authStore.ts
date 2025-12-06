@@ -5,6 +5,7 @@ import {DEFAULT_API_URL} from "@/configs/AppConfig";
 import authService from "@/services/AuthService";
 import {safeExecute} from "@/handlers/errorHandler";
 import type {LoginResponse} from "@/services/AuthService";
+import geoLocationService from "@/services/GeoLocationService";
 
 interface AuthState {
 	user: unknown | null;
@@ -66,11 +67,21 @@ export const useAuthStore = create<AuthStore>()(
 			login: async (username: string, password: string) => {
 				try {
 					set({loading: true});
+
+					// Lấy IP từ ipify API
+					let clientIP: string | null = null;
+					try {
+						clientIP = await geoLocationService.getClientIP();
+					} catch (error) {
+						console.warn("Failed to get client IP:", error);
+					}
+
 					const response = await axios.post<LoginResponse>(
 						`${DEFAULT_API_URL}/api/auth/login`,
 						{
 							username,
 							password,
+							...(clientIP && {clientIP}),
 						},
 						{
 							withCredentials: true,
