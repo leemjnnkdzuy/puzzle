@@ -20,7 +20,15 @@ app.use(cookieParser());
 app.use(express.json({limit: "10mb"}));
 app.use(express.urlencoded({extended: true, limit: "10mb"}));
 
-app.use(express.static(path.join(__dirname, "public")));
+try {
+	const publicPath = path.join(__dirname, "public");
+	const fs = require("fs");
+	if (fs.existsSync(publicPath)) {
+		app.use(express.static(publicPath));
+	}
+} catch (error) {
+	// Ignore if public directory doesn't exist
+}
 
 let dbConnectionPromise: Promise<void> | null = null;
 const ensureDatabaseConnection = async (): Promise<void> => {
