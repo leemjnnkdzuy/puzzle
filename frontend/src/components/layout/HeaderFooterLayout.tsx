@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {FaTwitter, FaDiscord, FaGithub, FaEnvelope} from "react-icons/fa";
-import {FileText, Mic, Sparkles, User, Settings, Palette, LogOut, Sun, Moon, Wallet, CircleDollarSign} from "lucide-react";
+import {FileText, Mic, Sparkles, User, Settings, Palette, LogOut, Sun, Moon, Wallet, CircleDollarSign, HardDrive} from "lucide-react";
 import Button from "@/components/ui/Button";
 import AppIcon from "@/components/common/AppIcon";
 import {
@@ -20,6 +20,7 @@ import {useAuth} from "@/hooks/useAuth";
 import {useTheme} from "@/hooks/useTheme";
 import {useLogoutListener} from "@/hooks/useLogoutListener";
 import {useCreditStore} from "@/stores/creditStore";
+import {useStorageStore} from "@/stores/storageStore";
 import {formatCurrency} from "@/utils";
 import ConfirmDialog from "@/components/common/ConfirmDialog";
 import {cn} from "@/utils";
@@ -48,9 +49,16 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 	const {isAuthenticated, user, logout} = useAuth();
 	const {theme, setTheme} = useTheme();
 	const credit = useCreditStore((state) => state.credit);
+	const {storageInfo, fetchStorageInfo} = useStorageStore();
 	const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
 	useLogoutListener();
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			fetchStorageInfo();
+		}
+	}, [isAuthenticated, fetchStorageInfo]);
 
 	const userData = user as UserData | null;
 	const userName =
@@ -229,6 +237,14 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 						<div className='flex items-center gap-4'>
 							{isAuthenticated && userData ? (
 								<>
+									{storageInfo && (
+										<div className='hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-card/50'>
+											<HardDrive className='w-4 h-4 text-primary' />
+											<span className='text-sm font-medium text-foreground'>
+												{storageInfo.usedFormatted} / {storageInfo.limitFormatted}
+											</span>
+										</div>
+									)}
 									<div className='flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-card/50'>
 										<CircleDollarSign className='w-4 h-4 text-green-500 dark:text-green-400' />
 										<span className='text-sm font-medium text-foreground'>
@@ -693,5 +709,5 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 	);
 };
 
-HeaderFooterLayout.displayName = "HeaderFooterLayout";
+
 export default HeaderFooterLayout;

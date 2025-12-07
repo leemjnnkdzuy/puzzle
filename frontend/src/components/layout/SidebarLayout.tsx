@@ -36,5 +36,5 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
 	);
 };
 
-SidebarLayout.displayName = "SidebarLayout";
+
 export default SidebarLayout;

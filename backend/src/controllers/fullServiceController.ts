@@ -3,6 +3,7 @@ import FullServiceProject from "@/models/FullServiceProject";
 import Project from "@/models/Project";
 import {AuthRequest} from "@/middlewares/auth";
 import AppError from "@/utils/errors";
+import {deleteProjectFolder} from "@/utils/projectFileHelper";
 
 export const getFullServiceProjects = async (
 	req: AuthRequest,
@@ -223,6 +224,14 @@ export const deleteFullServiceProject = async (
 
 		if (!project) {
 			throw new AppError("Project not found", 404);
+		}
+
+		// Xóa thư mục project và tất cả file bên trong
+		try {
+			await deleteProjectFolder(id);
+		} catch (folderError) {
+			console.error("Failed to delete project folder:", folderError);
+			// Tiếp tục xóa project dù có lỗi xóa folder
 		}
 
 		res.status(200).json({

@@ -1,5 +1,5 @@
 import React from "react";
-import {AlertTriangle, X} from "lucide-react";
+import {AlertTriangle, X, Home, FolderOpen} from "lucide-react";
 import Button from "@/components/ui/Button";
 import Overlay from "@/components/ui/Overlay";
 
@@ -14,6 +14,11 @@ interface ConfirmDialogProps {
 	confirmVariant?: "default" | "primary" | "destructive" | "outline";
 	isLoading?: boolean;
 	icon?: React.ReactNode;
+	onSaveAndGoHome?: () => void | Promise<void>;
+	onSaveAndSwitchProject?: () => void | Promise<void>;
+	saveAndGoHomeText?: string;
+	saveAndSwitchProjectText?: string;
+	showDualActions?: boolean;
 }
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
@@ -27,10 +32,47 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 	confirmVariant = "destructive",
 	isLoading = false,
 	icon,
+	onSaveAndGoHome,
+	onSaveAndSwitchProject,
+	saveAndGoHomeText = "Lưu và trở về trang chủ",
+	saveAndSwitchProjectText = "Lưu và chuyển sang project",
+	showDualActions = false,
 }) => {
+	const [isSaving, setIsSaving] = React.useState(false);
+
 	const handleConfirm = async () => {
 		await onConfirm();
 	};
+
+	const handleSaveAndGoHome = async () => {
+		if (onSaveAndGoHome) {
+			try {
+				setIsSaving(true);
+				await onSaveAndGoHome();
+			} catch (error) {
+				console.error("Failed to save and go home:", error);
+				throw error;
+			} finally {
+				setIsSaving(false);
+			}
+		}
+	};
+
+	const handleSaveAndSwitchProject = async () => {
+		if (onSaveAndSwitchProject) {
+			try {
+				setIsSaving(true);
+				await onSaveAndSwitchProject();
+			} catch (error) {
+				console.error("Failed to save and switch project:", error);
+				throw error;
+			} finally {
+				setIsSaving(false);
+			}
+		}
+	};
+
+	const isLoadingState = isLoading || isSaving;
 
 	const getIconVariant = () => {
 		if (icon) return icon;
@@ -59,7 +101,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 		<Overlay
 			isOpen={isOpen}
 			onClose={onClose}
-			closeOnBackdropClick={!isLoading}
+			closeOnBackdropClick={!isLoadingState}
 		>
 			<div className='p-6 space-y-4'>
 				<div className='flex items-center justify-between'>
@@ -69,7 +111,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 							{title}
 						</h3>
 					</div>
-					{!isLoading && (
+					{!isLoadingState && (
 						<button
 							onClick={onClose}
 							className='w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
@@ -80,37 +122,75 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 					)}
 				</div>
 
-				<p className='text-muted-foreground leading-relaxed'>
+				<p className='text-muted-foreground leading-relaxed break-words overflow-hidden'>
 					{message}
 				</p>
 
-				<div className='flex items-center gap-3 pt-2'>
-					<Button
-						variant='outline'
-						onClick={onClose}
-						disabled={isLoading}
-						className='flex-1'
-					>
-						{cancelText}
-					</Button>
-					<Button
-						variant={
-							confirmVariant === "destructive"
-								? "default"
-								: confirmVariant
-						}
-						onClick={handleConfirm}
-						loading={isLoading}
-						disabled={isLoading}
-						className={getButtonClassName()}
-					>
-						{confirmText}
-					</Button>
-				</div>
+				{showDualActions &&
+				(onSaveAndGoHome || onSaveAndSwitchProject) ? (
+					<div className='flex flex-col gap-3 pt-2'>
+						<Button
+							variant='outline'
+							onClick={onClose}
+							disabled={isLoadingState}
+							className='w-full'
+						>
+							{cancelText}
+						</Button>
+						{onSaveAndGoHome && (
+							<Button
+								variant='default'
+								onClick={handleSaveAndGoHome}
+								loading={isSaving || isLoading}
+								disabled={isSaving || isLoading}
+								className='w-full flex items-center justify-center gap-2'
+							>
+								<Home className='w-4 h-4' />
+								{saveAndGoHomeText}
+							</Button>
+						)}
+						{onSaveAndSwitchProject && (
+							<Button
+								variant='default'
+								onClick={handleSaveAndSwitchProject}
+								loading={isSaving}
+								disabled={isLoadingState}
+								className='w-full flex items-center justify-center gap-2'
+							>
+								<FolderOpen className='w-4 h-4' />
+								{saveAndSwitchProjectText}
+							</Button>
+						)}
+					</div>
+				) : (
+					<div className='flex items-center gap-3 pt-2'>
+						<Button
+							variant='outline'
+							onClick={onClose}
+							disabled={isLoadingState}
+							className='flex-1'
+						>
+							{cancelText}
+						</Button>
+						<Button
+							variant={
+								confirmVariant === "destructive"
+									? "default"
+									: confirmVariant
+							}
+							onClick={handleConfirm}
+							loading={isLoading}
+							disabled={isLoadingState}
+							className={getButtonClassName()}
+						>
+							{confirmText}
+						</Button>
+					</div>
+				)}
 			</div>
 		</Overlay>
 	);
 };
 
-ConfirmDialog.displayName = "ConfirmDialog";
+
 export default ConfirmDialog;

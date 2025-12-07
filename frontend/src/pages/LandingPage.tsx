@@ -1982,5 +1982,5 @@ const LandingPage = () => {
 	);
 };
 
-LandingPage.displayName = "LandingPage";
+
 export default LandingPage;

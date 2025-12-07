@@ -12,6 +12,6 @@ const NotThingLayout = ({children}: NotThingLayoutProps) => {
 	);
 };
 
-NotThingLayout.displayName = "NotThingLayout";
+
 export default NotThingLayout;
 

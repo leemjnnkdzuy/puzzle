@@ -362,6 +362,6 @@ const FogotPasswordPage: React.FC = () => {
 	);
 };
 
-FogotPasswordPage.displayName = "FogotPasswordPage";
+
 
 export default FogotPasswordPage;

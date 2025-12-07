@@ -30,7 +30,6 @@ export const PublicRoute: React.FC<PublicRouteProps> = ({children}) => {
 	return children;
 };
 
-AppLoader.displayName = "AppLoader";
-PublicRoute.displayName = "PublicRoute";
+
 
 export default AppLoader;

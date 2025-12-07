@@ -16,7 +16,7 @@ import {
 	Grid2x2,
 	Square,
 	X,
-	Trash2,
+	HardDrive,
 } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
@@ -30,8 +30,8 @@ import {
 	DropdownMenuSeparator,
 } from "@/components/ui/DropdownMenu";
 import ProjectService from "@/services/ProjectService";
+import StorageService, {type ProjectStorage} from "@/services/StorageService";
 import {useGlobalNotificationPopup} from "@/hooks/useGlobalNotificationPopup";
-import ConfirmDialog from "@/components/common/ConfirmDialog";
 import {useLanguage} from "@/hooks/useLanguage";
 import {useNotifications} from "@/hooks/useNotifications";
 import {useCreditStore} from "@/stores/creditStore";
@@ -91,7 +91,7 @@ const getProjectTypeInfo = (
 
 const HomePage: React.FC = () => {
 	const navigate = useNavigate();
-	const {showError, showWarning, showSuccess} = useGlobalNotificationPopup();
+	const {showError, showWarning} = useGlobalNotificationPopup();
 	const showErrorRef = useRef(showError);
 	const {t, getNested} = useLanguage();
 	const {
@@ -123,10 +123,8 @@ const HomePage: React.FC = () => {
 	const [projectTitle, setProjectTitle] = useState("");
 	const [projectDescription, setProjectDescription] = useState("");
 	const [isCreating, setIsCreating] = useState(false);
-	const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-	const [projectToDelete, setProjectToDelete] = useState<Project | null>(
-		null
-	);
+
+	const [projectUsages, setProjectUsages] = useState<Record<string, ProjectStorage>>({});
 
 	const userCredit = useCreditStore((state) => state.credit);
 
@@ -136,9 +134,18 @@ const HomePage: React.FC = () => {
 				setLoading(true);
 				setError(null);
 
-				const allProjects = await ProjectService.getProjects();
+				const [allProjects, storageData] = await Promise.all([
+					ProjectService.getProjects(),
+					StorageService.getProjectsStorage().catch(() => []),
+				]);
 
 				setProjects(allProjects);
+
+				const usageMap: Record<string, ProjectStorage> = {};
+				storageData.forEach((p) => {
+					usageMap[p.id] = p;
+				});
+				setProjectUsages(usageMap);
 			} catch (err: unknown) {
 				const errorMessage =
 					err instanceof Error
@@ -225,8 +232,6 @@ const HomePage: React.FC = () => {
 			setProjectTitle("");
 			setProjectDescription("");
 
-			showSuccess(t("home.errors.createSuccess"));
-
 			if (newProject?.projectId) {
 				const routeMap = {
 					script_generation: "script-generation",
@@ -275,34 +280,7 @@ const HomePage: React.FC = () => {
 		}
 	};
 
-	const handleDeleteClick = (e: React.MouseEvent, project: Project) => {
-		e.stopPropagation();
-		setProjectToDelete(project);
-		setIsDeleteDialogOpen(true);
-	};
 
-	const handleDeleteConfirm = async () => {
-		if (!projectToDelete) return;
-
-		try {
-			await ProjectService.deleteProject(
-				projectToDelete.projectId,
-				projectToDelete.type
-			);
-
-			const allProjects = await ProjectService.getProjects();
-			setProjects(allProjects);
-
-			showSuccess(t("home.errors.deleteSuccess"));
-			setProjectToDelete(null);
-		} catch (err: unknown) {
-			const errorMessage =
-				err instanceof Error
-					? err.message
-					: t("home.errors.deleteFailed");
-			showError(errorMessage);
-		}
-	};
 
 	const shouldHideCreateButton =
 		!loading &&
@@ -799,18 +777,23 @@ const HomePage: React.FC = () => {
 														"vi-VN"
 													)}
 												</span>
+												{projectUsages[project.projectId]?.storageUsed > 0 && (
+													<div className='flex items-center gap-1 text-primary/80'>
+														<HardDrive className='w-3 h-3' />
+														<span>
+															{
+																projectUsages[
+																	project
+																		.projectId
+																]
+																	.storageUsedFormatted
+															}
+														</span>
+													</div>
+												)}
 											</div>
 										</div>
-										<button
-											onClick={(e) =>
-												handleDeleteClick(e, project)
-											}
-											className='absolute bottom-3 right-3 w-8 h-8 rounded-full bg-destructive/90 hover:bg-destructive text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20 shadow-lg'
-											aria-label={t("home.deleteProject")}
-											title={t("home.deleteProject")}
-										>
-											<Trash2 className='w-4 h-4' />
-										</button>
+
 									</div>
 								);
 							})}
@@ -890,16 +873,7 @@ const HomePage: React.FC = () => {
 												</span>
 											</div>
 										</div>
-										<button
-											onClick={(e) =>
-												handleDeleteClick(e, project)
-											}
-											className='absolute bottom-4 right-4 w-8 h-8 rounded-full bg-destructive/90 hover:bg-destructive text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20 shadow-lg'
-											aria-label={t("home.deleteProject")}
-											title={t("home.deleteProject")}
-										>
-											<Trash2 className='w-4 h-4' />
-										</button>
+
 									</div>
 								);
 							})}
@@ -1267,11 +1241,10 @@ const HomePage: React.FC = () => {
 									onClick={handleSubmitProject}
 									variant='primary-gradient'
 									className='flex-1'
+									loading={isCreating}
 									disabled={isCreating}
 								>
-									{isCreating
-										? t("home.creating")
-										: t("home.createProjectButton")}
+									{t("home.createProjectButton")}
 								</Button>
 							</div>
 						</div>
@@ -1279,39 +1252,10 @@ const HomePage: React.FC = () => {
 				</div>
 			</Overlay>
 
-			<ConfirmDialog
-				isOpen={isDeleteDialogOpen}
-				onClose={() => {
-					setIsDeleteDialogOpen(false);
-					setProjectToDelete(null);
-				}}
-				onConfirm={async () => {
-					await handleDeleteConfirm();
-					setIsDeleteDialogOpen(false);
-					setProjectToDelete(null);
-				}}
-				title={
-					(getNested?.("home.deleteConfirmTitle") as string) ||
-					"Delete Project"
-				}
-				message={(
-					(getNested?.("home.deleteConfirmMessage") as string) ||
-					'Are you sure you want to delete the project "{projectTitle}"? This action cannot be undone.'
-				).replace("{projectTitle}", projectToDelete?.title || "này")}
-				confirmText={
-					(getNested?.("home.deleteConfirm") as string) || "Delete"
-				}
-				cancelText={(getNested?.("home.cancel") as string) || "Cancel"}
-				confirmVariant='destructive'
-				icon={
-					<div className='w-12 h-12 rounded-full bg-destructive/10 flex items-center justify-center'>
-						<Trash2 className='w-6 h-6 text-destructive' />
-					</div>
-				}
-			/>
+
 		</div>
 	);
 };
 
-HomePage.displayName = "HomePage";
+
 export default HomePage;

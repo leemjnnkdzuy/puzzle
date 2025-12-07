@@ -19,6 +19,8 @@ export interface IUser extends Document {
 	theme?: "light" | "dark";
 	language?: "en" | "vi";
 	credit?: number;
+	storageLimit?: number;
+	storageUsed?: number;
 	project?: mongoose.Types.ObjectId;
 	notifications?: mongoose.Types.ObjectId[];
 	socialLinks?: Array<{
@@ -119,6 +121,16 @@ const UserSchema: Schema = new Schema(
 			default: "en",
 		},
 		credit: {
+			type: Number,
+			default: 0,
+			min: 0,
+		},
+		storageLimit: {
+			type: Number,
+			default: 2147483648,
+			min: 0,
+		},
+		storageUsed: {
 			type: Number,
 			default: 0,
 			min: 0,

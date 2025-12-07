@@ -146,6 +146,35 @@ class SSEServer {
 		}
 	}
 
+	sendStorageEvent(
+		userId: string,
+		storageInfo: {
+			limit: number;
+			used: number;
+			available: number;
+			limitFormatted: string;
+			usedFormatted: string;
+			availableFormatted: string;
+			credit: number;
+		}
+	): void {
+		const userClients = this.clients.get(userId);
+
+		if (userClients && userClients.length > 0) {
+			const data = JSON.stringify({
+				type: "storage",
+				data: storageInfo,
+			});
+			userClients.forEach((client) => {
+				try {
+					client.response.write(`data: ${data}\n\n`);
+				} catch (error) {
+					this.removeClient(userId, client.response);
+				}
+			});
+		}
+	}
+
 	getClientCount(userId?: string): number {
 		if (userId) {
 			return this.clients.get(userId)?.length || 0;

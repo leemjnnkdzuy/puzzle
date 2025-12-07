@@ -408,6 +408,7 @@
 		"about": "Về chúng tôi",
 		"viewProfile": "Xem hồ sơ",
 		"recharge": "Nạp tiền",
+		"storage": "Lưu trữ",
 		"settings": "Cài đặt",
 		"theme": "Chủ đề",
 		"language": "Ngôn ngữ",
@@ -771,5 +772,70 @@
 		"deleteConfirm": "Bạn có chắc muốn xóa mục này?",
 		"delete": "Xóa",
 		"cancel": "Hủy"
+	},
+	"storagePage": {
+		"title": "Lưu trữ",
+		"description": "Quản lý dung lượng lưu trữ của bạn",
+		"totalSpace": "Tổng dung lượng",
+		"usedSpace": "Đã sử dụng",
+		"freeSpace": "Còn trống",
+		"upgradeStorage": "Nạp dung lượng",
+		"noData": "Không có dữ liệu lưu trữ",
+		"projectList": "Dung lượng theo dự án",
+		"noProjects": "Chưa có dự án nào"
+	},
+	"projectPage": {
+		"generationOptions": {
+			"title": "Tùy chỉnh Generation",
+			"tone": "Tone (Giọng điệu)",
+			"tonePlaceholder": "Ví dụ: Chuyên nghiệp, Thân thiện, Hài hước...",
+			"toneDescription": "Xác định giọng điệu của script",
+			"style": "Style (Phong cách)",
+			"stylePlaceholder": "Ví dụ: Tóm tắt, Phân tích, Review...",
+			"styleDescription": "Xác định phong cách viết script",
+			"length": "Length (Độ dài)",
+			"lengthPlaceholder": "Ví dụ: Ngắn, Trung bình, Dài...",
+			"lengthDescription": "Xác định độ dài mong muốn của script",
+			"generate": "Tạo Script",
+			"generating": "Đang tạo script..."
+		},
+		"status": {
+			"completed": "Hoàn thành",
+			"failed": "Thất bại",
+			"processing": "Đang xử lý",
+			"pending": "Chờ xử lý"
+		},
+		"tabs": {
+			"upload": "Upload",
+			"videos": "Videos",
+			"settings": "Cài đặt"
+		},
+		"fileList": {
+			"uploading": "Đang tải lên...",
+			"completed": "Hoàn tất",
+			"dragDrop": "Kéo thả video vào đây hoặc click để chọn file",
+			"maxSize": "Dung lượng tối đa 100MB",
+			"uploaded": "Đã tải lên",
+			"insufficientStorage": "Không đủ dung lượng! Cần: {needed}, Còn lại: {available}. Vui lòng nâng cấp gói lưu trữ.",
+            "orClick": "hoặc nhấn để chọn file",
+            "noVideos": "Chưa có video nào",
+            "uploadToStart": "Upload video để bắt đầu"
+		}
+	},
+	"blog": {
+		"backToBlog": "Quay lại Blog",
+		"breakingNews": "Tin nóng",
+		"loadingBreakingNews": "Đang tải tin nóng...",
+		"globalTech": "Công nghệ toàn cầu",
+		"trending": "Thịnh hành",
+		"noTrendingNews": "Không tìm thấy tin tức thịnh hành.",
+		"addApiKey": "Thêm GNews API Key để xem tin tức.",
+		"viewAllTrending": "Xem tất cả xu hướng",
+		"popularTopics": "Chủ đề phổ biến",
+		"readMore": "Đọc thêm",
+		"globalTechTrends": "Xu hướng công nghệ toàn cầu",
+		"globalTechTrendsDesc": "Tin tức công nghệ thịnh hành mới nhất từ khắp nơi trên thế giới",
+		"checkApiKey": "Vui lòng kiểm tra cấu hình API Key.",
+		"readFullArticle": "Đọc toàn bộ bài viết"
 	}
 }

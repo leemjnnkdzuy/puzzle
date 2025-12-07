@@ -449,5 +449,4 @@ const TermsOfServicePage = () => {
 	);
 };
 
-TermsOfServicePage.displayName = "TermsOfServicePage";
 export default TermsOfServicePage;

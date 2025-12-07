@@ -18,5 +18,5 @@ const AppIcon: React.FC<AppIconProps> = ({
 	return <img src={iconSrc} alt={alt} className={className} />;
 };
 
-AppIcon.displayName = "AppIcon";
+
 export default AppIcon;

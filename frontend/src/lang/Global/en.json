@@ -408,6 +408,7 @@
 		"about": "About Us",
 		"viewProfile": "View Profile",
 		"recharge": "Recharge",
+		"storage": "Storage",
 		"settings": "Settings",
 		"theme": "Theme",
 		"language": "Language",
@@ -771,5 +772,70 @@
 		"deleteConfirm": "Are you sure you want to delete this item?",
 		"delete": "Delete",
 		"cancel": "Cancel"
+	},
+	"storagePage": {
+		"title": "Storage",
+		"description": "Manage your storage space",
+		"totalSpace": "Total Space",
+		"usedSpace": "Used",
+		"freeSpace": "Available",
+		"upgradeStorage": "Upgrade Storage",
+		"noData": "No storage data available",
+		"projectList": "Storage by Project",
+		"noProjects": "No projects found"
+	},
+	"projectPage": {
+		"generationOptions": {
+			"title": "Generation Options",
+			"tone": "Tone",
+			"tonePlaceholder": "e.g. Professional, Friendly, Humorous...",
+			"toneDescription": "Define the tone of the script",
+			"style": "Style",
+			"stylePlaceholder": "e.g. Summary, Analysis, Review...",
+			"styleDescription": "Define the writing style of the script",
+			"length": "Length",
+			"lengthPlaceholder": "e.g. Short, Medium, Long...",
+			"lengthDescription": "Define the desired length of the script",
+			"generate": "Generate Script",
+			"generating": "Generating script..."
+		},
+		"status": {
+			"completed": "Completed",
+			"failed": "Failed",
+			"processing": "Processing",
+			"pending": "Pending"
+		},
+		"tabs": {
+			"upload": "Upload",
+			"videos": "Videos",
+			"settings": "Settings"
+		},
+		"fileList": {
+			"uploading": "Uploading...",
+			"completed": "Completed",
+			"dragDrop": "Drag & drop video here or click to select file",
+			"maxSize": "Max size 100MB",
+			"uploaded": "Uploaded",
+			"insufficientStorage": "Insufficient storage! Needed: {needed}, Available: {available}. Please upgrade storage.",
+            "orClick": "or click to select file",
+            "noVideos": "No videos yet",
+            "uploadToStart": "Upload video to start"
+		}
+	},
+	"blog": {
+		"backToBlog": "Back to Blog",
+		"breakingNews": "Breaking News",
+		"loadingBreakingNews": "Loading breaking news...",
+		"globalTech": "Global Tech",
+		"trending": "Trending",
+		"noTrendingNews": "No trending news found.",
+		"addApiKey": "Add GNews API Key to see trending news.",
+		"viewAllTrending": "View All Trending",
+		"popularTopics": "Popular Topics",
+		"readMore": "Read more",
+		"globalTechTrends": "Global Tech Trends",
+		"globalTechTrendsDesc": "Latest trending technology news from around the world",
+		"checkApiKey": "Please check API Key configuration.",
+		"readFullArticle": "Read full article"
 	}
 }

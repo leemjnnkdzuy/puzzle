@@ -8,6 +8,10 @@ import FullServiceProject from "@/models/FullServiceProject";
 import {AuthRequest} from "@/middlewares/auth";
 import AppError from "@/utils/errors";
 import {createProjectNotification} from "@/helpers/notificationHelper";
+import {
+	createProjectFolder,
+	deleteProjectFolder,
+} from "@/utils/projectFileHelper";
 
 export const getProjects = async (
 	req: AuthRequest,
@@ -172,6 +176,14 @@ export const createProject = async (
 
 		await userProject.save();
 
+		// Tạo thư mục cho project
+		try {
+			await createProjectFolder(specificProjectId.toString());
+		} catch (folderError) {
+			console.error("Failed to create project folder:", folderError);
+			// Không throw error vì project đã được tạo thành công
+		}
+
 		const transformedProject = {
 			id: userProject._id.toString(),
 			projectId: specificProjectId.toString(),
@@ -221,6 +233,16 @@ export const createProject = async (
 					});
 					await userProject.save();
 
+					// Tạo thư mục cho project
+					try {
+						await createProjectFolder(specificProjectId.toString());
+					} catch (folderError) {
+						console.error(
+							"Failed to create project folder:",
+							folderError
+						);
+					}
+
 					const transformedProject = {
 						id: userProject._id.toString(),
 						projectId: specificProjectId.toString(),
@@ -240,8 +262,7 @@ export const createProject = async (
 					});
 					return;
 				}
-			} catch (retryError) {
-			}
+			} catch (retryError) {}
 		}
 
 		next(error);
@@ -446,6 +467,12 @@ export const deleteProject = async (
 
 		if (!projectItem) {
 			throw new AppError("Project not found", 404);
+		}
+
+		try {
+			await deleteProjectFolder(id);
+		} catch (folderError) {
+			console.error("Failed to delete project folder:", folderError);
 		}
 
 		if (projectItem.type === "script_generation") {

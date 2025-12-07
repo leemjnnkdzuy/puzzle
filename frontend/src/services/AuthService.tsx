@@ -1,4 +1,4 @@
-import apiClient from "@/utils/axiosInstance";
+import apiClient from "@/utils";
 
 export type AuthPhase =
 	| "login"

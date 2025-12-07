@@ -70,5 +70,5 @@ const NotFoundPage = () => {
 	);
 };
 
-NotFoundPage.displayName = "NotFoundPage";
+
 export default NotFoundPage;

@@ -233,5 +233,5 @@ const SignInPage: React.FC = () => {
 	);
 };
 
-SignInPage.displayName = "SignInPage";
+
 export default SignInPage;

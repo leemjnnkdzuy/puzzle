@@ -185,5 +185,5 @@ const AboutPage: React.FC = () => {
 	);
 };
 
-AboutPage.displayName = "AboutPage";
+
 export default AboutPage;

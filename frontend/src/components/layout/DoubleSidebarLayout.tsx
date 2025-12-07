@@ -75,7 +75,6 @@ const DoubleSidebarLayout: React.FC<DoubleSidebarLayoutProps> = ({
 								rightSidebar
 							) : (
 								<div className='flex flex-col items-center space-y-4'>
-									{/* Collapsed view - can show icons or minimal content */}
 								</div>
 							)}
 						</div>
@@ -140,5 +139,5 @@ const DoubleSidebarLayout: React.FC<DoubleSidebarLayoutProps> = ({
 	);
 };
 
-DoubleSidebarLayout.displayName = "DoubleSidebarLayout";
+
 export default DoubleSidebarLayout;

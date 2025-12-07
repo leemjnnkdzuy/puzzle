@@ -1,5 +1,5 @@
 import apiConfig from "@/configs/AppConfig";
-import apiClient from "@/utils/axiosInstance";
+import apiClient from "@/utils";
 import type {AxiosError} from "axios";
 import ScriptGenerationService, {
 	type ScriptGenerationProject,
@@ -29,7 +29,6 @@ export interface CreateProjectData {
 	type: "script_generation" | "script_voice" | "full_service";
 }
 
-// Helper function to transform specific project types to unified Project format
 const transformToProject = (
 	project: ScriptGenerationProject | ScriptVoiceProject | FullServiceProject,
 	type: "script_generation" | "script_voice" | "full_service"

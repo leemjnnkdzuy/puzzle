@@ -123,13 +123,11 @@ const ProfilePage: React.FC = () => {
 		socialLinks: [] as Array<{platform: SocialPlatform; url: string}>,
 	});
 
-	// Check if viewing own profile
 	const isOwnProfile = !identifier;
 
 	useEffect(() => {
 		const fetchUserProfile = async () => {
 			if (isOwnProfile) {
-				// Viewing own profile - use current user
 				if (currentUser) {
 					const data = currentUser as UserData;
 					setUserData(data);
@@ -141,7 +139,6 @@ const ProfilePage: React.FC = () => {
 					setAvatarPreview(null);
 				}
 			} else {
-				// Viewing other user's profile
 				try {
 					setIsLoadingProfile(true);
 					const result = await authService.getUserProfile(identifier);
@@ -175,7 +172,6 @@ const ProfilePage: React.FC = () => {
 		};
 
 		fetchUserProfile();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [identifier, currentUser, isOwnProfile]);
 
 	const handleInputChange = (field: keyof typeof formData, value: string) => {

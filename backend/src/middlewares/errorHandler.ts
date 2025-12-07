@@ -1,6 +1,7 @@
 import {Request, Response, NextFunction} from "express";
 import AppError from "@/utils/errors";
 import mongoose from "mongoose";
+import multer from "multer";
 
 export const errorHandler = (
 	err: Error | AppError,
@@ -14,6 +15,13 @@ export const errorHandler = (
 	if (err instanceof AppError) {
 		statusCode = err.statusCode;
 		message = err.message;
+	} else if (err instanceof multer.MulterError) {
+		statusCode = 400;
+		if (err.code === "LIMIT_FILE_SIZE") {
+			message = `File quá lớn (tối đa 10GB). Vui lòng kiểm tra dung lượng còn lại của bạn.`;
+		} else {
+			message = err.message || "Lỗi upload file";
+		}
 	} else if ((err as any).code === 11000) {
 		const field = Object.keys((err as any).keyPattern || {})[0];
 		statusCode = 400;

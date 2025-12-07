@@ -18,6 +18,7 @@ import {
 	ChevronRight,
 	Wallet,
 	CircleDollarSign,
+	HardDrive,
 } from "lucide-react";
 import {useLanguage} from "@/hooks/useLanguage";
 import {useAuth} from "@/hooks/useAuth";
@@ -97,6 +98,7 @@ const GlobalSidebar: React.FC<GlobalSidebarProps> = ({
 				about: string;
 				viewProfile: string;
 				recharge: string;
+				storage: string;
 				settings: string;
 				theme: string;
 				language: string;
@@ -442,6 +444,14 @@ const GlobalSidebar: React.FC<GlobalSidebarProps> = ({
 								</DropdownMenuItem>
 
 								<DropdownMenuItem
+									onClick={() => navigate("/storage")}
+									className='cursor-pointer'
+								>
+									<HardDrive className='w-4 h-4 mr-2' />
+									{sidebar?.storage || "Lưu trữ"}
+								</DropdownMenuItem>
+
+								<DropdownMenuItem
 									onClick={() => navigate("/settings")}
 									className='cursor-pointer'
 								>
@@ -586,5 +596,5 @@ const GlobalSidebar: React.FC<GlobalSidebarProps> = ({
 	);
 };
 
-GlobalSidebar.displayName = "GlobalSidebar";
+
 export default GlobalSidebar;

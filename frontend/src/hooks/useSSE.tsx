@@ -30,6 +30,18 @@ export type SSEMessage =
 				credit: number;
 				message?: string;
 			};
+	  }
+	| {
+			type: "storage";
+			data: {
+				limit: number;
+				used: number;
+				available: number;
+				limitFormatted: string;
+				usedFormatted: string;
+				availableFormatted: string;
+				credit: number;
+			};
 	  };
 
 interface UseSSEReturn {

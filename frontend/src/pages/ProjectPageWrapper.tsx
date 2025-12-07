@@ -117,5 +117,5 @@ const ProjectPageWrapper: React.FC = () => {
 	}
 };
 
-ProjectPageWrapper.displayName = "ProjectPageWrapper";
+
 export default ProjectPageWrapper;

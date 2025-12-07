@@ -453,5 +453,5 @@ const PrivacyPolicyPage = () => {
 	);
 };
 
-PrivacyPolicyPage.displayName = "PrivacyPolicyPage";
+
 export default PrivacyPolicyPage;

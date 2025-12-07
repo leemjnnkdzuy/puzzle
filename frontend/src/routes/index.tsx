@@ -11,8 +11,10 @@ export interface RouteTypes {
 // layouts
 import NotThingLayout from "@/components/layout/NotThingLayout";
 import HeaderFooterLayout from "@/components/layout/HeaderFooterLayout";
+import FooterLayout from "@/components/layout/FooterLayout";
 import SidebarLayout from "@/components/layout/SidebarLayout";
 import DoubleSidebarLayout from "@/components/layout/DoubleSidebarLayout";
+import ProjectLayout from "@/components/layout/ProjectLayout";
 
 // Components
 import AppLoader, {PublicRoute} from "@/components/common/AppLoader";
@@ -35,6 +37,9 @@ import RechargePage, {RechargePageRightSidebar} from "@/pages/RechargePage";
 import TransactionHistoryPage from "@/pages/TransactionHistoryPage";
 import LoginHistoryPage from "@/pages/LoginHistoryPage";
 import TextToSpeechPage from "@/pages/TextToSpeechPage";
+import StoragePage from "@/pages/StoragePage";
+import BlogPage from "@/pages/BlogPage";
+import TrendingPage from "@/pages/TrendingPage";
 
 const publicRoutes: RouteTypes[] = [
 	{
@@ -76,6 +81,16 @@ const publicRoutes: RouteTypes[] = [
 		path: "/about",
 		component: AboutPage,
 		layout: HeaderFooterLayout,
+	},
+	{
+		path: "/blog",
+		component: BlogPage,
+		layout: FooterLayout,
+	},
+	{
+		path: "/blog/trending",
+		component: TrendingPage,
+		layout: FooterLayout,
 	},
 ];
 
@@ -139,19 +154,24 @@ const privateRoutes: RouteTypes[] = [
 		layout: SidebarLayout,
 	},
 	{
+		path: "/storage",
+		component: StoragePage,
+		layout: SidebarLayout,
+	},
+	{
 		path: "/script-generation/:id",
 		component: ProjectPageWrapper,
-		layout: NotThingLayout,
+		layout: ProjectLayout,
 	},
 	{
 		path: "/script-voice/:id",
 		component: ProjectPageWrapper,
-		layout: NotThingLayout,
+		layout: ProjectLayout,
 	},
 	{
 		path: "/full-service/:id",
 		component: ProjectPageWrapper,
-		layout: NotThingLayout,
+		layout: ProjectLayout,
 	},
 ];
 

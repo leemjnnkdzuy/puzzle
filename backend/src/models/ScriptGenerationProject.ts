@@ -1,16 +1,25 @@
 import mongoose, {Schema, Document} from "mongoose";
 
+export interface IVideoFile {
+	filename: string;
+	originalName: string;
+	size: number;
+	mimetype: string;
+	order: number;
+	uploadedAt: Date;
+}
+
 export interface IScriptGenerationProject extends Document {
 	title: string;
 	description: string;
 	thumbnail?: string;
 	userId: mongoose.Types.ObjectId;
 	status: "pending" | "processing" | "completed" | "failed";
-	// Script generation specific fields
 	scriptContent?: string;
 	scriptLanguage?: string;
 	videoUrl?: string;
 	videoDuration?: number;
+	uploadedVideos?: IVideoFile[];
 	generationSettings?: {
 		tone?: string;
 		style?: string;
@@ -63,6 +72,35 @@ const ScriptGenerationProjectSchema: Schema = new Schema(
 			type: Number,
 			min: 0,
 		},
+		uploadedVideos: [
+			{
+				filename: {
+					type: String,
+					required: true,
+				},
+				originalName: {
+					type: String,
+					required: true,
+				},
+				size: {
+					type: Number,
+					required: true,
+				},
+				mimetype: {
+					type: String,
+					required: true,
+				},
+				order: {
+					type: Number,
+					required: true,
+					min: 1,
+				},
+				uploadedAt: {
+					type: Date,
+					default: Date.now,
+				},
+			},
+		],
 		generationSettings: {
 			tone: {
 				type: String,

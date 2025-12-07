@@ -10,7 +10,7 @@ const getAllowedOrigins = (): string[] => {
 	return [corsOrigin];
 };
 
-const isOriginAllowed = (origin: string | undefined): boolean => {
+export const isOriginAllowed = (origin: string | undefined): boolean => {
 	if (!origin) {
 		return true;
 	}
@@ -40,8 +40,9 @@ export const corsOptions: CorsOptions = {
 		"X-Requested-With",
 		"Accept",
 		"Origin",
+		"Range",
 	],
-	exposedHeaders: ["Set-Cookie"],
+	exposedHeaders: ["Set-Cookie", "Content-Range", "Accept-Ranges"],
 	optionsSuccessStatus: 200,
 };
 

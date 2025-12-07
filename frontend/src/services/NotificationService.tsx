@@ -1,5 +1,5 @@
 import apiConfig from "@/configs/AppConfig";
-import apiClient from "@/utils/axiosInstance";
+import apiClient from "@/utils";
 import type {AxiosError} from "axios";
 
 export interface Notification {

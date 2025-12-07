@@ -16,12 +16,14 @@ node_modules/
 
 # testing
 coverage/
+uploads/
 
 # production
 build/
 dist/
 dist-ssr/
 *.local
+uploads/
 
 # misc
 .DS_Store

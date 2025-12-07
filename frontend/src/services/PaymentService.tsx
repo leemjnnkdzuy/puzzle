@@ -1,4 +1,4 @@
-import apiClient from "@/utils/axiosInstance";
+import apiClient from "@/utils";
 
 export interface CreateDepositRequest {
 	amount: number;

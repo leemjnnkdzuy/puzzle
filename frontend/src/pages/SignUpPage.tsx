@@ -362,5 +362,5 @@ const SignUpPage: React.FC = () => {
 	);
 };
 
-SignUpPage.displayName = "SignUpPage";
+
 export default SignUpPage;

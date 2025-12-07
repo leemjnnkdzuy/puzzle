@@ -145,7 +145,7 @@ const VideoPlayer = ({
 			poster={poster}
 			className={`max-w-full max-h-full object-contain ${className}`}
 			playsInline
-			preload='auto'
+			preload='metadata'
 			controls={false}
 			disablePictureInPicture
 			disableRemotePlayback
@@ -153,6 +153,7 @@ const VideoPlayer = ({
 			style={{pointerEvents: "none"}}
 			onContextMenu={(e) => e.preventDefault()}
 			onTimeUpdate={onTimeUpdate}
+			crossOrigin='use-credentials'
 		/>
 	);
 };

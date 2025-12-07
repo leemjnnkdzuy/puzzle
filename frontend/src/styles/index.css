@@ -390,13 +390,7 @@
 	position: absolute;
 	inset: -4px;
 	border-radius: 32px;
-	background: linear-gradient(
-		45deg,
-		#22d3ee,
-		#3b82f6,
-		#22d3ee,
-		#3b82f6
-	);
+	background: linear-gradient(45deg, #22d3ee, #3b82f6, #22d3ee, #3b82f6);
 	background-size: 300% 300%;
 	animation: gradientShadowRotate 4s ease infinite;
 	z-index: -1;
@@ -406,4 +400,60 @@
 
 .dark .voice-track-shadow::before {
 	opacity: 0.4;
+}
+
+.video-controls-light .video-slider::-webkit-slider-thumb {
+	appearance: none;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background: #000000;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.video-controls-light .video-slider::-webkit-slider-thumb:hover {
+	transform: scale(1.2);
+}
+
+.video-controls-light .video-slider::-moz-range-thumb {
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background: #000000;
+	cursor: pointer;
+	border: none;
+	transition: all 0.2s;
+}
+
+.video-controls-light .video-slider::-moz-range-thumb:hover {
+	transform: scale(1.2);
+}
+
+.video-controls-dark .video-slider::-webkit-slider-thumb {
+	appearance: none;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background: #ffffff;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.video-controls-dark .video-slider::-webkit-slider-thumb:hover {
+	transform: scale(1.2);
+}
+
+.video-controls-dark .video-slider::-moz-range-thumb {
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background: #ffffff;
+	cursor: pointer;
+	border: none;
+	transition: all 0.2s;
+}
+
+.video-controls-dark .video-slider::-moz-range-thumb:hover {
+	transform: scale(1.2);
 }
