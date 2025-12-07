@@ -18,6 +18,7 @@ import {getDeviceInfo, getIpAddress} from "@/helpers/deviceHelper";
 import defaultAvatar from "@/data/defualtAvatar.json";
 import tokenBlacklist from "@/utils/tokenBlacklist";
 import sseServer from "@/utils/sseServer";
+import {getCookieOptions} from "@/configs/corsConfig";
 import {randomUUID} from "crypto";
 
 export const register = async (req: Request, res: Response): Promise<void> => {
@@ -191,11 +192,9 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
 		const accessToken = generateAccessToken(user._id.toString(), sessionId);
 
-		const isProduction = process.env.NODE_ENV === "production";
+		const baseCookieOptions = getCookieOptions();
 		const cookieOptions = {
-			httpOnly: true,
-			secure: isProduction,
-			sameSite: isProduction ? ("strict" as const) : ("lax" as const),
+			...baseCookieOptions,
 			maxAge: 7 * 24 * 60 * 60 * 1000,
 		};
 
@@ -407,11 +406,10 @@ export const refreshToken = async (
 
 		const accessToken = generateAccessToken(user._id.toString(), sessionId);
 
-		const isProduction = process.env.NODE_ENV === "production";
+		const cookieOptions = getCookieOptions();
+
 		res.cookie("accessToken", accessToken, {
-			httpOnly: true,
-			secure: isProduction,
-			sameSite: isProduction ? ("strict" as const) : ("lax" as const),
+			...cookieOptions,
 			maxAge: 15 * 60 * 1000,
 		});
 

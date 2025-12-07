@@ -53,3 +53,24 @@ export const getCorsOrigin = (): string => {
 export const getAllowedOriginsList = (): string[] => {
 	return getAllowedOrigins();
 };
+
+export const getCookieOptions = () => {
+	const isProduction = process.env.NODE_ENV === "production";
+	const isVercel = process.env.VERCEL === "1";
+
+	const sameSite =
+		isVercel ||
+		(isProduction && process.env.ALLOW_CROSS_ORIGIN_COOKIES === "true")
+			? ("none" as const)
+			: isProduction
+			? ("strict" as const)
+			: ("lax" as const);
+
+	const secure = sameSite === "none" ? true : isProduction;
+
+	return {
+		httpOnly: true,
+		secure,
+		sameSite,
+	};
+};
