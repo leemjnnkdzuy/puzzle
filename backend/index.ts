@@ -22,6 +22,27 @@ app.use(express.urlencoded({extended: true, limit: "10mb"}));
 
 app.use(express.static(path.join(__dirname, "public")));
 
+let dbConnectionPromise: Promise<void> | null = null;
+const ensureDatabaseConnection = async (): Promise<void> => {
+	if (!dbConnectionPromise) {
+		dbConnectionPromise = connectDatabase().catch((error) => {
+			console.error("Database connection error:", error);
+			dbConnectionPromise = null;
+			throw error;
+		});
+	}
+	return dbConnectionPromise;
+};
+
+app.use(async (req, res, next) => {
+	try {
+		await ensureDatabaseConnection();
+	} catch (error) {
+		console.error("Failed to ensure database connection:", error);
+	}
+	next();
+});
+
 app.get("/health", (req, res) => {
 	res.json({
 		success: true,
@@ -36,19 +57,22 @@ app.use(notFound);
 
 app.use(errorHandler);
 
-const startServer = async () => {
-	try {
-		await connectDatabase();
+if (process.env.VERCEL !== "1") {
+	const startServer = async () => {
+		try {
+			await connectDatabase();
+			startTransactionCleanupScheduler();
 
-		startTransactionCleanupScheduler();
+			app.listen(PORT, () => {
+				console.log(`Server is running on port ${PORT}`);
+			});
+		} catch (error) {
+			console.error("Failed to start server:", error);
+			process.exit(1);
+		}
+	};
 
-		app.listen(PORT, () => {
-			console.log(`Server is running on port ${PORT}`);
-		});
-	} catch (error) {
-		console.error("Failed to start server:", error);
-		process.exit(1);
-	}
-};
+	startServer();
+}
 
-startServer();
+export default app;
