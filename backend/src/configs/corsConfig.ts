@@ -47,7 +47,7 @@ export const corsOptions: CorsOptions = {
 };
 
 export const getCorsOrigin = (): string => {
-	return process.env.CORS_ORIGIN ?? "http://localhost:5173";
+	return process.env.CORS_ORIGIN || "http://localhost:5173";
 };
 
 export const getAllowedOriginsList = (): string[] => {
