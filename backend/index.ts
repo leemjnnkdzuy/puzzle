@@ -1,8 +1,45 @@
+import path from "path";
+import fs from "fs";
+
+try {
+	const moduleAlias = require("module-alias");
+	let srcPath = path.join(__dirname, "src");
+
+	if (!fs.existsSync(srcPath)) {
+		srcPath = path.join(__dirname, "..", "src");
+		if (!fs.existsSync(srcPath)) {
+			srcPath = path.join(__dirname, "..", "backend", "src");
+		}
+	}
+
+	moduleAlias.addAliases({
+		"@": srcPath,
+		"@/configs": path.join(srcPath, "configs"),
+		"@/controllers": path.join(srcPath, "controllers"),
+		"@/middlewares": path.join(srcPath, "middlewares"),
+		"@/models": path.join(srcPath, "models"),
+		"@/routes": path.join(srcPath, "routes"),
+		"@/utils": path.join(srcPath, "utils"),
+		"@/validators": path.join(srcPath, "validators"),
+	});
+
+	console.log(
+		`Path aliases registered successfully. srcPath: ${srcPath}, __dirname: ${__dirname}`
+	);
+} catch (error) {
+	console.error("Failed to register path aliases:", error);
+	try {
+		require("tsconfig-paths/register");
+		console.log("Using tsconfig-paths as fallback");
+	} catch (tsError) {
+		console.error("Both module-alias and tsconfig-paths failed:", tsError);
+	}
+}
+
 import express, {Application} from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import path from "path";
 import connectDatabase from "./src/utils/connectDB";
 import apiConfig from "./src/configs/apiConfig";
 import {errorHandler, notFound} from "./src/middlewares/errorHandler";
