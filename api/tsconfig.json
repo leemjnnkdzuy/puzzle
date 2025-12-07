@@ -1,0 +1,20 @@
+{
+	"extends": "../backend/tsconfig.json",
+	"compilerOptions": {
+		"baseUrl": "../backend/src",
+		"paths": {
+			"@/*": ["./*"],
+			"@/configs/*": ["./configs/*"],
+			"@/controllers/*": ["./controllers/*"],
+			"@/middlewares/*": ["./middlewares/*"],
+			"@/models/*": ["./models/*"],
+			"@/routes/*": ["./routes/*"],
+			"@/utils/*": ["./utils/*"],
+			"@/validators/*": ["./validators/*"]
+		},
+		"moduleResolution": "node",
+		"esModuleInterop": true
+	},
+	"include": ["**/*"],
+	"exclude": ["node_modules"]
+}

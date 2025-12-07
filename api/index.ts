@@ -1,8 +1,24 @@
+// Register path aliases before any imports
+import moduleAlias from "module-alias";
+import path from "path";
+
+// Register aliases for path resolution
+const backendSrcPath = path.join(__dirname, "../backend/src");
+moduleAlias.addAliases({
+	"@": backendSrcPath,
+	"@/configs": path.join(backendSrcPath, "configs"),
+	"@/controllers": path.join(backendSrcPath, "controllers"),
+	"@/middlewares": path.join(backendSrcPath, "middlewares"),
+	"@/models": path.join(backendSrcPath, "models"),
+	"@/routes": path.join(backendSrcPath, "routes"),
+	"@/utils": path.join(backendSrcPath, "utils"),
+	"@/validators": path.join(backendSrcPath, "validators"),
+});
+
 import express, {Application} from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import path from "path";
 import connectDatabase from "../backend/src/utils/connectDB";
 import apiConfig from "../backend/src/configs/apiConfig";
 import {errorHandler, notFound} from "../backend/src/middlewares/errorHandler";
