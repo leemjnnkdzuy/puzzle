@@ -3,7 +3,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import path from "path";
-import {createServer} from "http";
 import connectDatabase from "./src/utils/connectDB";
 import apiConfig from "./src/configs/apiConfig";
 import {errorHandler, notFound} from "./src/middlewares/errorHandler";
