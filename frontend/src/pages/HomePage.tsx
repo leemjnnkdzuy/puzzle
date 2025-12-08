@@ -49,12 +49,12 @@ interface Project {
 
 const getProjectTypeInfo = (
 	type: Project["type"],
-	getNested: (key: string) => unknown
+	t: (key: string) => any
 ) => {
 	switch (type) {
 		case "script_generation":
 			return {
-				label: getNested?.(
+				label: t(
 					"packages.scriptGeneration.subtitle"
 				) as string,
 				icon: FileText,
@@ -64,7 +64,7 @@ const getProjectTypeInfo = (
 			};
 		case "script_voice":
 			return {
-				label: getNested?.("packages.scriptVoice.subtitle") as string,
+				label: t("packages.scriptVoice.subtitle") as string,
 				icon: Mic,
 				bgColor: "bg-purple-500/10",
 				textColor: "text-purple-600 dark:text-purple-400",
@@ -72,7 +72,7 @@ const getProjectTypeInfo = (
 			};
 		case "full_service":
 			return {
-				label: getNested?.("packages.fullService.subtitle") as string,
+				label: t("packages.fullService.subtitle") as string,
 				icon: Sparkles,
 				bgColor: "bg-gradient-to-r from-cyan-500/10 to-blue-500/10",
 				textColor: "text-cyan-600 dark:text-cyan-400",
@@ -93,7 +93,7 @@ const HomePage: React.FC = () => {
 	const navigate = useNavigate();
 	const {showError, showWarning} = useGlobalNotificationPopup();
 	const showErrorRef = useRef(showError);
-	const {t, getNested} = useLanguage();
+	const {t} = useLanguage();
 	const {
 		notifications,
 		unreadCount,
@@ -583,14 +583,14 @@ const HomePage: React.FC = () => {
 												? t("home.all")
 												: filterType ===
 												  "script_generation"
-												? (getNested?.(
+												? (t(
 														"packages.scriptGeneration.subtitle"
 												  ) as string)
 												: filterType === "script_voice"
-												? (getNested?.(
+												? (t(
 														"packages.scriptVoice.subtitle"
 												  ) as string)
-												: (getNested?.(
+												: (t(
 														"packages.fullService.subtitle"
 												  ) as string)}
 										</span>
@@ -624,7 +624,7 @@ const HomePage: React.FC = () => {
 										<FileText className='w-4 h-4 text-blue-600 dark:text-blue-400' />
 										<span>
 											{
-												getNested?.(
+												t(
 													"packages.scriptGeneration.subtitle"
 												) as string
 											}
@@ -645,7 +645,7 @@ const HomePage: React.FC = () => {
 										<Mic className='w-4 h-4 text-purple-600 dark:text-purple-400' />
 										<span>
 											{
-												getNested?.(
+												t(
 													"packages.scriptVoice.subtitle"
 												) as string
 											}
@@ -666,7 +666,7 @@ const HomePage: React.FC = () => {
 										<Sparkles className='w-4 h-4 text-cyan-600 dark:text-cyan-400' />
 										<span>
 											{
-												getNested?.(
+												t(
 													"packages.fullService.subtitle"
 												) as string
 											}
@@ -723,7 +723,7 @@ const HomePage: React.FC = () => {
 							{filteredProjects.map((project) => {
 								const typeInfo = getProjectTypeInfo(
 									project.type,
-									getNested!
+									t
 								);
 								const TypeIcon = typeInfo.icon;
 								return (
@@ -805,7 +805,7 @@ const HomePage: React.FC = () => {
 							{filteredProjects.map((project) => {
 								const typeInfo = getProjectTypeInfo(
 									project.type,
-									getNested!
+									t
 								);
 								const TypeIcon = typeInfo.icon;
 								return (
@@ -927,14 +927,14 @@ const HomePage: React.FC = () => {
 									<div className='flex items-center gap-2 mb-1'>
 										<h3 className='font-semibold text-foreground'>
 											{
-												getNested?.(
+												t(
 													"packages.scriptGeneration.title"
 												) as string
 											}
 										</h3>
 										<span className='text-sm text-muted-foreground'>
 											{
-												getNested?.(
+												t(
 													"packages.scriptGeneration.subtitle"
 												) as string
 											}
@@ -942,7 +942,7 @@ const HomePage: React.FC = () => {
 									</div>
 									<p className='text-sm text-muted-foreground leading-relaxed'>
 										{
-											getNested?.(
+											t(
 												"packages.scriptGeneration.description"
 											) as string
 										}
@@ -963,14 +963,14 @@ const HomePage: React.FC = () => {
 									<div className='flex items-center gap-2 mb-1'>
 										<h3 className='font-semibold text-foreground'>
 											{
-												getNested?.(
+												t(
 													"packages.scriptVoice.title"
 												) as string
 											}
 										</h3>
 										<span className='text-sm text-muted-foreground'>
 											{
-												getNested?.(
+												t(
 													"packages.scriptVoice.subtitle"
 												) as string
 											}
@@ -978,7 +978,7 @@ const HomePage: React.FC = () => {
 									</div>
 									<p className='text-sm text-muted-foreground leading-relaxed'>
 										{
-											getNested?.(
+											t(
 												"packages.scriptVoice.description"
 											) as string
 										}
@@ -999,14 +999,14 @@ const HomePage: React.FC = () => {
 									<div className='flex items-center gap-2 mb-1'>
 										<h3 className='font-semibold text-foreground'>
 											{
-												getNested?.(
+												t(
 													"packages.fullService.title"
 												) as string
 											}
 										</h3>
 										<span className='text-sm text-muted-foreground'>
 											{
-												getNested?.(
+												t(
 													"packages.fullService.subtitle"
 												) as string
 											}
@@ -1014,7 +1014,7 @@ const HomePage: React.FC = () => {
 									</div>
 									<p className='text-sm text-muted-foreground leading-relaxed'>
 										{
-											getNested?.(
+											t(
 												"packages.fullService.description"
 											) as string
 										}
@@ -1049,13 +1049,13 @@ const HomePage: React.FC = () => {
 														<FileText className='w-5 h-5 text-blue-600 dark:text-blue-400' />
 														<span className='text-sm font-medium text-foreground'>
 															{
-																getNested?.(
+																t(
 																	"packages.scriptGeneration.title"
 																) as string
 															}{" "}
 															-{" "}
 															{
-																getNested?.(
+																t(
 																	"packages.scriptGeneration.subtitle"
 																) as string
 															}
@@ -1068,13 +1068,13 @@ const HomePage: React.FC = () => {
 														<Mic className='w-5 h-5 text-purple-600 dark:text-purple-400' />
 														<span className='text-sm font-medium text-foreground'>
 															{
-																getNested?.(
+																t(
 																	"packages.scriptVoice.title"
 																) as string
 															}{" "}
 															-{" "}
 															{
-																getNested?.(
+																t(
 																	"packages.scriptVoice.subtitle"
 																) as string
 															}
@@ -1087,13 +1087,13 @@ const HomePage: React.FC = () => {
 														<Sparkles className='w-5 h-5 text-cyan-600 dark:text-cyan-400' />
 														<span className='text-sm font-medium text-foreground'>
 															{
-																getNested?.(
+																t(
 																	"packages.fullService.title"
 																) as string
 															}{" "}
 															-{" "}
 															{
-																getNested?.(
+																t(
 																	"packages.fullService.subtitle"
 																) as string
 															}
@@ -1119,13 +1119,13 @@ const HomePage: React.FC = () => {
 											<FileText className='w-4 h-4 text-blue-600 dark:text-blue-400' />
 											<span>
 												{
-													getNested?.(
+													t(
 														"packages.scriptGeneration.title"
 													) as string
 												}{" "}
 												-{" "}
 												{
-													getNested?.(
+													t(
 														"packages.scriptGeneration.subtitle"
 													) as string
 												}
@@ -1143,13 +1143,13 @@ const HomePage: React.FC = () => {
 											<Mic className='w-4 h-4 text-purple-600 dark:text-purple-400' />
 											<span>
 												{
-													getNested?.(
+													t(
 														"packages.scriptVoice.title"
 													) as string
 												}{" "}
 												-{" "}
 												{
-													getNested?.(
+													t(
 														"packages.scriptVoice.subtitle"
 													) as string
 												}
@@ -1167,13 +1167,13 @@ const HomePage: React.FC = () => {
 											<Sparkles className='w-4 h-4 text-cyan-600 dark:text-cyan-400' />
 											<span>
 												{
-													getNested?.(
+													t(
 														"packages.fullService.title"
 													) as string
 												}{" "}
 												-{" "}
 												{
-													getNested?.(
+													t(
 														"packages.fullService.subtitle"
 													) as string
 												}

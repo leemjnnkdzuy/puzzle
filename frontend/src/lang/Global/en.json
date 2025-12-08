@@ -84,7 +84,8 @@
 				"Automatic content analysis and summarization",
 				"Detailed script creation for video recaps",
 				"Multi-language support"
-			]
+			],
+			"cta": "Get Started"
 		},
 		"scriptVoice": {
 			"title": "Pro",
@@ -95,7 +96,8 @@
 				"Natural, diverse voice reading",
 				"Customize voice reading as desired",
 				"Support for multiple languages and accents"
-			]
+			],
+			"cta": "Get Started"
 		},
 		"fullService": {
 			"title": "Ultra",
@@ -107,7 +109,8 @@
 				"Automatic high-quality video recap creation",
 				"Customize some parts according to needs",
 				"Export ready-to-use videos"
-			]
+			],
+			"cta": "Get Started"
 		}
 	},
 	"workflow": {
@@ -837,5 +840,86 @@
 		"globalTechTrendsDesc": "Latest trending technology news from around the world",
 		"checkApiKey": "Please check API Key configuration.",
 		"readFullArticle": "Read full article"
+	},
+	"careers": {
+		"title": "Join Our Team",
+		"subtitle": "Help us build the future of content creation. We're looking for passionate people to join our mission.",
+		"openPositions": "Open Positions",
+		"applyNow": "Apply Now",
+		"noFit": {
+			"title": "Don't see a fit?",
+			"subtitle": "We're always looking for talented people. Send us your resume and we'll keep you in mind.",
+			"contact": "Contact Us"
+		},
+		"jobs": {
+			"frontend": "Senior Frontend Engineer",
+			"backend": "Backend Developer",
+			"productDesigner": "Product Designer",
+			"aiEngineer": "AI/ML Engineer",
+			"engineering": "Engineering",
+			"design": "Design",
+			"aiResearch": "AI Research",
+			"remote": "Remote",
+			"sf": "San Francisco, CA",
+			"fullTime": "Full-time"
+		}
+	},
+	"community": {
+		"title": "Community",
+		"subtitle": "Connect with other creators, share your work, and learn from the community.",
+		"discord": {
+			"name": "Discord",
+			"description": "Join our Discord server to chat with the community and get help.",
+			"members": "5,000+ members"
+		},
+		"facebook": {
+			"name": "Facebook",
+			"description": "Follow us on Facebook for the latest updates and announcements.",
+			"members": "10,000+ followers"
+		},
+		"share": {
+			"title": "Share Your Creations",
+			"description": "Built something amazing with Puzzle? We'd love to feature your work!",
+			"cta": "Submit Your Project"
+		}
+	},
+	"help": {
+		"title": "Help Center",
+		"subtitle": "Find answers to common questions or get in touch with support.",
+		"cards": {
+			"documentation": {
+				"title": "Documentation",
+				"description": "Browse our guides"
+			},
+			"community": {
+				"title": "Community",
+				"description": "Join discussions"
+			},
+			"contact": {
+				"title": "Contact",
+				"description": "Get in touch"
+			}
+		},
+		"faq": {
+			"title": "Frequently Asked Questions",
+			"items": {
+				"started": {
+					"question": "How do I get started?",
+					"answer": "Simply create an account and you'll get free credits to try our service. No credit card required."
+				},
+				"payment": {
+					"question": "What payment methods do you accept?",
+					"answer": "We accept all major credit cards, PayPal, and bank transfers for enterprise accounts."
+				},
+				"cancel": {
+					"question": "Can I cancel my subscription?",
+					"answer": "Yes, you can cancel anytime. Your access will continue until the end of your billing period."
+				},
+				"refunds": {
+					"question": "Do you offer refunds?",
+					"answer": "We offer a 14-day money-back guarantee for all paid plans."
+				}
+			}
+		}
 	}
 }

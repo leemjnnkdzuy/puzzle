@@ -84,7 +84,8 @@
 				"Tự động phân tích và tóm tắt nội dung",
 				"Tạo kịch bản chi tiết cho video recap",
 				"Hỗ trợ đa ngôn ngữ"
-			]
+			],
+			"cta": "Bắt đầu ngay"
 		},
 		"scriptVoice": {
 			"title": "Pro",
@@ -95,7 +96,8 @@
 				"Giọng đọc tự nhiên, đa dạng",
 				"Tùy chỉnh giọng đọc theo ý muốn",
 				"Hỗ trợ nhiều ngôn ngữ và accent"
-			]
+			],
+			"cta": "Bắt đầu ngay"
 		},
 		"fullService": {
 			"title": "Ultra",
@@ -107,7 +109,8 @@
 				"Tự động tạo video recap chất lượng cao",
 				"Tùy chỉnh một số phần theo nhu cầu",
 				"Xuất video sẵn sàng sử dụng"
-			]
+			],
+			"cta": "Bắt đầu ngay"
 		}
 	},
 	"workflow": {
@@ -837,5 +840,86 @@
 		"globalTechTrendsDesc": "Tin tức công nghệ thịnh hành mới nhất từ khắp nơi trên thế giới",
 		"checkApiKey": "Vui lòng kiểm tra cấu hình API Key.",
 		"readFullArticle": "Đọc toàn bộ bài viết"
+	},
+	"careers": {
+		"title": "Gia nhập đội ngũ của chúng tôi",
+		"subtitle": "Giúp chúng tôi xây dựng tương lai của sáng tạo nội dung. Chúng tôi đang tìm kiếm những người đam mê để tham gia sứ mệnh của mình.",
+		"openPositions": "Vị trí đang tuyển",
+		"applyNow": "Ứng tuyển ngay",
+		"noFit": {
+			"title": "Không thấy vị trí phù hợp?",
+			"subtitle": "Chúng tôi luôn tìm kiếm những tài năng. Hãy gửi CV cho chúng tôi và chúng tôi sẽ lưu ý đến bạn.",
+			"contact": "Liên hệ với chúng tôi"
+		},
+		"jobs": {
+			"frontend": "Kỹ sư Frontend Senior",
+			"backend": "Lập trình viên Backend",
+			"productDesigner": "Thiết kế sản phẩm",
+			"aiEngineer": "Kỹ sư AI/ML",
+			"engineering": "Kỹ thuật",
+			"design": "Thiết kế",
+			"aiResearch": "Nghiên cứu AI",
+			"remote": "Từ xa",
+			"sf": "San Francisco, CA",
+			"fullTime": "Toàn thời gian"
+		}
+	},
+	"community": {
+		"title": "Cộng đồng",
+		"subtitle": "Kết nối với những nhà sáng tạo khác, chia sẻ tác phẩm của bạn và học hỏi từ cộng đồng.",
+		"discord": {
+			"name": "Discord",
+			"description": "Tham gia máy chủ Discord của chúng tôi để trò chuyện với cộng đồng và nhận trợ giúp.",
+			"members": "5,000+ thành viên"
+		},
+		"facebook": {
+			"name": "Facebook",
+			"description": "Theo dõi chúng tôi trên Facebook để cập nhật tin tức và thông báo mới nhất.",
+			"members": "10,000+ người theo dõi"
+		},
+		"share": {
+			"title": "Chia sẻ sáng tạo của bạn",
+			"description": "Bạn đã tạo ra điều gì đó tuyệt vời với Puzzle? Chúng tôi rất muốn giới thiệu tác phẩm của bạn!",
+			"cta": "Gửi dự án của bạn"
+		}
+	},
+	"help": {
+		"title": "Trung tâm trợ giúp",
+		"subtitle": "Tìm chứng câu trả lời cho các câu hỏi thường gặp hoặc liên hệ với bộ phận hỗ trợ.",
+		"cards": {
+			"documentation": {
+				"title": "Tài liệu",
+				"description": "Xem hướng dẫn của chúng tôi"
+			},
+			"community": {
+				"title": "Cộng đồng",
+				"description": "Tham gia thảo luận"
+			},
+			"contact": {
+				"title": "Liên hệ",
+				"description": "Gửi tin nhắn cho chúng tôi"
+			}
+		},
+		"faq": {
+			"title": "Câu hỏi thường gặp",
+			"items": {
+				"started": {
+					"question": "Làm thế nào để bắt đầu?",
+					"answer": "Đơn giản chỉ cần tạo tài khoản và bạn sẽ nhận được credit miễn phí để thử dịch vụ của chúng tôi. Không yêu cầu thẻ tín dụng."
+				},
+				"payment": {
+					"question": "Bạn chấp nhận phương thức thanh toán nào?",
+					"answer": "Chúng tôi chấp nhận tất cả các thẻ tín dụng lớn, PayPal và chuyển khoản ngân hàng cho tài khoản doanh nghiệp."
+				},
+				"cancel": {
+					"question": "Tôi có thể hủy đăng ký không?",
+					"answer": "Có, bạn có thể hủy bất cứ lúc nào. Quyền truy cập của bạn sẽ tiếp tục cho đến hết chu kỳ thanh toán."
+				},
+				"refunds": {
+					"question": "Bạn có hoàn tiền không?",
+					"answer": "Chúng tôi cung cấp đảm bảo hoàn tiền trong 14 ngày cho tất cả các gói trả phí."
+				}
+			}
+		}
 	}
 }

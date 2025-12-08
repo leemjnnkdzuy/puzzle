@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
+import {useStorageStore} from "@/stores/storageStore";
 import {useNavigate, useLocation} from "react-router-dom";
 import {
 	Home,
@@ -70,12 +71,19 @@ const GlobalSidebar: React.FC<GlobalSidebarProps> = ({
 	const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 	const navigate = useNavigate();
 	const location = useLocation();
-	const {getNested, language, setLanguage} = useLanguage();
-	const {user, logout} = useAuth();
+	const {t, language, setLanguage} = useLanguage();
+	const {isAuthenticated, user, logout} = useAuth();
 	const {theme, setTheme} = useTheme();
 	const credit = useCreditStore((state) => state.credit);
+	const {storageInfo, fetchStorageInfo} = useStorageStore();
 
 	useLogoutListener();
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			fetchStorageInfo();
+		}
+	}, [isAuthenticated, fetchStorageInfo]);
 
 	const userData = user as UserData | null;
 	const userName =
@@ -85,7 +93,7 @@ const GlobalSidebar: React.FC<GlobalSidebarProps> = ({
 	const userEmail = userData?.email || "";
 	const userAvatar = userData?.avatar || "";
 
-	const sidebar = getNested?.("sidebar") as
+	const sidebar = t("sidebar") as
 		| {
 				home: string;
 				service: string;
@@ -445,10 +453,15 @@ const GlobalSidebar: React.FC<GlobalSidebarProps> = ({
 
 								<DropdownMenuItem
 									onClick={() => navigate("/storage")}
-									className='cursor-pointer'
+									className='cursor-pointer w-full flex items-center'
 								>
 									<HardDrive className='w-4 h-4 mr-2' />
-									{sidebar?.storage || "Lưu trữ"}
+									<span>{sidebar?.storage || "Lưu trữ"}</span>
+									{storageInfo && (
+										<span className='ml-auto text-xs text-muted-foreground'>
+											{storageInfo.usedFormatted}/{storageInfo.limitFormatted}
+										</span>
+									)}
 								</DropdownMenuItem>
 
 								<DropdownMenuItem
@@ -572,18 +585,18 @@ const GlobalSidebar: React.FC<GlobalSidebarProps> = ({
 					setShowLogoutConfirm(false);
 				}}
 				title={
-					(getNested?.("logout.confirmTitle") as string) ||
+					(t("logout.confirmTitle") as string) ||
 					"Confirm Logout"
 				}
 				message={
-					(getNested?.("logout.confirmMessage") as string) ||
+					(t("logout.confirmMessage") as string) ||
 					"Are you sure you want to logout?"
 				}
 				confirmText={
-					(getNested?.("logout.confirm") as string) || "Logout"
+					(t("logout.confirm") as string) || "Logout"
 				}
 				cancelText={
-					(getNested?.("logout.cancel") as string) || "Cancel"
+					(t("logout.cancel") as string) || "Cancel"
 				}
 				confirmVariant='destructive'
 				icon={

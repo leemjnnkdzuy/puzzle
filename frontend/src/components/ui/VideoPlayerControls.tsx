@@ -6,28 +6,28 @@ import {
 	VolumeX,
 	SkipBack,
 	SkipForward,
+	Info,
 } from "lucide-react";
+import Overlay from "@/components/ui/Overlay";
 import Button from "@/components/ui/Button";
-import {cn} from "@/utils";
+import {cn, formatTime, formatDurationHMS} from "@/utils";
 import {useTheme} from "@/hooks/useTheme";
+import type {VideoFile} from "@/services/ScriptGenerationService";
 
 export interface VideoPlayerControlsProps {
 	videoRef: React.RefObject<HTMLVideoElement | null>;
 	className?: string;
+	videoMetadata?: VideoFile | null;
 }
 
-const formatTime = (seconds: number): string => {
-	if (!isFinite(seconds) || isNaN(seconds)) return "0:00";
-	const mins = Math.floor(seconds / 60);
-	const secs = Math.floor(seconds % 60);
-	return `${mins}:${secs.toString().padStart(2, "0")}`;
-};
+
 
 const SPEED_OPTIONS = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
 const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
 	videoRef,
 	className,
+	videoMetadata,
 }) => {
 	const {isDark} = useTheme();
 	const [isPlaying, setIsPlaying] = useState(false);
@@ -37,6 +37,7 @@ const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
 	const [isMuted, setIsMuted] = useState(false);
 	const [playbackSpeed, setPlaybackSpeed] = useState(1);
 	const [showSpeedMenu, setShowSpeedMenu] = useState(false);
+	const [showInfoOverlay, setShowInfoOverlay] = useState(false);
 	
 	const speedMenuRef = useRef<HTMLDivElement>(null);
 	const progressBarRef = useRef<HTMLDivElement>(null);
@@ -354,8 +355,93 @@ const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
 							</div>
 						)}
 					</div>
+
+					<Button
+						variant='outline'
+						size='icon'
+						onClick={() => setShowInfoOverlay(true)}
+						className='flex items-center justify-center flex-shrink-0 border-border hover:border-foreground/50 transition-colors'
+						aria-label='Video Info'
+					>
+						<Info className='w-4 h-4' />
+					</Button>
 				</div>
 			</div>
+
+			<Overlay
+				isOpen={showInfoOverlay}
+				onClose={() => setShowInfoOverlay(false)}
+				contentClassName='max-w-lg'
+			>
+				<div className='p-6 space-y-4'>
+					<h3 className='text-lg font-semibold text-foreground border-b border-border pb-2'>
+						Thông tin chi tiết Video
+					</h3>
+					
+					<div className='space-y-3'>
+						<div className='grid grid-cols-2 gap-4 text-sm'>
+							<div className='text-muted-foreground'>Độ phân giải (Resolution):</div>
+							<div className='font-mono text-foreground'>
+								{videoMetadata?.width
+									? `${videoMetadata.width} x ${videoMetadata.height}`
+									: videoRef.current?.videoWidth
+									? `${videoRef.current.videoWidth} x ${videoRef.current.videoHeight}`
+									: "N/A"}{" "}
+								px
+							</div>
+
+							<div className='text-muted-foreground'>Thời lượng (Duration):</div>
+							<div className='font-mono text-foreground'>
+								{(() => {
+                                    const dur = videoMetadata?.duration || duration;
+                                    return (
+                                        <span>
+                                            {dur.toFixed(3)} s <span className="text-muted-foreground text-xs">({formatDurationHMS(dur)})</span>
+                                        </span>
+                                    );
+                                })()}
+							</div>
+
+							<div className='text-muted-foreground'>Khung hình (FPS):</div>
+							<div className='font-mono text-foreground'>
+								{videoMetadata?.fps ? Number(videoMetadata.fps).toFixed(1) : "N/A"}
+							</div>
+
+							<div className='text-muted-foreground'>Bitrate:</div>
+							<div className='font-mono text-foreground'>
+								{videoMetadata?.bitrate ? `${videoMetadata.bitrate} kbps` : "N/A"}
+							</div>
+
+							<div className='text-muted-foreground'>Định dạng (Format):</div>
+							<div className='font-mono text-foreground'>
+								{videoMetadata?.format
+									? videoMetadata.format
+									: videoMetadata?.mimetype || "N/A"}
+							</div>
+
+							<div className='text-muted-foreground'>Codec:</div>
+							<div className='font-mono text-foreground'>
+								{videoMetadata?.codec ? videoMetadata.codec : "N/A"}
+							</div>
+
+							<div className='text-muted-foreground'>Kích thước file (Size):</div>
+							<div className='font-mono text-foreground'>
+								{videoMetadata?.size
+									? `${(videoMetadata.size / 1024 / 1024).toFixed(2)} MB`
+									: "N/A"}
+							</div>
+
+
+						</div>
+					</div>
+
+					<div className='flex justify-end pt-4 '>
+						<Button onClick={() => setShowInfoOverlay(false)}>
+							Đóng
+						</Button>
+					</div>
+				</div>
+			</Overlay>
 		</div>
 	);
 };

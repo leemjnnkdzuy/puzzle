@@ -6,6 +6,13 @@ export interface IVideoFile {
 	size: number;
 	mimetype: string;
 	order: number;
+	width?: number;
+	height?: number;
+	duration?: number;
+	fps?: number;
+	bitrate?: number;
+	codec?: string;
+	format?: string;
 	uploadedAt: Date;
 }
 
@@ -95,6 +102,13 @@ const ScriptGenerationProjectSchema: Schema = new Schema(
 					required: true,
 					min: 1,
 				},
+				width: Number,
+				height: Number,
+				duration: Number,
+				fps: Number,
+				bitrate: Number,
+				codec: String,
+				format: String,
 				uploadedAt: {
 					type: Date,
 					default: Date.now,

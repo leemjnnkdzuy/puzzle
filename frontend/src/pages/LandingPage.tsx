@@ -151,7 +151,7 @@ const servicePackages = [
 
 const LandingPage = () => {
 	const navigate = useNavigate();
-	const {t, getNested} = useLanguage();
+	const {t} = useLanguage();
 	const {isAuthenticated} = useAuth();
 	const [showNav, setShowNav] = useState(false);
 	const [demoOverlay, setDemoOverlay] = useState(false);
@@ -691,7 +691,7 @@ const LandingPage = () => {
 						{servicePackages.map((pkg, index) => {
 							const Icon = pkg.Icon;
 							const isPopular = pkg.Peak;
-							const featuresRaw = getNested?.(
+							const featuresRaw = t(
 								`packages.${pkg.key}.features`
 							);
 							const features = Array.isArray(featuresRaw)
@@ -1542,9 +1542,9 @@ const LandingPage = () => {
 							].map((model, index) => {
 								const Icon = model.icon;
 								const capabilities = Array.isArray(
-									getNested?.(model.capabilitiesKey)
+									t(model.capabilitiesKey)
 								)
-									? (getNested(
+									? (t(
 											model.capabilitiesKey
 									  ) as string[])
 									: [];
@@ -1749,8 +1749,8 @@ const LandingPage = () => {
 								{t("voice.cta")}
 							</Button>
 							<ul className='space-y-3 text-foreground'>
-								{(Array.isArray(getNested?.("voice.features"))
-									? (getNested("voice.features") as string[])
+								{(Array.isArray(t("voice.features"))
+									? (t("voice.features") as string[])
 									: []
 								).map((feature: string, idx: number) => (
 									<li
@@ -1785,8 +1785,8 @@ const LandingPage = () => {
 								{t("quality.description")}
 							</p>
 							<ul className='space-y-3 text-foreground'>
-								{(Array.isArray(getNested?.("quality.features"))
-									? (getNested(
+								{(Array.isArray(t("quality.features"))
+									? (t(
 											"quality.features"
 									  ) as string[])
 									: []

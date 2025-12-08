@@ -24,16 +24,16 @@ import {useLanguage} from "@/hooks/useLanguage";
 import {useGlobalNotificationPopup} from "@/hooks/useGlobalNotificationPopup";
 import {useSSE, type SSEMessage} from "@/hooks/useSSE";
 import paymentService, {type Transaction} from "@/services/PaymentService";
-import {cn} from "@/utils";
+import {cn, formatCurrency, formatReferenceCode} from "@/utils";
 
 type PaymentMethod = "payos" | "paypal" | "bitcoin" | "visa";
 
 const RechargePage: React.FC = () => {
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 	const {showSuccess, showError} = useGlobalNotificationPopup();
 	const {onMessage, offMessage} = useSSE();
 
-	const recharge = getNested?.("recharge") as {
+	const recharge = t("recharge") as {
 		title?: string;
 		currentBalance?: string;
 		credit?: string;
@@ -256,13 +256,7 @@ const RechargePage: React.FC = () => {
 		}
 	};
 
-	const formatCurrency = (value: number) => {
-		return new Intl.NumberFormat("vi-VN").format(value);
-	};
 
-	const formatReferenceCode = (code: string) => {
-		return code.replace(/_/g, " ");
-	};
 
 	return (
 		<div className='container mx-auto px-4 py-8 max-w-6xl'>
@@ -691,12 +685,12 @@ const RechargePage: React.FC = () => {
 };
 
 export const RechargePageRightSidebar = () => {
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 	const navigate = useNavigate();
 	const {onMessage, offMessage} = useSSE();
 	const {showError} = useGlobalNotificationPopup();
 
-	const recharge = getNested?.("recharge") as {
+	const recharge = t("recharge") as {
 		currentBalance?: string;
 		credit?: string;
 		transactionHistory?: string;
@@ -780,9 +774,7 @@ export const RechargePageRightSidebar = () => {
 		};
 	}, [onMessage, offMessage]);
 
-	const formatCurrency = (value: number) => {
-		return new Intl.NumberFormat("vi-VN").format(value);
-	};
+
 
 	const getStatusBadge = (status: Transaction["status"]) => {
 		const statusText =

@@ -15,9 +15,9 @@ const DoubleSidebarLayout: React.FC<DoubleSidebarLayoutProps> = ({
 }) => {
 	const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
 	const [isRightCollapsed, setIsRightCollapsed] = useState(false);
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 
-	const sidebar = getNested?.("sidebar") as
+	const sidebar = t("sidebar") as
 		| {
 				collapse: string;
 				expand: string;

@@ -9,6 +9,13 @@ export interface VideoFile {
 	mimetype: string;
 	order: number;
 	uploadedAt: string;
+	width?: number;
+	height?: number;
+	duration?: number;
+	fps?: number;
+	bitrate?: number;
+	codec?: string;
+	format?: string;
 }
 
 export interface ScriptGenerationProject {
@@ -264,6 +271,26 @@ class ScriptGenerationService {
 				axiosError.response?.data?.message ||
 				axiosError.message ||
 				"Failed to update video order";
+			throw new Error(errorMessage);
+		}
+	}
+	async getVideoToken(
+		projectId: string,
+		filename: string
+	): Promise<string> {
+		try {
+			const response = await apiClient.get<{
+				success: boolean;
+				token: string;
+			}>(`${this.baseUrl}/${projectId}/videos/${filename}/token`);
+
+			return response.data.token;
+		} catch (error) {
+			const axiosError = error as AxiosError<{message?: string}>;
+			const errorMessage =
+				axiosError.response?.data?.message ||
+				axiosError.message ||
+				"Failed to get video token";
 			throw new Error(errorMessage);
 		}
 	}

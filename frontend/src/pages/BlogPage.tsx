@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {useNavigate, useLocation} from "react-router-dom";
+import {GNEWS_API_KEY} from "@/configs/AppConfig";
 import BlogService, {
 	type BlogPost,
 	type HackerNewsStory,
@@ -398,7 +399,7 @@ const BlogPage = () => {
 										))
 									) : (
 										<div className='text-center py-8 text-muted-foreground text-sm'>
-											{import.meta.env.VITE_GNEWS_API_KEY
+											{GNEWS_API_KEY
 												? t("blog.noTrendingNews")
 												: t("blog.addApiKey")}
 										</div>

@@ -203,6 +203,48 @@ export const formatCurrency = (value: number): string => {
 	return new Intl.NumberFormat("vi-VN").format(value);
 };
 
+export const formatTime = (seconds: number): string => {
+	if (!isFinite(seconds) || isNaN(seconds)) return "0:00";
+	const mins = Math.floor(seconds / 60);
+	const secs = Math.floor(seconds % 60);
+	return `${mins}:${secs.toString().padStart(2, "0")}`;
+};
+
+export const formatDurationHMS = (seconds: number): string => {
+    if (!isFinite(seconds) || isNaN(seconds)) return "";
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    
+    if (h > 0) return `${h}h ${m}m ${s}s`;
+    if (m > 0) return `${m}m ${s}s`;
+    return `${s}s`;
+};
+
+export const formatFileSize = (bytes: number): string => {
+	if (bytes === 0) return "0 B";
+	const k = 1024;
+	const sizes = ["B", "KB", "MB", "GB"];
+	const i = Math.floor(Math.log(bytes) / Math.log(k));
+	return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
+};
+
+export const formatDate = (date: Date | string, includeYear: boolean = true): string => {
+	const d = new Date(date);
+	return new Intl.DateTimeFormat("vi-VN", {
+		year: includeYear ? "numeric" : undefined,
+		month: "2-digit",
+		day: "2-digit",
+		hour: "2-digit",
+		minute: "2-digit",
+	}).format(d);
+};
+
+export const formatReferenceCode = (code: string | undefined): string => {
+	if (!code) return "-";
+	return code.replace(/_/g, " ");
+};
+
 export const compressImage = (
 	file: File,
 	maxWidth: number = 800,

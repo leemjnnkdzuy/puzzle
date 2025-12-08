@@ -55,12 +55,12 @@ const SettingsPage: React.FC = () => {
 	const {theme, setTheme} = useTheme();
 	const {language, setLanguage} = useLanguage();
 	const {showSuccess, showError} = useGlobalNotificationPopup();
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 	const navigate = useNavigate();
 
 	const userData = user as UserData | null;
 
-	const settings = getNested?.("settings") as
+	const settings = t("settings") as
 		| {
 				title?: string;
 				appearance?: string;

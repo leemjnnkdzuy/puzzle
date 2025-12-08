@@ -20,13 +20,13 @@ const OverlayTransactionsDetail: React.FC<OverlayTransactionsDetailProps> = ({
 	onClose,
 	transactionId,
 }) => {
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 	const {showError} = useGlobalNotificationPopup();
 	const [transaction, setTransaction] = useState<Transaction | null>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [copiedField, setCopiedField] = useState<string | null>(null);
 
-	const transactionHistory = getNested?.("transactionHistory") as {
+	const transactionHistory = t("transactionHistory") as {
 		transactionDetail?: {
 			title?: string;
 			transactionId?: string;
@@ -57,7 +57,7 @@ const OverlayTransactionsDetail: React.FC<OverlayTransactionsDetailProps> = ({
 		};
 	};
 
-	const recharge = getNested?.("recharge") as {
+	const recharge = t("recharge") as {
 		payos?: string;
 		paypal?: string;
 		bitcoin?: string;

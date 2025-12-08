@@ -118,7 +118,7 @@ const UserSchema: Schema = new Schema(
 		language: {
 			type: String,
 			enum: ["en", "vi"],
-			default: "en",
+			default: "vi",
 		},
 		credit: {
 			type: Number,

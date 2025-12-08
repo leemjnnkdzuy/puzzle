@@ -31,11 +31,11 @@ import {formatCurrency} from "@/utils";
 const MAX_TEXT_LENGTH = 5000;
 
 const TextToSpeechPage: React.FC = () => {
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 	const {isAuthenticated} = useAuth();
 	const {showSuccess, showError} = useGlobalNotificationPopup();
 
-	const tts = getNested?.("tts") as
+	const tts = t("tts") as
 		| {
 				title?: string;
 				description?: string;

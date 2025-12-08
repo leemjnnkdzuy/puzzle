@@ -1,5 +1,5 @@
-import React from "react";
-import {useNavigate} from "react-router-dom";
+import React, {useEffect} from "react";
+import {useNavigate, useLocation} from "react-router-dom";
 import {FaTwitter, FaDiscord, FaGithub, FaEnvelope} from "react-icons/fa";
 import AppIcon from "@/components/common/AppIcon";
 import {
@@ -17,7 +17,12 @@ interface FooterLayoutProps {
 
 const FooterLayout: React.FC<FooterLayoutProps> = ({children}) => {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const {language, setLanguage, t} = useLanguage();
+
+	useEffect(() => {
+		window.scrollTo({top: 0, behavior: "smooth"});
+	}, [location.pathname]);
 
 	return (
 		<div className='min-h-screen bg-background relative overflow-hidden flex flex-col'>

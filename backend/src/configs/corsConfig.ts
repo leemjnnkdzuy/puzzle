@@ -1,13 +1,17 @@
 import {CorsOptions} from "cors";
 
 const getAllowedOrigins = (): string[] => {
-	const corsOrigin = process.env.CORS_ORIGIN || "http://localhost:5173";
+	const corsOrigin = process.env.VERCEL === "0" ? process.env.CORS_ORIGIN_DEVELOPMENT : process.env.CORS_ORIGIN_PRODUCTION;
 
-	if (corsOrigin.includes(",")) {
-		return corsOrigin.split(",").map((origin) => origin.trim());
+	if (!corsOrigin) {
+		return ["http://localhost:5173"];
 	}
 
-	return [corsOrigin];
+	const origins = corsOrigin.includes(",")
+		? corsOrigin.split(",")
+		: [corsOrigin];
+
+	return origins.map((origin) => origin.trim().replace(/\/$/, ""));
 };
 
 export const isOriginAllowed = (origin: string | undefined): boolean => {
@@ -47,7 +51,11 @@ export const corsOptions: CorsOptions = {
 };
 
 export const getCorsOrigin = (): string => {
-	return process.env.CORS_ORIGIN || "http://localhost:5173";
+	let corsOrigin = process.env.VERCEL === "0" ? process.env.CORS_ORIGIN_DEVELOPMENT : process.env.CORS_ORIGIN_PRODUCTION;
+	if (!corsOrigin) {
+		corsOrigin = "http://localhost:5173";
+	}
+	return corsOrigin;
 };
 
 export const getAllowedOriginsList = (): string[] => {

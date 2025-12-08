@@ -16,7 +16,7 @@ type ForgotPasswordPhase = "forgotPassword" | "verification" | "resetPassword";
 const FogotPasswordPage: React.FC = () => {
 	const navigate = useNavigate();
 	const {showError, showSuccess} = useGlobalNotificationPopup();
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 	const [phase, setPhase] = useState<ForgotPasswordPhase>("forgotPassword");
 	const [email, setEmail] = useState("");
 	const [verificationCode, setVerificationCode] = useState("");
@@ -29,10 +29,10 @@ const FogotPasswordPage: React.FC = () => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const validateEmail = (emailValue: string): string | null => {
-		const emailRequired = getNested?.(
+		const emailRequired = t(
 			"forgotPassword.errors.emailRequired"
 		) as string;
-		const emailInvalid = getNested?.(
+		const emailInvalid = t(
 			"forgotPassword.errors.emailInvalid"
 		) as string;
 
@@ -59,13 +59,13 @@ const FogotPasswordPage: React.FC = () => {
 		try {
 			const data: ForgotPasswordData = {email};
 			const result = await authService.forgotPassword(data);
-			const sendSuccess = getNested?.(
+			const sendSuccess = t(
 				"forgotPassword.errors.sendSuccess"
 			) as string;
-			const sendFailed = getNested?.(
+			const sendFailed = t(
 				"forgotPassword.errors.sendFailed"
 			) as string;
-			const emailNotFound = getNested?.(
+			const emailNotFound = t(
 				"forgotPassword.errors.emailNotFound"
 			) as string;
 
@@ -80,7 +80,7 @@ const FogotPasswordPage: React.FC = () => {
 				showError(result?.message || sendFailed);
 			}
 		} catch (error) {
-			const sendFailed = getNested?.(
+			const sendFailed = t(
 				"forgotPassword.errors.sendFailed"
 			) as string;
 			showError(error instanceof Error ? error.message : sendFailed);
@@ -89,42 +89,42 @@ const FogotPasswordPage: React.FC = () => {
 		}
 	};
 
-	const title = getNested?.("forgotPassword.title") as string;
-	const subtitle = getNested?.("forgotPassword.subtitle") as string;
-	const backToHome = getNested?.("forgotPassword.backToHome") as string;
-	const emailPlaceholder = getNested?.(
+	const title = t("forgotPassword.title") as string;
+	const subtitle = t("forgotPassword.subtitle") as string;
+	const backToHome = t("forgotPassword.backToHome") as string;
+	const emailPlaceholder = t(
 		"forgotPassword.emailPlaceholder"
 	) as string;
-	const submit = getNested?.("forgotPassword.submit") as string;
-	const rememberPassword = getNested?.(
+	const submit = t("forgotPassword.submit") as string;
+	const rememberPassword = t(
 		"forgotPassword.rememberPassword"
 	) as string;
-	const signIn = getNested?.("forgotPassword.signIn") as string;
+	const signIn = t("forgotPassword.signIn") as string;
 
 	// Verification phase translations
-	const verificationTitle = getNested?.("verification.title") as string;
-	const verificationSubtitle = getNested?.("verification.subtitle") as string;
-	const codePlaceholder = getNested?.(
+	const verificationTitle = t("verification.title") as string;
+	const verificationSubtitle = t("verification.subtitle") as string;
+	const codePlaceholder = t(
 		"verification.codePlaceholder"
 	) as string;
-	const verifySubmit = getNested?.("verification.submit") as string;
-	const verifyBack = getNested?.("verification.back") as string;
+	const verifySubmit = t("verification.submit") as string;
+	const verifyBack = t("verification.back") as string;
 
 	// Reset password phase translations
-	const resetTitle = getNested?.("resetPassword.title") as string;
-	const resetSubtitle = getNested?.("resetPassword.subtitle") as string;
-	const resetPasswordPlaceholder = getNested?.(
+	const resetTitle = t("resetPassword.title") as string;
+	const resetSubtitle = t("resetPassword.subtitle") as string;
+	const resetPasswordPlaceholder = t(
 		"resetPassword.passwordPlaceholder"
 	) as string;
-	const resetConfirmPasswordPlaceholder = getNested?.(
+	const resetConfirmPasswordPlaceholder = t(
 		"resetPassword.confirmPasswordPlaceholder"
 	) as string;
-	const resetSubmit = getNested?.("resetPassword.submit") as string;
+	const resetSubmit = t("resetPassword.submit") as string;
 
 	const handleVerify = async (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!verificationCode.trim()) {
-			const codeRequired = getNested?.(
+			const codeRequired = t(
 				"verification.errors.codeRequired"
 			) as string;
 			showError(codeRequired);
@@ -140,18 +140,18 @@ const FogotPasswordPage: React.FC = () => {
 			if (result.success && result.resetToken) {
 				setResetToken(result.resetToken);
 				setPhase("resetPassword");
-				const verifySuccess = getNested?.(
+				const verifySuccess = t(
 					"verification.errors.verifySuccess"
 				) as string;
 				showSuccess(verifySuccess);
 			} else {
-				const verifyFailed = getNested?.(
+				const verifyFailed = t(
 					"verification.errors.verifyFailed"
 				) as string;
 				showError(result.message || verifyFailed);
 			}
 		} catch (error) {
-			const verifyFailed = getNested?.(
+			const verifyFailed = t(
 				"verification.errors.verifyFailed"
 			) as string;
 			showError(error instanceof Error ? error.message : verifyFailed);
@@ -163,14 +163,14 @@ const FogotPasswordPage: React.FC = () => {
 	const handleResetPassword = async (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!resetPasswordData.password) {
-			const passwordRequired = getNested?.(
+			const passwordRequired = t(
 				"resetPassword.errors.passwordRequired"
 			) as string;
 			showError(passwordRequired);
 			return;
 		}
 		if (resetPasswordData.password !== resetPasswordData.confirmPassword) {
-			const passwordMismatch = getNested?.(
+			const passwordMismatch = t(
 				"resetPassword.errors.passwordMismatch"
 			) as string;
 			showError(passwordMismatch);
@@ -185,7 +185,7 @@ const FogotPasswordPage: React.FC = () => {
 				resetToken,
 			});
 			if (result.success) {
-				const resetSuccess = getNested?.(
+				const resetSuccess = t(
 					"resetPassword.errors.resetSuccess"
 				) as string;
 				showSuccess(resetSuccess);
@@ -193,13 +193,13 @@ const FogotPasswordPage: React.FC = () => {
 					navigate("/login");
 				}, 1500);
 			} else {
-				const resetFailed = getNested?.(
+				const resetFailed = t(
 					"resetPassword.errors.resetFailed"
 				) as string;
 				showError(result.message || resetFailed);
 			}
 		} catch (error) {
-			const resetFailed = getNested?.(
+			const resetFailed = t(
 				"resetPassword.errors.resetFailed"
 			) as string;
 			showError(error instanceof Error ? error.message : resetFailed);

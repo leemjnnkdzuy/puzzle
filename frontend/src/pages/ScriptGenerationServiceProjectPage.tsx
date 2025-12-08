@@ -36,7 +36,7 @@ import {useLanguage} from "@/hooks/useLanguage";
 import {useStorageStore} from "@/stores/storageStore";
 import {useCreditStore} from "@/stores/creditStore";
 import {apiConfig} from "@/configs/AppConfig";
-import {cn} from "@/utils";
+import {cn, formatFileSize, formatDate} from "@/utils";
 
 export interface GenerationSettings {
 	tone?: string;
@@ -64,23 +64,7 @@ const UPGRADE_PACKAGES = [
 	{amountGB: 10, label: "10 GB"},
 ];
 
-const formatFileSize = (bytes: number): string => {
-	if (bytes === 0) return "0 B";
-	const k = 1024;
-	const sizes = ["B", "KB", "MB", "GB"];
-	const i = Math.floor(Math.log(bytes) / Math.log(k));
-	return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
-};
 
-const formatDate = (date: Date | string): string => {
-	const d = new Date(date);
-	return d.toLocaleDateString("vi-VN", {
-		day: "2-digit",
-		month: "2-digit",
-		hour: "2-digit",
-		minute: "2-digit",
-	});
-};
 
 const GenerationOptions: React.FC<{
 	settings: GenerationSettings;
@@ -88,7 +72,7 @@ const GenerationOptions: React.FC<{
 	onGenerate?: () => void;
 	isGenerating?: boolean;
 }> = ({settings, onSettingsChange, onGenerate, isGenerating = false}) => {
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 
 	const handleChange = (field: keyof GenerationSettings, value: string) => {
 		onSettingsChange({
@@ -102,7 +86,7 @@ const GenerationOptions: React.FC<{
 			<div className='p-2'>
 				<div className='flex items-center gap-2'>
 					<h3 className='text-sm font-semibold text-foreground'>
-						{(getNested?.(
+						{(t(
 							"projectPage.generationOptions.title"
 						) as string) || "Tùy chỉnh Generation"}
 					</h3>
@@ -112,7 +96,7 @@ const GenerationOptions: React.FC<{
 			<div className='flex-1 overflow-y-auto p-4 space-y-6'>
 				<div className='space-y-2'>
 					<label className='text-sm font-medium text-foreground'>
-						{(getNested?.(
+						{(t(
 							"projectPage.generationOptions.tone"
 						) as string) || "Tone (Giọng điệu)"}
 					</label>
@@ -121,7 +105,7 @@ const GenerationOptions: React.FC<{
 						value={settings.tone || ""}
 						onChange={(e) => handleChange("tone", e.target.value)}
 						placeholder={
-							(getNested?.(
+							(t(
 								"projectPage.generationOptions.tonePlaceholder"
 							) as string) ||
 							"Ví dụ: Chuyên nghiệp, Thân thiện, Hài hước..."
@@ -129,7 +113,7 @@ const GenerationOptions: React.FC<{
 						className='w-full'
 					/>
 					<p className='text-xs text-muted-foreground'>
-						{(getNested?.(
+						{(t(
 							"projectPage.generationOptions.toneDescription"
 						) as string) || "Xác định giọng điệu của script"}
 					</p>
@@ -137,7 +121,7 @@ const GenerationOptions: React.FC<{
 
 				<div className='space-y-2'>
 					<label className='text-sm font-medium text-foreground'>
-						{(getNested?.(
+						{(t(
 							"projectPage.generationOptions.style"
 						) as string) || "Style (Phong cách)"}
 					</label>
@@ -146,7 +130,7 @@ const GenerationOptions: React.FC<{
 						value={settings.style || ""}
 						onChange={(e) => handleChange("style", e.target.value)}
 						placeholder={
-							(getNested?.(
+							(t(
 								"projectPage.generationOptions.stylePlaceholder"
 							) as string) ||
 							"Ví dụ: Tóm tắt, Phân tích, Review..."
@@ -154,7 +138,7 @@ const GenerationOptions: React.FC<{
 						className='w-full'
 					/>
 					<p className='text-xs text-muted-foreground'>
-						{(getNested?.(
+						{(t(
 							"projectPage.generationOptions.styleDescription"
 						) as string) || "Xác định phong cách viết script"}
 					</p>
@@ -162,7 +146,7 @@ const GenerationOptions: React.FC<{
 
 				<div className='space-y-2'>
 					<label className='text-sm font-medium text-foreground'>
-						{(getNested?.(
+						{(t(
 							"projectPage.generationOptions.length"
 						) as string) || "Length (Độ dài)"}
 					</label>
@@ -171,14 +155,14 @@ const GenerationOptions: React.FC<{
 						value={settings.length || ""}
 						onChange={(e) => handleChange("length", e.target.value)}
 						placeholder={
-							(getNested?.(
+							(t(
 								"projectPage.generationOptions.lengthPlaceholder"
 							) as string) || "Ví dụ: Ngắn, Trung bình, Dài..."
 						}
 						className='w-full'
 					/>
 					<p className='text-xs text-muted-foreground'>
-						{(getNested?.(
+						{(t(
 							"projectPage.generationOptions.lengthDescription"
 						) as string) || "Xác định độ dài mong muốn của script"}
 					</p>
@@ -194,10 +178,10 @@ const GenerationOptions: React.FC<{
 							disabled={isGenerating}
 						>
 							{isGenerating
-								? (getNested?.(
+								? (t(
 										"projectPage.generationOptions.generating"
 								  ) as string) || "Đang tạo script..."
-								: (getNested?.(
+								: (t(
 										"projectPage.generationOptions.generate"
 								  ) as string) || "Tạo Script"}
 						</Button>
@@ -212,7 +196,7 @@ const ScriptReview: React.FC<{
 	scriptContent?: string;
 	status: "pending" | "processing" | "completed" | "failed";
 }> = ({scriptContent, status}) => {
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 
 	const getStatusIcon = () => {
 		switch (status) {
@@ -233,22 +217,22 @@ const ScriptReview: React.FC<{
 		switch (status) {
 			case "completed":
 				return (
-					(getNested?.("projectPage.status.completed") as string) ||
+					(t("projectPage.status.completed") as string) ||
 					"Hoàn thành"
 				);
 			case "failed":
 				return (
-					(getNested?.("projectPage.status.failed") as string) ||
+					(t("projectPage.status.failed") as string) ||
 					"Thất bại"
 				);
 			case "processing":
 				return (
-					(getNested?.("projectPage.status.processing") as string) ||
+					(t("projectPage.status.processing") as string) ||
 					"Đang xử lý"
 				);
 			default:
 				return (
-					(getNested?.("projectPage.status.pending") as string) ||
+					(t("projectPage.status.pending") as string) ||
 					"Chờ xử lý"
 				);
 		}
@@ -358,7 +342,7 @@ const ServerVideoList: React.FC<{
 	isLoading = false,
 	className,
 }) => {
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 	const [deletingFilename, setDeletingFilename] = useState<string | null>(
 		null
 	);
@@ -532,11 +516,11 @@ const ServerVideoList: React.FC<{
 					<FileVideo className='w-8 h-8 text-muted-foreground' />
 				</div>
 				<p className='text-muted-foreground font-medium'>
-					{(getNested?.("projectPage.fileList.noVideos") as string) ||
+					{(t("projectPage.fileList.noVideos") as string) ||
 						"Chưa có video nào"}
 				</p>
 				<p className='text-sm text-muted-foreground/70 mt-1'>
-					{(getNested?.(
+					{(t(
 						"projectPage.fileList.uploadToStart"
 					) as string) || "Upload video để bắt đầu"}
 				</p>
@@ -699,10 +683,13 @@ const ServerVideoList: React.FC<{
 };
 
 const StreamingVideoPlayer: React.FC<{
-	src: string | null;
+	video: VideoFile | null;
+	projectId: string;
 	className?: string;
-}> = ({src, className}) => {
+	videoMetadata?: VideoFile | null;
+}> = ({video, projectId, className, videoMetadata}) => {
 	const videoRef = useRef<HTMLVideoElement>(null);
+	const [videoSrc, setVideoSrc] = useState<string | null>(null);
 	const [showSpinner, setShowSpinner] = useState(false);
 	const spinnerTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
 		null
@@ -786,14 +773,32 @@ const StreamingVideoPlayer: React.FC<{
 	}, [showSpinnerDelayed, hideSpinner, clearSpinnerTimeout]);
 
 	useEffect(() => {
+		const fetchToken = async () => {
+			if (!video || !projectId) {
+				setVideoSrc(null);
+				return;
+			}
+			try {
+				const token = await ScriptGenerationService.getVideoToken(projectId, video.filename);
+				setVideoSrc(`${apiConfig.apiBaseUrl}/script-generation/${projectId}/videos/${video.filename}?drm_token=${token}`);
+			} catch (err) {
+				console.error("Failed to load video token", err);
+				setVideoSrc(null);
+			}
+		};
+
+		fetchToken();
+	}, [video, projectId]);
+
+	useEffect(() => {
 		const video = videoRef.current;
 		if (!video) return;
 
-		if (src) {
+		if (videoSrc) {
 			setTimeout(() => {
 				hideSpinner();
 			}, 0);
-			video.src = src;
+			video.src = videoSrc;
 			video.load();
 		} else {
 			setTimeout(() => {
@@ -802,7 +807,7 @@ const StreamingVideoPlayer: React.FC<{
 			video.removeAttribute("src");
 			video.load();
 		}
-	}, [src, hideSpinner]);
+	}, [videoSrc, hideSpinner]);
 
 	useEffect(() => {
 		return () => {
@@ -810,7 +815,7 @@ const StreamingVideoPlayer: React.FC<{
 		};
 	}, [clearSpinnerTimeout]);
 
-	if (!src) {
+	if (!videoSrc) {
 		return (
 			<div
 				className={cn(
@@ -854,6 +859,7 @@ const StreamingVideoPlayer: React.FC<{
 			<VideoPlayerControls
 				videoRef={videoRef}
 				className='flex-shrink-0'
+				videoMetadata={videoMetadata}
 			/>
 		</div>
 	);
@@ -873,7 +879,7 @@ const VideoUploader: React.FC<{
 	className,
 	onUploadingChange,
 }) => {
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 	const [isDragging, setIsDragging] = useState(false);
 	const [uploadingFiles, setUploadingFiles] = useState<UploadingFile[]>([]);
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -901,7 +907,7 @@ const VideoUploader: React.FC<{
 
 			if (totalSize > availableStorage) {
 				const errorMessage = (
-					(getNested?.(
+					(t(
 						"projectPage.fileList.insufficientStorage"
 					) as string) ||
 					"Không đủ dung lượng! Cần: {needed}, Còn lại: {available}. Vui lòng nâng cấp gói lưu trữ."
@@ -978,7 +984,7 @@ const VideoUploader: React.FC<{
 
 			onUploadComplete();
 		},
-		[onUpload, currentVideoCount, storageInfo, getNested, onUploadComplete]
+		[onUpload, currentVideoCount, storageInfo, onUploadComplete]
 	);
 
 	const handleDragOver = (e: React.DragEvent) => {
@@ -1038,12 +1044,12 @@ const VideoUploader: React.FC<{
 					</div>
 					<div className='text-center'>
 						<p className='font-medium text-foreground'>
-							{(getNested?.(
+							{(t(
 								"projectPage.fileList.dragDrop"
 							) as string) || "Kéo thả video vào đây"}
 						</p>
 						<p className='text-sm text-muted-foreground mt-1'>
-							{(getNested?.(
+							{(t(
 								"projectPage.fileList.orClick"
 							) as string) || "hoặc nhấn để chọn file"}
 						</p>
@@ -1358,33 +1364,33 @@ const ScriptGenerationServiceProjectPage: React.FC = () => {
 		scriptGenerationLayout: layout,
 	} = useProjectLayoutContext();
 	const {storageInfo, fetchStorageInfo} = useStorageStore();
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 
 	const TABS: TabConfig[] = useMemo(
 		() => [
 			{
 				id: "upload",
 				label:
-					(getNested?.("projectPage.tabs.upload") as string) ||
+					(t("projectPage.tabs.upload") as string) ||
 					"Upload",
 				icon: <Upload className='w-4 h-4' />,
 			},
 			{
 				id: "videos",
 				label:
-					(getNested?.("projectPage.tabs.videos") as string) ||
+					(t("projectPage.tabs.videos") as string) ||
 					"Videos",
 				icon: <Film className='w-4 h-4' />,
 			},
 			{
 				id: "settings",
 				label:
-					(getNested?.("projectPage.tabs.settings") as string) ||
+					(t("projectPage.tabs.settings") as string) ||
 					"Cài đặt",
 				icon: <Settings2 className='w-4 h-4' />,
 			},
 		],
-		[getNested]
+		[]
 	);
 
 	const [project, setProject] = useState<ScriptGenerationProject | null>(
@@ -1411,13 +1417,7 @@ const ScriptGenerationServiceProjectPage: React.FC = () => {
 	const panelRef = useRef<HTMLDivElement>(null);
 	const handleSaveRef = React.useRef<(() => Promise<void>) | null>(null);
 
-	const getVideoStreamUrl = useCallback(
-		(video: VideoFile | null): string | null => {
-			if (!video || !id) return null;
-			return `${apiConfig.apiBaseUrl}/script-generation/${id}/videos/${video.filename}`;
-		},
-		[id]
-	);
+
 
 	const loadVideos = useCallback(async () => {
 		if (!id) return;
@@ -1743,8 +1743,10 @@ const ScriptGenerationServiceProjectPage: React.FC = () => {
 	const renderVideoPanel = () => (
 		<div className='h-full w-full p-1'>
 			<StreamingVideoPlayer
-				src={getVideoStreamUrl(selectedVideo)}
+				video={selectedVideo}
+				projectId={id || ""}
 				className='h-full border border-border'
+				videoMetadata={selectedVideo}
 			/>
 		</div>
 	);

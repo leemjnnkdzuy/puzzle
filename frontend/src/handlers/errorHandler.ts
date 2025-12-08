@@ -5,11 +5,6 @@ export interface ErrorHandlerOptions {
 	onError?: ErrorHandler;
 }
 
-/**
- * Handles errors in a centralized way
- * @param error - The error to handle
- * @param options - Error handling options
- */
 export const handleError = (
 	error: unknown,
 	options: ErrorHandlerOptions = {}
@@ -25,21 +20,11 @@ export const handleError = (
 		return;
 	}
 
-	// In development, log errors for debugging
 	if (import.meta.env.DEV) {
 		console.error("Error:", error);
 	}
-
-	// In production, you might want to send to error tracking service
-	// Example: errorTrackingService.log(error);
 };
 
-/**
- * Wraps an async function with error handling
- * @param fn - The async function to wrap
- * @param options - Error handling options
- * @returns The wrapped function
- */
 export const withErrorHandler = <
 	T extends (...args: unknown[]) => Promise<unknown>
 >(
@@ -49,17 +34,11 @@ export const withErrorHandler = <
 	return ((...args: Parameters<T>) => {
 		return fn(...args).catch((error) => {
 			handleError(error, options);
-			throw error; // Re-throw to allow caller to handle if needed
+			throw error;
 		});
 	}) as T;
 };
 
-/**
- * Executes an async function with error handling
- * @param fn - The async function to execute
- * @param options - Error handling options
- * @returns The result of the function or undefined if error occurred
- */
 export const safeExecute = async <T>(
 	fn: () => Promise<T>,
 	options: ErrorHandlerOptions = {}
@@ -72,12 +51,6 @@ export const safeExecute = async <T>(
 	}
 };
 
-/**
- * Executes an async function with error handling and returns a result object
- * @param fn - The async function to execute
- * @param options - Error handling options
- * @returns Object with success flag and data/error
- */
 export const safeExecuteWithResult = async <T>(
 	fn: () => Promise<T>,
 	options: ErrorHandlerOptions = {}

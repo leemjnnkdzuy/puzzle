@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DEV_TO_API, HACKER_NEWS_API, GNEWS_API } from '@/configs/AppConfig';
+import { DEV_TO_API, HACKER_NEWS_API, GNEWS_API, GNEWS_API_KEY } from '@/configs/AppConfig';
 
 export interface BlogPost {
     id: number;
@@ -89,7 +89,7 @@ class BlogService {
     }
 
     static async getGNewsArticles(query: string = 'technology', lang: string = 'en', max: number = 5): Promise<GNewsArticle[]> {
-        const apiKey = import.meta.env.VITE_GNEWS_API_KEY;
+        const apiKey = GNEWS_API_KEY;
         if (!apiKey) {
             console.warn('GNews API Key is missing (VITE_GNEWS_API_KEY). GNews section will be empty.');
             return [];

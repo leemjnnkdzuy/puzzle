@@ -44,10 +44,10 @@ type LoginHistoryItem = {
 };
 
 const LoginHistoryPage: React.FC = () => {
-	const {getNested, language} = useLanguage();
+	const {t, language} = useLanguage();
 	const {showError, showSuccess} = useGlobalNotificationPopup();
 
-	const loginHistoryPage = getNested?.("loginHistoryPage") as {
+	const loginHistoryPage = t("loginHistoryPage") as {
 		title?: string;
 		noLoginHistory?: string;
 		status?: {
@@ -84,7 +84,7 @@ const LoginHistoryPage: React.FC = () => {
 		};
 	};
 
-	const settings = getNested?.("settings") as {
+	const settings = t("settings") as {
 		logoutAll?: string;
 		logoutAllConfirm?: string;
 		logoutAllSuccess?: string;

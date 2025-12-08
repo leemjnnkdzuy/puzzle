@@ -75,8 +75,8 @@ const ProfilePage: React.FC = () => {
 	const {user: currentUser, loading: authLoading} = useAuth();
 	const setUser = useAuthStore((state) => state.setUser);
 	const {showSuccess, showError} = useGlobalNotificationPopup();
-	const {getNested} = useLanguage();
-	const profile = getNested?.("profile") as
+	const {t} = useLanguage();
+	const profile = t("profile") as
 		| {
 				editInfo?: string;
 				bio?: string;

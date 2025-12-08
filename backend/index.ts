@@ -1,5 +1,14 @@
 import path from "path";
 import fs from "fs";
+import express, {Application} from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import connectDatabase from "./src/utils/connectDB";
+import apiConfig from "./src/configs/apiConfig";
+import {errorHandler, notFound} from "./src/middlewares/errorHandler";
+import {corsOptions, getAllowedOriginsList, getCorsOrigin} from "./src/configs/corsConfig";
+import {startTransactionCleanupScheduler} from "./src/utils/transactionCleanup";
 
 try {
 	const moduleAlias = require("module-alias");
@@ -22,31 +31,14 @@ try {
 		"@/utils": path.join(srcPath, "utils"),
 		"@/validators": path.join(srcPath, "validators"),
 	});
-
-	console.log(
-		`Path aliases registered successfully. srcPath: ${srcPath}, __dirname: ${__dirname}`
-	);
 } catch (error) {
-	console.error("Failed to register path aliases:", error);
-	try {
-		require("tsconfig-paths/register");
-		console.log("Using tsconfig-paths as fallback");
-	} catch (tsError) {
-		console.error("Both module-alias and tsconfig-paths failed:", tsError);
-	}
+	require("tsconfig-paths/register");
 }
 
-import express, {Application} from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
-import connectDatabase from "./src/utils/connectDB";
-import apiConfig from "./src/configs/apiConfig";
-import {errorHandler, notFound} from "./src/middlewares/errorHandler";
-import {corsOptions} from "./src/configs/corsConfig";
-import {startTransactionCleanupScheduler} from "./src/utils/transactionCleanup";
+
 
 dotenv.config();
+getAllowedOriginsList();
 
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
@@ -57,14 +49,10 @@ app.use(cookieParser());
 app.use(express.json({limit: "10mb"}));
 app.use(express.urlencoded({extended: true, limit: "10mb"}));
 
-try {
-	const publicPath = path.join(__dirname, "public");
-	const fs = require("fs");
-	if (fs.existsSync(publicPath)) {
-		app.use(express.static(publicPath));
-	}
-} catch (error) {
-	// Ignore if public directory doesn't exist
+
+const publicPath = path.join(__dirname, "public");
+if (fs.existsSync(publicPath)) {
+	app.use(express.static(publicPath));
 }
 
 let dbConnectionPromise: Promise<void> | null = null;
@@ -109,6 +97,7 @@ if (process.env.VERCEL !== "1") {
 			startTransactionCleanupScheduler();
 
 			app.listen(PORT, () => {
+				console.log(`CORS Origin: ${getCorsOrigin()}`);
 				console.log(`Server is running on port ${PORT}`);
 			});
 		} catch (error) {

@@ -19,14 +19,14 @@ import {useGlobalNotificationPopup} from "@/hooks/useGlobalNotificationPopup";
 import {useSSE, type SSEMessage} from "@/hooks/useSSE";
 import paymentService, {type Transaction} from "@/services/PaymentService";
 import OverlayTransactionsDetail from "@/components/common/OverlayTransactionsDetail";
-import {cn} from "@/utils";
+import {cn, formatCurrency, formatDate, formatReferenceCode} from "@/utils";
 
 const TransactionHistoryPage: React.FC = () => {
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 	const {showError} = useGlobalNotificationPopup();
 	const {onMessage, offMessage} = useSSE();
 
-	const transactionHistory = getNested?.("transactionHistory") as {
+	const transactionHistory = t("transactionHistory") as {
 		title?: string;
 		noTransactions?: string;
 		status?: {
@@ -164,25 +164,7 @@ const TransactionHistoryPage: React.FC = () => {
 		};
 	}, [loadTransactions, onMessage, offMessage]);
 
-	const formatCurrency = (value: number) => {
-		return new Intl.NumberFormat("vi-VN").format(value);
-	};
 
-	const formatReferenceCode = (code: string | undefined) => {
-		if (!code) return "-";
-		return code.replace(/_/g, " ");
-	};
-
-	const formatDate = (dateString: string) => {
-		const date = new Date(dateString);
-		return new Intl.DateTimeFormat("vi-VN", {
-			year: "numeric",
-			month: "2-digit",
-			day: "2-digit",
-			hour: "2-digit",
-			minute: "2-digit",
-		}).format(date);
-	};
 
 	const getStatusBadge = (status: Transaction["status"]) => {
 		const statusText =
@@ -216,7 +198,7 @@ const TransactionHistoryPage: React.FC = () => {
 	};
 
 	const getPaymentMethodLabel = (method: Transaction["paymentMethod"]) => {
-		const recharge = getNested?.("recharge") as {
+		const recharge = t("recharge") as {
 			payos?: string;
 			paypal?: string;
 			bitcoin?: string;

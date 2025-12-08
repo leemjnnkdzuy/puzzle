@@ -45,7 +45,7 @@ const ProjectSchema: Schema = new Schema(
 	}
 );
 
-ProjectSchema.index({userId: 1});
+
 ProjectSchema.index({"projects.projectId": 1});
 ProjectSchema.index({"projects.type": 1});
 

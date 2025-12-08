@@ -5,9 +5,9 @@ import Button from "@/components/ui/Button";
 import {useLanguage} from "@/hooks/useLanguage";
 
 const AboutPage: React.FC = () => {
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 
-	const about = getNested?.("about") as
+	const about = t("about") as
 		| {
 				title: string;
 				subtitle: string;

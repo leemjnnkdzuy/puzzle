@@ -21,7 +21,7 @@ type SignUpPhase = "register" | "verification";
 const SignUpPage: React.FC = () => {
 	const navigate = useNavigate();
 	const {showError, showSuccess} = useGlobalNotificationPopup();
-	const {getNested, t} = useLanguage();
+	const {t} = useLanguage();
 	const [phase, setPhase] = useState<SignUpPhase>("register");
 	const [registerData, setRegisterData] = useState<RegisterData>({
 		first_name: "",
@@ -40,7 +40,7 @@ const SignUpPage: React.FC = () => {
 	const dotColor = getPasswordStrengthColor(score);
 	const rules = getPasswordRules(password, t);
 
-	const passwordRequirementsTitle = getNested?.(
+	const passwordRequirementsTitle = t(
 		"signUp.passwordRequirements"
 	) as string;
 
@@ -82,13 +82,13 @@ const SignUpPage: React.FC = () => {
 		setIsLoading(true);
 		try {
 			await authService.register(registerData);
-			const registerSuccess = getNested?.(
+			const registerSuccess = t(
 				"signUp.errors.registerSuccess"
 			) as string;
 			showSuccess(registerSuccess);
 			setPhase("verification");
 		} catch (error) {
-			const registerFailed = getNested?.(
+			const registerFailed = t(
 				"signUp.errors.registerFailed"
 			) as string;
 			showError(error instanceof Error ? error.message : registerFailed);
@@ -97,42 +97,42 @@ const SignUpPage: React.FC = () => {
 		}
 	};
 
-	const title = getNested?.("signUp.title") as string;
-	const subtitle = getNested?.("signUp.subtitle") as string;
-	const backToHome = getNested?.("signUp.backToHome") as string;
-	const lastNamePlaceholder = getNested?.(
+	const title = t("signUp.title") as string;
+	const subtitle = t("signUp.subtitle") as string;
+	const backToHome = t("signUp.backToHome") as string;
+	const lastNamePlaceholder = t(
 		"signUp.lastNamePlaceholder"
 	) as string;
-	const firstNamePlaceholder = getNested?.(
+	const firstNamePlaceholder = t(
 		"signUp.firstNamePlaceholder"
 	) as string;
-	const usernamePlaceholder = getNested?.(
+	const usernamePlaceholder = t(
 		"signUp.usernamePlaceholder"
 	) as string;
-	const emailPlaceholder = getNested?.("signUp.emailPlaceholder") as string;
-	const passwordPlaceholder = getNested?.(
+	const emailPlaceholder = t("signUp.emailPlaceholder") as string;
+	const passwordPlaceholder = t(
 		"signUp.passwordPlaceholder"
 	) as string;
-	const confirmPasswordPlaceholder = getNested?.(
+	const confirmPasswordPlaceholder = t(
 		"signUp.confirmPasswordPlaceholder"
 	) as string;
-	const submit = getNested?.("signUp.submit") as string;
-	const hasAccount = getNested?.("signUp.hasAccount") as string;
-	const signIn = getNested?.("signUp.signIn") as string;
+	const submit = t("signUp.submit") as string;
+	const hasAccount = t("signUp.hasAccount") as string;
+	const signIn = t("signUp.signIn") as string;
 
 	// Verification phase translations
-	const verificationTitle = getNested?.("verification.title") as string;
-	const verificationSubtitle = getNested?.("verification.subtitle") as string;
-	const codePlaceholder = getNested?.(
+	const verificationTitle = t("verification.title") as string;
+	const verificationSubtitle = t("verification.subtitle") as string;
+	const codePlaceholder = t(
 		"verification.codePlaceholder"
 	) as string;
-	const verifySubmit = getNested?.("verification.submit") as string;
-	const verifyBack = getNested?.("verification.back") as string;
+	const verifySubmit = t("verification.submit") as string;
+	const verifyBack = t("verification.back") as string;
 
 	const handleVerify = async (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!verificationCode.trim()) {
-			const codeRequired = getNested?.(
+			const codeRequired = t(
 				"verification.errors.codeRequired"
 			) as string;
 			showError(codeRequired);
@@ -143,10 +143,10 @@ const SignUpPage: React.FC = () => {
 		try {
 			const result = await authService.verify(verificationCode);
 			if (result.success) {
-				const verifySuccess = getNested?.(
+				const verifySuccess = t(
 					"verification.errors.verifySuccess"
 				) as string;
-				const accountCreated = getNested?.(
+				const accountCreated = t(
 					"signUp.errors.accountCreated"
 				) as string;
 				showSuccess(accountCreated || verifySuccess);
@@ -154,13 +154,13 @@ const SignUpPage: React.FC = () => {
 					navigate("/login");
 				}, 1500);
 			} else {
-				const verifyFailed = getNested?.(
+				const verifyFailed = t(
 					"verification.errors.verifyFailed"
 				) as string;
 				showError(result.message || verifyFailed);
 			}
 		} catch (error) {
-			const verifyFailed = getNested?.(
+			const verifyFailed = t(
 				"verification.errors.verifyFailed"
 			) as string;
 			showError(error instanceof Error ? error.message : verifyFailed);

@@ -40,6 +40,15 @@ import TextToSpeechPage from "@/pages/TextToSpeechPage";
 import StoragePage from "@/pages/StoragePage";
 import BlogPage from "@/pages/BlogPage";
 import TrendingPage from "@/pages/TrendingPage";
+import FeaturesPage from "@/pages/FeaturesPage";
+import PricingPage from "@/pages/PricingPage";
+import DocsPage from "@/pages/DocsPage";
+import ApiPage from "@/pages/ApiPage";
+import CareersPage from "@/pages/CareersPage";
+import ContactPage from "@/pages/ContactPage";
+import HelpPage from "@/pages/HelpPage";
+import CommunityPage from "@/pages/CommunityPage";
+import CustomersPage from "@/pages/CustomersPage";
 
 const publicRoutes: RouteTypes[] = [
 	{
@@ -90,6 +99,51 @@ const publicRoutes: RouteTypes[] = [
 	{
 		path: "/blog/trending",
 		component: TrendingPage,
+		layout: FooterLayout,
+	},
+	{
+		path: "/features",
+		component: FeaturesPage,
+		layout: FooterLayout,
+	},
+	{
+		path: "/pricing",
+		component: PricingPage,
+		layout: FooterLayout,
+	},
+	{
+		path: "/docs",
+		component: DocsPage,
+		layout: FooterLayout,
+	},
+	{
+		path: "/api",
+		component: ApiPage,
+		layout: FooterLayout,
+	},
+	{
+		path: "/careers",
+		component: CareersPage,
+		layout: FooterLayout,
+	},
+	{
+		path: "/contact",
+		component: ContactPage,
+		layout: FooterLayout,
+	},
+	{
+		path: "/help",
+		component: HelpPage,
+		layout: FooterLayout,
+	},
+	{
+		path: "/community",
+		component: CommunityPage,
+		layout: FooterLayout,
+	},
+	{
+		path: "/customers",
+		component: CustomersPage,
 		layout: FooterLayout,
 	},
 ];

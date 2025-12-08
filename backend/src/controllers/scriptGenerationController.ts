@@ -16,12 +16,14 @@ import {
 	updateUserStorageUsed,
 	formatStorageSize,
 } from "@/utils/storageHelper";
-import {isOriginAllowed} from "@/configs/corsConfig";
+import {isOriginAllowed, getAllowedOriginsList} from "@/configs/corsConfig";
 import sseServer from "@/utils/sseServer";
 import User from "@/models/User";
 import fs from "fs/promises";
 import {createReadStream, statSync} from "fs";
 import path from "path";
+import {getVideoMetadata} from "@/helpers/videoHelper";
+import {DRMHelper} from "@/utils/drmHelper";
 
 export const getScriptGenerationProjects = async (
 	req: AuthRequest,
@@ -364,6 +366,16 @@ export const uploadScriptGenerationVideo = async (
 			);
 		}
 
+		const projectFolderPath = getProjectFolderPath(projectId);
+		const filePath = path.join(projectFolderPath, req.file.filename);
+
+		let metadata = {};
+		try {
+			metadata = await getVideoMetadata(filePath);
+		} catch (err) {
+			console.error("Failed to extract video metadata:", err);
+		}
+
 		const videoInfo = {
 			filename: req.file.filename,
 			originalName: req.file.originalname,
@@ -373,6 +385,7 @@ export const uploadScriptGenerationVideo = async (
 				? parseInt(order)
 				: (project.uploadedVideos?.length || 0) + 1,
 			uploadedAt: new Date(),
+			...metadata,
 		};
 
 		if (!project.uploadedVideos) {
@@ -481,26 +494,38 @@ export const uploadScriptGenerationVideos = async (
 		const baseOrder = project.uploadedVideos.length;
 		const uploadedVideos: IVideoFile[] = [];
 
-		(files as Express.Multer.File[]).forEach(
-			(file: Express.Multer.File, index: number) => {
-				const order =
-					orderArray && orderArray[index]
-						? parseInt(orderArray[index])
-						: baseOrder + index + 1;
+		const projectFolderPath = getProjectFolderPath(projectId);
 
-				const videoInfo: IVideoFile = {
-					filename: file.filename,
-					originalName: file.originalname,
-					size: file.size,
-					mimetype: file.mimetype,
-					order: order,
-					uploadedAt: new Date(),
-				};
+		for (let i = 0; i < (files as Express.Multer.File[]).length; i++) {
+			const file = (files as Express.Multer.File[])[i];
+			const index = i;
 
-				project.uploadedVideos!.push(videoInfo);
-				uploadedVideos.push(videoInfo);
+			const order =
+				orderArray && orderArray[index]
+					? parseInt(orderArray[index])
+					: baseOrder + index + 1;
+
+			const filePath = path.join(projectFolderPath, file.filename);
+			let metadata = {};
+			try {
+				metadata = await getVideoMetadata(filePath);
+			} catch (err) {
+				console.error("Failed to extract video metadata:", err);
 			}
-		);
+
+			const videoInfo: IVideoFile = {
+				filename: file.filename,
+				originalName: file.originalname,
+				size: file.size,
+				mimetype: file.mimetype,
+				order: order,
+				uploadedAt: new Date(),
+				...metadata,
+			};
+
+			project.uploadedVideos!.push(videoInfo);
+			uploadedVideos.push(videoInfo);
+		}
 
 		await project.save();
 
@@ -576,9 +601,43 @@ export const getScriptGenerationVideo = async (
 	try {
 		const userId = req.user?._id;
 		const {id: projectId, filename} = req.params;
+		const referer = req.headers.referer;
+
+
+		if (!referer) {
+			throw new AppError("Direct access not allowed", 403);
+		}
+
+		const origin = req.headers.origin;
+		const allowedOrigin = origin || (referer ? new URL(referer).origin : "");
+
+		const allowedOrigins = getAllowedOriginsList();
+		const isDev = process.env.NODE_ENV === "development";
+		
+		const isAllowed = 
+			isDev || 
+			isOriginAllowed(allowedOrigin) || 
+			allowedOrigins.includes(allowedOrigin) || 
+			allowedOrigin.includes("localhost:5000") ||
+			allowedOrigin.includes("127.0.0.1:5000");
+
+		if (!isAllowed) {
+			throw new AppError("Access denied from this origin", 403);
+		}
 
 		if (!userId) {
 			throw new AppError("Unauthorized", 401);
+		}
+
+		const drmToken = req.query.drm_token as string;
+		if (!drmToken) {
+			throw new AppError("Access denied: Missing DRM token", 403);
+		}
+		
+		try {
+			DRMHelper.verifyToken(drmToken, filename, userId.toString());
+		} catch (err) {
+			throw new AppError("Access denied: Invalid or expired DRM token", 403);
 		}
 
 		const project = await verifyScriptGenerationProjectOwnership(
@@ -804,6 +863,50 @@ export const deleteScriptGenerationVideo = async (
 		res.status(200).json({
 			success: true,
 			message: "Video deleted successfully",
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+export const getScriptGenerationVideoToken = async (
+	req: AuthRequest,
+	res: Response,
+	next: NextFunction
+): Promise<void> => {
+	try {
+		const userId = req.user?._id;
+		const {id: projectId, filename} = req.params;
+
+		if (!userId) {
+			throw new AppError("Unauthorized", 401);
+		}
+
+		// Verify project exists and user has access
+		const project = await verifyScriptGenerationProjectOwnership(
+			userId,
+			projectId
+		);
+
+		if (!project) {
+			throw new AppError("Project not found or access denied", 404);
+		}
+
+		// Verify video exists in project
+		const videoExists = project.uploadedVideos?.some(
+			(v: IVideoFile) => v.filename === filename
+		);
+
+		if (!videoExists) {
+			throw new AppError("Video not found", 404);
+		}
+		
+		// Generate Token
+		const token = DRMHelper.generateToken(filename, userId.toString());
+
+		res.status(200).json({
+			success: true,
+			token,
 		});
 	} catch (error) {
 		next(error);

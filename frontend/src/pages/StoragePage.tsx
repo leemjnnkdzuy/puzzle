@@ -20,7 +20,7 @@ const UPGRADE_PACKAGES = [
 
 const StoragePage: React.FC = () => {
 	const navigate = useNavigate();
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 	const {storageInfo, loading, fetchStorageInfo} = useStorageStore();
 	const {credit, fetchCredit} = useCreditStore();
 	const [upgradeOverlayOpen, setUpgradeOverlayOpen] = useState(false);
@@ -30,7 +30,7 @@ const StoragePage: React.FC = () => {
 	const [projects, setProjects] = useState<ProjectStorage[]>([]);
 	const [projectsLoading, setProjectsLoading] = useState(false);
 
-	const storage = getNested?.("storagePage") as
+	const storage = t("storagePage") as
 		| {
 				title: string;
 				description: string;
@@ -109,11 +109,11 @@ const StoragePage: React.FC = () => {
 	const getProjectTypeLabel = (type: string) => {
 		switch (type) {
 			case "script_generation":
-				return (getNested?.("packages.scriptGeneration.subtitle") as string) || "Script Generation";
+				return (t("packages.scriptGeneration.subtitle") as string) || "Script Generation";
 			case "script_voice":
-				return (getNested?.("packages.scriptVoice.subtitle") as string) || "Script + Voice";
+				return (t("packages.scriptVoice.subtitle") as string) || "Script + Voice";
 			case "full_service":
-				return (getNested?.("packages.fullService.subtitle") as string) || "Full Service";
+				return (t("packages.fullService.subtitle") as string) || "Full Service";
 			default:
 				return type;
 		}

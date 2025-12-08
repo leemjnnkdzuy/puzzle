@@ -113,7 +113,7 @@ const ProjectLayout: React.FC<ProjectLayoutProps> = ({
 	const shouldFullWidth = fullWidth || isScriptGenerationPage;
 	const {isAuthenticated, user, logout} = useAuth();
 	const {theme, setTheme} = useTheme();
-	const {language, setLanguage, getNested} = useLanguage();
+	const {language, setLanguage, t} = useLanguage();
 	const credit = useCreditStore((state) => state.credit);
 	const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 	const [projects, setProjects] = useState<Project[]>([]);
@@ -163,7 +163,7 @@ const ProjectLayout: React.FC<ProjectLayoutProps> = ({
 	const userEmail = userData?.email || "";
 	const userAvatar = userData?.avatar || "";
 
-	const sidebar = getNested?.("sidebar") as
+	const sidebar = t("sidebar") as
 		| {
 				viewProfile: string;
 				recharge: string;

@@ -14,7 +14,7 @@ const SignInPage: React.FC = () => {
 	const {login, isAuthenticated} = useAuth();
 	const {showError} = useGlobalNotificationPopup();
 	const {handleSocialLogin} = useSocialLogin();
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 	const [loginData, setLoginData] = useState<LoginData>({
 		username: "",
 		password: "",
@@ -30,10 +30,10 @@ const SignInPage: React.FC = () => {
 	}, [isAuthenticated, navigate]);
 
 	const validateLogin = (data: LoginData): string | null => {
-		const usernameRequired = getNested?.(
+		const usernameRequired = t(
 			"signIn.errors.usernameRequired"
 		) as string;
-		const passwordRequired = getNested?.(
+		const passwordRequired = t(
 			"signIn.errors.passwordRequired"
 		) as string;
 
@@ -59,7 +59,7 @@ const SignInPage: React.FC = () => {
 
 		try {
 			const result = await login(loginData.username, loginData.password);
-			const loginFailed = getNested?.(
+			const loginFailed = t(
 				"signIn.errors.loginFailed"
 			) as string;
 
@@ -69,7 +69,7 @@ const SignInPage: React.FC = () => {
 				showError(result?.message || loginFailed);
 			}
 		} catch (error) {
-			const loginFailed = getNested?.(
+			const loginFailed = t(
 				"signIn.errors.loginFailed"
 			) as string;
 			showError(error instanceof Error ? error.message : loginFailed);
@@ -78,23 +78,23 @@ const SignInPage: React.FC = () => {
 		}
 	};
 
-	const title = getNested?.("signIn.title") as string;
-	const subtitle = getNested?.("signIn.subtitle") as string;
-	const backToHome = getNested?.("signIn.backToHome") as string;
-	const usernamePlaceholder = getNested?.(
+	const title = t("signIn.title") as string;
+	const subtitle = t("signIn.subtitle") as string;
+	const backToHome = t("signIn.backToHome") as string;
+	const usernamePlaceholder = t(
 		"signIn.usernamePlaceholder"
 	) as string;
-	const passwordPlaceholder = getNested?.(
+	const passwordPlaceholder = t(
 		"signIn.passwordPlaceholder"
 	) as string;
-	const forgotPassword = getNested?.("signIn.forgotPassword") as string;
-	const rememberMeText = getNested?.("signIn.rememberMe") as string;
-	const submit = getNested?.("signIn.submit") as string;
-	const noAccount = getNested?.("signIn.noAccount") as string;
-	const signUp = getNested?.("signIn.signUp") as string;
-	const or = getNested?.("signIn.or") as string;
-	const google = getNested?.("signIn.google") as string;
-	const facebook = getNested?.("signIn.facebook") as string;
+	const forgotPassword = t("signIn.forgotPassword") as string;
+	const rememberMeText = t("signIn.rememberMe") as string;
+	const submit = t("signIn.submit") as string;
+	const noAccount = t("signIn.noAccount") as string;
+	const signUp = t("signIn.signUp") as string;
+	const or = t("signIn.or") as string;
+	const google = t("signIn.google") as string;
+	const facebook = t("signIn.facebook") as string;
 
 	return (
 		<div className='relative flex flex-col justify-center items-center min-h-screen bg-background px-4 py-8'>

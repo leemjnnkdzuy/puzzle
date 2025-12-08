@@ -10,10 +10,10 @@ const connectDatabase = async (): Promise<void> => {
 	}
 
 	try {
-		const username = encodeURIComponent(process.env.MONGODB_USER || "");
-		const password = encodeURIComponent(process.env.MONGODB_PASSWORD || "");
-		const cluster = encodeURIComponent(process.env.MONGODB_CLUSTER || "");
-		const database = encodeURIComponent(process.env.MONGODB_DATABASE || "");
+		const username = process.env.MONGODB_USER;
+		const password = process.env.MONGODB_PASSWORD;
+		const cluster = process.env.MONGODB_CLUSTER;
+		const database = process.env.VERCEL === "0" ? process.env.MONGODB_DATABASE_DEVELOPMENT : process.env.MONGODB_DATABASE_PRODUCTION;
 
 		const uri = `mongodb+srv://${username}:${password}@${cluster}/${database}?retryWrites=true&w=majority`;
 
@@ -22,7 +22,7 @@ const connectDatabase = async (): Promise<void> => {
 				serverSelectionTimeoutMS: 5000,
 				socketTimeoutMS: 45000,
 			});
-			console.log("MongoDB connected successfully");
+			console.log("MongoDB connected successfully to:", database);
 		}
 	} catch (error) {
 		console.error("MongoDB connection error:", error);

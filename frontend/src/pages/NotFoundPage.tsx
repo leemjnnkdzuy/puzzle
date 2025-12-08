@@ -5,13 +5,13 @@ import {useLanguage} from "@/hooks/useLanguage";
 
 const NotFoundPage = () => {
 	const navigate = useNavigate();
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 
-	const title = getNested?.("notFound.title") as string;
-	const message = getNested?.("notFound.message") as string;
-	const description = getNested?.("notFound.description") as string;
-	const goHome = getNested?.("notFound.goHome") as string;
-	const goBack = getNested?.("notFound.goBack") as string;
+	const title = t("notFound.title") as string;
+	const message = t("notFound.message") as string;
+	const description = t("notFound.description") as string;
+	const goHome = t("notFound.goHome") as string;
+	const goBack = t("notFound.goBack") as string;
 
 	const handleGoHome = () => {
 		navigate("/");

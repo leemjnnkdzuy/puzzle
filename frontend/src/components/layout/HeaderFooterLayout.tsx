@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import {FaTwitter, FaDiscord, FaGithub, FaEnvelope} from "react-icons/fa";
 import {FileText, Mic, Sparkles, User, Settings, Palette, LogOut, Sun, Moon, Wallet, CircleDollarSign, HardDrive} from "lucide-react";
 import Button from "@/components/ui/Button";
@@ -45,7 +45,7 @@ interface UserData {
 
 const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 	const navigate = useNavigate();
-	const {language, setLanguage, t, getNested} = useLanguage();
+	const {language, setLanguage, t} = useLanguage();
 	const {isAuthenticated, user, logout} = useAuth();
 	const {theme, setTheme} = useTheme();
 	const credit = useCreditStore((state) => state.credit);
@@ -60,6 +60,11 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 		}
 	}, [isAuthenticated, fetchStorageInfo]);
 
+	const location = useLocation();
+	useEffect(() => {
+		window.scrollTo({top: 0, behavior: "smooth"});
+	}, [location.pathname]);
+
 	const userData = user as UserData | null;
 	const userName =
 		userData && userData.first_name && userData.last_name
@@ -68,7 +73,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 	const userEmail = userData?.email || "";
 	const userAvatar = userData?.avatar || "";
 
-	const sidebar = getNested?.("sidebar") as
+	const sidebar = t("sidebar") as
 		| {
 				home: string;
 				api: string;
@@ -81,6 +86,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 				about: string;
 				viewProfile: string;
 				recharge: string;
+				storage: string;
 				settings: string;
 				theme: string;
 				language: string;
@@ -237,14 +243,7 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 						<div className='flex items-center gap-4'>
 							{isAuthenticated && userData ? (
 								<>
-									{storageInfo && (
-										<div className='hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-card/50'>
-											<HardDrive className='w-4 h-4 text-primary' />
-											<span className='text-sm font-medium text-foreground'>
-												{storageInfo.usedFormatted} / {storageInfo.limitFormatted}
-											</span>
-										</div>
-									)}
+
 									<div className='flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-card/50'>
 										<CircleDollarSign className='w-4 h-4 text-green-500 dark:text-green-400' />
 										<span className='text-sm font-medium text-foreground'>
@@ -316,6 +315,19 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 										>
 											<Wallet className='w-4 h-4 mr-2' />
 											{sidebar?.recharge || "Nạp tiền"}
+										</DropdownMenuItem>
+
+										<DropdownMenuItem
+											onClick={() => navigate("/storage")}
+											className='cursor-pointer w-full flex items-center'
+										>
+											<HardDrive className='w-4 h-4 mr-2' />
+											<span>{sidebar?.storage || "Lưu trữ"}</span>
+											{storageInfo && (
+												<span className='ml-auto text-xs text-muted-foreground'>
+													{storageInfo.usedFormatted}/{storageInfo.limitFormatted}
+												</span>
+											)}
 										</DropdownMenuItem>
 
 										<DropdownMenuItem
@@ -685,18 +697,18 @@ const HeaderFooterLayout: React.FC<HeaderFooterLayoutProps> = ({children}) => {
 					setShowLogoutConfirm(false);
 				}}
 				title={
-					(getNested?.("logout.confirmTitle") as string) ||
+					(t("logout.confirmTitle") as string) ||
 					"Confirm Logout"
 				}
 				message={
-					(getNested?.("logout.confirmMessage") as string) ||
+					(t("logout.confirmMessage") as string) ||
 					"Are you sure you want to logout?"
 				}
 				confirmText={
-					(getNested?.("logout.confirm") as string) || "Logout"
+					(t("logout.confirm") as string) || "Logout"
 				}
 				cancelText={
-					(getNested?.("logout.cancel") as string) || "Cancel"
+					(t("logout.cancel") as string) || "Cancel"
 				}
 				confirmVariant='destructive'
 				icon={

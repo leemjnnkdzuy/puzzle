@@ -8,8 +8,7 @@ export type Language = (typeof SUPPORTED_LANGUAGES)[number];
 export interface LanguageContextType {
 	language: Language;
 	setLanguage: (lang: Language) => void;
-	t: (key: string) => string;
-	getNested?: (key: string) => unknown;
+	t: (key: string) => any;
 }
 import enTranslations from "@/lang/Global/en.json";
 import viTranslations from "@/lang/Global/vi.json";
@@ -43,6 +42,7 @@ const flattenTranslations = (
 				}
 			});
 		} else if (typeof value === "object" && value !== null) {
+			flattened[newKey] = value;
 			Object.assign(
 				flattened,
 				flattenTranslations(value as Record<string, unknown>, newKey)
@@ -59,10 +59,7 @@ const flattenedTranslations = {
 	vi: flattenTranslations(viTranslations),
 };
 
-const nestedTranslations = {
-	en: enTranslations,
-	vi: viTranslations,
-};
+
 
 interface LanguageProviderProps {
 	children: ReactNode;
@@ -168,35 +165,22 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
 		[isAuthenticated]
 	);
 
-	const t = (key: string): string => {
+	const t = (key: string): any => {
 		const langTranslations =
 			flattenedTranslations[
 				language as keyof typeof flattenedTranslations
 			];
 		const value = langTranslations[key as keyof typeof langTranslations];
-		if (typeof value === "string") {
+		if (value !== undefined) {
 			return value;
 		}
 		return key;
 	};
 
-	const getNested = (key: string): unknown => {
-		const langTranslations =
-			nestedTranslations[language as keyof typeof nestedTranslations];
-		const keys = key.split(".");
-		let value: unknown = langTranslations;
-		for (const k of keys) {
-			if (value && typeof value === "object" && k in value) {
-				value = (value as Record<string, unknown>)[k];
-			} else {
-				return undefined;
-			}
-		}
-		return value;
-	};
+
 
 	return (
-		<LanguageContext.Provider value={{language, setLanguage, t, getNested}}>
+		<LanguageContext.Provider value={{language, setLanguage, t}}>
 			{children}
 		</LanguageContext.Provider>
 	);

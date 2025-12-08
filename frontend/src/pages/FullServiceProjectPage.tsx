@@ -17,7 +17,7 @@ import {useLanguage} from "@/hooks/useLanguage";
 const FullServiceProjectPage: React.FC = () => {
 	const {id} = useParams<{id: string}>();
 	const navigate = useNavigate();
-	const {getNested} = useLanguage();
+	const {t} = useLanguage();
 	const [project, setProject] = useState<FullServiceProject | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -142,7 +142,7 @@ const FullServiceProjectPage: React.FC = () => {
 								<FileText className='w-4 h-4 text-blue-500' />
 								<span className='text-foreground'>
 									{
-										getNested?.(
+										t(
 											"packages.scriptGeneration.subtitle"
 										) as string
 									}

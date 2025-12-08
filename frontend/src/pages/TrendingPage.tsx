@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { GNEWS_API_KEY } from "@/configs/AppConfig";
 import BlogService, { type GNewsArticle } from '@/services/BlogService';
 import { ArrowLeft, Newspaper, ExternalLink } from 'lucide-react';
 import Loading from '@/components/ui/Loading';
@@ -114,7 +115,7 @@ const TrendingPage = () => {
                             ))
                         ) : (
                             <div className="col-span-full text-center py-12 text-muted-foreground">
-                                {import.meta.env.VITE_GNEWS_API_KEY ? t('blog.noTrendingNews') : t('blog.checkApiKey')}
+                                {GNEWS_API_KEY ? t('blog.noTrendingNews') : t('blog.checkApiKey')}
                             </div>
                         )}
                     </div>

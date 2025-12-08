@@ -10,6 +10,7 @@ import {
 	getScriptGenerationVideo,
 	deleteScriptGenerationVideo,
 	updateScriptGenerationVideoOrder,
+	getScriptGenerationVideoToken,
 } from "@/controllers/scriptGenerationController";
 import {updateScriptGenerationValidator} from "@/validators/scriptGenerationValidators";
 import {validate} from "@/middlewares/validation";
@@ -45,6 +46,8 @@ router.post(
 );
 router.get("/:id/videos", authenticate, getScriptGenerationVideos);
 router.get("/:id/videos/:filename", authenticate, getScriptGenerationVideo);
+router.get("/:id/videos/:filename", authenticate, getScriptGenerationVideo);
+router.get("/:id/videos/:filename/token", authenticate, getScriptGenerationVideoToken);
 router.delete(
 	"/:id/videos/:filename",
 	authenticate,
