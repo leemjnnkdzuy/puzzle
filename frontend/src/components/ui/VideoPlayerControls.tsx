@@ -20,8 +20,6 @@ export interface VideoPlayerControlsProps {
 	videoMetadata?: VideoFile | null;
 }
 
-
-
 const SPEED_OPTIONS = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
 const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
@@ -38,7 +36,7 @@ const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
 	const [playbackSpeed, setPlaybackSpeed] = useState(1);
 	const [showSpeedMenu, setShowSpeedMenu] = useState(false);
 	const [showInfoOverlay, setShowInfoOverlay] = useState(false);
-	
+
 	const speedMenuRef = useRef<HTMLDivElement>(null);
 	const progressBarRef = useRef<HTMLDivElement>(null);
 	const isDraggingRef = useRef(false);
@@ -118,55 +116,64 @@ const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
 		};
 	}, [showSpeedMenu]);
 
-	const seekToPosition = useCallback((clientX: number) => {
-		const video = videoRef.current;
-		const progressBar = progressBarRef.current;
-		if (!video || !progressBar || duration <= 0) return;
+	const seekToPosition = useCallback(
+		(clientX: number) => {
+			const video = videoRef.current;
+			const progressBar = progressBarRef.current;
+			if (!video || !progressBar || duration <= 0) return;
 
-		const rect = progressBar.getBoundingClientRect();
-		const x = clientX - rect.left;
-		const percent = Math.max(0, Math.min(1, x / rect.width));
-		const newTime = percent * duration;
+			const rect = progressBar.getBoundingClientRect();
+			const x = clientX - rect.left;
+			const percent = Math.max(0, Math.min(1, x / rect.width));
+			const newTime = percent * duration;
 
-		setCurrentTime(newTime);
-		video.currentTime = newTime;
-	}, [videoRef, duration]);
+			setCurrentTime(newTime);
+			video.currentTime = newTime;
+		},
+		[videoRef, duration]
+	);
 
-	const handleProgressMouseDown = useCallback((e: React.MouseEvent) => {
-		isDraggingRef.current = true;
-		seekToPosition(e.clientX);
-
-		const handleMouseMove = (e: MouseEvent) => {
+	const handleProgressMouseDown = useCallback(
+		(e: React.MouseEvent) => {
+			isDraggingRef.current = true;
 			seekToPosition(e.clientX);
-		};
 
-		const handleMouseUp = () => {
-			isDraggingRef.current = false;
-			document.removeEventListener("mousemove", handleMouseMove);
-			document.removeEventListener("mouseup", handleMouseUp);
-		};
+			const handleMouseMove = (e: MouseEvent) => {
+				seekToPosition(e.clientX);
+			};
 
-		document.addEventListener("mousemove", handleMouseMove);
-		document.addEventListener("mouseup", handleMouseUp);
-	}, [seekToPosition]);
+			const handleMouseUp = () => {
+				isDraggingRef.current = false;
+				document.removeEventListener("mousemove", handleMouseMove);
+				document.removeEventListener("mouseup", handleMouseUp);
+			};
 
-	const handleProgressTouchStart = useCallback((e: React.TouchEvent) => {
-		isDraggingRef.current = true;
-		seekToPosition(e.touches[0].clientX);
+			document.addEventListener("mousemove", handleMouseMove);
+			document.addEventListener("mouseup", handleMouseUp);
+		},
+		[seekToPosition]
+	);
 
-		const handleTouchMove = (e: TouchEvent) => {
+	const handleProgressTouchStart = useCallback(
+		(e: React.TouchEvent) => {
+			isDraggingRef.current = true;
 			seekToPosition(e.touches[0].clientX);
-		};
 
-		const handleTouchEnd = () => {
-			isDraggingRef.current = false;
-			document.removeEventListener("touchmove", handleTouchMove);
-			document.removeEventListener("touchend", handleTouchEnd);
-		};
+			const handleTouchMove = (e: TouchEvent) => {
+				seekToPosition(e.touches[0].clientX);
+			};
 
-		document.addEventListener("touchmove", handleTouchMove);
-		document.addEventListener("touchend", handleTouchEnd);
-	}, [seekToPosition]);
+			const handleTouchEnd = () => {
+				isDraggingRef.current = false;
+				document.removeEventListener("touchmove", handleTouchMove);
+				document.removeEventListener("touchend", handleTouchEnd);
+			};
+
+			document.addEventListener("touchmove", handleTouchMove);
+			document.addEventListener("touchend", handleTouchEnd);
+		},
+		[seekToPosition]
+	);
 
 	const handlePlayPause = () => {
 		const video = videoRef.current;
@@ -229,21 +236,21 @@ const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
 				className
 			)}
 		>
-			<div 
+			<div
 				ref={progressBarRef}
 				className='relative h-2 rounded-lg cursor-pointer group'
 				style={{backgroundColor: sliderInactiveColor}}
 				onMouseDown={handleProgressMouseDown}
 				onTouchStart={handleProgressTouchStart}
 			>
-				<div 
+				<div
 					className='absolute top-0 left-0 h-full rounded-lg pointer-events-none'
 					style={{
 						width: `${progress}%`,
 						backgroundColor: sliderActiveColor,
 					}}
 				/>
-				<div 
+				<div
 					className='absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity'
 					style={{
 						left: `calc(${progress}% - 6px)`,
@@ -377,10 +384,12 @@ const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
 					<h3 className='text-lg font-semibold text-foreground border-b border-border pb-2'>
 						Thông tin chi tiết Video
 					</h3>
-					
+
 					<div className='space-y-3'>
 						<div className='grid grid-cols-2 gap-4 text-sm'>
-							<div className='text-muted-foreground'>Độ phân giải (Resolution):</div>
+							<div className='text-muted-foreground'>
+								Độ phân giải (Resolution):
+							</div>
 							<div className='font-mono text-foreground'>
 								{videoMetadata?.width
 									? `${videoMetadata.width} x ${videoMetadata.height}`
@@ -390,29 +399,45 @@ const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
 								px
 							</div>
 
-							<div className='text-muted-foreground'>Thời lượng (Duration):</div>
+							<div className='text-muted-foreground'>
+								Thời lượng (Duration):
+							</div>
 							<div className='font-mono text-foreground'>
 								{(() => {
-                                    const dur = videoMetadata?.duration || duration;
-                                    return (
-                                        <span>
-                                            {dur.toFixed(3)} s <span className="text-muted-foreground text-xs">({formatDurationHMS(dur)})</span>
-                                        </span>
-                                    );
-                                })()}
+									const dur =
+										videoMetadata?.duration || duration;
+									return (
+										<span>
+											{dur.toFixed(3)} s{" "}
+											<span className='text-muted-foreground text-xs'>
+												({formatDurationHMS(dur)})
+											</span>
+										</span>
+									);
+								})()}
 							</div>
 
-							<div className='text-muted-foreground'>Khung hình (FPS):</div>
+							<div className='text-muted-foreground'>
+								Khung hình (FPS):
+							</div>
 							<div className='font-mono text-foreground'>
-								{videoMetadata?.fps ? Number(videoMetadata.fps).toFixed(1) : "N/A"}
+								{videoMetadata?.fps
+									? Number(videoMetadata.fps).toFixed(1)
+									: "N/A"}
 							</div>
 
-							<div className='text-muted-foreground'>Bitrate:</div>
+							<div className='text-muted-foreground'>
+								Bitrate:
+							</div>
 							<div className='font-mono text-foreground'>
-								{videoMetadata?.bitrate ? `${videoMetadata.bitrate} kbps` : "N/A"}
+								{videoMetadata?.bitrate
+									? `${videoMetadata.bitrate} kbps`
+									: "N/A"}
 							</div>
 
-							<div className='text-muted-foreground'>Định dạng (Format):</div>
+							<div className='text-muted-foreground'>
+								Định dạng (Format):
+							</div>
 							<div className='font-mono text-foreground'>
 								{videoMetadata?.format
 									? videoMetadata.format
@@ -421,17 +446,23 @@ const VideoPlayerControls: React.FC<VideoPlayerControlsProps> = ({
 
 							<div className='text-muted-foreground'>Codec:</div>
 							<div className='font-mono text-foreground'>
-								{videoMetadata?.codec ? videoMetadata.codec : "N/A"}
-							</div>
-
-							<div className='text-muted-foreground'>Kích thước file (Size):</div>
-							<div className='font-mono text-foreground'>
-								{videoMetadata?.size
-									? `${(videoMetadata.size / 1024 / 1024).toFixed(2)} MB`
+								{videoMetadata?.codec
+									? videoMetadata.codec
 									: "N/A"}
 							</div>
 
-
+							<div className='text-muted-foreground'>
+								Kích thước file (Size):
+							</div>
+							<div className='font-mono text-foreground'>
+								{videoMetadata?.size
+									? `${(
+											videoMetadata.size /
+											1024 /
+											1024
+									  ).toFixed(2)} MB`
+									: "N/A"}
+							</div>
 						</div>
 					</div>
 

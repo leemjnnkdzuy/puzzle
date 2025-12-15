@@ -10,6 +10,7 @@ import notificationRoutes from "@/routes/notificationRoutes";
 import paymentRoutes from "@/routes/paymentRoutes";
 import ttsRoutes from "@/routes/ttsRoutes";
 import storageRoutes from "@/routes/storageRoutes";
+import videoDownloadRoutes from "@/routes/videoDownloadRoutes";
 
 const apiConfig = express.Router();
 
@@ -24,5 +25,6 @@ apiConfig.use("/notifications", notificationRoutes);
 apiConfig.use("/payments", paymentRoutes);
 apiConfig.use("/tts", ttsRoutes);
 apiConfig.use("/storage", storageRoutes);
+apiConfig.use("/video-download", videoDownloadRoutes);
 
 export default apiConfig;

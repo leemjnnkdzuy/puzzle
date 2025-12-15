@@ -211,14 +211,14 @@ export const formatTime = (seconds: number): string => {
 };
 
 export const formatDurationHMS = (seconds: number): string => {
-    if (!isFinite(seconds) || isNaN(seconds)) return "";
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = Math.floor(seconds % 60);
-    
-    if (h > 0) return `${h}h ${m}m ${s}s`;
-    if (m > 0) return `${m}m ${s}s`;
-    return `${s}s`;
+	if (!isFinite(seconds) || isNaN(seconds)) return "";
+	const h = Math.floor(seconds / 3600);
+	const m = Math.floor((seconds % 3600) / 60);
+	const s = Math.floor(seconds % 60);
+
+	if (h > 0) return `${h}h ${m}m ${s}s`;
+	if (m > 0) return `${m}m ${s}s`;
+	return `${s}s`;
 };
 
 export const formatFileSize = (bytes: number): string => {
@@ -229,7 +229,10 @@ export const formatFileSize = (bytes: number): string => {
 	return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
 };
 
-export const formatDate = (date: Date | string, includeYear: boolean = true): string => {
+export const formatDate = (
+	date: Date | string,
+	includeYear: boolean = true
+): string => {
 	const d = new Date(date);
 	return new Intl.DateTimeFormat("vi-VN", {
 		year: includeYear ? "numeric" : undefined,
@@ -445,6 +448,52 @@ const createApiClient = (): AxiosInstance => {
 	);
 
 	return api;
+};
+
+export const getVideoThumbnail = (videoUrl: string): Promise<string> => {
+	return new Promise((resolve, reject) => {
+		const video = document.createElement("video");
+		video.crossOrigin = "use-credentials";
+		video.src = videoUrl;
+		video.preload = "metadata";
+		video.muted = true;
+
+		video.onloadedmetadata = () => {
+			video.currentTime = Math.min(
+				1,
+				video.duration > 0 ? video.duration / 2 : 0
+			);
+		};
+
+		video.onloadeddata = () => {
+			// Ensure we are ready to capture
+			if (video.readyState >= 2) {
+				// Waiting for seeked event
+			}
+		};
+
+		video.onseeked = () => {
+			const canvas = document.createElement("canvas");
+			canvas.width = video.videoWidth;
+			canvas.height = video.videoHeight;
+			const ctx = canvas.getContext("2d");
+			if (ctx) {
+				ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+				try {
+					const dataUrl = canvas.toDataURL("image/jpeg", 0.7);
+					resolve(dataUrl);
+				} catch (e) {
+					reject(e);
+				}
+			} else {
+				reject(new Error("Failed to get canvas context"));
+			}
+		};
+
+		video.onerror = () => {
+			reject(new Error("Failed to load video"));
+		};
+	});
 };
 
 const apiClient = createApiClient();

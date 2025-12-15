@@ -9,9 +9,6 @@ import {
 } from "@/utils/storageHelper";
 import sseServer from "@/utils/sseServer";
 
-/**
- * Lấy thông tin storage của user
- */
 export const getStorageInfo = async (
 	req: AuthRequest,
 	res: Response,
@@ -24,7 +21,6 @@ export const getStorageInfo = async (
 			throw new AppError("Unauthorized", 401);
 		}
 
-		// Cập nhật storageUsed từ files thực tế
 		const actualUsed = await updateUserStorageUsed(userId);
 
 		const user = await User.findById(userId).select(
@@ -35,7 +31,7 @@ export const getStorageInfo = async (
 			throw new AppError("User not found", 404);
 		}
 
-		const storageLimit = user.storageLimit || 2147483648; // Default 2GB
+		const storageLimit = user.storageLimit || 2147483648;
 		const storageUsed = actualUsed;
 		const available = storageLimit - storageUsed;
 
@@ -49,7 +45,6 @@ export const getStorageInfo = async (
 			credit: user.credit || 0,
 		};
 
-		// Gửi SSE event
 		sseServer.sendStorageEvent(userId.toString(), storageInfo);
 
 		res.status(200).json({
@@ -61,9 +56,6 @@ export const getStorageInfo = async (
 	}
 };
 
-/**
- * Nâng cấp storage bằng credit
- */
 export const upgradeStorage = async (
 	req: AuthRequest,
 	res: Response,
@@ -84,9 +76,8 @@ export const upgradeStorage = async (
 			);
 		}
 
-		// 1GB = 1 credit
 		const requiredCredit = amountGB;
-		const additionalBytes = amountGB * 1024 * 1024 * 1024; // Convert GB to bytes
+		const additionalBytes = amountGB * 1024 * 1024 * 1024;
 
 		const user = await User.findById(userId).select("credit storageLimit");
 
@@ -103,9 +94,8 @@ export const upgradeStorage = async (
 			);
 		}
 
-		// Trừ credit và tăng storageLimit
 		const newCredit = currentCredit - requiredCredit;
-		const currentLimit = user.storageLimit || 2147483648; // Default 2GB
+		const currentLimit = user.storageLimit || 2147483648;
 		const newLimit = currentLimit + additionalBytes;
 
 		await User.findByIdAndUpdate(userId, {
@@ -113,7 +103,6 @@ export const upgradeStorage = async (
 			storageLimit: newLimit,
 		});
 
-		// Cập nhật storageUsed
 		const actualUsed = await updateUserStorageUsed(userId);
 
 		const available = newLimit - actualUsed;
@@ -128,7 +117,6 @@ export const upgradeStorage = async (
 			credit: newCredit,
 		};
 
-		// Gửi SSE event
 		sseServer.sendStorageEvent(userId.toString(), storageInfo);
 
 		res.status(200).json({
@@ -141,9 +129,6 @@ export const upgradeStorage = async (
 	}
 };
 
-/**
- * Lấy danh sách project với storage usage
- */
 export const getProjectsStorage = async (
 	req: AuthRequest,
 	res: Response,
@@ -156,19 +141,16 @@ export const getProjectsStorage = async (
 			throw new AppError("Unauthorized", 401);
 		}
 
-		// Import models dynamically to avoid circular dependencies
 		const ScriptGenerationProject = (await import("@/models/ScriptGenerationProject")).default;
 		const ScriptVoiceProject = (await import("@/models/ScriptVoiceProject")).default;
 		const FullServiceProject = (await import("@/models/FullServiceProject")).default;
 
-		// Get all projects from all types
 		const [scriptGenProjects, scriptVoiceProjects, fullServiceProjects] = await Promise.all([
 			ScriptGenerationProject.find({userId}).select("_id title uploadedVideos createdAt").lean(),
 			ScriptVoiceProject.find({userId}).select("_id title uploadedVideos createdAt").lean(),
 			FullServiceProject.find({userId}).select("_id title uploadedVideos createdAt").lean(),
 		]);
 
-		// Calculate storage for each project
 		const calculateProjectStorage = (project: {
 			_id: string;
 			title: string;
@@ -192,7 +174,6 @@ export const getProjectsStorage = async (
 			...fullServiceProjects.map((p: unknown) => calculateProjectStorage(p as {_id: string; title: string; uploadedVideos?: Array<{size: number}>; createdAt: Date}, "full_service")),
 		];
 
-		// Sort by storage used (descending)
 		allProjects.sort((a, b) => b.storageUsed - a.storageUsed);
 
 		res.status(200).json({

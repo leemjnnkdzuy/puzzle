@@ -12,6 +12,7 @@ import {
 	CheckCircle,
 	XCircle,
 	Play,
+	Pause,
 	Trash2,
 	GripVertical,
 	FileVideo,
@@ -36,7 +37,7 @@ import {useLanguage} from "@/hooks/useLanguage";
 import {useStorageStore} from "@/stores/storageStore";
 import {useCreditStore} from "@/stores/creditStore";
 import {apiConfig} from "@/configs/AppConfig";
-import {cn, formatFileSize, formatDate} from "@/utils";
+import {cn, formatFileSize, formatDate, getVideoThumbnail} from "@/utils";
 
 export interface GenerationSettings {
 	tone?: string;
@@ -64,8 +65,6 @@ const UPGRADE_PACKAGES = [
 	{amountGB: 10, label: "10 GB"},
 ];
 
-
-
 const GenerationOptions: React.FC<{
 	settings: GenerationSettings;
 	onSettingsChange: (settings: GenerationSettings) => void;
@@ -86,9 +85,8 @@ const GenerationOptions: React.FC<{
 			<div className='p-2'>
 				<div className='flex items-center gap-2'>
 					<h3 className='text-sm font-semibold text-foreground'>
-						{(t(
-							"projectPage.generationOptions.title"
-						) as string) || "Tùy chỉnh Generation"}
+						{(t("projectPage.generationOptions.title") as string) ||
+							"Tùy chỉnh Generation"}
 					</h3>
 				</div>
 			</div>
@@ -96,9 +94,8 @@ const GenerationOptions: React.FC<{
 			<div className='flex-1 overflow-y-auto p-4 space-y-6'>
 				<div className='space-y-2'>
 					<label className='text-sm font-medium text-foreground'>
-						{(t(
-							"projectPage.generationOptions.tone"
-						) as string) || "Tone (Giọng điệu)"}
+						{(t("projectPage.generationOptions.tone") as string) ||
+							"Tone (Giọng điệu)"}
 					</label>
 					<Input
 						type='text'
@@ -121,9 +118,8 @@ const GenerationOptions: React.FC<{
 
 				<div className='space-y-2'>
 					<label className='text-sm font-medium text-foreground'>
-						{(t(
-							"projectPage.generationOptions.style"
-						) as string) || "Style (Phong cách)"}
+						{(t("projectPage.generationOptions.style") as string) ||
+							"Style (Phong cách)"}
 					</label>
 					<Input
 						type='text'
@@ -221,10 +217,7 @@ const ScriptReview: React.FC<{
 					"Hoàn thành"
 				);
 			case "failed":
-				return (
-					(t("projectPage.status.failed") as string) ||
-					"Thất bại"
-				);
+				return (t("projectPage.status.failed") as string) || "Thất bại";
 			case "processing":
 				return (
 					(t("projectPage.status.processing") as string) ||
@@ -232,8 +225,7 @@ const ScriptReview: React.FC<{
 				);
 			default:
 				return (
-					(t("projectPage.status.pending") as string) ||
-					"Chờ xử lý"
+					(t("projectPage.status.pending") as string) || "Chờ xử lý"
 				);
 		}
 	};
@@ -319,6 +311,78 @@ const ScriptReview: React.FC<{
 	);
 };
 
+const VideoThumbnail: React.FC<{
+	video: VideoFile;
+	projectId: string;
+	isSelected: boolean;
+	isHovered: boolean;
+	isPlaying?: boolean;
+}> = ({video, projectId, isSelected, isHovered, isPlaying = false}) => {
+	const [thumbnail, setThumbnail] = useState<string | null>(null);
+
+	useEffect(() => {
+		let isMounted = true;
+		const fetchThumbnail = async () => {
+			try {
+				const token = await ScriptGenerationService.getVideoToken(
+					projectId,
+					video.filename
+				);
+				const videoUrl = `${apiConfig.apiBaseUrl}/script-generation/${projectId}/videos/${video.filename}?drm_token=${token}`;
+				const thumb = await getVideoThumbnail(videoUrl);
+				if (isMounted) setThumbnail(thumb);
+			} catch (error) {
+				// Fail silently
+			}
+		};
+
+		if (projectId && video.filename) {
+			fetchThumbnail();
+		}
+		return () => {
+			isMounted = false;
+		};
+	}, [projectId, video.filename]);
+
+	if (thumbnail) {
+		return (
+			<div className='relative w-12 h-12 flex-shrink-0 group rounded-lg overflow-hidden'>
+				<img
+					src={thumbnail}
+					alt={video.originalName}
+					className='w-full h-full object-cover'
+				/>
+				<div className='absolute inset-0 bg-black/30 flex items-center justify-center transition-colors group-hover:bg-black/70'>
+					{isSelected && isPlaying ? (
+						<Pause className='w-5 h-5 text-white' />
+					) : (
+						<Play className='w-5 h-5 text-white' />
+					)}
+				</div>
+			</div>
+		);
+	}
+
+	return (
+		<div
+			className={cn(
+				"w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors",
+				isSelected
+					? "bg-primary/20 text-primary"
+					: "bg-muted/50 text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"
+			)}
+		>
+			{isSelected && isPlaying ? (
+				<Pause className='w-5 h-5' />
+			) : isSelected || isHovered ? (
+				<Play className='w-5 h-5' />
+			) : (
+				<FileVideo className='w-5 h-5' />
+			)}
+		</div>
+	);
+};
+
 const ServerVideoList: React.FC<{
 	videos: VideoFile[];
 	selectedVideoFilename: string | null;
@@ -331,6 +395,8 @@ const ServerVideoList: React.FC<{
 	onSavingChange?: (isSaving: boolean) => void;
 	isLoading?: boolean;
 	className?: string;
+	projectId: string;
+	isPlaying?: boolean;
 }> = ({
 	videos,
 	selectedVideoFilename,
@@ -341,6 +407,8 @@ const ServerVideoList: React.FC<{
 	onSavingChange,
 	isLoading = false,
 	className,
+	projectId,
+	isPlaying = false,
 }) => {
 	const {t} = useLanguage();
 	const [deletingFilename, setDeletingFilename] = useState<string | null>(
@@ -520,9 +588,8 @@ const ServerVideoList: React.FC<{
 						"Chưa có video nào"}
 				</p>
 				<p className='text-sm text-muted-foreground/70 mt-1'>
-					{(t(
-						"projectPage.fileList.uploadToStart"
-					) as string) || "Upload video để bắt đầu"}
+					{(t("projectPage.fileList.uploadToStart") as string) ||
+						"Upload video để bắt đầu"}
 				</p>
 			</div>
 		);
@@ -595,20 +662,13 @@ const ServerVideoList: React.FC<{
 								</span>
 							</div>
 
-							<div
-								className={cn(
-									"w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors",
-									isSelected
-										? "bg-primary/20 text-primary"
-										: "bg-muted/50 text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"
-								)}
-							>
-								{isSelected || isHovered ? (
-									<Play className='w-5 h-5' />
-								) : (
-									<FileVideo className='w-5 h-5' />
-								)}
-							</div>
+							<VideoThumbnail
+								video={video}
+								projectId={projectId}
+								isSelected={isSelected}
+								isHovered={!!isHovered}
+								isPlaying={isSelected && isPlaying}
+							/>
 
 							<div className='flex-1 min-w-0'>
 								<p
@@ -687,7 +747,8 @@ const StreamingVideoPlayer: React.FC<{
 	projectId: string;
 	className?: string;
 	videoMetadata?: VideoFile | null;
-}> = ({video, projectId, className, videoMetadata}) => {
+	onPlayingChange?: (isPlaying: boolean) => void;
+}> = ({video, projectId, className, videoMetadata, onPlayingChange}) => {
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const [videoSrc, setVideoSrc] = useState<string | null>(null);
 	const [showSpinner, setShowSpinner] = useState(false);
@@ -742,6 +803,11 @@ const StreamingVideoPlayer: React.FC<{
 
 		const onPlaying = () => {
 			hideSpinner();
+			onPlayingChange?.(true);
+		};
+
+		const onPause = () => {
+			onPlayingChange?.(false);
 		};
 
 		const onTimeUpdate = () => {
@@ -757,6 +823,7 @@ const StreamingVideoPlayer: React.FC<{
 		video.addEventListener("seeked", onSeeked);
 		video.addEventListener("waiting", onWaiting);
 		video.addEventListener("playing", onPlaying);
+		video.addEventListener("pause", onPause);
 		video.addEventListener("timeupdate", onTimeUpdate);
 
 		return () => {
@@ -768,6 +835,7 @@ const StreamingVideoPlayer: React.FC<{
 			video.removeEventListener("seeked", onSeeked);
 			video.removeEventListener("waiting", onWaiting);
 			video.removeEventListener("playing", onPlaying);
+			video.removeEventListener("pause", onPause);
 			video.removeEventListener("timeupdate", onTimeUpdate);
 		};
 	}, [showSpinnerDelayed, hideSpinner, clearSpinnerTimeout]);
@@ -779,8 +847,13 @@ const StreamingVideoPlayer: React.FC<{
 				return;
 			}
 			try {
-				const token = await ScriptGenerationService.getVideoToken(projectId, video.filename);
-				setVideoSrc(`${apiConfig.apiBaseUrl}/script-generation/${projectId}/videos/${video.filename}?drm_token=${token}`);
+				const token = await ScriptGenerationService.getVideoToken(
+					projectId,
+					video.filename
+				);
+				setVideoSrc(
+					`${apiConfig.apiBaseUrl}/script-generation/${projectId}/videos/${video.filename}?drm_token=${token}`
+				);
 			} catch (err) {
 				console.error("Failed to load video token", err);
 				setVideoSrc(null);
@@ -907,9 +980,7 @@ const VideoUploader: React.FC<{
 
 			if (totalSize > availableStorage) {
 				const errorMessage = (
-					(t(
-						"projectPage.fileList.insufficientStorage"
-					) as string) ||
+					(t("projectPage.fileList.insufficientStorage") as string) ||
 					"Không đủ dung lượng! Cần: {needed}, Còn lại: {available}. Vui lòng nâng cấp gói lưu trữ."
 				)
 					.replace("{needed}", formatFileSize(totalSize))
@@ -1044,14 +1115,12 @@ const VideoUploader: React.FC<{
 					</div>
 					<div className='text-center'>
 						<p className='font-medium text-foreground'>
-							{(t(
-								"projectPage.fileList.dragDrop"
-							) as string) || "Kéo thả video vào đây"}
+							{(t("projectPage.fileList.dragDrop") as string) ||
+								"Kéo thả video vào đây"}
 						</p>
 						<p className='text-sm text-muted-foreground mt-1'>
-							{(t(
-								"projectPage.fileList.orClick"
-							) as string) || "hoặc nhấn để chọn file"}
+							{(t("projectPage.fileList.orClick") as string) ||
+								"hoặc nhấn để chọn file"}
 						</p>
 					</div>
 				</div>
@@ -1370,23 +1439,17 @@ const ScriptGenerationServiceProjectPage: React.FC = () => {
 		() => [
 			{
 				id: "upload",
-				label:
-					(t("projectPage.tabs.upload") as string) ||
-					"Upload",
+				label: (t("projectPage.tabs.upload") as string) || "Upload",
 				icon: <Upload className='w-4 h-4' />,
 			},
 			{
 				id: "videos",
-				label:
-					(t("projectPage.tabs.videos") as string) ||
-					"Videos",
+				label: (t("projectPage.tabs.videos") as string) || "Videos",
 				icon: <Film className='w-4 h-4' />,
 			},
 			{
 				id: "settings",
-				label:
-					(t("projectPage.tabs.settings") as string) ||
-					"Cài đặt",
+				label: (t("projectPage.tabs.settings") as string) || "Cài đặt",
 				icon: <Settings2 className='w-4 h-4' />,
 			},
 		],
@@ -1407,17 +1470,15 @@ const ScriptGenerationServiceProjectPage: React.FC = () => {
 	const [isSavingOrder, setIsSavingOrder] = useState(false);
 	const [generationSettings, setGenerationSettings] =
 		useState<GenerationSettings>({});
-	// const [layout, setLayout] = useState<ScriptGenerationLayout>("grid1"); // Moved to context
 	const [activeTab, setActiveTab] = useState("videos");
 	const [storageOverlayOpen, setStorageOverlayOpen] = useState(false);
 	const [showTabText, setShowTabText] = useState(true);
+	const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
 	const initialGenerationSettingsRef = React.useRef<GenerationSettings>({});
 	const isInitialLoadRef = React.useRef(true);
 	const panelRef = useRef<HTMLDivElement>(null);
 	const handleSaveRef = React.useRef<(() => Promise<void>) | null>(null);
-
-
 
 	const loadVideos = useCallback(async () => {
 		if (!id) return;
@@ -1720,6 +1781,8 @@ const ScriptGenerationServiceProjectPage: React.FC = () => {
 								onVideosChange={handleVideosChange}
 								onSavingChange={setIsSavingOrder}
 								isLoading={videosLoading}
+								projectId={id || ""}
+								isPlaying={isVideoPlaying}
 							/>
 						</div>
 
@@ -1747,6 +1810,7 @@ const ScriptGenerationServiceProjectPage: React.FC = () => {
 				projectId={id || ""}
 				className='h-full border border-border'
 				videoMetadata={selectedVideo}
+				onPlayingChange={setIsVideoPlaying}
 			/>
 		</div>
 	);

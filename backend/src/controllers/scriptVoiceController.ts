@@ -205,12 +205,10 @@ export const deleteScriptVoiceProject = async (
 			throw new AppError("Project not found", 404);
 		}
 
-		// Xóa thư mục project và tất cả file bên trong
 		try {
 			await deleteProjectFolder(id);
 		} catch (folderError) {
 			console.error("Failed to delete project folder:", folderError);
-			// Tiếp tục xóa project dù có lỗi xóa folder
 		}
 
 		res.status(200).json({

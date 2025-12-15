@@ -1,7 +1,10 @@
 import {CorsOptions} from "cors";
 
 const getAllowedOrigins = (): string[] => {
-	const corsOrigin = process.env.VERCEL === "0" ? process.env.CORS_ORIGIN_DEVELOPMENT : process.env.CORS_ORIGIN_PRODUCTION;
+	const corsOrigin =
+		process.env.VERCEL === "0"
+			? process.env.CORS_ORIGIN_DEVELOPMENT
+			: process.env.CORS_ORIGIN_PRODUCTION;
 
 	if (!corsOrigin) {
 		return ["http://localhost:5173"];
@@ -19,6 +22,14 @@ export const isOriginAllowed = (origin: string | undefined): boolean => {
 		return true;
 	}
 
+	if (origin.startsWith("chrome-extension://")) {
+		return true;
+	}
+
+	if (origin.startsWith("moz-extension://")) {
+		return true;
+	}
+
 	const allowedOrigins = getAllowedOrigins();
 
 	if (process.env.NODE_ENV === "development") {
@@ -30,7 +41,16 @@ export const isOriginAllowed = (origin: string | undefined): boolean => {
 
 export const corsOptions: CorsOptions = {
 	origin: (origin, callback) => {
-		if (isOriginAllowed(origin)) {
+		if (
+			!origin ||
+			origin.startsWith("chrome-extension://") ||
+			origin.startsWith("moz-extension://") ||
+			origin.includes("localhost") ||
+			process.env.NODE_ENV === "development" ||
+			process.env.VERCEL !== "1"
+		) {
+			callback(null, true);
+		} else if (isOriginAllowed(origin)) {
 			callback(null, true);
 		} else {
 			callback(new Error("Not allowed by CORS"));
@@ -51,7 +71,10 @@ export const corsOptions: CorsOptions = {
 };
 
 export const getCorsOrigin = (): string => {
-	let corsOrigin = process.env.VERCEL === "0" ? process.env.CORS_ORIGIN_DEVELOPMENT : process.env.CORS_ORIGIN_PRODUCTION;
+	let corsOrigin =
+		process.env.VERCEL === "0"
+			? process.env.CORS_ORIGIN_DEVELOPMENT
+			: process.env.CORS_ORIGIN_PRODUCTION;
 	if (!corsOrigin) {
 		corsOrigin = "http://localhost:5173";
 	}
